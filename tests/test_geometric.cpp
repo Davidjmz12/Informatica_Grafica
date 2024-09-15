@@ -1,14 +1,12 @@
-#include "linear_map.hpp"
-#include "sphere.hpp"
-#include <iostream>
-#include <math.h>
+#include "geometric.hpp"
 
-int main(){
+int main()
+{
     //Points creation
     Geometric point = Geometric::point(1,2,3);
     
     if (!point.is_point()) {
-        std::cout << "Crear puntos." << std::endl;
+        std::cout << "ERROR: Crear puntos." << std::endl;
     } else {
         std::cout << "OK: Crear puntos." << std::endl;
     }
@@ -16,17 +14,17 @@ int main(){
     //Vector creation
     Geometric vector = Geometric::vector(1,0,0);
     
-    if (!vector.is_vector()) {
-        std::cout << "Crear vectores" << std::endl;
+    if (!point.is_vector()) {
+        std::cout << "ERROR: Crear puntos." << std::endl;
     } else {
-        std::cout << "OK: Crear vectores." << std::endl;
+        std::cout << "OK: Crear puntos." << std::endl;
     }
 
     //Equality
     Geometric vector2 = Geometric::vector(1,2,3);
 
     if (vector2 == point) {
-        std::cout << "Comparaciones" << std::endl;
+        std::cout << "ERROR: Comparaciones" << std::endl;
     } else {
         std::cout << "OK: Comparaciones" << std::endl;
     }
@@ -37,12 +35,12 @@ int main(){
     std::cout << "10 = " << v_1.dot(v_2) << std::endl;
     std::cout << "(-4,8,-4) = " << v_1.cross(v_2) << std::endl;
 
-    std::cout << "g[0]=" << point[0] << std::endl;
+    std::cout << "g[0]" << point[0] << std::endl;
     
     try{
         point[-1];
-    } catch(const std::exception& e){
-        std::cout << e.what() << std::endl;
+    } catch(int i){
+        
     }
 
     return 0;

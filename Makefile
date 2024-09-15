@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -g -I./include -I./include/class -I./src -I./src/class
+CXXFLAGS = -Wall -g -I./include -I./include/class -I./src -I./src/class -I./lib/armadillo-14.0.2
 BIN = ./bin/
 BLD = ./build/
 INC = ./include/
@@ -11,17 +11,23 @@ CLS = class/
 
 all: main
 
-main: main.o point.o vector.o 
-	${CXX} ${BLD}main.o ${BLD}point.o ${BLD}vector.o -o ${BIN}main
+main: main.o geometric.o sphere.o linear_map.o base.o
+	${CXX} ${BLD}main.o ${BLD}geometric.o  ${BLD}sphere.o ${BLD}linear_map.o ${BLD}base.o -o ${BIN}main
 
-main.o: ${SRC}main.cpp ${INC}${CLS}point.hpp ${INC}${CLS}vector.hpp 
+main.o: ${SRC}main.cpp ${INC}${CLS}geometric.hpp  
 	${CXX} ${CXXFLAGS} -c ${SRC}main.cpp -o ${BLD}main.o
 
-point.o: ${SRC}${CLS}point.cpp ${INC}${CLS}point.hpp ${INC}${CLS}vector.hpp
-	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}point.cpp -o ${BLD}point.o
+geometric.o: ${SRC}${CLS}geometric.cpp ${INC}${CLS}geometric.hpp 
+	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}geometric.cpp -o ${BLD}geometric.o
 
-vector.o: ${SRC}${CLS}vector.cpp ${INC}${CLS}vector.hpp ${INC}${CLS}point.hpp
-	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}vector.cpp -o ${BLD}vector.o
+sphere.o: ${SRC}${CLS}sphere.cpp  ${INC}${CLS}geometric.hpp ${INC}${CLS}base.hpp
+	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}sphere.cpp -o ${BLD}sphere.o
+
+linear_map.o: ${SRC}${CLS}linear_map.cpp ${INC}${CLS}geometric.hpp
+	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}linear_map.cpp -o ${BLD}linear_map.o
+
+base.o: ${SRC}${CLS}base.cpp ${INC}${CLS}geometric.hpp
+	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}base.cpp -o ${BLD}base.o
 
 clean:
-	rm -f ${BLD}main.o ${BLD}point.o
+	del ./build/*

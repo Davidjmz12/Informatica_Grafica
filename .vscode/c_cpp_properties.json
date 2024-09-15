@@ -6,7 +6,10 @@
                 "./include",
                 "./include/class",
                 "./src",
-                "./src/class"
+                "./src/class",
+                "./bin",
+                "./build",
+                "./lib/armadillo-14.0.2"
             ],
             "defines": [
                 "_DEBUG",
