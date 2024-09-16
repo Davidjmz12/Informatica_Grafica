@@ -1,34 +1,20 @@
 #include "linear_map.hpp"
-// #include <lib/armadillo-14.0.2/armadillo>
-
-const int N = 4;
-
-void matrix_multiplication(float const A[N][N], float const B[N][N], float Resultado[N][N]) {
-	for(int row=0;row<N;row++){
-        for(int column=0;column<N;column++){
-            float aux=0;
-            for(int k=0;k<N;k++){
-                aux += A[row][k]*B[k][column];
-            }
-            Resultado[row][column] = aux;
-        }
-	}
-}
+#include "matrix.hpp"
 
 Linear_Map::Linear_Map(float const matrix[4][4]) {
-    for(int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    for(int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
             this->matrix[i][j] = matrix[i][j];
         }
     }
 }
 
-Linear_Map change_basis(Base origin, Base b2) 
+Linear_Map Linear_Map::change_basis(Base origin, Base b2) 
 {
     return b2.matrix_lt().inverse() * origin.matrix_lt();
 }
 
-Linear_Map rotation(Geometric axis, float angle) 
+Linear_Map Linear_Map::rotation(Geometric axis, float angle) 
 {
     axis = axis.normalize();
 
@@ -57,7 +43,7 @@ Linear_Map rotation(Geometric axis, float angle)
     return Linear_Map(matrix);
 }
 
-Linear_Map scale(float lambda[3]) 
+Linear_Map Linear_Map::scale(float lambda[3]) 
 {
     float matrix[4][4] =    {   {lambda[0], 0, 0, 0},
                                 {0, lambda[1], 0, 0},
@@ -68,7 +54,7 @@ Linear_Map scale(float lambda[3])
     return Linear_Map(matrix);
 }
 
-Linear_Map translation(float v[3]) 
+Linear_Map Linear_Map::translation(float v[3]) 
 {
     float matrix[4][4] =    {   {1,0,0,v[0]},
                                 {0,1,0,v[1]},
@@ -94,13 +80,13 @@ Linear_Map Linear_Map::operator*(Linear_Map l) const
 
 Geometric Linear_Map::operator*(Geometric g) const
 {
-    float res[N];
+    float res[4];
     float aux = 0;
 
     //Multiply the matrix and the vector
-    for(int row=0; row<N; row++){
+    for(int row=0; row<4; row++){
         aux = 0;
-        for(int k=0; k<N; k++){
+        for(int k=0; k<4; k++){
             aux += this->matrix[row][k] * g[k];
         }
         res[row] = aux;
@@ -112,4 +98,16 @@ Geometric Linear_Map::operator*(Geometric g) const
     } else {
         return Geometric::vector(res[0], res[1], res[2]);
     }
+}
+
+bool Linear_Map::operator=(Linear_Map l) const
+{
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            if (this->matrix[row][col] != l.matrix[row][col])
+                return false;
+        }
+    }
+
+    return true;
 }
