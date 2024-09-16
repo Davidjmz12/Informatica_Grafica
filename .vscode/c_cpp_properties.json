@@ -8,8 +8,7 @@
                 "./src",
                 "./src/class",
                 "./bin",
-                "./build",
-                "./lib/armadillo-14.0.2/include"
+                "./build"
             ],
             "defines": [
                 "_DEBUG",

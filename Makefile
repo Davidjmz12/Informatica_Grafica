@@ -29,5 +29,13 @@ linear_map.o: ${SRC}${CLS}linear_map.cpp ${INC}${CLS}geometric.hpp
 base.o: ${SRC}${CLS}base.cpp ${INC}${CLS}geometric.hpp
 	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}base.cpp -o ${BLD}base.o
 
+
+test_geometric: test_geometric.o geometric.o
+	${CXX} ${BLD}test_geometric.o ${BLD}geometric.o -o ${BIN}test_geometric
+
+test_geometric.o: ${TST}test_geometric.cpp ${INC}${CLS}geometric.hpp
+	${CXX} ${CXXFLAGS} -c ${TST}test_geometric.cpp -o ${BLD}test_geometric.o
+
+
 clean:
 	del ./build/*
