@@ -55,8 +55,8 @@ public:
     {
         return Test([a, b]() {
             if (!(a == b)) {
-                std::stringstream ss;
-                ss << "EXPECT_EQ failed: {EXPECTED}: " << a << " {TO BE EQUAL TO}: " << b;
+                std::ostringstream ss;
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n\t\t" << a << "\n\n\t{TO BE EQUAL TO}:\n\n\t\t" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -74,8 +74,8 @@ public:
     {
         return Test([a, b]() {
             if (!(a != b)) {
-                std::stringstream ss;
-                ss << "EXPECT_NEQ failed: {EXPECTED}: " << a << " {TO NOT BE EQUAL TO}: " << b;
+                std::ostringstream ss;
+                ss << "EXPECT_NEQ failed: {EXPECTED}:\n" << a << "\n{TO NOT BE EQUAL TO}:\n" << b;
                 throw std::logic_error(ss.str());
             }
         });
@@ -141,8 +141,7 @@ public:
                 passed++;
                 results += (GREEN + "\tTest " + std::to_string(i + 1) + ": correct." + RESET + "\n");
             } catch (const std::exception& e) {
-                std::stringstream result;
-                results += RED + "\tTest " + std::to_string(i + 1) + " not passed: (" + e.what() + ")" + RESET + "\n";
+                results += RED + "\tTest " + std::to_string(i + 1) + " not passed: " + e.what() + RESET + "\n";
             }
         }
 

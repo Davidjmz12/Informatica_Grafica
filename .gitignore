@@ -1,10 +1,2 @@
-bin/main.exe
-bin/test_geometric.exe
-build/base.o
-build/geometric.o
-build/linear_map.o
-build/main.o
-build/matrix.o
-build/sphere.o
-build/test_geometric.o
-build/*
+/bin/
+/build/

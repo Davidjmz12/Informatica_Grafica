@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <math.h>
 
 #include "matrix.hpp"
 
@@ -7,7 +8,7 @@ float determinant3x3(float mat[3][3]) {
     float det = mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
                 - mat[0][1] * (mat[1][0] * mat[2][2] - mat[1][2] * mat[2][0])
                 + mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
-    return det > threshold ? det : 0;
+    return det;
 }
 
 void getCofactor(float const mat[4][4], float temp[3][3], int p, int q) {
@@ -39,6 +40,7 @@ void adjoint(float const mat[4][4], float adj[4][4]) {
     }
 }
 
+Matrix4x4::Matrix4x4() {}
 
 Matrix4x4::Matrix4x4(float const m[4][4])
 {
@@ -47,6 +49,15 @@ Matrix4x4::Matrix4x4(float const m[4][4])
             this->matrix[row][col] = m[row][col];
         }
     }
+}
+
+Matrix4x4 Matrix4x4::identity()
+{
+    float v[4][4] = {{1,0,0,0},
+                     {0,1,0,0},
+                     {0,0,1,0},
+                     {0,0,0,1}};
+    return Matrix4x4(v);
 }
 
 float Matrix4x4::get(int i, int j) const
@@ -71,7 +82,7 @@ Matrix4x4 Matrix4x4::inverse() const
     float res[4][4];
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            res[i][j] = adj[i][j] / det > threshold ? adj[i][j] / det : 0;
+            res[i][j] = adj[i][j] / det;
         }
     } 
 
@@ -90,10 +101,10 @@ float Matrix4x4::determinant() const
         sign = -sign;
     }
 
-    return det > threshold ? det : 0;
+    return det;
 }
 
-std::ostream& operator<<(std::ostream& os,const Matrix4x4& M)
+std::ostream& operator<<(std::ostream& os,const Matrix4x4 M)
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -104,7 +115,7 @@ std::ostream& operator<<(std::ostream& os,const Matrix4x4& M)
     return os;
 }
 
-Matrix4x4 Matrix4x4::operator*(Matrix4x4& M) const
+Matrix4x4 Matrix4x4::operator*(Matrix4x4 M) const
 {
     float result [4][4];
 
@@ -114,9 +125,43 @@ Matrix4x4 Matrix4x4::operator*(Matrix4x4& M) const
             for(int k=0; k<4; k++){
                 aux += this->get(row,k)*M.get(k,column);
             }
-            result[row][column] = aux > threshold ? aux : 0;
+            result[row][column] = aux;
         }
 	}
 
     return Matrix4x4(result);
 }
+
+Geometric Matrix4x4::operator*(Geometric g) const
+{
+    float res[4];
+    float aux = 0;
+
+    //Multiply the matrix and the vector
+    for(int row=0; row<4; row++){
+        aux = 0;
+        for(int k=0; k<4; k++){
+            aux += this->get(row,k) * g[k];
+        }
+        res[row] = aux;
+	}
+
+    //Return the correct type of geometric
+    if (g.is_point()) {
+        return Geometric::point(res[0], res[1], res[2]);
+    } else {
+        return Geometric::vector(res[0], res[1], res[2]);
+    }
+}
+
+bool Matrix4x4::operator==(Matrix4x4 const M) const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (abs(this->get(i,j) - M.get(i,j)) > threshold)
+                return false;
+        }
+    }
+    return true;
+}
+

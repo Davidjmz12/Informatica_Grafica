@@ -18,6 +18,11 @@ Geometric Geometric::point(float x, float y, float z)
     return Geometric(x,y,z,1);
 }
 
+Geometric Geometric::point0()
+{
+    return Geometric(0,0,0,1);
+}
+
 Geometric Geometric::vector(float x, float y, float z)
 {
     return Geometric(x,y,z,0);
@@ -152,7 +157,7 @@ std::ostream&  operator<<(std::ostream& os,const Geometric& g)
 {
     std::string type = g.v[3]==1 ? "point":"vector";
     
-    std::cout << type << ": ("  <<
+    os << type << ": ("  <<
                          g.v[0] << "," <<
                          g.v[1] << "," <<
                          g.v[2] << ")";

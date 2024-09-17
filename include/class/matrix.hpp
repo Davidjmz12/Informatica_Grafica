@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "geometric.hpp"
+
 const float threshold = 10e-6; // Under this number, it is considered as 0.
 
 class Matrix4x4 {
@@ -21,7 +23,18 @@ class Matrix4x4 {
     /**
     * @brief Basic constructor of a matrix 4x4.
     */
+    Matrix4x4();
+
+    /**
+    * @brief Basic constructor of a matrix 4x4.
+    */
     Matrix4x4(float const m[4][4]);
+
+    /**
+    * @brief Static method that gives the identity matrix.
+    * @returns the identity matrix
+    */
+    static Matrix4x4 identity();
 
     /**
     * @brief Access the (i,j) term of the matrix.
@@ -45,19 +58,34 @@ class Matrix4x4 {
     float determinant() const;
 
     /**
+    * @brief Computes a the multiplication of the matrix by M.
+    * @param M Second matrix.
+    * @return Result of multiplicate the matrix by M.
+    */
+    Matrix4x4 operator*(Matrix4x4 M) const;
+
+    /**
+    * @brief Computes a the multiplication of the matrix by a geometric (array 4x1).
+    * @param g the geometric to multiply with
+    * @return Result of the product of the matrix by M.
+    */
+    Geometric operator*(Geometric g) const;
+
+
+    /**
+    * @brief A method that redefines the equality operator between matrices.
+    * @param M Second matrix.
+    * @return true if and only if both matrices are equal.
+    */
+    bool operator==(Matrix4x4 M) const;
+
+    /**
     * @brief Prints the matrix.
     * @param M The matrix to be printed.
     * @param os the output stream where to print.
     * @return the output stream with the printed matrix.
     */
-    friend std::ostream& operator<<(std::ostream& os,const Matrix4x4& M);
-
-    /**
-    * @brief Computes a the multiplication of the matrix by M.
-    * @param M Second matrix.
-    * @return Result of multiplicate the matrix by M.
-    */
-    Matrix4x4 operator*(Matrix4x4& M) const;
+    friend std::ostream& operator<<(std::ostream& os,const Matrix4x4 M);
 
 };
 

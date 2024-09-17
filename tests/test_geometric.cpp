@@ -1,3 +1,10 @@
+/**
+ * @file test_geometric.cpp
+ * @brief File that tests the Geometric class
+ *
+ * This file contains all the tests that has been made
+ * for the Geometric class.
+*/
 #include <math.h>
 
 #include "test.hpp"
@@ -124,4 +131,6 @@ int main()
     t.addTest(Test::EXPECT_EXC([&v2]{v2[4];})); //66
 
     t.runAll();
+
+    return 0;
 }
