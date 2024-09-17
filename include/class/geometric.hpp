@@ -23,6 +23,7 @@ private:
 
     /**
     * @brief General constructor.
+    * @throw std::invalid_argument if a3 != {0,1}
     */
     Geometric(float a0, float a1, float a2, float a3);
 
@@ -69,6 +70,7 @@ public:
     * @brief Normalizes the vector.
     * @return The normalized vector.
     * @throw std::invalid_argument if the geometric is a point.
+    * @throw std::runtime_error if the geometric is zero vector.
     */
     Geometric normalize() const;
 
@@ -109,6 +111,7 @@ public:
     * @brief A method that computes the sum of two geometric.
     * @param g the geometric.
     * @return The sum of the two geometrics.
+    * @throw std::invalid_argument if doing point + point.
     */
     Geometric operator+(Geometric const g) const;
 
@@ -116,6 +119,7 @@ public:
     * @brief A method that computes the substraction of two geometric.
     * @param g the geometric.
     * @return The substraction of the two geometrics.
+    * @throw std::invalid_argument if doing vector - point.
     */
     Geometric operator-(Geometric const g) const;
 
@@ -124,6 +128,7 @@ public:
     *        by a scalar.
     * @param scalar scale factor.
     * @return The scaled geometric.
+    * @throw std::invalid_argument if geometric is not a vector
     */
     Geometric operator*(float scalar) const;
 
@@ -132,6 +137,8 @@ public:
     *        by a scalar.
     * @param scalar scale factor.
     * @return The scaled geometric.
+    * @throw std::runtime_error if scalar is zero.
+    * @throw std::invalid_argument if geometric is not a vector
     */
     Geometric operator/(float scalar) const;
 

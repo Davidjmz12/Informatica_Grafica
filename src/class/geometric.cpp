@@ -5,6 +5,8 @@
 
 Geometric::Geometric(float a0, float a1, float a2, float a3)
 {    
+    if (a3 != 0 && a3 != 1)
+        throw std::invalid_argument("Geometric must be a vector or a point");
     this->v[0] = a0;
     this->v[1] = a1;
     this->v[2] = a2;
@@ -69,10 +71,9 @@ Geometric Geometric::cross(Geometric const g) const
     if (!(this->is_vector() && g.is_vector()))
         throw std::invalid_argument("Both geometrics must be vectors.");
     
-    return Geometric(   this->v[1] * g.v[2] - this->v[2] * g.v[1],
+    return Geometric::vector(   this->v[1] * g.v[2] - this->v[2] * g.v[1],
                         this->v[2] * g.v[0] - this->v[0] * g.v[2],
-                        this->v[0] * g.v[1] - this->v[1] * g.v[0],
-                        0.0
+                        this->v[0] * g.v[1] - this->v[1] * g.v[0]
     );
 }
 
@@ -80,11 +81,8 @@ bool Geometric::linearly_dependent(Geometric const g) const
 {
     if (!(this->is_vector() && g.is_vector()))
         throw std::invalid_argument("Both geometrics must be vectors.");
-        
-    Geometric v1 = this->normalize();
-    Geometric v2 = this->normalize();
 
-    return v1 == v2 || v1 == v2 * -1;
+    return this->cross(g) == Geometric::vector(0,0,0);
 }
 
 bool Geometric::is_base(Geometric g1, Geometric g2) const
@@ -118,6 +116,8 @@ Geometric Geometric::operator-(Geometric const g) const
 }
 Geometric Geometric::operator*(float scalar) const 
 {
+    if (!this->is_vector())
+        throw std::invalid_argument("Only vectors can be multiply by scalar.");
     return Geometric(this->v[0] * scalar , 
                      this->v[1] * scalar ,
                      this->v[2] * scalar ,
@@ -127,6 +127,12 @@ Geometric Geometric::operator*(float scalar) const
 
 Geometric Geometric::operator/(float scalar) const 
 {
+    if (!this->is_vector())
+        throw std::invalid_argument("Only vectors can be divide by scalar.");
+
+    if (scalar == 0)
+        throw std::runtime_error("Division by zero.");
+        
     return Geometric(this->v[0] / scalar , 
                      this->v[1] / scalar ,
                      this->v[2] / scalar ,

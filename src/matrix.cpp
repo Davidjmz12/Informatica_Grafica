@@ -16,40 +16,6 @@ void matrix_multiplication(float const A[SIZE][SIZE], float const B[SIZE][SIZE],
 	}
 }
 
-void matrix_inverse(float const A[SIZE][SIZE], float Result[SIZE][SIZE])
-{
-    //Compute the determinant
-    float det = matrix_determinant(A);
-    if (det == 0)
-        throw std::invalid_argument("Matrix cannot have determinant 0.");
-
-    //Compute of the adjoint matrix
-    float adj[SIZE][SIZE];
-    adjoint(A, adj);
-
-    //Compute the inverse matrix
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            Result[i][j] = adj[i][j] / det > threshold ? adj[i][j] / det : 0;
-        }
-    }   
-}
-
-float matrix_determinant(float const A[SIZE][SIZE])
-{
-    float det = 0.0;
-    float temp[3][3];
-    int sign = 1;
-
-    for (int f = 0; f < SIZE; f++) {
-        getCofactor(A, temp, 0, f);
-        det += sign * A[0][f] * determinant3x3(temp);
-        sign = -sign;
-    }
-
-    return det > threshold ? det : 0;
-}
-
 void printMatrix(float A[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -98,4 +64,38 @@ void adjoint(float const mat[SIZE][SIZE], float adj[SIZE][SIZE]) {
             adj[j][i] = sign * determinant3x3(temp);
         }
     }
+}
+
+float matrix_determinant(float const A[SIZE][SIZE])
+{
+    float det = 0.0;
+    float temp[3][3];
+    int sign = 1;
+
+    for (int f = 0; f < SIZE; f++) {
+        getCofactor(A, temp, 0, f);
+        det += sign * A[0][f] * determinant3x3(temp);
+        sign = -sign;
+    }
+
+    return det > threshold ? det : 0;
+}
+
+void matrix_inverse(float const A[SIZE][SIZE], float Result[SIZE][SIZE])
+{
+    //Compute the determinant
+    float det = matrix_determinant(A);
+    if (det == 0)
+        throw std::invalid_argument("Matrix cannot have determinant 0.");
+
+    //Compute of the adjoint matrix
+    float adj[SIZE][SIZE];
+    adjoint(A, adj);
+
+    //Compute the inverse matrix
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            Result[i][j] = adj[i][j] / det > threshold ? adj[i][j] / det : 0;
+        }
+    }   
 }
