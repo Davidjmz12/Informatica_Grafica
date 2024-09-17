@@ -96,8 +96,5 @@ int main()
 
     t.addTest(Test::EXPECT_EQ(m5*g,Geometric::vector(7.0/2,-5,7.0/2)));
 
-
-    t.runAll();
-
-    return 0;
+    return t.runAll();
 }

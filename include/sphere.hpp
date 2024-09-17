@@ -9,7 +9,8 @@
 #ifndef SPHERE_HPP
 #define SPHERE_HPP
 
-#include "geometric.hpp"
+#include <iostream>
+
 #include "base.hpp"
 
 /**

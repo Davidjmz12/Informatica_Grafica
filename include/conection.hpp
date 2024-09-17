@@ -9,10 +9,11 @@
 #ifndef CONECTION_HPP
 #define CONECTION_HPP
 
-#include "sphere.hpp"
-#include "geometric.hpp"
+#include <iostream>
 
-class Conection
+#include "sphere.hpp"
+
+class Connection
 {
     private:
         Base b1, b2;
@@ -20,7 +21,7 @@ class Conection
         Geometric coord_b1, coord_b2;
         
     public:
-        Conection(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2);
+        Connection(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2);
         
         bool collide() const;
         Geometric coord_in_base_1() const;

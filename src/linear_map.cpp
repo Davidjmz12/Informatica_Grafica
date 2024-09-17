@@ -1,5 +1,6 @@
+#include <math.h>
+
 #include "linear_map.hpp"
-#include "matrix.hpp"
 
 Linear_Map::Linear_Map(Matrix4x4 M): matrix(M) {}
 

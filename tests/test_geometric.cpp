@@ -130,7 +130,5 @@ int main()
     t.addTest(Test::EXPECT_EXC([&v2]{v2[-1];})); //65
     t.addTest(Test::EXPECT_EXC([&v2]{v2[4];})); //66
 
-    t.runAll();
-
-    return 0;
+    return t.runAll();
 }

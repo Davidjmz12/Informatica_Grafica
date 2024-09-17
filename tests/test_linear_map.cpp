@@ -62,7 +62,6 @@ int main()
     t.addTest(Test::EXPECT_EQ(rot*v,v));
     t.addTest(Test::EXPECT_EQ(rot*(v*2),v*2));
 
-    t.runAll();
-
-    return 0;
+    
+    return t.runAll();
 }

@@ -1,7 +1,8 @@
+#include <math.h>
+
 #include "sphere.hpp"
 #include "linear_map.hpp"
 #include "base.hpp"
-#include <math.h>
 
 
 Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)

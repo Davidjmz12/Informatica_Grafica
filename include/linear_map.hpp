@@ -9,10 +9,10 @@
 #ifndef LINEAR_MAP
 #define LINEAR_MAP
 
-#include "geometric.hpp"
+#include <iostream>
+
 #include "base.hpp"
 #include "matrix.hpp"
-#include "math.h"
 
 class Base;
 

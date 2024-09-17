@@ -8,7 +8,8 @@
 #ifndef BASE_HPP
 #define BASE_HPP
 
-#include "geometric.hpp"
+#include <iostream>
+
 #include "linear_map.hpp"
 #include "matrix.hpp"
 

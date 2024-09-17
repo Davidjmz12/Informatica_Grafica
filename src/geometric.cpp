@@ -1,8 +1,7 @@
-#include "geometric.hpp"
-
 #include <math.h>
+#include <iostream>
 
-
+#include "geometric.hpp"
 
 bool eqFloat(float a, float b)
 {
@@ -27,6 +26,11 @@ Geometric Geometric::point(float x, float y, float z)
 Geometric Geometric::point0()
 {
     return Geometric(0,0,0,1);
+}
+
+Geometric Geometric::vector0()
+{
+    return Geometric(0,0,0,0);
 }
 
 Geometric Geometric::vector(float x, float y, float z)
@@ -68,7 +72,7 @@ Geometric Geometric::normalize() const
 float Geometric::dot(Geometric const g) const
 {
     if (!(this->is_vector() && g.is_vector()))
-        throw std::invalid_argument("Both geometrics must be vectors.");
+        throw std::invalid_argument("Both geometric must be vectors.");
     
     return  (this->v[0] * g.v[0] +
              this->v[1] * g.v[1] +
@@ -80,7 +84,7 @@ float Geometric::dot(Geometric const g) const
 Geometric Geometric::cross(Geometric const g) const
 {
     if (!(this->is_vector() && g.is_vector()))
-        throw std::invalid_argument("Both geometrics must be vectors.");
+        throw std::invalid_argument("Both geometric must be vectors.");
     
     return Geometric::vector(   this->v[1] * g.v[2] - this->v[2] * g.v[1],
                         this->v[2] * g.v[0] - this->v[0] * g.v[2],
@@ -91,7 +95,7 @@ Geometric Geometric::cross(Geometric const g) const
 bool Geometric::linearly_dependent(Geometric const g) const
 {
     if (!(this->is_vector() && g.is_vector()))
-        throw std::invalid_argument("Both geometrics must be vectors.");
+        throw std::invalid_argument("Both geometric must be vectors.");
 
     return this->cross(g) == Geometric::vector(0,0,0);
 }
@@ -99,7 +103,7 @@ bool Geometric::linearly_dependent(Geometric const g) const
 bool Geometric::is_base(Geometric g1, Geometric g2) const
 {
     if (!(this->is_vector() && g1.is_vector() && g2.is_vector()))
-        throw std::invalid_argument("All three geometrics must be vectors.");
+        throw std::invalid_argument("All three geometric must be vectors.");
     
 
     int determinant =   ((*this)[0]*g1[1]*g2[2] + g1[0]*g2[1]*(*this)[2] + g2[0]*(*this)[1]*g1[2] -
@@ -163,10 +167,9 @@ std::ostream&  operator<<(std::ostream& os,const Geometric& g)
 {
     std::string type = g.v[3]==1 ? "point":"vector";
     
-    os << type << ": ("  << std::scientific <<
-                         g.v[0] << "," <<
-                         g.v[1] << "," <<
-                         g.v[2] << ")";
+    os << type << ": ("  << g.v[0] << "," <<
+                            g.v[1] << "," <<
+                            g.v[2] << ")";
     return os;
 }
 

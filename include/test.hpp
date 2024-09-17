@@ -16,10 +16,16 @@
 #include <sstream>
 #include <vector>
 
+/*
 const std::string RESET = "\033[0m";
 const std::string BLUE = "\033[34m";
 const std::string GREEN = "\033[32m";
 const std::string RED = "\033[31m";
+*/
+const std::string RESET = "";
+const std::string BLUE = "";
+const std::string GREEN = "";
+const std::string RED = "";
 
 
 /**
@@ -56,7 +62,7 @@ public:
         return Test([a, b]() {
             if (!(a == b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{TO BE EQUAL TO}:\n\n" << b << "\n";
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -75,7 +81,7 @@ public:
         return Test([a, b]() {
             if (!(a != b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{TO NOT BE EQUAL TO}:\n\n" << b << "\n";
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -125,8 +131,9 @@ public:
 
     /**
     * @brief Method that runs all the tests.
+    * @return 0 if everything is okey, !=0 otherwise.
     */
-    void runAll()
+    int runAll()
     {
         std::cout << "-----------------------------------------------------\n";
         std::cout << BLUE << "TEST NAME: " << test_name << RESET << std::endl;
@@ -141,7 +148,7 @@ public:
                 passed++;
                 results += (GREEN + "\tTest " + std::to_string(i + 1) + ": correct." + RESET + "\n");
             } catch (const std::exception& e) {
-                results += RED + "\tTest " + std::to_string(i + 1) + " not passed: " + e.what() + RESET + "\n";
+                results += RED + "\tTest " + std::to_string(i + 1) + ": not correct. " + e.what() + RESET + "\n";
             }
         }
 
@@ -152,6 +159,7 @@ public:
                     BLUE << "SUMMARY: " << color << passed << "/" << test_set.size() << " passed"
                     << RESET << "\n" << 
                     "-----------------------------------------------------\n";
+        return int(test_set.size())==passed?0:1;
     }
 
 };

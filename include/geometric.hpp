@@ -48,6 +48,12 @@ public:
     static Geometric point0();
 
     /**
+    * @brief Returns the (0,0,0) vector.
+    * @return The zero vector.
+    */
+    static Geometric vector0();
+
+    /**
     * @brief Returns a vector with coordinates v.
     * @param x The coordinates of the x-axis
     * @param y The coordinates of the y-axis

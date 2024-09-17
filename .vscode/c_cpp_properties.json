@@ -3,12 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "./include",
-                "./include/class",
-                "./src",
-                "./src/class",
-                "./bin",
-                "./build"
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/build"
             ],
             "defines": [
                 "_DEBUG",
