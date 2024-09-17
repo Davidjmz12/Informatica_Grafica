@@ -11,6 +11,7 @@
 
 #include "geometric.hpp"
 #include "base.hpp"
+#include "matrix.hpp"
 #include "math.h"
 
 class Base;
@@ -20,14 +21,20 @@ class Base;
 */
 class Linear_Map {
     private:
-        float matrix[4][4];
+        Matrix4x4 matrix;
         
     public:
         /**
-        * @brief Method that creates a linear map.
+        * @brief Method that creates a linear map given a Matrix4x4.
         * @param matrix The matrix of the transformation.
         */
-        Linear_Map(float const matrix[4][4]);
+        Linear_Map(Matrix4x4 M);
+
+        /**
+        * @brief Method that creates a linear map given an array.
+        * @param matrix The matrix of the transformation.
+        */
+        Linear_Map(float M[4][4]);
         
         /**
         * @brief A method that creates a linear map to make a
@@ -62,8 +69,15 @@ class Linear_Map {
         *   translation.
         * @param v The translation for each axis.
         * @return The linear map of the translation.
+        * @throw std::invalid_argument if v is not a vector.
         */
-        static Linear_Map translation(float v[3]);
+        static Linear_Map translation(Geometric v);
+
+        /**
+        * @brief A method that gives the identity map.
+        * @return A indentity map.
+        */
+        static Linear_Map identity();
         
         /**
         * @brief A method that computes the inverse linear map.
@@ -96,7 +110,7 @@ class Linear_Map {
         * @return True if the matrices of both linear maps are identical.
         *   False otherwise.
         */
-        bool operator=(Linear_Map l) const;
+        bool operator==(Linear_Map l) const;
 };
 
 #endif

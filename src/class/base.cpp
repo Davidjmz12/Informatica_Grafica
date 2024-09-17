@@ -14,11 +14,7 @@ Base::Base(Geometric p, Geometric i, Geometric j, Geometric k)
                         {i[2], j[2], k[2], p[2]},
                         {0   , 0   , 0   , 1   }};
 
-    for (int row = 0; row < 4; ++row) {
-        for (int col = 0; col < 4; ++col) {
-            this->matrix[row][col] = aux[row][col];
-        }
-    }
+    this->matrix = Matrix4x4(aux);
 }
 
 
@@ -43,4 +39,9 @@ std::ostream& operator<<(std::ostream& os, const Base& b)
 {
     os << "Point: " << b.center << "\nBase: " << b.x << " ; " << b.y << " ; " << b.z << std::endl; 
     return os;
+}
+
+bool Base::operator==(Base b)
+{
+    return (this->matrix == b.matrix);
 }

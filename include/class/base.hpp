@@ -10,6 +10,7 @@
 
 #include "geometric.hpp"
 #include "linear_map.hpp"
+#include "matrix.hpp"
 
 class Linear_Map;
 
@@ -20,11 +21,12 @@ class Linear_Map;
 class Base {
 
 private:
-    float matrix[4][4];
+
+    Matrix4x4 matrix;
 public:
+
     Geometric center,x,y,z;
     
-
     /**
     * @brief Creates a base with center p and axis i,j,k.
     * @param p The referrence point of the base.
@@ -64,6 +66,9 @@ public:
     * @return the resultant output stream with the printed base.
     */
     friend std::ostream& operator<<(std::ostream& os, const Base& b);
+
+
+    bool operator==(Base b);
         
 };
 

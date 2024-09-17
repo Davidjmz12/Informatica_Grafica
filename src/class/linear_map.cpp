@@ -1,13 +1,10 @@
 #include "linear_map.hpp"
 #include "matrix.hpp"
 
-Linear_Map::Linear_Map(float const matrix[4][4]) {
-    for(int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            this->matrix[i][j] = matrix[i][j];
-        }
-    }
-}
+Linear_Map::Linear_Map(Matrix4x4 M): matrix(M) {}
+
+Linear_Map::Linear_Map(float M[4][4])
+    : matrix(Matrix4x4(M)) {}
 
 Linear_Map Linear_Map::change_basis(Base origin, Base b2) 
 {
@@ -54,8 +51,11 @@ Linear_Map Linear_Map::scale(float lambda[3])
     return Linear_Map(matrix);
 }
 
-Linear_Map Linear_Map::translation(float v[3]) 
+Linear_Map Linear_Map::translation(Geometric v) 
 {
+    if (!v.is_vector())
+        throw std::invalid_argument("v must be a vector.");
+        
     float matrix[4][4] =    {   {1,0,0,v[0]},
                                 {0,1,0,v[1]},
                                 {0,0,1,v[2]},
@@ -65,49 +65,27 @@ Linear_Map Linear_Map::translation(float v[3])
     return Linear_Map(matrix);
 }
 
+Linear_Map Linear_Map::identity()
+{
+    return Linear_Map(Matrix4x4::identity());
+}
+
 Linear_Map Linear_Map::inverse() const
 {
-    return (*this);
+    return Linear_Map(this->matrix.inverse());
 }
 
 Linear_Map Linear_Map::operator*(Linear_Map l) const
 {
-    float res[4][4];
-    matrix_multiplication(this->matrix, l.matrix, res);
-    
-    return Linear_Map(res);
+    return Linear_Map(this->matrix*l.matrix);
 }
 
 Geometric Linear_Map::operator*(Geometric g) const
 {
-    float res[4];
-    float aux = 0;
-
-    //Multiply the matrix and the vector
-    for(int row=0; row<4; row++){
-        aux = 0;
-        for(int k=0; k<4; k++){
-            aux += this->matrix[row][k] * g[k];
-        }
-        res[row] = aux;
-	}
-
-    //Return the correct type of geometric
-    if (g.is_point()) {
-        return Geometric::point(res[0], res[1], res[2]);
-    } else {
-        return Geometric::vector(res[0], res[1], res[2]);
-    }
+    return this->matrix*g ;
 }
 
-bool Linear_Map::operator=(Linear_Map l) const
+bool Linear_Map::operator==(Linear_Map l) const
 {
-    for (int row = 0; row < 4; row++) {
-        for (int col = 0; col < 4; col++) {
-            if (this->matrix[row][col] != l.matrix[row][col])
-                return false;
-        }
-    }
-
-    return true;
+    return this->matrix == l.matrix;
 }
