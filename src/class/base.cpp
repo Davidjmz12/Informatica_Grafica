@@ -15,20 +15,26 @@ Base::Base(Geometric p, Geometric i, Geometric j, Geometric k)
                         {0   , 0   , 0   , 1   }};
 
     this->matrix = Matrix4x4(aux);
+    this->matrix_inverse = Matrix4x4(aux).inverse();
 }
 
 
-Linear_Map Base::matrix_lt() const
+Linear_Map Base::canonical_to_base() const
 {
     return Linear_Map(this->matrix);
 }
-        
-Geometric Base::point(float x, float y, float z) const
+
+Geometric Base::coord_from_canonical(Geometric g) const
 {
-    return this->x*x + this->y*y + this->z*z;
+    return Linear_Map(this->matrix_inverse)*g;
+}
+        
+Geometric Base::coord_into_canonical(Geometric g) const
+{
+    return this->x*g[0] + this->y*g[1] + this->z*g[2];
 }
 
-Base canonic_base(){
+Base Base::canonic_base(){
     return Base(Geometric::point(0,0,0), 
                 Geometric::vector(1,0,0),
                 Geometric::vector(0,1,0),

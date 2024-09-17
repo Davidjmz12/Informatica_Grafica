@@ -3,6 +3,12 @@
 #include <math.h>
 
 
+
+bool eqFloat(float a, float b)
+{
+    return abs(a - b) < threshold;
+}
+
 Geometric::Geometric(float a0, float a1, float a2, float a3)
 {    
     if (a3 != 0 && a3 != 1)
@@ -147,17 +153,17 @@ Geometric Geometric::operator/(float scalar) const
 
 bool Geometric::operator==(Geometric const g) const 
 {
-    return  this->v[0] == g.v[0] &&
-            this->v[1] == g.v[1] &&
-            this->v[2] == g.v[2] &&
-            this->v[3] == g.v[3];
+    return  eqFloat(this->v[0],g.v[0]) &&
+            eqFloat(this->v[1],g.v[1]) &&
+            eqFloat(this->v[2],g.v[2]) &&
+            eqFloat(this->v[3],g.v[3]);
 }
 
 std::ostream&  operator<<(std::ostream& os,const Geometric& g) 
 {
     std::string type = g.v[3]==1 ? "point":"vector";
     
-    os << type << ": ("  <<
+    os << type << ": ("  << std::scientific <<
                          g.v[0] << "," <<
                          g.v[1] << "," <<
                          g.v[2] << ")";

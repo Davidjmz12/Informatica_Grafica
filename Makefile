@@ -28,7 +28,7 @@ ${BLD}sphere.o: ${SRC}${CLS}sphere.cpp  ${INC}${CLS}geometric.hpp ${INC}${CLS}ba
 ${BLD}linear_map.o: ${SRC}${CLS}linear_map.cpp ${INC}${CLS}geometric.hpp ${INC}${CLS}matrix.hpp
 	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}linear_map.cpp -o ${BLD}linear_map.o
 
-${BLD}base.o: ${SRC}${CLS}base.cpp ${INC}${CLS}geometric.hpp
+${BLD}base.o: ${SRC}${CLS}base.cpp ${INC}${CLS}geometric.hpp ${INC}${CLS}matrix.hpp
 	${CXX} ${CXXFLAGS} -c ${SRC}${CLS}base.cpp -o ${BLD}base.o
 
 ${BLD}matrix.o: ${SRC}${CLS}matrix.cpp ${INC}${CLS}matrix.hpp ${INC}${CLS}geometric.hpp
@@ -52,6 +52,12 @@ ${BIN}test_matrix.exe: ${BLD}test_matrix.o ${BLD}matrix.o ${BLD}geometric.o
 ${BLD}test_matrix.o: ${TST}test_matrix.cpp ${INC}${CLS}matrix.hpp ${INC}${CLS}test.hpp
 	${CXX} ${CXXFLAGS} -c ${TST}test_matrix.cpp -o ${BLD}test_matrix.o
 
+# LINEAR MAP TESTS
+${BIN}test_linear_map.exe: ${BLD}test_linear_map.o ${BLD}linear_map.o ${BLD}geometric.o ${BLD}base.o ${BLD}matrix.o
+	${CXX} ${BLD}test_linear_map.o ${BLD}linear_map.o ${BLD}geometric.o ${BLD}base.o ${BLD}matrix.o -o ${BIN}test_linear_map.exe
+
+${BLD}test_linear_map.o: ${TST}test_linear_map.cpp ${INC}${CLS}linear_map.hpp ${INC}${CLS}test.hpp ${INC}${CLS}base.hpp ${INC}${CLS}geometric.hpp
+	${CXX} ${CXXFLAGS} -c ${TST}test_linear_map.cpp -o ${BLD}test_linear_map.o
 
 
 clean:

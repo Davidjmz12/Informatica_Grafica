@@ -8,7 +8,7 @@ Linear_Map::Linear_Map(float M[4][4])
 
 Linear_Map Linear_Map::change_basis(Base origin, Base b2) 
 {
-    return b2.matrix_lt().inverse() * origin.matrix_lt();
+    return b2.canonical_to_base().inverse() * origin.canonical_to_base();
 }
 
 Linear_Map Linear_Map::rotation(Geometric axis, float angle) 
@@ -88,4 +88,11 @@ Geometric Linear_Map::operator*(Geometric g) const
 bool Linear_Map::operator==(Linear_Map l) const
 {
     return this->matrix == l.matrix;
+}
+
+std::ostream& operator<<(std::ostream& os,const Linear_Map& g)
+{
+    os << g.matrix;
+
+    return os;
 }

@@ -23,6 +23,8 @@ class Base {
 private:
 
     Matrix4x4 matrix;
+    Matrix4x4 matrix_inverse;
+
 public:
 
     Geometric center,x,y,z;
@@ -44,20 +46,27 @@ public:
 
     /**
     * @brief Method that gives the point in a basis.
+    * @param x The coordinates of the x-canonical vector.
+    * @param y The coordinates of the y-canonical vector.
+    * @param z The coordinates of the z-canonical vector.
+    * @return The coordinates of the point in the base-axis.
+    */  
+    Geometric coord_from_canonical(Geometric g) const;
+
+    /**
+    * @brief Method that gives the point in a basis.
     * @param x The coordinates of the x-basis vector.
     * @param y The coordinates of the y-basis vector.
-    * @param z The coordinates of the z-basis bector.
+    * @param z The coordinates of the z-basis vector.
     * @return The point with the coordinates (x,y,z).
     */        
-    Geometric point(float x, float y, float z) const;
-
+    Geometric coord_into_canonical(Geometric g) const;
 
     /**
     * @brief Method that gives the matrix of this base.
     * @return the linear transformation of that matrix.
     */       
-    Linear_Map matrix_lt() const;
-
+    Linear_Map canonical_to_base() const;
 
     /**
     * @brief An operator to print a base.
@@ -67,7 +76,11 @@ public:
     */
     friend std::ostream& operator<<(std::ostream& os, const Base& b);
 
-
+    /**
+    * @brief An operator to check if two bases are the same.
+    * @param b the second base.
+    * @return True if the bases are equal. False otherwise.
+    */
     bool operator==(Base b);
         
 };

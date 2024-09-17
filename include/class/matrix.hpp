@@ -12,8 +12,6 @@
 
 #include "geometric.hpp"
 
-const float threshold = 10e-6; // Under this number, it is considered as 0.
-
 class Matrix4x4 {
     private:
         float matrix[4][4]; // Matrix attribute

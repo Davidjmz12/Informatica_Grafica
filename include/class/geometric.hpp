@@ -11,6 +11,9 @@
 
 #include <iostream>
 
+const float threshold = 10e-6;
+
+bool eqFloat(float a, float b);
 
 /**
  * @brief A class for representing points and vectors with

@@ -56,7 +56,7 @@ public:
         return Test([a, b]() {
             if (!(a == b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n\t\t" << a << "\n\n\t{TO BE EQUAL TO}:\n\n\t\t" << b << "\n";
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{TO BE EQUAL TO}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -75,7 +75,7 @@ public:
         return Test([a, b]() {
             if (!(a != b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_NEQ failed: {EXPECTED}:\n" << a << "\n{TO NOT BE EQUAL TO}:\n" << b;
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{TO NOT BE EQUAL TO}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });

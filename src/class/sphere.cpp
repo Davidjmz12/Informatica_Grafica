@@ -3,15 +3,6 @@
 #include "base.hpp"
 #include <math.h>
 
-void imprimir_matriz(float m[3][3])
-{
-    for (int i = 0; i < 3; i++) {
-        for (int j=0; j < 3; j++) {
-            std::cout << m[i][j] << "\t";
-        }
-        std::cout << std::endl;
-    }
-}
 
 Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
     : center(center), ref_point(ref_point), axis(axis), radius(axis.norm() / 2)
@@ -27,24 +18,24 @@ Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
 
 Base Sphere::base_point(float inclination, float azimut)
 {
-    /*
-    Linear_Map r1 = Linear_Map(this->axis,azimut);
-    Vector axis_second_rotation = r1*this->axis.cross(this->ref_point - this->center);
-
-    imprimir_matriz(r1.matrix);
+    //Compute the point
+    Linear_Map r1 = Linear_Map::rotation(this->axis,azimut);
+    Geometric v1 = r1*this->ref_point-this->center;
+    Geometric axis_second_rotation =  this->axis.cross(v1);
 
     float angle_ref_axis = acos(this->axis.normalize().dot((this->ref_point-this->center).normalize()));
 
-    Linear_Map r2 = Linear_Map(axis_second_rotation, inclination - angle_ref_axis);
+    Linear_Map r2 = Linear_Map::rotation(axis_second_rotation,inclination - angle_ref_axis);
 
-    Point base_point = r2*r1*this->ref_point;
+    Geometric point = r2*r1*this->ref_point;
 
-    return Base(base_point, axis_second_rotation, axis_second_rotation, axis_second_rotation);
-    */
-   Geometric v = Geometric::vector(1,2,3);
-   return Base(v,v,v,v);
+    //Compute the axis
+    Geometric normal = (point-this->center).normalize();
+    Geometric tangent_long = this->axis.normalize().cross(normal);
+    Geometric tangent_lat = tangent_long.cross(normal);
+
+    return Base(point, tangent_long, tangent_lat, normal);
 }
-
 
 bool Sphere::point_in_sphere(Geometric p) {
     float radius_point_p = (this->center - p).norm();

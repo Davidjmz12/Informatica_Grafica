@@ -111,6 +111,8 @@ class Linear_Map {
         *   False otherwise.
         */
         bool operator==(Linear_Map l) const;
+
+        friend std::ostream& operator<<(std::ostream& os,const Linear_Map& g);
 };
 
 #endif
