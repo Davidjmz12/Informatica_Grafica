@@ -1,3 +1,13 @@
+/**
+ * @file conenction.cpp
+ * @brief Implementation of the connection header.
+ * @authors DavidJimenez DavidTizne
+ * @date 18/09/2024
+ * @see connection.hpp for more information.
+ * This file contains the implementation of the Connection class, which represents
+ * the interaction between two points in a sphere.
+*/
+
 #include "conection.hpp"
 
 

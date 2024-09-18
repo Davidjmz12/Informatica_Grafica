@@ -1,9 +1,15 @@
+/**
+ * @file sphere.cpp
+ * @brief Implementation of the sphere header.
+ * @authors DavidJimenez DavidTizne
+ * @date 18/09/2024
+ * @see sphere.hpp for more information.
+ * This file contains the implementation of sphere in R^3.
+*/
+
 #include <math.h>
 
 #include "sphere.hpp"
-#include "linear_map.hpp"
-#include "base.hpp"
-
 
 Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
     : center(center), ref_point(ref_point), axis(axis), radius(axis.norm() / 2)

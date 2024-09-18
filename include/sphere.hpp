@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "base.hpp"
+#include "linear_map.hpp"
 
 /**
  * @brief A class for represents a Sphere.

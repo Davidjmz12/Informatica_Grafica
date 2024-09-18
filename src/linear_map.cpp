@@ -1,3 +1,13 @@
+/**
+ * @file geometric.cpp
+ * @brief Implementation of the geometric header.
+ * @authors DavidJimenez DavidTizne
+ * @date 18/09/2024
+ * @see linear_map.hpp for more information.
+ * This file contains the implementation of the Linear Map class, which represents
+ * a linear application from R^4 to R^4.
+*/
+
 #include <math.h>
 
 #include "linear_map.hpp"

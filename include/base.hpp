@@ -1,6 +1,8 @@
 /**
  * @file base.hpp
  * @brief Defines a base of R^3 and a center point.
+ * @authors Davidjmz12 DavidTizne
+ * @date 18/09/2024
  *
  * This file contains the definition of the Base class, which represents
  * a base in R^3.

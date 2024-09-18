@@ -1,3 +1,13 @@
+/**
+ * @file geometric.cpp
+ * @brief Implementation of the geometric header.
+ * @authors DavidJimenez DavidTizne
+ * @date 18/09/2024
+ * @see geometric.hpp for more information.
+ * This file contains the implementation of the Geometric class, which represents
+ * a point or a vector.
+*/
+
 #include <math.h>
 #include <iostream>
 

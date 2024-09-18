@@ -1,3 +1,13 @@
+/**
+ * @file base.cpp
+ * @brief Implementation of base header.
+ * @authors Davidjmz12 DavidTizne
+ * @date 18/09/2024
+ * @see base.hpp for more information.
+ * This file contains the implementation of the Base class, which represents
+ * a 3D base.
+*/
+
 #include "base.hpp"
 
 Base::Base(Geometric p, Geometric i, Geometric j, Geometric k)

@@ -1,3 +1,13 @@
+/**
+ * @file matrix.cpp
+ * @brief Implementation of the matrix header.
+ * @authors DavidJimenez DavidTizne
+ * @date 18/09/2024
+ * @see matrix.hpp for more information.
+ * This file contains the implementation of a 4x4 real matrix.
+*/
+
+
 #include <iostream>
 #include <iomanip>
 #include <math.h>
