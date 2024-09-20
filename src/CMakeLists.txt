@@ -17,13 +17,10 @@ target_link_libraries(base PUBLIC matrix linear_map)
 add_library(sphere sphere.cpp)
 target_link_libraries(sphere PUBLIC base)
 
-add_library(conection conection.cpp)
-target_link_libraries(conection PUBLIC sphere)
 
 
 # Include directories
 target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(conection PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(matrix PUBLIC ${CMAKE_SOURCE_DIR}/include)

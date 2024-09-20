@@ -47,4 +47,17 @@ class Sphere
         bool point_in_sphere(Geometric p);
 };
 
+/**
+* @brief A method that computes if you can make a line between cities
+*   without touching the spheres.
+* @param s1 The first sphere
+* @param az1 The azimut of the point in the first sphere.
+* @param inc1 The inclination of the point in the first sphere.
+* @param s2 The second sphere
+* @param az2 The azimut of the point in the second sphere.
+* @param inc2 The inclination of the point in the second sphere.
+* @return True if you can make a line between cities without touching the spheres.
+*/
+bool collide(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2);
+
 #endif

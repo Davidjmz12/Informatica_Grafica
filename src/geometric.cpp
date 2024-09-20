@@ -10,12 +10,18 @@
 
 #include <math.h>
 #include <iostream>
+#include <iomanip>
 
 #include "geometric.hpp"
 
 bool eqFloat(float a, float b)
 {
     return abs(a - b) < threshold;
+}
+
+bool ltFloat(float a, float b)
+{
+    return a < b + 2*threshold || a < b - 2*threshold;
 }
 
 Geometric::Geometric(float a0, float a1, float a2, float a3)
@@ -116,7 +122,7 @@ bool Geometric::is_base(Geometric g1, Geometric g2) const
         throw std::invalid_argument("All three geometric must be vectors.");
     
 
-    int determinant =   ((*this)[0]*g1[1]*g2[2] + g1[0]*g2[1]*(*this)[2] + g2[0]*(*this)[1]*g1[2] -
+    float determinant =   ((*this)[0]*g1[1]*g2[2] + g1[0]*g2[1]*(*this)[2] + g2[0]*(*this)[1]*g1[2] -
                          (*this)[2]*g1[1]*g2[0] - (*this)[1]*g1[0]*g2[2] - (*this)[0]*g1[2]*g2[1]);
 
     return determinant != 0;  
@@ -177,9 +183,10 @@ std::ostream&  operator<<(std::ostream& os,const Geometric& g)
 {
     std::string type = g.v[3]==1 ? "point":"vector";
     
-    os << type << ": ("  << g.v[0] << "," <<
-                            g.v[1] << "," <<
-                            g.v[2] << ")";
+    os  << type << ": ("  << 
+                            std::setprecision(6) << g.v[0] << "," <<
+                            std::setprecision(6) << g.v[1] << "," <<
+                            std::setprecision(6) << g.v[2] << ")";
     return os;
 }
 

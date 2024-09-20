@@ -11,6 +11,18 @@
 
 #include "sphere.hpp"
 
+
+bool collide(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2)
+{
+    Base b1 = s1.base_point(inc1,az1); 
+    Base b2 = s2.base_point(inc2,az2);
+    Geometric coord_b1 = b1.coord_from_canonical(b2.center);
+    Geometric coord_b2 = b2.coord_from_canonical(b1.center);
+    
+    return coord_b1[2] < -threshold || coord_b2[2] < -threshold;
+}
+
+
 Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
     : center(center), ref_point(ref_point), axis(axis), radius(axis.norm() / 2)
 {
@@ -27,24 +39,24 @@ Base Sphere::base_point(float inclination, float azimut)
 {
     //Compute the point
     Linear_Map r1 = Linear_Map::rotation(this->axis,azimut);
-    Geometric v1 = r1*this->ref_point-this->center;
+    Geometric v1 = r1*(this->ref_point-this->center);
     Geometric axis_second_rotation =  this->axis.cross(v1);
 
     float angle_ref_axis = acos(this->axis.normalize().dot((this->ref_point-this->center).normalize()));
 
-    Linear_Map r2 = Linear_Map::rotation(axis_second_rotation,inclination - angle_ref_axis);
+    Linear_Map r2 = Linear_Map::rotation(axis_second_rotation, inclination - angle_ref_axis);
 
-    Geometric point = r2*r1*this->ref_point;
+    Geometric point = r2*v1 + this->center;
 
     //Compute the axis
     Geometric normal = (point-this->center).normalize();
-    Geometric tangent_long = this->axis.normalize().cross(normal);
-    Geometric tangent_lat = tangent_long.cross(normal);
+    Geometric tangent_long = this->axis.cross(normal).normalize();
+    Geometric tangent_lat = normal.cross(tangent_long);
 
     return Base(point, tangent_long, tangent_lat, normal);
 }
 
 bool Sphere::point_in_sphere(Geometric p) {
     float radius_point_p = (this->center - p).norm();
-    return radius_point_p == this->radius;
+    return eqFloat(radius_point_p, this->radius);
 }
