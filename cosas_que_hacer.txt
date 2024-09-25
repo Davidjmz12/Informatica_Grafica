@@ -1,0 +1,32 @@
+- Leer fichero .ppm
+
+- Una base RGB en una escala arbitraria
+
+- Transformar RGB - HSV , HSV - RGB
+
+- Aplicar filtro 
+
+- Devolver
+
+- Escribir un fichero .ppm
+
+
+
+Clase fichero:
+- Nombre fichero
+
+- Dimensiones, maximo valor, Mapa_Pixel 
+
+- apply_ every transformation
+
+Class Mapa_Pixel:
+- Mapa, que tipo de codificacion y transformaciones.Aplicar
+- Clase Pixel
+
+
+Class tone_mapping:
+
+- 
+
+
+Class Pixel
