@@ -84,7 +84,7 @@ public:
     * @param b the second base.
     * @return True if the bases are equal. False otherwise.
     */
-    bool operator==(Base b);
+    bool operator==(Base b) const;
         
 };
 

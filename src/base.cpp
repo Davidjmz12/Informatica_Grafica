@@ -61,7 +61,7 @@ std::ostream& operator<<(std::ostream& os, const Base& b)
     return os;
 }
 
-bool Base::operator==(Base b)
+bool Base::operator==(Base b) const
 {
     return (this->matrix == b.matrix);
 }

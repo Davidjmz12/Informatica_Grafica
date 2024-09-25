@@ -38,8 +38,8 @@ Base Sphere::base_point(float inclination, float azimut)
 
     //Compute the axis
     Geometric normal = (point-this->center).normalize();
-    Geometric tangent_long = this->axis.normalize().cross(normal);
-    Geometric tangent_lat = tangent_long.cross(normal);
+    Geometric tangent_long = this->axis.cross(normal).normalize();
+    Geometric tangent_lat = normal.cross(tangent_long);
 
     return Base(point, tangent_long, tangent_lat, normal);
 }

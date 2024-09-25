@@ -22,3 +22,10 @@ add_executable(test_base test_base.cpp)
 target_link_libraries(test_base PUBLIC base)
 add_test(NAME test_base COMMAND test_base)
 target_include_directories(test_base PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+# TEST SPHERE
+add_executable(test_sphere test_sphere.cpp)
+target_link_libraries(test_sphere PUBLIC sphere)
+add_test(NAME test_sphere COMMAND test_sphere)
+target_include_directories(test_sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
