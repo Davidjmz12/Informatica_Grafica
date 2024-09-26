@@ -11,6 +11,7 @@ public:
 
     float operator[](int index);
 
+    friend std::ostream& operator<<(std::ostream& os,const Pixel& p);
 };
 
 #endif

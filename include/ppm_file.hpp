@@ -9,7 +9,9 @@ class PpmFile {
     private:
         PixelMap _map;
         float _maxRange;
-        float _dimension[2];
+        int _dimension[2];
+        std::string format;
+        std::string comments;
 
     public:
 

@@ -18,10 +18,13 @@ class PixelMap {
         ColorEncode _type;
 
     public:
+        PixelMap();
         PixelMap(vector<vector<Pixel>> pixels, ColorEncode encode);
 
         bool RGB_to_HSV();
         bool HSV_to_RGB();
+
+        Pixel get(int i, int j);
 };
 
 #endif
