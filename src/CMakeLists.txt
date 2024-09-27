@@ -1,5 +1,5 @@
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC linear_map sphere)
+target_link_libraries(main PUBLIC ppm_file)
 
 
 # Libraries
@@ -32,6 +32,7 @@ target_link_libraries(ppm_file PUBLIC pixel_map)
 
 
 # Include directories
+target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)

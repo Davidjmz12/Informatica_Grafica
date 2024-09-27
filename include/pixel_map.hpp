@@ -24,7 +24,7 @@ class PixelMap {
         bool RGB_to_HSV();
         bool HSV_to_RGB();
 
-        Pixel get(int i, int j);
+        friend std::ostream& operator<<(std::ostream& os,const PixelMap pm);
 };
 
 #endif
