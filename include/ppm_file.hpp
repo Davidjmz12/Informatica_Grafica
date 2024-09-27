@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "pixel_map.hpp"
+#include "color_map.hpp"
 
 class PpmFile {
     private:
-        PixelMap _map;
+        ColorMap _map;
         float _maxRange;
         float _dimension[2];
 

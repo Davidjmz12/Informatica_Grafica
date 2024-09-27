@@ -37,18 +37,18 @@ target_link_libraries(test_ppm_file PUBLIC ppm_file)
 add_test(NAME test_ppm_file COMMAND test_ppm_file)
 target_include_directories(test_ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-# TEST PIXEL MAP
-add_executable(test_pixel test_pixel.cpp)
-target_link_libraries(test_pixel PUBLIC pixel)
-add_test(NAME test_pixel COMMAND test_pixel)
-target_include_directories(test_pixel PUBLIC ${CMAKE_SOURCE_DIR}/include)
+# TEST color MAP
+add_executable(test_color test_color.cpp)
+target_link_libraries(test_color PUBLIC color)
+add_test(NAME test_color COMMAND test_color)
+target_include_directories(test_color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
-# TEST PIXEL MAP
-add_executable(test_pixel_map test_pixel_map.cpp)
-target_link_libraries(test_pixel_map PUBLIC pixel_map)
-add_test(NAME test_pixel_map COMMAND test_pixel_map)
-target_include_directories(test_pixel_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
+# TEST color MAP
+add_executable(test_color_map test_color_map.cpp)
+target_link_libraries(test_color_map PUBLIC color_map)
+add_test(NAME test_color_map COMMAND test_color_map)
+target_include_directories(test_color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # TEST TONE MAPPING
 add_executable(test_tone_mapping test_tone_mapping.cpp)

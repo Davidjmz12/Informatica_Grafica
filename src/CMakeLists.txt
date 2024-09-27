@@ -19,15 +19,15 @@ target_link_libraries(sphere PUBLIC base)
 
 
 # Images
-add_library(pixel pixel.cpp)
+add_library(color color.cpp)
 
-add_library(pixel_map pixel_map.cpp)
-target_link_libraries(pixel_map PUBLIC pixel)
+add_library(color_map color_map.cpp)
+target_link_libraries(color_map PUBLIC color)
 
 add_library(tone_mapping tone_mapping.cpp)
 
 add_library(ppm_file ppm_file.cpp)
-target_link_libraries(ppm_file PUBLIC tone_mapping pixel_map)
+target_link_libraries(ppm_file PUBLIC tone_mapping color_map)
 
 
 
@@ -37,7 +37,7 @@ target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(matrix PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(pixel PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(pixel_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(color PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
