@@ -19,12 +19,14 @@ target_link_libraries(sphere PUBLIC base)
 
 
 # Images
+
+add_library(tone_mapping tone_mapping.cpp)
+
 add_library(color color.cpp)
+target_link_libraries(color PUBLIC tone_mapping)
 
 add_library(color_map color_map.cpp)
 target_link_libraries(color_map PUBLIC color)
-
-add_library(tone_mapping tone_mapping.cpp)
 
 add_library(ppm_file ppm_file.cpp)
 target_link_libraries(ppm_file PUBLIC color_map)

@@ -160,6 +160,18 @@ ColorEncoding Color::get_type() const
     return this->_type;
 }
 
+Color Color::apply_tone_mapping(ToneMapping t) const
+{
+    if(this->_type == RGB)
+    {
+        throw std::invalid_argument("Tone mapping can only be applied to HSV colors");
+    } else 
+    {
+        return Color(t.evaluate((*this)[0]),(*this)[1],(*this)[2],HSV);
+    }
+}
+
+
 bool Color::operator==(Color l) const
 {
     for(unsigned int i=0;i<3;i++)

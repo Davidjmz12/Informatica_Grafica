@@ -49,7 +49,7 @@ PpmFile::PpmFile(std::string path)
     this->_colorResolution = std::stof(line);
 
     // Pixel map
-    std::vector<std::vector<Pixel>> pixels(this->_dimension[1], std::vector<Pixel>(this->_dimension[0],Pixel(0,0,0)));
+    std::vector<std::vector<Color>> colors(this->_dimension[1], std::vector<Color>(this->_dimension[0],Color(0,0,0,RGB)));
     float red, green, blue;
     
     // Read line
@@ -64,12 +64,12 @@ PpmFile::PpmFile(std::string path)
         for (int j = 0; j < this->_dimension[0]; j++)
         {
             s >> red >> green >> blue;
-            pixels[i][j] = Pixel(red*conversion,green*conversion,blue*conversion);
+            colors[i][j] = Color(red*conversion,green*conversion,blue*conversion,RGB);
         }
     }
 
     // Create the Pixel Map
-    this->_map = PixelMap(pixels, RGB);
+    this->_map = ColorMap(colors, RGB);
 }
 
 void PpmFile::save(std::string output_file)

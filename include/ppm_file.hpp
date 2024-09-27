@@ -18,7 +18,7 @@
  */
 class PpmFile {
     private:
-        ColorMap _map;          // Matrix of pixels
+        ColorMap _map;          // Matrix of colors.
         float _maxRange;        // Max value in the file
         float _colorResolution; // Max number of different tones
         int _dimension[2];      // Width and height of the matrix
