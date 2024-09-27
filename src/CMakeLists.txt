@@ -22,7 +22,7 @@ target_link_libraries(sphere PUBLIC base)
 add_library(pixel pixel.cpp)
 
 add_library(pixel_map pixel_map.cpp)
-target_link_libraries(pixel_map PUBLIC pixel)
+target_link_libraries(pixel_map PUBLIC pixel tone_mapping)
 
 add_library(tone_mapping tone_mapping.cpp)
 

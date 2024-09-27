@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "pixel.hpp"
+#include "tone_mapping.hpp"
 
 using std::vector;
 
@@ -24,6 +25,8 @@ class PixelMap {
 
         bool RGB_to_HSV();
         bool HSV_to_RGB();
+
+        void apply_tone_mapping(ToneMapping t);
 
         friend std::ostream& operator<<(std::ostream& os,const PixelMap pm);
 };
