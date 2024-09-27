@@ -2,6 +2,7 @@
 #define PIXEL_MAP
 
 #include <vector>
+#include <iostream>
 
 #include "pixel.hpp"
 
