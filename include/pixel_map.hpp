@@ -7,11 +7,6 @@
 
 using std::vector;
 
-enum ColorEncode {
-    RGB,
-    HSV
-};
-
 class PixelMap {
     private:
         vector<vector<Pixel>> _pixels;
@@ -22,6 +17,8 @@ class PixelMap {
 
         bool RGB_to_HSV();
         bool HSV_to_RGB();
+
+        void normalize();
 };
 
 #endif

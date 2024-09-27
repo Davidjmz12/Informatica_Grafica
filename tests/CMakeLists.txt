@@ -38,6 +38,13 @@ add_test(NAME test_ppm_file COMMAND test_ppm_file)
 target_include_directories(test_ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # TEST PIXEL MAP
+add_executable(test_pixel test_pixel.cpp)
+target_link_libraries(test_pixel PUBLIC pixel)
+add_test(NAME test_pixel COMMAND test_pixel)
+target_include_directories(test_pixel PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+# TEST PIXEL MAP
 add_executable(test_pixel_map test_pixel_map.cpp)
 target_link_libraries(test_pixel_map PUBLIC pixel_map)
 add_test(NAME test_pixel_map COMMAND test_pixel_map)
