@@ -87,3 +87,34 @@ void PpmFile::save(std::string output_file)
     file << (int)this->_colorResolution << std::endl;
     file << this->_map << std::endl;
 }
+
+void PpmFile::apply_clamping()
+{
+    ToneMapping clamping = ToneMapping::clamping(1);
+    this->_map.apply_tone_mapping(clamping);
+}
+
+void PpmFile::apply_equalization()
+{
+    ToneMapping equalization = ToneMapping::equalization(this->_colorResolution);
+    this->_map.apply_tone_mapping(equalization);
+}
+
+void PpmFile::apply_equalization_clamping()
+{
+    ToneMapping equalization_clamping = ToneMapping::equalization_clamping();
+    this->_map.apply_tone_mapping(equalization_clamping);
+}
+
+void PpmFile::apply_gamma()
+{
+    this->apply_equalization();
+    ToneMapping gamma = ToneMapping::gamma();
+    this->_map.apply_tone_mapping(gamma);
+}
+
+void PpmFile::apply_gamma_clamping()
+{
+    this->apply_equalization_clamping();
+    this->apply_gamma();
+}
