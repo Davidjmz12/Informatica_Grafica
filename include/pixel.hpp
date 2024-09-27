@@ -1,6 +1,8 @@
 #ifndef PIXEL_HPP
 #define PIXEL_HPP
 
+#include <iostream>
+
 class Pixel
 {
 private:

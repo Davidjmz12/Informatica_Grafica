@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include "ppm_file.hpp"
 
@@ -22,8 +23,15 @@ PpmFile::PpmFile(std::string path)
     if (!getline(file,line))
         throw std::runtime_error("File does not have a correct format.");
 
+    this->_maxRange = 1; // Default
     while (line[0] == '#') {
-        this->comments = this->comments + '\n' + line;
+        if (this->comments == "")
+            this->comments = line;
+        else
+            this->comments = this->comments + "\n" + line;
+
+        if (line.substr(0,5) == "#MAX=")
+            this->_maxRange = std::stof(line.substr(5));
 
         // Next comment
         if (!getline(file,line))
@@ -38,24 +46,25 @@ PpmFile::PpmFile(std::string path)
     if (!getline(file,line))
         throw std::runtime_error("File does not have a correct format.");
 
-    this->_maxRange = std::stoi(line);
+    this->_colorResolution = std::stof(line);
 
     // Pixel map
-    std::vector<std::vector<Pixel>> pixels(this->_dimension[0], std::vector<Pixel>(this->_dimension[1],Pixel(0,0,0)));
-    int red, green, blue;
+    std::vector<std::vector<Pixel>> pixels(this->_dimension[1], std::vector<Pixel>(this->_dimension[0],Pixel(0,0,0)));
+    float red, green, blue;
     
     // Read line
-    for (int i = 0; i < this->_dimension[0]; i++)
+    float conversion = this->_maxRange / this->_colorResolution;
+    for (int i = 0; i < this->_dimension[1]; i++)
     {
         if (!getline(file,line))
             throw std::runtime_error("File does not have a correct format.");
         std::istringstream s(line);
 
         // Read each pixel of the line
-        for (int j = 0; j < this->_dimension[1]; j++)
+        for (int j = 0; j < this->_dimension[0]; j++)
         {
             s >> red >> green >> blue;
-            pixels[i][j] = Pixel(red,green,blue);
+            pixels[i][j] = Pixel(red*conversion,green*conversion,blue*conversion);
         }
     }
 
@@ -72,9 +81,9 @@ void PpmFile::save(std::string output_file)
         throw std::runtime_error("The path cannot be open.");
 
     // Write headers
-    file << this->format << std::endl;
+    file << std::fixed << this->format << std::endl;
     file << this->comments << std::endl;
-    file << this->_dimension[0] + " " + this->_dimension[1] << std::endl;
-    file << this->_maxRange << std::endl;
+    file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
+    file << (int)this->_colorResolution << std::endl;
     file << this->_map << std::endl;
 }
