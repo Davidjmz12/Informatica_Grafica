@@ -33,7 +33,6 @@ target_link_libraries(ppm_file PUBLIC tone_mapping pixel_map)
 
 # Include directories
 target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(conection PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(matrix PUBLIC ${CMAKE_SOURCE_DIR}/include)
