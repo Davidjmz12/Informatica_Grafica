@@ -1,6 +1,9 @@
 
 #include "color_map.hpp"
 
+
+ColorMap::ColorMap(){}
+
 ColorMap::ColorMap(vector<vector<Color>> colors, ColorEncoding encode)
 {
     for(auto v: colors)

@@ -133,19 +133,19 @@ Color Color::HSV_to_RGB() const
     if(H==0)
     {
         return Color(V,V,V,RGB);
-    } else if(0<H<1)
+    } else if(0<H && H<1)
     {
         return Color(V,gamma,alpha,RGB);
-    } else if(1<=H<2)
+    } else if(1<=H && H<2)
     {
         return Color(beta,V,alpha,RGB);
-    } else if(2<=H<3)
+    } else if(2<=H && H<3)
     {
         return Color(alpha,V,gamma,RGB);
-    } else if(3<=H<4)
+    } else if(3<=H && H<4)
     {
         return Color(alpha,beta,V,RGB);
-    } else if(4<=H<5)
+    } else if(4<=H && H<5)
     {
         return Color(gamma,alpha,V,RGB);
     } else

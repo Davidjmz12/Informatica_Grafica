@@ -20,6 +20,8 @@ class ColorMap {
 
     public:
 
+        ColorMap();
+
         /**
          * @brief Construct a new ColorMap object.
          * @param colors 2D vector of colors.

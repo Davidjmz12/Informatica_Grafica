@@ -85,36 +85,31 @@ void PpmFile::save(std::string output_file)
     file << this->comments << std::endl;
     file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
     file << (int)this->_colorResolution << std::endl;
-    file << this->_map << std::endl;
+    //file << this->_map;
 }
 
 void PpmFile::apply_clamping()
 {
-    ToneMapping clamping = ToneMapping::clamping(1);
-    this->_map.apply_tone_mapping(clamping);
+    ToneMapping clamping = ToneMapping::clamping(this->_colorResolution);
+    
 }
 
 void PpmFile::apply_equalization()
 {
     ToneMapping equalization = ToneMapping::equalization(this->_colorResolution);
-    this->_map.apply_tone_mapping(equalization);
 }
 
-void PpmFile::apply_equalization_clamping()
+void PpmFile::apply_equalization_clamping(float V)
 {
-    ToneMapping equalization_clamping = ToneMapping::equalization_clamping();
-    this->_map.apply_tone_mapping(equalization_clamping);
+    ToneMapping equalization_clamping = ToneMapping::equalization_clamping(V, this->_colorResolution);
 }
 
-void PpmFile::apply_gamma()
+void PpmFile::apply_gamma(float gamma)
 {
-    this->apply_equalization();
-    ToneMapping gamma = ToneMapping::gamma();
-    this->_map.apply_tone_mapping(gamma);
+    ToneMapping _gamma = ToneMapping::gamma(gamma, this->_colorResolution);
 }
 
-void PpmFile::apply_gamma_clamping()
+void PpmFile::apply_gamma_clamping(float gamma, float V)
 {
-    this->apply_equalization_clamping();
-    this->apply_gamma();
+    ToneMapping _gamma_clamping = ToneMapping::gamma_clamping(gamma, V, this->_colorResolution);
 }

@@ -2,7 +2,25 @@
 
 
 ToneMapping::ToneMapping(float gamma, float V, float LMax)
-    : _gamma(gamma), _V(V), _LMax(LMax) {}
+{
+    if(V>LMax)
+    {
+        throw std::invalid_argument("Clamping value is greater than LMax");
+    }
+    if(LMax<=0)
+    {
+        throw std::invalid_argument("LMax value is less than or equal to 0");
+    }
+    if(gamma<=0)
+    {
+        throw std::invalid_argument("Gamma value is less than or equal to 0");
+    }
+
+    this->_gamma = gamma;
+    this->_V = V;
+    this->_LMax = LMax;
+
+}
 
 
 ToneMapping ToneMapping::clamping(float LMax)
@@ -31,13 +49,18 @@ ToneMapping ToneMapping::gamma_clamping(float gamma, float V, float LMax)
 }
 
 float ToneMapping::evaluate(float l_in)
-{
-    if(l_in < this->_V)
+{   
+    if(l_in < 0)
     {
-        return pow(l_in/this->_LMax,this->_gamma);
-    } else if (this->_V <= l_in <= this->_LMax){
+        throw std::invalid_argument("Luminance value is less than 0");
+    } else if(l_in < this->_V)
+    {
+        return pow(l_in/this->_V,this->_gamma);
+    } else if (this->_V <= l_in && l_in <= this->_LMax)
+    {
         return 1;
-    } else {
+    } else 
+    {
         throw std::invalid_argument("Luminance value is greater than LMax");
     }
 }

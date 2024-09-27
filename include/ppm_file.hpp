@@ -45,21 +45,23 @@ class PpmFile {
         void apply_equalization();
 
         /**
-        * @brief Apply equalization and clamping to
-        *   the image.
+        * @brief Apply equalization and clamping to the image.
+        * @param V The clamping value.
         */
-        void apply_equalization_clamping();
+        void apply_equalization_clamping(float V);
 
         /**
         * @brief Apply gamma correction to the image.
+        * @param gamma The gamma correction value.
         */
-        void apply_gamma();
+        void apply_gamma(float gamma);
 
         /**
-        * @brief Apply a gamma correction and clamping
-        *  to the image
+        * @brief Apply gamma correction and clamping to the image.
+        * @param gamma The gamma correction value.
+        * @param V The clamping value.
         */
-        void apply_gamma_clamping();
+        void apply_gamma_clamping(float gamma, float V);
 
         /**
         * @brief Stores the PPM file

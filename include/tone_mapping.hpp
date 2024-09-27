@@ -20,6 +20,9 @@ private:
      * @param gamma Gamma value.
      * @param V Clamping value.
      * @param LMax Maximum luminance value.
+     * @throws std::invalid_argument if V is greater than LMax.
+     * @throws std::invalid_argument if LMax is less than or equal to 0.
+     * @throws std::invalid_argument if gamma is less than or equal to 0.
      */
     ToneMapping(float gamma, float V, float LMax);
 
@@ -38,7 +41,6 @@ public:
      * @return ToneMapping object.
      */
     static ToneMapping equalization(float LMax);
-
     /**
      * @brief Create a ToneMapping object using equalization and clamping technique.
      * @param V Clamping value.
