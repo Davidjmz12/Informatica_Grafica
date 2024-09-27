@@ -25,7 +25,7 @@ int main()
 
 
     // TEST MATRIX
-    t.addTest(Test::EXPECT_EQ(canonical.canonical_to_base(),Linear_Map::identity()));
+    t.addTest(Test::EXPECT_EQ(canonical.canonical_to_base(),LinearMap::identity()));
 
     return t.runAll();
 }

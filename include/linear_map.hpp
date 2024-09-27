@@ -19,7 +19,7 @@ class Base;
 /**
 * @brief A class for representing linear maps.
 */
-class Linear_Map {
+class LinearMap {
     private:
         Matrix4x4 matrix;
         
@@ -28,13 +28,13 @@ class Linear_Map {
         * @brief Method that creates a linear map given a Matrix4x4.
         * @param matrix The matrix of the transformation.
         */
-        Linear_Map(Matrix4x4 M);
+        LinearMap(Matrix4x4 M);
 
         /**
         * @brief Method that creates a linear map given an array.
         * @param matrix The matrix of the transformation.
         */
-        Linear_Map(float M[4][4]);
+        LinearMap(float M[4][4]);
         
         /**
         * @brief A method that creates a linear map to make a
@@ -44,7 +44,7 @@ class Linear_Map {
         * @return The linear map for changing from the base b1
         *   to the base b2
         */
-        static Linear_Map change_basis(Base b1, Base b2);
+        static LinearMap change_basis(Base b1, Base b2);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -54,7 +54,7 @@ class Linear_Map {
         * @return The linear map of the rotation around axis with
         *   a determined angle.
         */
-        static Linear_Map rotation(Geometric axis, float angle);
+        static LinearMap rotation(Geometric axis, float angle);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -62,7 +62,7 @@ class Linear_Map {
         * @param lambda The scaled factor for each axis.
         * @return The linear map of the scale.
         */
-        static Linear_Map scale(float lambda[3]);
+        static LinearMap scale(float lambda[3]);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -71,19 +71,19 @@ class Linear_Map {
         * @return The linear map of the translation.
         * @throw std::invalid_argument if v is not a vector.
         */
-        static Linear_Map translation(Geometric v);
+        static LinearMap translation(Geometric v);
 
         /**
         * @brief A method that gives the identity map.
         * @return A indentity map.
         */
-        static Linear_Map identity();
+        static LinearMap identity();
         
         /**
         * @brief A method that computes the inverse linear map.
         * @return The inverse linear map.
         */
-        Linear_Map inverse() const;
+        LinearMap inverse() const;
 
         /**
         * @brief A methode that redefines the product operator between
@@ -92,7 +92,7 @@ class Linear_Map {
         * @return The linear map result of the composition of the
         *   two linear maps. The first linear map applied is l.
         */
-        Linear_Map operator*(Linear_Map l) const;
+        LinearMap operator*(LinearMap l) const;
 
         /**
         * @brief A method that redefines the product operator between
@@ -110,9 +110,9 @@ class Linear_Map {
         * @return True if the matrices of both linear maps are identical.
         *   False otherwise.
         */
-        bool operator==(Linear_Map l) const;
+        bool operator==(LinearMap l) const;
 
-        friend std::ostream& operator<<(std::ostream& os,const Linear_Map& g);
+        friend std::ostream& operator<<(std::ostream& os,const LinearMap& g);
 };
 
 #endif

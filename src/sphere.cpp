@@ -26,13 +26,13 @@ Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
 Base Sphere::base_point(float inclination, float azimut)
 {
     //Compute the point
-    Linear_Map r1 = Linear_Map::rotation(this->axis,azimut);
+    LinearMap r1 = LinearMap::rotation(this->axis,azimut);
     Geometric v1 = r1*this->ref_point-this->center;
     Geometric axis_second_rotation =  this->axis.cross(v1);
 
     float angle_ref_axis = acos(this->axis.normalize().dot((this->ref_point-this->center).normalize()));
 
-    Linear_Map r2 = Linear_Map::rotation(axis_second_rotation,inclination - angle_ref_axis);
+    LinearMap r2 = LinearMap::rotation(axis_second_rotation,inclination - angle_ref_axis);
 
     Geometric point = r2*r1*this->ref_point;
 

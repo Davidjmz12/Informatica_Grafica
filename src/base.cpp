@@ -29,16 +29,16 @@ Base::Base(Geometric p, Geometric i, Geometric j, Geometric k)
 }
 
 
-Linear_Map Base::canonical_to_base() const
+LinearMap Base::canonical_to_base() const
 {
-    return Linear_Map(this->matrix);
+    return LinearMap(this->matrix);
 }
 
 Geometric Base::coord_from_canonical(Geometric g) const
 {
     if(!g.is_vector())
         throw std::invalid_argument("Geometric must be a vector.");
-    return Linear_Map(this->matrix_inverse)*g;
+    return LinearMap(this->matrix_inverse)*g;
 }
         
 Geometric Base::coord_into_canonical(Geometric g) const

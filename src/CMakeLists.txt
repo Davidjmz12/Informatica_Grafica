@@ -1,5 +1,5 @@
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC linear_map sphere)
+target_link_libraries(main PUBLIC ppm_file)
 
 
 # Libraries
@@ -27,11 +27,12 @@ target_link_libraries(color_map PUBLIC color)
 add_library(tone_mapping tone_mapping.cpp)
 
 add_library(ppm_file ppm_file.cpp)
-target_link_libraries(ppm_file PUBLIC tone_mapping color_map)
+target_link_libraries(ppm_file PUBLIC color_map)
 
 
 
 # Include directories
+target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
