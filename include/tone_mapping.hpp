@@ -3,6 +3,9 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
+#include <iomanip>
+
 
 /**
  * @class ToneMapping
@@ -27,6 +30,9 @@ private:
     ToneMapping(float gamma, float V, float LMax);
 
 public:
+
+
+    float getMax() const;
 
     /**
      * @brief Create a ToneMapping object using clamping technique.
@@ -71,7 +77,9 @@ public:
      * @param l_in Input luminance value.
      * @return Mapped luminance value.
      */
-    float evaluate(float l_in);
+    float evaluate(float l_in) const;
+
+    friend std::ostream& operator<<(std::ostream& os,const ToneMapping& g);
 
 };
 

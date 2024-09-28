@@ -1,6 +1,5 @@
 #include "tone_mapping.hpp"
 
-
 ToneMapping::ToneMapping(float gamma, float V, float LMax)
 {
     if(V>LMax)
@@ -22,6 +21,10 @@ ToneMapping::ToneMapping(float gamma, float V, float LMax)
 
 }
 
+float ToneMapping::getMax() const
+{
+    return this->_LMax;
+}
 
 ToneMapping ToneMapping::clamping(float LMax)
 {
@@ -48,7 +51,7 @@ ToneMapping ToneMapping::gamma_clamping(float gamma, float V, float LMax)
     return ToneMapping(gamma,V,LMax);
 }
 
-float ToneMapping::evaluate(float l_in)
+float ToneMapping::evaluate(float l_in) const
 {   
     if(l_in < 0)
     {
@@ -63,4 +66,11 @@ float ToneMapping::evaluate(float l_in)
     {
         throw std::invalid_argument("Luminance value is greater than LMax");
     }
+}
+
+
+std::ostream& operator<<(std::ostream& os,const ToneMapping& g)
+{
+    os << "ToneMapping: gamma factor " << g._gamma << " clamping at " << g._V << " with max " << g._LMax;
+    return os;
 }

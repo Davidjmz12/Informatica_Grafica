@@ -104,7 +104,7 @@ public:
     static Test EXPECT_NEQ(const T& a, const T& b)
     {
         return Test([a, b]() {
-            if (!(a != b)) {
+            if ((a == b)) {
                 std::ostringstream ss;
                 ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());

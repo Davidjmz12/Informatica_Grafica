@@ -33,30 +33,44 @@ private:
      * @brief Get the maximum value among the color components.
      * @return Maximum value among the color components.
      */
-    float max();
+    float max() const;
 
     /**
      * @brief Get the minimum value among the color components.
      * @return Minimum value among the color components.
      */
-    float min();
+    float min() const;
 
-    /**
-     * @brief Normalize the color components.
-     * @return Normalized color.
-     */
-    Color normalize() const;
 
 public:
 
     /**
-     * @brief Construct a new Color object.
+     * @brief Construct a new Color object with a range from 0 to 1.
      * @param c1 First color component.
      * @param c2 Second color component.
      * @param c3 Third color component.
      * @param type Encoding type of the color.
      */
     Color(float c1, float c2, float c3, ColorEncoding type);
+
+    /**
+     * @brief Construct a new RGB Color object with a non-arbitrary positive range.
+     * @param c1 First color component.
+     * @param c2 Second color component.
+     * @param c3 Third color component.
+     * @param max_value_rgb Maximum value of the color components.
+     */
+    Color(float c1, float c2, float c3, float max_value_rgb);
+
+    /**
+     * @brief Construct a new HSV Color object with a non-arbitrary positive range.
+     * @param c1 First color component.
+     * @param c2 Second color component.
+     * @param c3 Third color component.
+     * @param max_value_h Maximum value of the hue component.
+     * @param max_value_sv Maximum value of the saturation and value components.
+     */
+    Color(float c1, float c2, float c3, float max_value_h, float max_value_sv);
 
     /**
      * @brief Access color components by index.
