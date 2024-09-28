@@ -31,6 +31,12 @@ const std::string RED = "";
 /**
  * @brief A class for representing an individual test
  */
+/**
+* @brief Test that is true if both float values are approximately equal.
+* @param a one float value.
+* @param b other float value.
+* @return the resultant test.
+*/
 class Test {
 private:
 
@@ -61,6 +67,30 @@ public:
     {
         return Test([a, b]() {
             if (!(a == b)) {
+                std::ostringstream ss;
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                throw std::logic_error(ss.str());
+            }
+        });
+    }
+
+    
+    /**
+     * @brief Compares two floating-point numbers for equality within a small tolerance.
+     * 
+     * This function returns a Test object that, when executed, checks if the two 
+     * floating-point numbers `a` and `b` are equal within a tolerance of 1e-6. 
+     * It overrides the default equality operator to allow for a small tolerance.
+     * 
+     * @param a The first floating-point number to compare.
+     * @param b The second floating-point number to compare.
+     * @return Test A Test object that performs the equality check when executed.
+     *     
+     */
+    static Test EXPECT_EQ(const float& a, const float& b)
+    {
+        return Test([a, b]() {
+            if ((a - b)>1e-6) {
                 std::ostringstream ss;
                 ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
@@ -112,6 +142,7 @@ class Tests {
 private:
     std::string test_name; // Name of the test
     std::vector<Test> test_set; // Set of all tests.
+    std::vector<std::string> label; // Set of all labels.
 public:
 
     /**
@@ -124,9 +155,10 @@ public:
     * @brief Method that adds a test to the test set.
     * @param test the tests to be added.
     */
-    void addTest(const Test& test)
+    void addTest(const std::string label, const Test& test)
     {
-        test_set.push_back(test);
+        this->label.push_back(label);
+        this->test_set.push_back(test);
     }
 
     /**
@@ -146,9 +178,9 @@ public:
             try {
                 test_set[i].eval();  // Run test
                 passed++;
-                results += (GREEN + "\tTest " + std::to_string(i + 1) + ": correct." + RESET + "\n");
+                results += (GREEN + "\tTest " + label[i] + ": correct." + RESET + "\n");
             } catch (const std::exception& e) {
-                results += RED + "\tTest " + std::to_string(i + 1) + ": not correct. " + e.what() + RESET + "\n";
+                results += RED + "\tTest " + label[i] + ": not correct. " + e.what() + RESET + "\n";
             }
         }
 

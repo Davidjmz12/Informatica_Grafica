@@ -18,14 +18,14 @@ int main()
                   Geometric::vector(2,1,1),Geometric::vector(3,0,1));
 
     // TEST POINT
-    t.addTest(Test::EXPECT_EQ(canonical.coord_into_canonical(Geometric::vector(0,0,0)),Geometric::vector0()));
-    t.addTest(Test::EXPECT_EQ(canonical.coord_from_canonical(Geometric::vector(0,0,0)),Geometric::vector0()));
+    t.addTest("1",Test::EXPECT_EQ(canonical.coord_into_canonical(Geometric::vector(0,0,0)),Geometric::vector0()));
+    t.addTest("2",Test::EXPECT_EQ(canonical.coord_from_canonical(Geometric::vector(0,0,0)),Geometric::vector0()));
     //t.addTest(Test::EXPECT_EQ(canonical.point(2,3,-8.6), Geometric::point(2,3,-8.6)));
     //t.addTest(Test::EXPECT_EQ(v.point(1,-1,0),Geometric::point(0,1,0)));
 
 
     // TEST MATRIX
-    t.addTest(Test::EXPECT_EQ(canonical.canonical_to_base(),LinearMap::identity()));
+    t.addTest("3",Test::EXPECT_EQ(canonical.canonical_to_base(),LinearMap::identity()));
 
     return t.runAll();
 }
