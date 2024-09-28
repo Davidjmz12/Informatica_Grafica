@@ -15,17 +15,11 @@
 #include <functional>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
-/*
-const std::string RESET = "\033[0m";
-const std::string BLUE = "\033[34m";
-const std::string GREEN = "\033[32m";
-const std::string RED = "\033[31m";
-*/
-const std::string RESET = "";
-const std::string BLUE = "";
-const std::string GREEN = "";
-const std::string RED = "";
+
+#include "constants.hpp"
+
 
 
 /**
@@ -90,13 +84,14 @@ public:
     static Test EXPECT_EQ(const float& a, const float& b)
     {
         return Test([a, b]() {
-            if ((a - b)>1e-6) {
+            if (fabs(a - b)>THRESHOLD_FLOAT) {
                 std::ostringstream ss;
                 ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
             }
         });
     }
+
 
     /**
     * @brief Test that is true if both values are not equal.
@@ -111,7 +106,30 @@ public:
         return Test([a, b]() {
             if (!(a != b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                throw std::logic_error(ss.str());
+            }
+        });
+    }
+
+    /**
+     * @brief Compares two floating-point numbers for inequality within a small tolerance.
+     * 
+     * This function returns a Test object that, when executed, checks if the two 
+     * floating-point numbers `a` and `b` are not equal within a tolerance of 1e-6. 
+     * It overrides the default inequality operator to allow for a small tolerance.
+     * 
+     * @param a The first floating-point number to compare.
+     * @param b The second floating-point number to compare.
+     * @return Test A Test object that performs the inequality check when executed.
+     *     
+     */
+   static Test EXPECT_NEQ(const float& a, const float& b)
+    {
+        return Test([a, b]() {
+            if (fabs(a-b)<THRESHOLD_FLOAT) {
+                std::ostringstream ss;
+                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
             }
         });

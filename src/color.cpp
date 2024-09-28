@@ -46,7 +46,7 @@ float Color::min()
 
 Color Color::normalize() const
 {
-    return Color((*this)[0]/range,(*this)[1]/range,(*this)[2]/range,this->_type);
+    return Color((*this)[0]/RANGE_RGB,(*this)[1]/RANGE_RGB,(*this)[2]/RANGE_RGB,this->_type);
 }
 
 
@@ -126,10 +126,10 @@ Color Color::HSV_to_RGB() const
     beta = H==0?0:V*(1-(H-floor(H))*S);
     gamma = H==0?0:V*(1-(1-(H-floor(H)))*S);
 
-    V *= range;
-    alpha *= range;
-    beta *= range;
-    gamma *= range;
+    V *= RANGE_RGB;
+    alpha *= RANGE_RGB;
+    beta *= RANGE_RGB;
+    gamma *= RANGE_RGB;
     if(H==0)
     {
         return Color(V,V,V,RGB);
@@ -176,7 +176,7 @@ bool Color::operator==(Color l) const
 {
     for(unsigned int i=0;i<3;i++)
     {
-        if (((*this)[i] -l[i])>threshold) return false; 
+        if (((*this)[i] -l[i])>THRESHOLD_FLOAT) return false; 
     }
 
     return this->_type == l._type;

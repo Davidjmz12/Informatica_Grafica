@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-const float threshold = 10e-6;
+#include "constants.hpp"
 
 bool eqFloat(float a, float b);
 

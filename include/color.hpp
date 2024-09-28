@@ -7,8 +7,7 @@
 
 #include "tone_mapping.hpp"
 
-const float range=255.0F; // Range of RGB system
-const float threshold=10e-6; // Threshold for comparing colors
+#include "constants.hpp"
 
 /**
  * @enum ColorEncoding
