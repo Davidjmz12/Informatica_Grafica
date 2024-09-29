@@ -43,8 +43,8 @@ Color::Color(float c1, float c2, float c3, float max_value_rgb)
                                     std::to_string(max_value_rgb));
     }
     this->_colors[0] = c1/max_value_rgb;
-    this->_colors[1] = c1/max_value_rgb;
-    this->_colors[2] = c1/max_value_rgb;
+    this->_colors[1] = c2/max_value_rgb;
+    this->_colors[2] = c3/max_value_rgb;
     this->_type = RGB;
 }
 
@@ -121,7 +121,7 @@ Color Color::RGB_to_HSV() const
         H = 0;
     } else if (max_col == R)
     {
-        H = ((G-B)/dif,6);
+        H = (G-B)/dif;
     } else if (max_col == G)
     {
         H = ((B-R)/dif+2);
@@ -129,7 +129,7 @@ Color Color::RGB_to_HSV() const
     {
         H = ((R-G)/dif+4);
     }
-
+    
     if(H<0)
     {
         H = fmod(H,6)+6;
@@ -165,38 +165,28 @@ Color Color::HSV_to_RGB() const
     S = this->_colors[1];
     V = this->_colors[2];
 
-    float alpha,beta,gamma;
+    float C = V*S;
+    float X = C*(1-fabs(fmod(H,2)-1));
+    float m = V-C;
 
-    alpha = V*(1-S);
-
-    beta = H==0?0:V*(1-(H-floor(H))*S);
-    gamma = H==0?0:V*(1-(1-(H-floor(H)))*S);
-
-    V *= RANGE_RGB;
-    alpha *= RANGE_RGB;
-    beta *= RANGE_RGB;
-    gamma *= RANGE_RGB;
-    if(H==0)
+    if(0<=H && H<1)
     {
-        return Color(V,V,V,RGB);
-    } else if(0<H && H<1)
-    {
-        return Color(V,gamma,alpha,RGB);
+        return Color(C+m,X+m,m,RGB);
     } else if(1<=H && H<2)
     {
-        return Color(beta,V,alpha,RGB);
+        return Color(X+m,C+m,m,RGB);
     } else if(2<=H && H<3)
     {
-        return Color(alpha,V,gamma,RGB);
+        return Color(m,C+m,X+m,RGB);
     } else if(3<=H && H<4)
     {
-        return Color(alpha,beta,V,RGB);
+        return Color(m,X+m,C+m,RGB);
     } else if(4<=H && H<5)
     {
-        return Color(gamma,alpha,V,RGB);
+        return Color(X+m,m,C+m,RGB);
     } else
     {
-        return Color(V,alpha,beta,RGB);
+        return Color(C+m,m,X+m,RGB);
     }
 
 }
@@ -211,12 +201,12 @@ Color Color::apply_tone_mapping(ToneMapping t) const
     if(this->_type == RGB)
     {
         throw std::invalid_argument("Tone mapping can only be applied to HSV colors");
-    } else if (t.getMax() != 6)
+    } else if (t.getMax() != RANGE_SV)
     {
         throw std::invalid_argument("Tone mapping can only be applied to HSV colors with a maximum of 6");
     } else 
     {
-        return Color(t.evaluate((*this)[0]),(*this)[1],(*this)[2],HSV);
+        return Color((*this)[0],(*this)[1],t.evaluate((*this)[2]),HSV);
     }
 }
 
@@ -225,7 +215,7 @@ bool Color::operator==(Color l) const
 {
     for(unsigned int i=0;i<3;i++)
     {
-        if (((*this)[i] -l[i])>THRESHOLD_COLOR) return false; 
+        if (fabs((*this)[i] -l[i])>THRESHOLD_COLOR) return false; 
     }
 
     return this->_type == l._type;

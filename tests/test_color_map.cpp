@@ -12,7 +12,10 @@
 int main()
 {    
     Tests t = Tests("COLOR MAP TESTS");
-
-
+    
+    ColorMap C = ColorMap({{Color(255, 0, 0, 255), Color(0, 255, 0, 255), Color(0, 0, 255, 255)},
+                           {Color(255, 0, 0, 255), Color(0, 255, 0, 255), Color(0, 0, 255, 255)}
+                           }, RGB);
+    std::cout << C << std::endl;
     return t.runAll();
 }

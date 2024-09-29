@@ -96,16 +96,19 @@ bool ColorMap::operator==(ColorMap l) const
 
 std::ostream& operator<<(std::ostream& os,const ColorMap& g)
 {
-    for (auto v: g.colors()) 
+    auto g_c = g.colors();
+    for (size_t i = 0; i < g_c.size(); ++i) 
     {
+        auto v = g_c[i];
         // Print each color in the row
-        for (size_t i = 0; i < v.size(); ++i) 
+        for (size_t j = 0; j < v.size(); ++j) 
         {
-            os << v[i];
-            if (i < v.size() - 1) 
+            os << v[j];
+            if (j < v.size() - 1) 
                 os << "\t";
         }
-        os << "\n";
+        if (i < g_c.size() - 1) 
+            os << std::endl;
     } 
 
     return os;

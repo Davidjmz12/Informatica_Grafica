@@ -57,7 +57,7 @@ Base Base::canonic_base(){
 
 std::ostream& operator<<(std::ostream& os, const Base& b)
 {
-    os << "Point: " << b.center << "\nBase: " << b.x << " ; " << b.y << " ; " << b.z << std::endl; 
+    os << "Point: " << b.center << "\nBase: " << b.x << " ; " << b.y << " ; " << b.z; 
     return os;
 }
 

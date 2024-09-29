@@ -67,7 +67,7 @@ class ColorMap {
          * @param g ColorMap to output.
          * @return Output stream.
          */
-        friend std::ostream& operator<<(std::ostream& os,const Color& g);
+        friend std::ostream& operator<<(std::ostream& os,const ColorMap& g);
         
 };
 
