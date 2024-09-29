@@ -14,52 +14,52 @@ int main()
     Tests t = Tests("COLOR TESTS");
     
     // Test cases for RGB to HSV and vice versa
-    Color rgb1(255, 0, 0,255);
+    Color rgb1 = Color::RGBNormalized(255, 0, 0, 255);
     Color hsv1 = rgb1.RGB_to_HSV();
     Color rgb1_converted = hsv1.HSV_to_RGB();
     t.addTest("1", Test::EXPECT_EQ(rgb1, rgb1_converted));
 
-    Color rgb2(0, 255, 0,255);
+    Color rgb2 = Color::RGBNormalized(0, 255, 0, 255);
     Color hsv2 = rgb2.RGB_to_HSV();
     Color rgb2_converted = hsv2.HSV_to_RGB();
     t.addTest("2", Test::EXPECT_EQ(rgb2, rgb2_converted));
 
-    Color rgb3(0, 0, 255,255);
+    Color rgb3 = Color::RGBNormalized(0, 0, 255, 255);
     Color hsv3 = rgb3.RGB_to_HSV();
     Color rgb3_converted = hsv3.HSV_to_RGB();
     t.addTest("3", Test::EXPECT_EQ(rgb3, rgb3_converted));
 
-    Color rgb4(255, 255, 0, 255);
+    Color rgb4 = Color::RGBNormalized(255, 255, 0, 255);
     Color hsv4 = rgb4.RGB_to_HSV();
     Color rgb4_converted = hsv4.HSV_to_RGB();
     t.addTest("4", Test::EXPECT_EQ(rgb4, rgb4_converted));
 
-    Color rgb5(0, 255, 255, 255);
+    Color rgb5 = Color::RGBNormalized(0, 255, 255, 255);
     Color hsv5 = rgb5.RGB_to_HSV();
     Color rgb5_converted = hsv5.HSV_to_RGB();
     t.addTest("5", Test::EXPECT_EQ(rgb5, rgb5_converted));
 
-    Color rgb6(255, 0, 255, 255);
+    Color rgb6 = Color::RGBNormalized(255, 0, 255, 255);
     Color hsv6 = rgb6.RGB_to_HSV();
     Color rgb6_converted = hsv6.HSV_to_RGB();
     t.addTest("6", Test::EXPECT_EQ(rgb6, rgb6_converted));
 
-    Color rgb7(192, 192, 192, 255);
+    Color rgb7 = Color::RGBNormalized(192, 192, 192, 255);
     Color hsv7 = rgb7.RGB_to_HSV();
     Color rgb7_converted = hsv7.HSV_to_RGB();
     t.addTest("7", Test::EXPECT_EQ(rgb7, rgb7_converted));
 
-    Color rgb8(128, 150, 20, 255);
+    Color rgb8 = Color::RGBNormalized(128, 150, 20, 255);
     Color hsv8 = rgb8.RGB_to_HSV();
     Color rgb8_converted = hsv8.HSV_to_RGB();
     t.addTest("8", Test::EXPECT_EQ(rgb8, rgb8_converted));
 
-    Color rgb9(128, 139, 100, 255);
+    Color rgb9 = Color::RGBNormalized(128, 139, 100, 255);
     Color hsv9 = rgb9.RGB_to_HSV();
     Color rgb9_converted = hsv9.HSV_to_RGB();
     t.addTest("9", Test::EXPECT_EQ(rgb9, rgb9_converted));
 
-    Color rgb10(128, 138, 100, 255);
+    Color rgb10 = Color::RGBNormalized(128, 138, 100, 255);
     Color hsv10 = rgb10.RGB_to_HSV();
     Color rgb10_converted = hsv10.HSV_to_RGB();
     t.addTest("10", Test::EXPECT_EQ(rgb10, rgb10_converted));

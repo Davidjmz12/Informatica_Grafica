@@ -6,7 +6,6 @@
 #include <iostream>
 
 #include "tone_mapping.hpp"
-
 #include "constants.hpp"
 
 /**
@@ -50,6 +49,7 @@ public:
      * @param c2 Second color component.
      * @param c3 Third color component.
      * @param type Encoding type of the color.
+     * @throws std::invalid_argument if any color component is out of the standard ranges.
      */
     Color(float c1, float c2, float c3, ColorEncoding type);
 
@@ -59,8 +59,9 @@ public:
      * @param c2 Second color component.
      * @param c3 Third color component.
      * @param max_value_rgb Maximum value of the color components.
+     * @throws std::invalid_argument if any color component is out of the given range.
      */
-    Color(float c1, float c2, float c3, float max_value_rgb);
+    static Color RGBNormalized(float c1, float c2, float c3, float max_value_rgb);
 
     /**
      * @brief Construct a new HSV Color object with a non-arbitrary positive range.
@@ -69,13 +70,15 @@ public:
      * @param c3 Third color component.
      * @param max_value_h Maximum value of the hue component.
      * @param max_value_sv Maximum value of the saturation and value components.
+     * @throws std::invalid_argument if any color component is out of the given range.
      */
-    Color(float c1, float c2, float c3, float max_value_h, float max_value_sv);
+    static Color HSVNormalized(float c1, float c2, float c3, float max_value_h, float max_value_sv);
 
     /**
      * @brief Access color components by index.
      * @param index Index of the color component.
      * @return Value of the color component at the given index.
+     * @throws std::invalid_argument if the index is out of bounds.
      */
     float operator[](int index) const;
 
@@ -95,6 +98,8 @@ public:
      * @brief Apply tone mapping to the color.
      * @param t Tone mapping type.
      * @return Tone-mapped color.
+     * @throws std::invalid_argument if the color is in RGB encoding.
+     * @throws std::invalid_argument if the tone mapping maximum value is greater than the maximum luminance value.
      */
     Color apply_tone_mapping(ToneMapping t) const;
 

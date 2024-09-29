@@ -1,4 +1,6 @@
 {
+
+    "editor.colorDecorators": false,
     "files.associations": {
         "cmath": "cpp",
         "array": "cpp",

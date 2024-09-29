@@ -35,20 +35,18 @@ Color::Color(float c1, float c2, float c3, ColorEncoding type)
 };
 
 
-Color::Color(float c1, float c2, float c3, float max_value_rgb)
+Color Color::RGBNormalized(float c1, float c2, float c3, float max_value_rgb)
 {
     if(c1<0 || c1>max_value_rgb || c2<0 || c2>max_value_rgb || c3<0 || c3>max_value_rgb)
     {
         throw std::invalid_argument("Color components of RGB must be between 0 and" + 
                                     std::to_string(max_value_rgb));
     }
-    this->_colors[0] = c1/max_value_rgb;
-    this->_colors[1] = c2/max_value_rgb;
-    this->_colors[2] = c3/max_value_rgb;
-    this->_type = RGB;
+
+    return Color(c1/max_value_rgb, c2/max_value_rgb, c3/max_value_rgb, RGB);
 }
 
-Color::Color(float c1, float c2, float c3, float max_value_h, float max_value_sv)
+Color Color::HSVNormalized(float c1, float c2, float c3, float max_value_h, float max_value_sv)
 {
     if(c1<0 || c1>max_value_h )
     {
@@ -59,14 +57,15 @@ Color::Color(float c1, float c2, float c3, float max_value_h, float max_value_sv
         throw std::invalid_argument("Color components (SV) of HSV must be between 0 and" + 
                                     std::to_string(max_value_sv));
     }
-    this->_colors[0] = c1/max_value_h*6;
-    this->_colors[1] = c1/max_value_sv;
-    this->_colors[2] = c1/max_value_sv;
-    this->_type = HSV;
+    return Color(c1/max_value_h, c2/max_value_sv, c3/max_value_sv, HSV);
 }
 
 float Color::operator[](int index) const
 {
+    if(index<0 || index>2)
+    {
+        throw std::invalid_argument("Invalid index for color component");
+    }
     return this->_colors[index];
 }
 
