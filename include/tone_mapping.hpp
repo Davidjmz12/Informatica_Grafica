@@ -32,7 +32,16 @@ private:
 public:
 
 
-    float getMax() const;
+    /**
+     * @brief Retrieves the maximum luminance value.
+     * 
+     * This function returns the highest luminance value that can be achieved.
+     * It is useful for tone mapping and other graphics operations where the
+     * maximum brightness level needs to be known.
+     * 
+     * @return float The maximum luminance value.
+     */
+    float max_luminance() const;
 
     /**
      * @brief Create a ToneMapping object using clamping technique.
@@ -79,6 +88,14 @@ public:
      */
     float evaluate(float l_in) const;
 
+
+    /**
+     * @brief Overloads the << operator to output the ToneMapping object to an ostream.
+     * 
+     * @param os The output stream to which the ToneMapping object will be written.
+     * @param g The ToneMapping object to be written to the output stream.
+     * @return std::ostream& The output stream after the ToneMapping object has been written.
+     */
     friend std::ostream& operator<<(std::ostream& os,const ToneMapping& g);
 
 };

@@ -1,3 +1,12 @@
+/**
+ * @file color_map.hpp
+ * @brief Implementation of the ColorMap header.
+ * @authors Davidjmz12 DavidTizne
+ * @date 01/10/2024
+ *
+ * This file contains the implementation of the ColorMap class, which represents
+ * a 2D map of colors.
+*/
 
 #include "color_map.hpp"
 

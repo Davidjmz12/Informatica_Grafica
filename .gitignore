@@ -1,4 +1,4 @@
-/bin/*
-/build/*
-/examples/*
-/assets/*/*
+/bin/
+/build/
+/examples/
+/assets/

@@ -21,7 +21,7 @@ ToneMapping::ToneMapping(float gamma, float V, float LMax)
 
 }
 
-float ToneMapping::getMax() const
+float ToneMapping::max_luminance() const
 {
     return this->_LMax;
 }

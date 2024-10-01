@@ -84,7 +84,7 @@ public:
     static Test EXPECT_EQ(const float& a, const float& b)
     {
         return Test([a, b]() {
-            if (fabs(a - b)>THRESHOLD_FLOAT) {
+            if (!eqFloat(a, b)) {
                 std::ostringstream ss;
                 ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
@@ -127,7 +127,7 @@ public:
    static Test EXPECT_NEQ(const float& a, const float& b)
     {
         return Test([a, b]() {
-            if (fabs(a-b)<THRESHOLD_FLOAT) {
+            if (eqFloat(a, b)) {
                 std::ostringstream ss;
                 ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());

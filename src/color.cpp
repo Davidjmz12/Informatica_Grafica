@@ -1,4 +1,12 @@
-
+/**
+ * @file color.cpp
+ * @brief Implementation of the color header.
+ * @authors Davidjmz12 DavidTizne
+ * @date 01/10/2024
+ *
+ * This file contains the implementation of the Color class, which represents
+ * a color in RGB or HSV encoding.
+*/
 
 #include "color.hpp"
 
@@ -6,51 +14,6 @@ const std::array<float, 3> Color::RGB_STANDARD_RANGE = {1.0f, 1.0f, 1.0f};
 const std::array<float, 3> Color::HSV_STANDARD_RANGE = {6.0f, 1.0f, 1.0f};
 
 
-Color::Color(std::array<float, 3> colors, std::array<float, 3> range , ColorEncoding type)
-{
-
-    if(colors[0]<0 || colors[0]>range[0] || colors[1]<0 || colors[1]>range[1] || colors[2]<0 || colors[2]>range[2])
-    {
-        throw std::invalid_argument("Color components of RGB must be between 0 and " + 
-                                    std::to_string(RANGE_RGB));
-    }
-    
-    this->_colors = colors;
-    this->_range = range;
-    this->_type = type;
-};
-
-Color Color::normalize() const
-{
-    std::array<float, 3> normalized_colors;
-    std::array<float, 3> standard_range = this->_type == RGB ? RGB_STANDARD_RANGE : HSV_STANDARD_RANGE;
-    for(unsigned int i=0; i<3; ++i)
-    {
-        normalized_colors[i] = this->_colors[i]*standard_range[i]/this->_range[i];
-    }
-
-    return Color(normalized_colors, standard_range, this->_type);
-}
-
-Color Color::change_range(std::array<float, 3> new_range) const
-{
-    std::array<float, 3> new_colors;
-    for(unsigned int i=0; i<3; ++i)
-    {
-        new_colors[i] = this->_colors[i]*new_range[i]/this->_range[i];
-    }
-
-    return Color(new_colors, new_range, this->_type);
-}
-
-float Color::operator[](int index) const
-{
-    if(index<0 || index>2)
-    {
-        throw std::out_of_range("Invalid index for color component");
-    }
-    return this->_colors[index];
-}
 
 float Color::max() const
 {
@@ -79,6 +42,57 @@ float Color::min() const
     }
     return aux;
 }
+
+
+Color::Color(std::array<float, 3> colors, std::array<float, 3> range , ColorEncoding type)
+{
+
+    if(colors[0]<0 || colors[0]>range[0] || colors[1]<0 || colors[1]>range[1] || colors[2]<0 || colors[2]>range[2])
+        throw std::invalid_argument("Color components of RGB must be between 0 and the given range.");
+
+
+    this->_colors = colors;
+    this->_range = range;
+    this->_type = type;
+};
+
+std::array<float, 3>  Color::same_range(float f)
+{
+    std::array<float, 3> aux = {f,f,f};
+    return aux;
+}
+
+Color Color::normalize() const
+{
+    std::array<float, 3> normalized_colors;
+    std::array<float, 3> standard_range = this->_type == RGB ? RGB_STANDARD_RANGE : HSV_STANDARD_RANGE;
+    for(unsigned int i=0; i<3; ++i)
+    {
+        normalized_colors[i] = this->_colors[i]*standard_range[i]/this->_range[i];
+    }
+
+    return Color(normalized_colors, standard_range, this->_type);
+}
+
+Color Color::change_range(std::array<float, 3> new_range) const
+{
+    std::array<float, 3> new_colors;
+    for(unsigned int i=0; i<3; ++i)
+    {
+        new_colors[i] = this->_colors[i]*new_range[i]/this->_range[i];
+    }
+
+    return Color(new_colors, new_range, this->_type);
+}
+
+float Color::operator[](int index) const
+{
+    if(index<0 || index>2)
+        throw std::out_of_range("Invalid index for color component");
+
+    return this->_colors[index];
+}
+
 
 Color Color::RGB_to_HSV() const
 {
@@ -133,7 +147,10 @@ Color Color::RGB_to_HSV() const
         S = dif/V;
     }
 
-    return Color({H,S,V},HSV_STANDARD_RANGE,HSV);
+    S *= this->_range[1];
+    V *= this->_range[2];
+
+    return Color({H,S,V},{6,this->_range[1],this->_range[2]},HSV);
 }
 
 Color Color::HSV_to_RGB() const
@@ -187,7 +204,10 @@ Color Color::HSV_to_RGB() const
         B += X;
     }
 
-    return Color({R,G,B}, RGB_STANDARD_RANGE, RGB);
+    R *= this->_range[1];
+    G *= this->_range[1];
+    B *= this->_range[1];
+    return Color({R,G,B}, Color::same_range(this->_range[1]), RGB);
 }
 
 ColorEncoding Color::get_type() const
@@ -199,7 +219,7 @@ Color Color::apply_tone_mapping(ToneMapping t) const
 {
     if(this->_type == RGB)
     {
-        std::array<float, 3> max_values = {t.getMax(), t.getMax(), t.getMax()};
+        std::array<float, 3> max_values = {t.max_luminance(), t.max_luminance(), t.max_luminance()};
         if(max_values != this->_range)
             throw std::invalid_argument("Tone mapping maximum value must be equal to range of RGB colors ");
 
@@ -207,7 +227,7 @@ Color Color::apply_tone_mapping(ToneMapping t) const
     }
     else 
     {
-        if(!eqFloat(t.getMax(), this->_range[2]))
+        if(!eqFloat(t.max_luminance(), this->_range[2]))
             throw std::invalid_argument("Tone mapping maximum value must be equal to range of V in HSV colors ");
 
         return Color({(*this)[0],(*this)[1],t.evaluate((*this)[2])},{this->_range[0], this->_range[1],1},HSV);
@@ -218,7 +238,7 @@ bool Color::operator==(Color l) const
 {
     for(unsigned int i=0;i<3;i++)
     {
-        if (fabs((*this)[i] -l[i])>THRESHOLD_COLOR) return false; 
+        if (!eqFloat((*this)[i],l[i])) return false; 
     }
 
     return this->_type == l._type;

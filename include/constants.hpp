@@ -7,25 +7,32 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <cmath>
+
 const float THRESHOLD_FLOAT = 1e-6; // Threshold for comparing float values
-const float THRESHOLD_COLOR = 1e-6; // Threshold for comparing color values
-const float RANGE_RGB = 1.0F; // Range of RGB system
-const float RANGE_H = 6.0F; // Range of Hue system
-const float RANGE_SV = 1.0F; // Range of Saturation and Value system
 
 
 // Color constants
-const std::string RESET = "\033[0m";
-const std::string BLUE = "\033[34m";
-const std::string GREEN = "\033[32m";
-const std::string RED = "\033[31m";
+const std::string RESET = "\033[0m"; // Reset color
+const std::string BLUE = "\033[34m"; // Blue color
+const std::string GREEN = "\033[32m"; // Green color
+const std::string RED = "\033[31m"; // Red color
 
 
-bool eqFloat(float a, float b);
-
-bool eqFloat(float a, float b)
+/**
+ * @brief Compares two floating-point numbers for equality within a specified threshold.
+ * 
+ * This function checks if the absolute difference between two floating-point numbers
+ * is less than a predefined threshold value (THRESHOLD_FLOAT). It is useful for 
+ * comparing floating-point numbers where precision errors might occur.
+ * 
+ * @param a The first floating-point number to compare.
+ * @param b The second floating-point number to compare.
+ * @return true if the absolute difference between a and b is less than THRESHOLD_FLOAT, false otherwise.
+ */
+inline bool eqFloat(float a, float b)
 {
-    return abs(a - b) < THRESHOLD_FLOAT;
+    return fabs(a - b) < THRESHOLD_FLOAT;
 }
 
 

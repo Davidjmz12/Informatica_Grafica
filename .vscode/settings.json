@@ -71,6 +71,10 @@
         "cinttypes": "cpp",
         "valarray": "cpp",
         "variant": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "span": "cpp",
+        "text_encoding": "cpp"
     }
 }

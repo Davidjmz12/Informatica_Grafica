@@ -7,6 +7,7 @@
  * This file contains the definition of the Base class, which represents
  * a base in R^3.
 */
+
 #ifndef BASE_HPP
 #define BASE_HPP
 

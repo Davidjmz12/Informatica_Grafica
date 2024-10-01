@@ -64,6 +64,13 @@ class PpmFile {
         */
         void apply_gamma_clamping(float gamma, float V);
 
+        /**
+         * @brief Changes the resolution of the image.
+         * 
+         * This function adjusts the resolution of the image to the specified value.
+         * 
+         * @param resolution The new resolution to set for the image.
+         */
         void change_resolution(int resolution);
 
         /**

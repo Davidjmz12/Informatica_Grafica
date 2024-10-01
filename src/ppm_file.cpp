@@ -1,3 +1,14 @@
+/**
+ * @file color_map.hpp
+ * @brief Implementation of the PpmFile header.
+ * @authors Davidjmz12 DavidTizne
+ * @date 01/10/2024
+ *
+ * This file contains the implementation of the PpmFile class, which represents
+ * a file in PPM format.
+*/
+
+
 #include <fstream>
 #include <sstream>
 #include <iostream>

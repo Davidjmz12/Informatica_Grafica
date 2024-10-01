@@ -4,10 +4,10 @@
 int main()
 {
     try {
-        PpmFile file = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        file.apply_clamping();
+        PpmFile file = PpmFile("..\\..\\assets\\in\\seymour_park.ppm");
+        file.apply_gamma_clamping(0.5, 4);
         file.change_resolution(255);
-        file.save("..\\..\\assets\\out\\forest_path.ppm");
+        file.save("..\\..\\assets\\out\\seymour_park.ppm");
     }
     catch (const std::exception& e)
     {
