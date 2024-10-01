@@ -8,6 +8,7 @@
 #include "tone_mapping.hpp"
 #include "constants.hpp"
 
+
 /**
  * @enum ColorEncoding
  * @brief Enum to represent color encoding types.
@@ -25,8 +26,9 @@ class Color
 {
 private:
 
-    float _colors[3]; ///< Array to store color components
+    std::array<float, 3> _colors; ///< Array to store color components
     ColorEncoding _type; ///< Encoding type of the color
+    std::array<float, 3> _range; ///< Range of the color components
 
     /**
      * @brief Get the maximum value among the color components.
@@ -43,6 +45,9 @@ private:
 
 public:
 
+    static const std::array<float, 3> RGB_STANDARD_RANGE; 
+    static const std::array<float, 3> HSV_STANDARD_RANGE;
+
     /**
      * @brief Construct a new Color object with a range from 0 to 1.
      * @param c1 First color component.
@@ -51,28 +56,12 @@ public:
      * @param type Encoding type of the color.
      * @throws std::invalid_argument if any color component is out of the standard ranges.
      */
-    Color(float c1, float c2, float c3, ColorEncoding type);
+    Color(std::array<float, 3> colors, std::array<float, 3> range , ColorEncoding type);
 
-    /**
-     * @brief Construct a new RGB Color object with a non-arbitrary positive range.
-     * @param c1 First color component.
-     * @param c2 Second color component.
-     * @param c3 Third color component.
-     * @param max_value_rgb Maximum value of the color components.
-     * @throws std::invalid_argument if any color component is out of the given range.
-     */
-    static Color RGBNormalized(float c1, float c2, float c3, float max_value_rgb);
 
-    /**
-     * @brief Construct a new HSV Color object with a non-arbitrary positive range.
-     * @param c1 First color component.
-     * @param c2 Second color component.
-     * @param c3 Third color component.
-     * @param max_value_h Maximum value of the hue component.
-     * @param max_value_sv Maximum value of the saturation and value components.
-     * @throws std::invalid_argument if any color component is out of the given range.
-     */
-    static Color HSVNormalized(float c1, float c2, float c3, float max_value_h, float max_value_sv);
+    Color normalize() const;
+
+    Color change_range(std::array<float, 3> new_range) const;
 
     /**
      * @brief Access color components by index.
