@@ -2,6 +2,7 @@
 #define COLOR_MAP
 
 #include <vector>
+#include <iomanip>
 
 #include "color.hpp"
 
@@ -29,6 +30,8 @@ class ColorMap {
          */
         ColorMap(vector<vector<Color>> colors, ColorEncoding encode);
 
+
+        ColorMap change_range(std::array<float,3> factor) const;
         /**
          * @brief Convert all colors in the map from RGB to HSV.
          * @return ColorMap with colors in HSV encoding.

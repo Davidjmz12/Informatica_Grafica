@@ -21,6 +21,22 @@ ColorMap::ColorMap(vector<vector<Color>> colors, ColorEncoding encode)
 }
 
 
+ColorMap ColorMap::change_range(std::array<float,3> factor) const
+{
+    vector<vector<Color>> colors; // Vector to store the new colors
+    for(auto v: this->_colors)
+    {
+        vector<Color> colors_row; // Vector to store the new colors of the row
+        for (Color color: v)
+        {
+            colors_row.push_back(color.change_range(factor));
+        }
+        colors.push_back(colors_row);
+    }   
+    return ColorMap(colors,this->_encode);
+}
+
+
 ColorMap ColorMap::RGB_to_HSV() const
 {
     // If the colors are already in HSV, return the same object
@@ -97,6 +113,7 @@ bool ColorMap::operator==(ColorMap l) const
 std::ostream& operator<<(std::ostream& os,const ColorMap& g)
 {
     auto g_c = g.colors();
+    os << std::setprecision(0) << std::fixed;
     for (size_t i = 0; i < g_c.size(); ++i) 
     {
         auto v = g_c[i];

@@ -86,7 +86,7 @@ void PpmFile::save(std::string output_file)
     file << "#MAX=" << std::endl;
     file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
     file << (int)this->_colorResolution << std::endl;
-    //file << this->_map;
+    file << this->_map.change_range({255, 255, 255});
 }
 
 void PpmFile::apply_clamping()

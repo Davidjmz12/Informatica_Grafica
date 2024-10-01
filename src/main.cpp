@@ -4,8 +4,8 @@
 int main()
 {
     try {
-        PpmFile file = PpmFile("..\\..\\examples\\forest_path.ppm");
-        file.save("..\\..\\examples\\output.txt");
+        PpmFile file = PpmFile("..\\..\\assets\\in\\forest_path_fake.ppm");
+        file.save("..\\..\\assets\\out\\forest_path_fake.ppm");
     }
     catch (const std::exception& e)
     {
