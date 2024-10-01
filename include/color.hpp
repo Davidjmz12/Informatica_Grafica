@@ -40,7 +40,7 @@ private:
     std::array<float, 3> _colors; ///< Array to store color components
     ColorEncoding _type; ///< Encoding type of the color
     std::array<float, 3> _range; ///< Range of the color components
-
+    
     /**
      * @brief Get the maximum value among the color components.
      * @return Maximum value among the color components.

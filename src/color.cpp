@@ -97,6 +97,8 @@ float Color::operator[](int index) const
 Color Color::RGB_to_HSV() const
 {
 
+    // RGB [0,RGB_scale]
+
     if(this->_type == HSV)
     {
         return (*this);
@@ -147,10 +149,7 @@ Color Color::RGB_to_HSV() const
         S = dif/V;
     }
 
-    S *= this->_range[1];
-    V *= this->_range[2];
-
-    return Color({H,S,V},{6,this->_range[1],this->_range[2]},HSV);
+    return Color({H,S,V},Color::HSV_STANDARD_RANGE,HSV);
 }
 
 Color Color::HSV_to_RGB() const
@@ -204,10 +203,8 @@ Color Color::HSV_to_RGB() const
         B += X;
     }
 
-    R *= this->_range[1];
-    G *= this->_range[1];
-    B *= this->_range[1];
-    return Color({R,G,B}, Color::same_range(this->_range[1]), RGB);
+
+    return Color({R,G,B}, Color::RGB_STANDARD_RANGE, RGB);
 }
 
 ColorEncoding Color::get_type() const

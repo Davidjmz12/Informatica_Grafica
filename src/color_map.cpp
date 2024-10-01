@@ -95,7 +95,10 @@ ColorMap ColorMap::HSV_to_RGB() const
 
 ColorMap ColorMap::apply_tone_mapping(ToneMapping t) const
 {
+    // RGB [0,t.max_luminance()]
     ColorMap aux = this->RGB_to_HSV(); // Convert the colors to HSV
+    aux = aux.change_range({6,1,t.max_luminance()}); 
+
     vector<vector<Color>> colors; // Vector to store the new colors
     for(auto i: aux.colors())
     {
@@ -106,7 +109,8 @@ ColorMap ColorMap::apply_tone_mapping(ToneMapping t) const
         }
         colors.push_back(colors_row);
     }
-    return ColorMap(colors,HSV).HSV_to_RGB(); // Return the new ColorMap object with RGB colors.
+    aux = ColorMap(colors,HSV).HSV_to_RGB().change_range(Color::same_range(t.max_luminance()));
+    return aux; // Return the new ColorMap object with RGB colors.
 }
 
 vector<vector<Color>> ColorMap::colors() const
