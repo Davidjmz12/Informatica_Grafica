@@ -13,8 +13,6 @@
 
 #include "constants.hpp"
 
-bool eqFloat(float a, float b);
-
 /**
  * @brief A class for representing points and vectors with
  *        3 components.

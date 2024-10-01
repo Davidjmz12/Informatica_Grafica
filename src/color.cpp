@@ -201,17 +201,15 @@ Color Color::apply_tone_mapping(ToneMapping t) const
     {
         std::array<float, 3> max_values = {t.getMax(), t.getMax(), t.getMax()};
         if(max_values != this->_range)
-        {
             throw std::invalid_argument("Tone mapping maximum value must be equal to range of RGB colors ");
-        }
+
         return Color({t.evaluate((*this)[0]),t.evaluate((*this)[1]),t.evaluate((*this)[2])}, RGB_STANDARD_RANGE, RGB);
     }
     else 
     {
-        if(t.getMax() != this->_range[2])
-        {
+        if(!eqFloat(t.getMax(), this->_range[2]))
             throw std::invalid_argument("Tone mapping maximum value must be equal to range of V in HSV colors ");
-        }
+
         return Color({(*this)[0],(*this)[1],t.evaluate((*this)[2])},{this->_range[0], this->_range[1],1},HSV);
     }
 }

@@ -64,6 +64,8 @@ class PpmFile {
         */
         void apply_gamma_clamping(float gamma, float V);
 
+        void change_resolution(int resolution);
+
         /**
         * @brief Stores the PPM file
         * @param output_file The path in which the file
@@ -71,7 +73,7 @@ class PpmFile {
         * @throw std::runtime_error if the file cannot be
         *   open.
         */
-        void save(std::string output_file);
+        void save(std::string output_file) const;
 
 };
 

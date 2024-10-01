@@ -14,10 +14,6 @@
 
 #include "geometric.hpp"
 
-bool eqFloat(float a, float b)
-{
-    return abs(a - b) < THRESHOLD_FLOAT;
-}
 
 Geometric::Geometric(float a0, float a1, float a2, float a3)
 {    

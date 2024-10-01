@@ -73,7 +73,7 @@ PpmFile::PpmFile(std::string path)
     this->_map = ColorMap(readPixelMap(file), RGB);
 }
 
-void PpmFile::save(std::string output_file)
+void PpmFile::save(std::string output_file) const
 {
     std::ofstream file(output_file);
 
@@ -83,34 +83,44 @@ void PpmFile::save(std::string output_file)
 
     // Write headers
     file << std::fixed << this->_format << std::endl;
-    file << "#MAX=" << std::endl;
+    file << "#MAX=" << this->_maxRange << std::endl;
     file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
     file << (int)this->_colorResolution << std::endl;
-    file << this->_map.change_range({255, 255, 255});
+    file << this->_map << std::endl;
 }
 
 void PpmFile::apply_clamping()
 {
-    ToneMapping clamping = ToneMapping::clamping(this->_colorResolution);
-    
+    ToneMapping clamping = ToneMapping::clamping(this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(clamping);
+}
+
+void PpmFile::change_resolution(int resolution)
+{
+    this->_colorResolution = (float)resolution;
+    this->_map = this->_map.change_range({(float)resolution, (float)resolution, (float)resolution});
 }
 
 void PpmFile::apply_equalization()
 {
-    ToneMapping equalization = ToneMapping::equalization(this->_colorResolution);
+    ToneMapping equalization = ToneMapping::equalization(this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(equalization);
 }
 
 void PpmFile::apply_equalization_clamping(float V)
 {
-    ToneMapping equalization_clamping = ToneMapping::equalization_clamping(V, this->_colorResolution);
+    ToneMapping equalization_clamping = ToneMapping::equalization_clamping(V, this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(equalization_clamping);
 }
 
 void PpmFile::apply_gamma(float gamma)
 {
-    ToneMapping _gamma = ToneMapping::gamma(gamma, this->_colorResolution);
+    ToneMapping _gamma = ToneMapping::gamma(gamma, this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(_gamma);
 }
 
 void PpmFile::apply_gamma_clamping(float gamma, float V)
 {
-    ToneMapping _gamma_clamping = ToneMapping::gamma_clamping(gamma, V, this->_colorResolution);
+    ToneMapping _gamma_clamping = ToneMapping::gamma_clamping(gamma, V, this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(_gamma_clamping);
 }
