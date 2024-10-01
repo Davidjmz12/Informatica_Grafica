@@ -128,7 +128,7 @@ public:
      * @throws std::invalid_argument if the color is in RGB encoding.
      * @throws std::invalid_argument if the tone mapping maximum value is greater than the maximum luminance value.
      */
-    Color apply_tone_mapping(ToneMapping t) const;
+    Color apply_tone_mapping(ToneMapping* t) const;
 
     /**
      * @brief Compare two colors for equality.

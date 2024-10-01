@@ -12,6 +12,7 @@
 #include <string>
 
 #include "color_map.hpp"
+#include "tone_mapping.hpp"
 
 /**
  * @brief A class for represents a PPM file.

@@ -102,7 +102,8 @@ void PpmFile::save(std::string output_file) const
 
 void PpmFile::apply_clamping()
 {
-    ToneMapping clamping = ToneMapping::clamping(this->_maxRange);
+    // ToneMapping clamping = ToneMapping::clamping(this->_maxRange);
+    ToneMapping* clamping = new Clamping(this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(clamping);
 }
 
@@ -114,24 +115,24 @@ void PpmFile::change_resolution(int resolution)
 
 void PpmFile::apply_equalization()
 {
-    ToneMapping equalization = ToneMapping::equalization(this->_maxRange);
+    ToneMapping* equalization = new Equalization(this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(equalization);
 }
 
 void PpmFile::apply_equalization_clamping(float V)
 {
-    ToneMapping equalization_clamping = ToneMapping::equalization_clamping(V, this->_maxRange);
+    ToneMapping* equalization_clamping = new EqualizationClamping(V, this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(equalization_clamping);
 }
 
 void PpmFile::apply_gamma(float gamma)
 {
-    ToneMapping _gamma = ToneMapping::gamma(gamma, this->_maxRange);
+    ToneMapping* _gamma = new Gamma(gamma, this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(_gamma);
 }
 
 void PpmFile::apply_gamma_clamping(float gamma, float V)
 {
-    ToneMapping _gamma_clamping = ToneMapping::gamma_clamping(gamma, V, this->_maxRange);
+    ToneMapping* _gamma_clamping = new GammaClamping(gamma, V, this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(_gamma_clamping);
 }
