@@ -4,72 +4,73 @@
 
 #include "ppm_file.hpp"
 
-PpmFile::PpmFile(std::string path)
+std::string readOneLine(std::ifstream& file)
 {
-    std::ifstream file(path);
     std::string line;
 
-    // Check if the file can be open
-    if (!file.is_open())
-        throw std::runtime_error("The path cannot be open.");
-
-    // Read the format
-    if (getline(file,line))
-        this->format = line;
-    else
-        throw std::runtime_error("File does not have a correct format.");
-
-    // Read first comment
     if (!getline(file,line))
         throw std::runtime_error("File does not have a correct format.");
 
-    this->_maxRange = 1; // Default
-    while (line[0] == '#') {
-        if (this->comments == "")
-            this->comments = line;
-        else
-            this->comments = this->comments + "\n" + line;
+    return line;
+}
 
-        if (line.substr(0,5) == "#MAX=")
-            this->_maxRange = std::stof(line.substr(5));
-
-        // Next comment
-        if (!getline(file,line))
-            throw std::runtime_error("File does not have a correct format.");
-    }
-
-    // Dimensions
-    std::istringstream stream(line);
-    stream >> this->_dimension[0] >> this->_dimension[1];
-
-    // Maximum value
-    if (!getline(file,line))
-        throw std::runtime_error("File does not have a correct format.");
-
-    this->_colorResolution = std::stof(line);
-
-    // Pixel map
-    std::vector<std::vector<Color>> colors(this->_dimension[1], std::vector<Color>(this->_dimension[0],Color(0,0,0,RGB)));
+std::vector<std::vector<Color>> PpmFile::readPixelMap(std::ifstream& file)
+{
+    std::vector<std::vector<Color>> pixels;
+    float factor = this->_maxRange/this->_colorResolution;
     float red, green, blue;
-    
-    // Read line
-    float conversion = this->_maxRange / this->_colorResolution;
+
+    // Read the pixels
     for (int i = 0; i < this->_dimension[1]; i++)
     {
-        if (!getline(file,line))
-            throw std::runtime_error("File does not have a correct format.");
-        std::istringstream s(line);
+        std::vector<Color> row;
+        std::istringstream s(readOneLine(file));
 
         // Read each pixel of the line
         for (int j = 0; j < this->_dimension[0]; j++)
         {
             s >> red >> green >> blue;
-            colors[i][j] = Color(red*conversion,green*conversion,blue*conversion,RGB);
+            row.push_back(Color({red*factor,green*factor,blue*factor},
+                                {this->_maxRange, this->_maxRange,this->_maxRange},
+                                RGB));
         }
+        pixels.push_back(row);
     }
 
+    return pixels;
+}
+
+PpmFile::PpmFile(std::string path)
+{
+    std::ifstream file(path);
+
+    // Check if the file can be open
+    if (!file.is_open())
+        throw std::runtime_error("The path cannot be open.");
+
+    this->_format = readOneLine(file);
+
+    // Read first comment
+    std::string comment = readOneLine(file);
+
+    this->_maxRange = 1.0; // Default
+    while (comment[0] == '#') {
+        if (comment.substr(0,5) == "#MAX=")
+            this->_maxRange = std::stof(comment.substr(5));
+
+        // Next comment
+        comment = readOneLine(file);
+    }
+
+    // Dimensions
+    std::istringstream stream(comment);
+    stream >> this->_dimension[0] >> this->_dimension[1];
+
+    // Color resolution
+    this->_colorResolution = std::stof(readOneLine(file));
+    
     // Create the Pixel Map
-    this->_map = ColorMap(colors, RGB);
+    this->_map = ColorMap(readPixelMap(file), RGB);
 }
 
 void PpmFile::save(std::string output_file)
@@ -81,8 +82,8 @@ void PpmFile::save(std::string output_file)
         throw std::runtime_error("The path cannot be open.");
 
     // Write headers
-    file << std::fixed << this->format << std::endl;
-    file << this->comments << std::endl;
+    file << std::fixed << this->_format << std::endl;
+    file << "#MAX=" << std::endl;
     file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
     file << (int)this->_colorResolution << std::endl;
     //file << this->_map;
