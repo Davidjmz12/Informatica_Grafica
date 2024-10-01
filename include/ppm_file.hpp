@@ -23,7 +23,8 @@ class PpmFile {
         float _colorResolution; // Max number of different tones
         int _dimension[2];      // Width and height of the matrix
         std::string format;     // The format identifier
-        std::string comments;   // Additional comments in the file
+
+        std::vector<std::vector<Pixel>> readPixelMap(std::ifstream& file, float factor);
 
     public:
         /**
