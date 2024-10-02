@@ -19,6 +19,11 @@ bool eqFloat(float a, float b)
     return abs(a - b) < threshold;
 }
 
+bool ltFloat(float a, float b)
+{
+    return a < b + 2*threshold || a < b - 2*threshold;
+}
+
 Geometric::Geometric(float a0, float a1, float a2, float a3)
 {    
     if (a3 != 0 && a3 != 1)

@@ -36,15 +36,11 @@ Linear_Map Base::canonical_to_base() const
 
 Geometric Base::coord_from_canonical(Geometric g) const
 {
-    if(!g.is_vector())
-        throw std::invalid_argument("Geometric must be a vector.");
     return Linear_Map(this->matrix_inverse)*g;
 }
         
 Geometric Base::coord_into_canonical(Geometric g) const
 {
-    if(!g.is_vector())
-        throw std::invalid_argument("Geometric must be a vector.");
     return this->x*g[0] + this->y*g[1] + this->z*g[2];
 }
 
