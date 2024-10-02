@@ -136,3 +136,15 @@ void PpmFile::apply_gamma_clamping(float gamma, float V)
     ToneMapping* _gamma_clamping = new GammaClamping(gamma, V, this->_maxRange);
     this->_map = this->_map.apply_tone_mapping(_gamma_clamping);
 }
+
+void PpmFile::apply_drago()
+{
+    ToneMapping* drago = new Drago(this->_maxRange);
+    this->_map = this->_map.apply_tone_mapping(drago);
+}
+
+void PpmFile::apply_logarithmic(float alpha)
+{
+    ToneMapping* log = new Logarithmic(this->_maxRange, alpha);
+    this->_map = this->_map.apply_tone_mapping(log);
+}

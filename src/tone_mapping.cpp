@@ -122,3 +122,42 @@ float GammaClamping::evaluate(float l_in) const
     else
         return 1;
 }
+
+
+// -----------------------------------------------------
+//                        DRAGO
+// -----------------------------------------------------
+
+Drago::Drago(float LMax)
+    : ToneMapping(LMax)
+{}
+
+float Drago::evaluate(float l_in) const
+{
+    if (l_in < 0 || l_in > this->_LMax)
+        throw std::invalid_argument("Luminance value is strange.");
+    else
+        return log(1+l_in) / log(1+this->_LMax);
+}
+
+
+// -----------------------------------------------------
+//                      LOGARITHMIC
+// -----------------------------------------------------
+
+
+Logarithmic::Logarithmic(float LMax, float alpha)
+    : ToneMapping(LMax), _alpha(alpha)
+{
+    // Check alpha
+    if (alpha <= 0)
+        throw std::invalid_argument("Alpha must be greater than 0.");
+}
+
+float Logarithmic::evaluate(float l_in) const
+{
+    if (l_in < 0 || l_in > this->_LMax)
+        throw std::invalid_argument("Luminance value is strange.");
+    else
+        return log(1+this->_alpha*l_in/this->_LMax) / log(1+this->_alpha);
+}

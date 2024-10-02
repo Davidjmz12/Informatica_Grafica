@@ -66,6 +66,16 @@ class PpmFile {
         void apply_gamma_clamping(float gamma, float V);
 
         /**
+         * @brief Apply drago correction to the image.
+         */
+        void apply_drago();
+
+        /**
+         * @brief Apply logarithmic correction to the image.
+         */
+        void apply_logarithmic(float alpha);
+
+        /**
          * @brief Changes the resolution of the image.
          * 
          * This function adjusts the resolution of the image to the specified value.

@@ -140,7 +140,7 @@ public:
  * @class ToneMapping
  * @brief A class to represent and apply the gamma technique.
  */
-class Gamma: public ToneMapping
+class Gamma : public ToneMapping
 {
 private:
     float _gamma;   ///< Gamma value for tone mapping
@@ -172,7 +172,7 @@ public:
  * @class ToneMapping
  * @brief A class to represent and apply the gamma and the clamping technique.
  */
-class GammaClamping: public ToneMapping
+class GammaClamping : public ToneMapping
 {
 private:
     float _gamma;   ///< Gamma value for tone mapping
@@ -196,6 +196,28 @@ public:
      * @param l_in Input luminance value.
      * @return Mapped luminance value.
      */
+    float evaluate(float l_in) const;
+};
+
+
+
+class Drago : public ToneMapping
+{
+public:
+    Drago(float LMax);
+
+    float evaluate(float l_in) const;
+};
+
+
+class Logarithmic : public ToneMapping
+{
+private:
+    float _alpha;
+    
+public:
+    Logarithmic(float LMax, float alpha);
+
     float evaluate(float l_in) const;
 };
 
