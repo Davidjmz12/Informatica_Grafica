@@ -29,3 +29,29 @@ add_executable(test_sphere test_sphere.cpp)
 target_link_libraries(test_sphere PUBLIC sphere)
 add_test(NAME test_sphere COMMAND test_sphere)
 target_include_directories(test_sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+# TEST PPM FILE
+add_executable(test_ppm_file test_ppm_file.cpp)
+target_link_libraries(test_ppm_file PUBLIC ppm_file)
+add_test(NAME test_ppm_file COMMAND test_ppm_file)
+target_include_directories(test_ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+# TEST color MAP
+add_executable(test_color test_color.cpp)
+target_link_libraries(test_color PUBLIC color)
+add_test(NAME test_color COMMAND test_color)
+target_include_directories(test_color PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+# TEST color MAP
+add_executable(test_color_map test_color_map.cpp)
+target_link_libraries(test_color_map PUBLIC color_map)
+add_test(NAME test_color_map COMMAND test_color_map)
+target_include_directories(test_color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+# TEST TONE MAPPING
+add_executable(test_tone_mapping test_tone_mapping.cpp)
+target_link_libraries(test_tone_mapping PUBLIC tone_mapping)
+add_test(NAME test_tone_mapping COMMAND test_tone_mapping)
+target_include_directories(test_tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)

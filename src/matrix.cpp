@@ -136,7 +136,8 @@ std::ostream& operator<<(std::ostream& os,const Matrix4x4 M)
         for (int j = 0; j < 4; j++) {
             os << std::setw(10) << std::setprecision(5) << M.get(i,j) << " ";
         }
-        os << std::endl;
+        if(i<3)
+            os << std::endl;
     }
     return os;
 }

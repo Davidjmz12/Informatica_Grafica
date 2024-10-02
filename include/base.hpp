@@ -7,6 +7,7 @@
  * This file contains the definition of the Base class, which represents
  * a base in R^3.
 */
+
 #ifndef BASE_HPP
 #define BASE_HPP
 
@@ -15,7 +16,7 @@
 #include "linear_map.hpp"
 #include "matrix.hpp"
 
-class Linear_Map;
+class LinearMap;
 
 /**
 * @brief The class that represents a base with a point
@@ -69,7 +70,7 @@ public:
     * @brief Method that gives the matrix of this base.
     * @return the linear transformation of that matrix.
     */       
-    Linear_Map canonical_to_base() const;
+    LinearMap canonical_to_base() const;
 
     /**
     * @brief An operator to print a base.

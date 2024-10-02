@@ -21,10 +21,10 @@ int main()
                         };
     Matrix4x4 m1 = Matrix4x4(m1f);
 
-    t.addTest(Test::EXPECT_EQ(m1.get(0,0),(float)1));
-    t.addTest(Test::EXPECT_EQ(m1.get(2,3),(float)-5));
-    t.addTest(Test::EXPECT_EXC([&m1] { m1.get(8,2); } ));
-    t.addTest(Test::EXPECT_EXC([&m1] { m1.get(2,-1); } ));
+    t.addTest("1",Test::EXPECT_EQ(m1.get(0,0),(float)1));
+    t.addTest("2",Test::EXPECT_EQ(m1.get(2,3),(float)-5));
+    t.addTest("3",Test::EXPECT_EXC([&m1] { m1.get(8,2); } ));
+    t.addTest("4",Test::EXPECT_EXC([&m1] { m1.get(2,-1); } ));
 
     // INVERSE METHOD: TEST 5-8
     float m2f[4][4] =    {  { 2, 0, 0, 0},
@@ -76,25 +76,25 @@ int main()
                         };
     Matrix4x4 m5 = Matrix4x4(m5f);
 
-    t.addTest(Test::EXPECT_EQ(m2.inverse(),m2i));
-    t.addTest(Test::EXPECT_EQ(m3.inverse(),m3i));
-    t.addTest(Test::EXPECT_EQ(m4.inverse(),m4i));
-    t.addTest(Test::EXPECT_EXC([&m5] { m5.inverse(); }));
+    t.addTest("5",Test::EXPECT_EQ(m2.inverse(),m2i));
+    t.addTest("6",Test::EXPECT_EQ(m3.inverse(),m3i));
+    t.addTest("7",Test::EXPECT_EQ(m4.inverse(),m4i));
+    t.addTest("8",Test::EXPECT_EXC([&m5] { m5.inverse(); }));
 
 
     // DETERMINANT METHOD: TEST 9-11
-    t.addTest(Test::EXPECT_EQ(Matrix4x4::identity().determinant(), (float)1));
-    t.addTest(Test::EXPECT_EQ(m4.determinant(), (float)-24));
-    t.addTest(Test::EXPECT_EQ(m5.determinant(), (float)0));
+    t.addTest("9",Test::EXPECT_EQ(Matrix4x4::identity().determinant(), (float)1));
+    t.addTest("10",Test::EXPECT_EQ(m4.determinant(), (float)-24));
+    t.addTest("11",Test::EXPECT_EQ(m5.determinant(), (float)0));
 
     // OPERATOR * MATRICES TEST 12-13
-    t.addTest(Test::EXPECT_EQ(m3*Matrix4x4::identity(), m3));
-    t.addTest(Test::EXPECT_EQ(m4*m4i, Matrix4x4::identity()));
+    t.addTest("12",Test::EXPECT_EQ(m3*Matrix4x4::identity(), m3));
+    t.addTest("13",Test::EXPECT_EQ(m4*m4i, Matrix4x4::identity()));
 
     // OPERATOR * GEOMETRIC TEST 14
     Geometric g = Geometric::vector(-2,1.0/2,3.0/2);
 
-    t.addTest(Test::EXPECT_EQ(m5*g,Geometric::vector(7.0/2,-5,7.0/2)));
+    t.addTest("14",Test::EXPECT_EQ(m5*g,Geometric::vector(7.0/2,-5,7.0/2)));
 
     return t.runAll();
 }
