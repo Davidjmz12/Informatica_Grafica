@@ -4,41 +4,34 @@
 int main()
 {
     try {
-        // PpmFile file = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file.apply_clamping();
-        // file.change_resolution(255);
-        // file.save("..\\..\\assets\\out\\forest_path_clamping.ppm");
+        PpmFile file = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
+        PpmFile clamping = file.apply_clamping();
+        clamping.change_resolution(255);
+        clamping.save("..\\..\\assets\\out\\forest_path_clamping.ppm");
 
-        // PpmFile file2 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file2.apply_equalization();
-        // file2.change_resolution(255);
-        // file2.save("..\\..\\assets\\out\\forest_path_equalization.ppm");
+        PpmFile equalization = file.apply_equalization();
+        equalization.change_resolution(255);
+        equalization.save("..\\..\\assets\\out\\forest_path_equalization.ppm");
 
-        // PpmFile file3 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file3.apply_equalization_clamping(24);
-        // file3.change_resolution(255);
-        // file3.save("..\\..\\assets\\out\\forest_path_equalization_clamping.ppm");
+        PpmFile eq_clamping = file.apply_equalization_clamping(24);
+        eq_clamping.change_resolution(255);
+        eq_clamping.save("..\\..\\assets\\out\\forest_path_equalization_clamping.ppm");
 
-        // PpmFile file4 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file4.apply_gamma(0.5); // sqrt(x/8)
-        // file4.change_resolution(255);
-        // file4.save("..\\..\\assets\\out\\forest_path_gamma.ppm");
+        PpmFile gamma = file.apply_gamma(0.5); // sqrt(x/8)
+        gamma.change_resolution(255);
+        gamma.save("..\\..\\assets\\out\\forest_path_gamma.ppm");
 
-        // PpmFile file5 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file5.apply_gamma_clamping(0.5,4); // sqrt(x/4) clamped from 4
-        // file5.change_resolution(255);
-        // file5.save("..\\..\\assets\\out\\forest_path_gamma_clamping.ppm");
+        PpmFile gamma_clamping = file.apply_gamma_clamping(0.5,4); // sqrt(x/4) clamped from 4
+        gamma_clamping.change_resolution(255);
+        gamma_clamping.save("..\\..\\assets\\out\\forest_path_gamma_clamping.ppm");
 
-        
-        // PpmFile file6 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        // file6.apply_drago();
-        // file6.change_resolution(255);
-        // file6.save("..\\..\\assets\\out\\forest_path_drago.ppm");
+        PpmFile drago = file.apply_drago();
+        drago.change_resolution(255);
+        drago.save("..\\..\\assets\\out\\forest_path_drago.ppm");
 
-        PpmFile file7 = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        file7.apply_logarithmic(5);
-        file7.change_resolution(255);
-        file7.save("..\\..\\assets\\out\\forest_path_logarithmic.ppm");
+        PpmFile log = file.apply_logarithmic(5);
+        log.change_resolution(255);
+        log.save("..\\..\\assets\\out\\forest_path_logarithmic.ppm");
     }
     catch (const std::exception& e)
     {

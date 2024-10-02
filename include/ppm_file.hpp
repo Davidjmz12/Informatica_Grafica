@@ -22,7 +22,7 @@ class PpmFile {
         ColorMap _map;          // Matrix of colors.
         float _maxRange;        // Max value in the file
         float _colorResolution; // Max number of different tones
-        int _dimension[2];      // Width and height of the matrix
+        std::array<int,2> _dimension;      // Width and height of the matrix
         std::string _format;     // The format identifier
 
         std::vector<std::vector<Color>> readPixelMap(std::ifstream& file);
@@ -36,44 +36,46 @@ class PpmFile {
         */
         PpmFile(std::string path);
 
+        PpmFile(ColorMap map, float range, float colorResolution, std::array<int,2> dim, std::string format);
+
         /**
         * @brief Apply clamping to the image.
         */
-        void apply_clamping();
+        PpmFile apply_clamping();
 
         /**
         * @brief Apply equalization to the image.
         */
-        void apply_equalization();
+        PpmFile apply_equalization();
 
         /**
         * @brief Apply equalization and clamping to the image.
         * @param V The clamping value.
         */
-        void apply_equalization_clamping(float V);
+        PpmFile apply_equalization_clamping(float V);
 
         /**
         * @brief Apply gamma correction to the image.
         * @param gamma The gamma correction value.
         */
-        void apply_gamma(float gamma);
+        PpmFile apply_gamma(float gamma);
 
         /**
         * @brief Apply gamma correction and clamping to the image.
         * @param gamma The gamma correction value.
         * @param V The clamping value.
         */
-        void apply_gamma_clamping(float gamma, float V);
+        PpmFile apply_gamma_clamping(float gamma, float V);
 
         /**
          * @brief Apply drago correction to the image.
          */
-        void apply_drago();
+        PpmFile apply_drago();
 
         /**
          * @brief Apply logarithmic correction to the image.
          */
-        void apply_logarithmic(float alpha);
+        PpmFile apply_logarithmic(float alpha);
 
         /**
          * @brief Changes the resolution of the image.
@@ -92,6 +94,11 @@ class PpmFile {
         *   open.
         */
         void save(std::string output_file) const;
+
+        float get_range() const;
+        float get_color_resolution() const;
+        std::array<int,2> get_dimension() const;
+        std::string get_format() const;
 
 };
 
