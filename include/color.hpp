@@ -8,8 +8,7 @@
  * a color in RGB or HSV encoding.
 */
 
-#ifndef COLOR_HPP
-#define COLOR_HPP
+#pragma once
 
 #include <cmath>
 #include <string>
@@ -128,7 +127,7 @@ public:
      * @throws std::invalid_argument if the color is in RGB encoding.
      * @throws std::invalid_argument if the tone mapping maximum value is greater than the maximum luminance value.
      */
-    Color apply_tone_mapping(ToneMapping t) const;
+    Color apply_tone_mapping(ToneMapping* t) const;
 
     /**
      * @brief Compare two colors for equality.
@@ -146,4 +145,3 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Color& g);
 };
 
-#endif

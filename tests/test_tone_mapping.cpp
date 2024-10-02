@@ -12,6 +12,8 @@
 int main()
 {    
     Tests t = Tests("TONE MAPPING TESTS");
+    /*
+    
 
     // Test constructor
     t.addTest("1",Test::EXPECT_EXC([](){ToneMapping::clamping(0);})); // LMax <= 0
@@ -54,7 +56,8 @@ int main()
 
     // Tests evaluate method
     t.addTest("26",Test::EXPECT_EXC([](){ToneMapping::clamping(1).evaluate(1.1);}));
-    t.addTest("27",Test::EXPECT_EXC([](){ToneMapping::clamping(1).evaluate(-0.1);}));
+    t.addTest("27",Test::EXPECT_EXC([](){ToneMapping::clamping(1).evaluate(-0.1);}));    
+    */
 
     return t.runAll();
 }

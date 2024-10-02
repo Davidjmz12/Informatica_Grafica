@@ -26,29 +26,19 @@ LinearMap LinearMap::rotation(Geometric axis, float angle)
 {
     axis = axis.normalize();
 
-    float matrix[4][4];
+    float Kf[4][4] = {  {0       , -axis[2],   axis[1], 0},
+                        {axis[2] ,        0,  -axis[0], 0},
+                        {-axis[1],  axis[0],         0, 0},
+                        {0       ,        0,         0, 1}
+                    };
 
-    matrix[0][0] = cos(angle) + pow(axis[0],2)*(1-cos(angle));
-    matrix[0][1] = axis[0]*axis[1]*(1-cos(angle))-axis[2]*sin(angle);
-    matrix[0][2] = axis[0]*axis[2]*(1-cos(angle))+axis[1]*sin(angle);
-    matrix[0][3] = 0;
+    Matrix4x4 K = Matrix4x4(Kf);
 
-    matrix[1][0] = axis[1]*axis[0]*(1-cos(angle))+axis[2]*sin(angle);
-    matrix[1][1] = cos(angle) + pow(axis[1],2)*(1-cos(angle));
-    matrix[1][2] = axis[1]*axis[2]*(1-cos(angle))-axis[0]*sin(angle);
-    matrix[1][3] = 0;
 
-    matrix[2][0] = axis[2]*axis[0]*(1-cos(angle))-axis[1]*sin(angle);
-    matrix[2][1] = axis[2]*axis[1]*(1-cos(angle))+axis[0]*sin(angle);
-    matrix[2][2] = cos(angle) + pow(axis[2],2)*(1-cos(angle));
-    matrix[2][3] = 0;
 
-    matrix[3][0] = 0;
-    matrix[3][1] = 0;
-    matrix[3][2] = 0;
-    matrix[3][3] = 1;
+    Matrix4x4 result = Matrix4x4::identity()+K*sin(angle)+K*K*(1-cos(angle));
 
-    return LinearMap(matrix);
+    return LinearMap(result);
 }
 
 LinearMap LinearMap::scale(float lambda[3]) 

@@ -61,6 +61,22 @@ Matrix4x4::Matrix4x4(float const m[4][4])
     }
 }
 
+Matrix4x4::Matrix4x4(float const m[3][3])
+{
+    for (int row = 0; row < 3; row++){
+        for (int col = 0; col < 3; col++){
+            this->matrix[row][col] = m[row][col];
+        }
+    }
+
+    for (int i = 0; i < 3; i++){
+        this->matrix[3][i] = 0;
+        this->matrix[i][3] = 0;
+    }
+
+    this->matrix[3][3] = 1;
+}
+
 Matrix4x4 Matrix4x4::identity()
 {
     float v[4][4] = {{1,0,0,0},
@@ -133,8 +149,8 @@ Matrix4x4 Matrix4x4::operator*(Matrix4x4 M) const
 	for(int row=0; row<4; row++){
         for(int column=0; column<4; column++){
             float aux = 0;
-            for(int k=0; k<4; k++){
-                aux += this->get(row,k)*M.get(k,column);
+            for(int col=0; col<4; col++){
+                aux += this->get(row,col)*M.get(col,column);
             }
             result[row][column] = aux;
         }
@@ -151,8 +167,8 @@ Geometric Matrix4x4::operator*(Geometric g) const
     //Multiply the matrix and the vector
     for(int row=0; row<4; row++){
         aux = 0;
-        for(int k=0; k<4; k++){
-            aux += this->get(row,k) * g[k];
+        for(int col=0; col<4; col++){
+            aux += this->get(row,col) * g[col];
         }
         res[row] = aux;
 	}
@@ -163,6 +179,36 @@ Geometric Matrix4x4::operator*(Geometric g) const
     } else {
         return Geometric::vector(res[0], res[1], res[2]);
     }
+}
+
+Matrix4x4 Matrix4x4::operator*(float f) const
+{
+    float res[3][3];
+    float aux = 0;
+
+    //Multiply the matrix and the vector
+    for(int row=0; row<3; row++){
+        for(int col=0; col<3; col++){
+            res[row][col] = this->get(row,col) * f;
+        }
+	}
+    
+    return Matrix4x4(res);
+}
+
+Matrix4x4 Matrix4x4::operator+(Matrix4x4 M) const
+{
+    float res[3][3];
+    float aux = 0;
+
+    //Multiply the matrix and the vector
+    for(int row=0; row<3; row++){
+        for(int col=0; col<3; col++){
+            res[row][col] = this->get(row,col) + M.get(row,col);
+        }
+	}  
+
+    return Matrix4x4(res); 
 }
 
 bool Matrix4x4::operator==(Matrix4x4 const M) const

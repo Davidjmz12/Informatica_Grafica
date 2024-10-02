@@ -5,8 +5,7 @@
  * This file contains the definition of the Matrix4x4 class, which represents
  * a 4x4 real matrix.
 */
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
+#pragma once
 
 #include <iostream>
 
@@ -22,6 +21,13 @@ class Matrix4x4 {
     * @brief Basic constructor of a matrix 4x4.
     */
     Matrix4x4();
+
+    /**
+    * @brief Creates a matrix 4x4 putting the matrix m at
+    *   the beggining and completing the last row and colum
+    *   by the canonical vector
+    */
+    Matrix4x4(float const m[3][3]);
 
     /**
     * @brief Basic constructor of a matrix 4x4.
@@ -56,18 +62,32 @@ class Matrix4x4 {
     float determinant() const;
 
     /**
-    * @brief Computes a the multiplication of the matrix by M.
+    * @brief Computes the sum of the matrix by M.
+    * @param M Second matrix.
+    * @return Result of adding the matrix M.
+    */
+    Matrix4x4 operator+(Matrix4x4 M) const;
+
+    /**
+    * @brief Computes the multiplication of the matrix by M.
     * @param M Second matrix.
     * @return Result of multiplicate the matrix by M.
     */
     Matrix4x4 operator*(Matrix4x4 M) const;
 
     /**
-    * @brief Computes a the multiplication of the matrix by a geometric (array 4x1).
+    * @brief Computes the multiplication of the matrix by a geometric (array 4x1).
     * @param g the geometric to multiply with
     * @return Result of the product of the matrix by M.
     */
     Geometric operator*(Geometric g) const;
+
+    /**
+    * @brief Computes the multiplication of the matrix by a float.
+    * @param f the float of the multiplication
+    * @return Result of the product of the matrix by f.
+    */
+    Matrix4x4 operator*(float f) const;
 
 
     /**
@@ -86,6 +106,3 @@ class Matrix4x4 {
     friend std::ostream& operator<<(std::ostream& os,const Matrix4x4 M);
 
 };
-
-
-#endif

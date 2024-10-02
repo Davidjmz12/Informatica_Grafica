@@ -1,5 +1,6 @@
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC ppm_file bmp_file tiff_file)
+target_link_libraries(main PUBLIC ppm_file)
+add_subdirectory(geometry)
 
 
 # Libraries
@@ -14,8 +15,8 @@ target_link_libraries(linear_map PUBLIC base matrix)
 add_library(base base.cpp)
 target_link_libraries(base PUBLIC matrix linear_map)
 
-add_library(sphere sphere.cpp)
-target_link_libraries(sphere PUBLIC base)
+add_library(planet planet.cpp)
+target_link_libraries(planet PUBLIC base)
 
 
 # Images
@@ -37,6 +38,15 @@ target_link_libraries(bmp_file PUBLIC color_map)
 add_library(tiff_file tiff_file.cpp)
 target_link_libraries(tiff_file PUBLIC color_map)
 
+# Rays
+
+add_library(ray ray.cpp)
+target_link_libraries(ray PUBLIC geometry)
+
+add_library(intersection intersection.cpp)
+target_link_libraries(intersection PUBLIC geometric)
+
+
 
 # Include directories
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
@@ -44,10 +54,15 @@ target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(linear_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(matrix PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(planet PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
 target_include_directories(bmp_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(tiff_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+target_include_directories(ray PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(intersection PUBLIC ${CMAKE_SOURCE_DIR}/include)

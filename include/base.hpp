@@ -8,8 +8,7 @@
  * a base in R^3.
 */
 
-#ifndef BASE_HPP
-#define BASE_HPP
+#pragma once
 
 #include <iostream>
 
@@ -88,5 +87,3 @@ public:
     bool operator==(Base b) const;
         
 };
-
-#endif

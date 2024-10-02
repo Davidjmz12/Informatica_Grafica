@@ -14,15 +14,18 @@
 
 #include "geometric.hpp"
 
+Geometric::Geometric()
+{
+    v = {0,0,0,0};
+}
 
 Geometric::Geometric(float a0, float a1, float a2, float a3)
-{    
-    if (a3 != 0 && a3 != 1)
-        throw std::invalid_argument("Geometric must be a vector or a point");
-    this->v[0] = a0;
-    this->v[1] = a1;
-    this->v[2] = a2;
-    this->v[3] = a3;
+{   
+    if (a3 != 0)
+        v = {a0/a3,a1/a3,a2/a3,1};
+    else 
+        v = {a0,a1,a2,0};
+    
 }
 
 Geometric Geometric::point(float x, float y, float z) 
@@ -93,7 +96,8 @@ Geometric Geometric::cross(Geometric const g) const
     if (!(this->is_vector() && g.is_vector()))
         throw std::invalid_argument("Both geometric must be vectors.");
     
-    return Geometric::vector(   this->v[1] * g.v[2] - this->v[2] * g.v[1],
+    return Geometric::vector(
+                        this->v[1] * g.v[2] - this->v[2] * g.v[1],
                         this->v[2] * g.v[0] - this->v[0] * g.v[2],
                         this->v[0] * g.v[1] - this->v[1] * g.v[0]
     );
@@ -121,6 +125,9 @@ bool Geometric::is_base(Geometric g1, Geometric g2) const
 
 Geometric Geometric::operator+(Geometric const g) const
 {
+    if (this->is_point() && g.is_point())
+        throw std::invalid_argument("Cannot sum two points.");
+
     return Geometric(this->v[0] + g.v[0] , 
                      this->v[1] + g.v[1] ,
                      this->v[2] + g.v[2] ,
@@ -130,6 +137,9 @@ Geometric Geometric::operator+(Geometric const g) const
 
 Geometric Geometric::operator-(Geometric const g) const 
 {
+    if (this->is_vector() && g.is_point())
+        throw std::invalid_argument("Cannot compute vector minus point.");
+    
     return Geometric(this->v[0] - g.v[0] , 
                      this->v[1] - g.v[1] ,
                      this->v[2] - g.v[2] ,

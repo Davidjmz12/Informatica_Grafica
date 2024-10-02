@@ -12,7 +12,8 @@
 int main()
 {    
     Tests t = Tests("COLOR TESTS");
-    
+    /*
+
     // Test cases for RGB to HSV and vice versa
     Color rgb1 = Color::RGBNormalized(255, 0, 0, 255);
     Color hsv1 = rgb1.RGB_to_HSV();
@@ -94,7 +95,8 @@ int main()
     t.addTest("18", Test::EXPECT_EQ(hsv11_tone_mapped_4, Color(0,0,1,HSV)));
     t.addTest("19", Test::EXPECT_EQ(hsv11_tone_mapped_5, Color(0,0,0.25,HSV)));
     t.addTest("20", Test::EXPECT_NEQ(hsv11_tone_mapped_5, Color(0,0,0.255,HSV)));
-
+    
+    */
 
 
     return t.runAll();

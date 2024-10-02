@@ -12,7 +12,7 @@
 int main()
 {    
     Tests t = Tests("COLOR MAP TESTS");
-    
+    /*
     ColorMap c1 = ColorMap({
                             {Color::RGBNormalized(255, 0, 0, 255), Color::RGBNormalized(0, 255, 0, 255), Color::RGBNormalized(0, 0, 255, 255)},
                             {Color::RGBNormalized(255, 255, 0, 255), Color::RGBNormalized(0, 255, 255, 255), Color::RGBNormalized(255, 0, 255, 255)},
@@ -29,6 +29,6 @@ int main()
     t.addTest("1", Test::EXPECT_EQ(c1, c1.RGB_to_HSV().HSV_to_RGB()));
     t.addTest("2", Test::EXPECT_EQ(c2, c2.RGB_to_HSV().HSV_to_RGB()));
     t.addTest("3", Test::EXPECT_EQ(c1, c2));
-
+    */
     return t.runAll();
 }

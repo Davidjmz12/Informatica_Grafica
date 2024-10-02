@@ -4,10 +4,10 @@
  *
 */
 
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#pragma once
 
 #include <cmath>
+#include <string>
 
 const float THRESHOLD_FLOAT = 1e-6; // Threshold for comparing float values
 
@@ -34,6 +34,3 @@ inline bool eqFloat(float a, float b)
 {
     return fabs(a - b) < THRESHOLD_FLOAT;
 }
-
-
-#endif

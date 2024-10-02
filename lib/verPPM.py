@@ -1,5 +1,5 @@
 from PIL import Image
 
-image = Image.open("assets/out/seymour_park_gamma_cla.ppm")
+image = Image.open("../../assets/out/forest_path_gamma_clamping.ppm")
 
 image.show()

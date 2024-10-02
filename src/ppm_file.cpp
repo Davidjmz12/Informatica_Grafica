@@ -84,6 +84,10 @@ PpmFile::PpmFile(std::string path)
     this->_map = ColorMap(readPixelMap(file), RGB);
 }
 
+PpmFile::PpmFile(ColorMap map, float range, float colorResolution, std::array<int,2> dim, std::string format)
+    : _map(map), _maxRange(range), _colorResolution(colorResolution), _dimension{dim}, _format(format)
+{}
+
 void PpmFile::save(std::string output_file) const
 {
     std::ofstream file(output_file);
@@ -100,38 +104,84 @@ void PpmFile::save(std::string output_file) const
     file << this->_map << std::endl;
 }
 
-void PpmFile::apply_clamping()
-{
-    ToneMapping clamping = ToneMapping::clamping(this->_maxRange);
-    this->_map = this->_map.apply_tone_mapping(clamping);
-}
-
 void PpmFile::change_resolution(int resolution)
 {
     this->_colorResolution = (float)resolution;
     this->_map = this->_map.change_range({(float)resolution, (float)resolution, (float)resolution});
 }
 
-void PpmFile::apply_equalization()
+PpmFile PpmFile::apply_clamping()
 {
-    ToneMapping equalization = ToneMapping::equalization(this->_maxRange);
-    this->_map = this->_map.apply_tone_mapping(equalization);
+    ToneMapping* clamping = new Clamping(this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(clamping);
+
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-void PpmFile::apply_equalization_clamping(float V)
+PpmFile PpmFile::apply_equalization()
 {
-    ToneMapping equalization_clamping = ToneMapping::equalization_clamping(V, this->_maxRange);
-    this->_map = this->_map.apply_tone_mapping(equalization_clamping);
+    ToneMapping* equalization = new Equalization(this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(equalization);
+
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-void PpmFile::apply_gamma(float gamma)
+PpmFile PpmFile::apply_equalization_clamping(float V)
 {
-    ToneMapping _gamma = ToneMapping::gamma(gamma, this->_maxRange);
-    this->_map = this->_map.apply_tone_mapping(_gamma);
+    ToneMapping* equalization_clamping = new EqualizationClamping(V, this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(equalization_clamping);
+
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-void PpmFile::apply_gamma_clamping(float gamma, float V)
+PpmFile PpmFile::apply_gamma(float gamma)
 {
-    ToneMapping _gamma_clamping = ToneMapping::gamma_clamping(gamma, V, this->_maxRange);
-    this->_map = this->_map.apply_tone_mapping(_gamma_clamping);
+    ToneMapping* _gamma = new Gamma(gamma, this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(_gamma);
+
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
+}
+
+PpmFile PpmFile::apply_gamma_clamping(float gamma, float V)
+{
+    ToneMapping* _gamma_clamping = new GammaClamping(gamma, V, this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(_gamma_clamping);
+
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
+}
+
+PpmFile PpmFile::apply_drago()
+{
+    ToneMapping* drago = new Drago(this->_maxRange);
+    ColorMap map = this->_map.apply_tone_mapping(drago);
+    
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
+}
+
+PpmFile PpmFile::apply_logarithmic(float alpha)
+{
+    ToneMapping* log = new Logarithmic(this->_maxRange, alpha);
+    ColorMap map = this->_map.apply_tone_mapping(log);
+    
+    return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
+}
+
+float PpmFile::get_range() const
+{
+    return this->_maxRange;
+}
+
+float PpmFile::get_color_resolution() const
+{
+    return this->_colorResolution;
+}
+
+std::array<int,2> PpmFile::get_dimension() const
+{
+    return this->_dimension;
+}
+
+std::string PpmFile::get_format() const
+{
+    return this->_format;
 }

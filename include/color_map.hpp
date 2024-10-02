@@ -8,8 +8,7 @@
  * a 2D map of colors.
 */
 
-#ifndef COLOR_MAP
-#define COLOR_MAP
+#pragma once
 
 #include <vector>
 #include <iomanip>
@@ -72,7 +71,7 @@ class ColorMap {
          * @param t Tone mapping to apply.
          * @return ColorMap with tone-mapped colors.
          */
-        ColorMap apply_tone_mapping(ToneMapping t) const;
+        ColorMap apply_tone_mapping(ToneMapping* t) const;
 
         /**
          * @brief Get the colors in the map.
@@ -96,5 +95,3 @@ class ColorMap {
         friend std::ostream& operator<<(std::ostream& os,const ColorMap& g);
         
 };
-
-#endif

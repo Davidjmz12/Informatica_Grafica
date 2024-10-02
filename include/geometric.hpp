@@ -6,10 +6,9 @@
  * points and vectors with 3 components.
 */
 
-#ifndef GEOMETRIC
-#define GEOMETRIC
+#pragma once
 
-#include <iostream>
+#include <array>
 
 #include "constants.hpp"
 
@@ -20,7 +19,8 @@
 class Geometric
 {
 private:
-    float v[4]; // Coordinates v[0-2] and type of geometric v[3].
+
+    std::array<float,4> v; // Coordinates v[0-2] and type of geometric v[3].
 
     /**
     * @brief General constructor.
@@ -28,8 +28,10 @@ private:
     */
     Geometric(float a0, float a1, float a2, float a3);
 
+
 public:
 
+    Geometric();
     /**
     * @brief Returns a point with coordinates p.
     * @param x The coordinates of the x-axis
@@ -175,4 +177,3 @@ public:
 
 };
 
-#endif

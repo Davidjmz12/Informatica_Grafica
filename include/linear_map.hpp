@@ -6,8 +6,7 @@
  * points and vectors with 3 components.
 */
 
-#ifndef LINEAR_MAP
-#define LINEAR_MAP
+#pragma once
 
 #include <iostream>
 
@@ -115,4 +114,3 @@ class LinearMap {
         friend std::ostream& operator<<(std::ostream& os,const LinearMap& g);
 };
 
-#endif
