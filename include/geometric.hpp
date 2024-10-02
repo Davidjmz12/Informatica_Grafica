@@ -10,6 +10,7 @@
 #define GEOMETRIC
 
 #include <iostream>
+#include <array>
 
 #include "constants.hpp"
 
@@ -20,7 +21,8 @@
 class Geometric
 {
 private:
-    float v[4]; // Coordinates v[0-2] and type of geometric v[3].
+
+    std::array<float,4> v; // Coordinates v[0-2] and type of geometric v[3].
 
     /**
     * @brief General constructor.

@@ -24,7 +24,7 @@ bool collide(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2)
 
 
 Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
-    : center(center), ref_point(ref_point), axis(axis), radius(axis.norm() / 2)
+    : center(center), ref_point(ref_point), axis(axis), radius(axis.norm())
 {
     // Check if the parameters are correct
     if (center.is_vector() || axis.is_point() || ref_point.is_vector())

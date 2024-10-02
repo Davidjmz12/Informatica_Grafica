@@ -36,8 +36,6 @@ LinearMap Base::canonical_to_base() const
 
 Geometric Base::coord_from_canonical(Geometric g) const
 {
-    if(!g.is_vector())
-        throw std::invalid_argument("Geometric must be a vector.");
     return LinearMap(this->matrix_inverse)*g;
 }
         
