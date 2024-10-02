@@ -14,6 +14,11 @@
 
 #include "geometric.hpp"
 
+Geometric::Geometric()
+{
+    v = {0,0,0,0};
+}
+
 Geometric::Geometric(float a0, float a1, float a2, float a3)
 {   
     if (a3 != 0)

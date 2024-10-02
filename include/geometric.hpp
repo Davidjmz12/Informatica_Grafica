@@ -28,8 +28,10 @@ private:
     */
     Geometric(float a0, float a1, float a2, float a3);
 
+
 public:
 
+    Geometric();
     /**
     * @brief Returns a point with coordinates p.
     * @param x The coordinates of the x-axis

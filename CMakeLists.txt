@@ -14,3 +14,4 @@ add_subdirectory(src)
 add_subdirectory(tests)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/include/geometry)
