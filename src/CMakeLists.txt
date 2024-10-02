@@ -1,5 +1,5 @@
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC ppm_file)
+target_link_libraries(main PUBLIC ppm_file bmp_file tiff_file)
 
 
 # Libraries
@@ -31,6 +31,11 @@ target_link_libraries(color_map PUBLIC color)
 add_library(ppm_file ppm_file.cpp)
 target_link_libraries(ppm_file PUBLIC color_map)
 
+add_library(bmp_file bmp_file.cpp)
+target_link_libraries(bmp_file PUBLIC color_map)
+
+add_library(tiff_file tiff_file.cpp)
+target_link_libraries(tiff_file PUBLIC color_map)
 
 
 # Include directories
@@ -44,3 +49,5 @@ target_include_directories(color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(bmp_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(tiff_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
