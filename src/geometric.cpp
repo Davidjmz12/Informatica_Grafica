@@ -120,6 +120,9 @@ bool Geometric::is_base(Geometric g1, Geometric g2) const
 
 Geometric Geometric::operator+(Geometric const g) const
 {
+    if (this->is_point() && g.is_point())
+        throw std::invalid_argument("Cannot sum two points.");
+
     return Geometric(this->v[0] + g.v[0] , 
                      this->v[1] + g.v[1] ,
                      this->v[2] + g.v[2] ,
@@ -129,6 +132,9 @@ Geometric Geometric::operator+(Geometric const g) const
 
 Geometric Geometric::operator-(Geometric const g) const 
 {
+    if (this->is_vector() && g.is_point())
+        throw std::invalid_argument("Cannot compute vector minus point.");
+    
     return Geometric(this->v[0] - g.v[0] , 
                      this->v[1] - g.v[1] ,
                      this->v[2] - g.v[2] ,

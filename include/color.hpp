@@ -8,8 +8,7 @@
  * a color in RGB or HSV encoding.
 */
 
-#ifndef COLOR_HPP
-#define COLOR_HPP
+#pragma once
 
 #include <cmath>
 #include <string>
@@ -146,4 +145,3 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Color& g);
 };
 
-#endif

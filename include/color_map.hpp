@@ -8,8 +8,7 @@
  * a 2D map of colors.
 */
 
-#ifndef COLOR_MAP
-#define COLOR_MAP
+#pragma once
 
 #include <vector>
 #include <iomanip>
@@ -96,5 +95,3 @@ class ColorMap {
         friend std::ostream& operator<<(std::ostream& os,const ColorMap& g);
         
 };
-
-#endif

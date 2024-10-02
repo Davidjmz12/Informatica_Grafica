@@ -6,10 +6,8 @@
  * points and vectors with 3 components.
 */
 
-#ifndef GEOMETRIC
-#define GEOMETRIC
+#pragma once
 
-#include <iostream>
 #include <array>
 
 #include "constants.hpp"
@@ -177,4 +175,3 @@ public:
 
 };
 
-#endif

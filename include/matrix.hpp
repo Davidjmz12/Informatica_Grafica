@@ -5,8 +5,7 @@
  * This file contains the definition of the Matrix4x4 class, which represents
  * a 4x4 real matrix.
 */
-#ifndef MATRIX_HPP
-#define MATRIX_HPP
+#pragma once
 
 #include <iostream>
 
@@ -107,6 +106,3 @@ class Matrix4x4 {
     friend std::ostream& operator<<(std::ostream& os,const Matrix4x4 M);
 
 };
-
-
-#endif

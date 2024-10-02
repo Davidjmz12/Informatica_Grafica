@@ -1,5 +1,4 @@
-#ifndef TONE_MAPPING2
-#define TONE_MAPPING2
+#pragma once
 
 #include <stdexcept>
 #include <math.h>
@@ -220,6 +219,3 @@ public:
 
     float evaluate(float l_in) const;
 };
-
-
-#endif

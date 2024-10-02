@@ -6,8 +6,7 @@
  * individual and a set of tests.
 */
 
-#ifndef TEST_HPP
-#define TEST_HPP
+#pragma once
 
 #include <iostream>
 #include <exception>
@@ -214,4 +213,3 @@ public:
 
 };
 
-#endif

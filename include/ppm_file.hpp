@@ -6,8 +6,7 @@
  * a file in PPM format.
 */
 
-#ifndef PPM_FILE
-#define PPM_FILE
+#pragma once
 
 #include <string>
 
@@ -102,4 +101,3 @@ class PpmFile {
 
 };
 
-#endif

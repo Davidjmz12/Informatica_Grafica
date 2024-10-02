@@ -1,18 +1,18 @@
 /**
- * @file sphere.cpp
- * @brief Implementation of the sphere header.
+ * @file planet.cpp
+ * @brief Implementation of the planet header.
  * @authors DavidJimenez DavidTizne
  * @date 18/09/2024
- * @see sphere.hpp for more information.
- * This file contains the implementation of sphere in R^3.
+ * @see planet.hpp for more information.
+ * This file contains the implementation of planet in R^3.
 */
 
 #include <math.h>
 
-#include "sphere.hpp"
+#include "planet.hpp"
 
 
-bool collide(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2)
+bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2)
 {
     Base b1 = s1.base_point(inc1,az1); 
     Base b2 = s2.base_point(inc2,az2);
@@ -23,19 +23,19 @@ bool collide(Sphere s1, float az1, float inc1, Sphere s2, float az2, float inc2)
 }
 
 
-Sphere::Sphere(Geometric center, Geometric axis, Geometric ref_point)
+Planet::Planet(Geometric center, Geometric axis, Geometric ref_point)
     : center(center), ref_point(ref_point), axis(axis), radius(axis.norm())
 {
     // Check if the parameters are correct
     if (center.is_vector() || axis.is_point() || ref_point.is_vector())
         throw std::invalid_argument("Center and ref_point must be points. Axis must be a vector.");
 
-    // Check if the ref_point is in the sphere
-    if (!this->point_in_sphere(ref_point))
-        throw std::invalid_argument("Error: The ref_point is not in the sphere.");
+    // Check if the ref_point is in the planet
+    if (!this->point_in_planet(ref_point))
+        throw std::invalid_argument("Error: The ref_point is not in the planet.");
 }
 
-Base Sphere::base_point(float inclination, float azimut)
+Base Planet::base_point(float inclination, float azimut)
 {
     //Compute the point
     LinearMap r1 = LinearMap::rotation(this->axis,azimut);
@@ -56,7 +56,7 @@ Base Sphere::base_point(float inclination, float azimut)
     return Base(point, tangent_long, tangent_lat, normal);
 }
 
-bool Sphere::point_in_sphere(Geometric p) {
+bool Planet::point_in_planet(Geometric p) {
     float radius_point_p = (this->center - p).norm();
     return eqFloat(radius_point_p, this->radius);
 }
