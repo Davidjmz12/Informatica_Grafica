@@ -15,6 +15,9 @@ target_link_libraries(triangle PUBLIC geometry plane)
 add_library(triangle_mesh triangle_mesh.cpp)
 target_link_libraries(triangle_mesh PUBLIC geometry triangle)
 
+add_library(cylinder cylinder.cpp)
+target_link_libraries(cylinder PUBLIC geometry)
+
 
 target_include_directories(geometry PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(plane PUBLIC ${CMAKE_SOURCE_DIR}/include)
