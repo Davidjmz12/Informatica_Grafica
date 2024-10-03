@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "intersection.hpp"
 
 class Ray
 {
@@ -12,5 +12,4 @@ public:
     Ray(Geometric point, Geometric direction);
     Geometric point() const;
     Geometric direction() const;
-    bool intersects_with_geometry(Geometry* g, Intersection& intersection);
 };

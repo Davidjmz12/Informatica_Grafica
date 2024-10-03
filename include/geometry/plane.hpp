@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "geometry/geometry.hpp"
 
 class Plane : Geometry
 {
@@ -11,8 +11,8 @@ private:
 public:
     Plane(Geometric normal, Geometric point);
     Plane(Geometric p1, Geometric p2, Geometric p3);
-
+    
     float implicit(Geometric x) const;
 
-    bool intersect_with_ray(Ray r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };

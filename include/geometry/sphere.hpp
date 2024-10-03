@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "geometry/geometry.hpp"
 
 class Sphere : Geometry
 {
@@ -12,5 +12,5 @@ public:
     
     float implicit(Geometric x) const;
 
-    bool intersect_with_ray(Ray r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };

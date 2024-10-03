@@ -1,7 +1,6 @@
-add_executable(main main.cpp)
-target_link_libraries(main PUBLIC ppm_file)
-add_subdirectory(geometry)
 
+add_executable(main main.cpp)
+target_link_libraries(main PUBLIC ply_file)
 
 # Libraries
 add_library(geometric geometric.cpp)
@@ -35,13 +34,17 @@ target_link_libraries(ppm_file PUBLIC color_map)
 
 # Rays
 
-add_library(ray ray.cpp)
-target_link_libraries(ray PUBLIC geometry)
-
 add_library(intersection intersection.cpp)
 target_link_libraries(intersection PUBLIC geometric)
 
+add_library(ray ray.cpp)
+target_link_libraries(ray PUBLIC intersection)
 
+add_library(ply_file ply_file.cpp)
+target_link_libraries(ply_file PUBLIC triangle)
+
+
+add_subdirectory(geometry)
 
 # Include directories
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
@@ -56,5 +59,9 @@ target_include_directories(tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
+# RAYS
 target_include_directories(ray PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(intersection PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(ply_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+

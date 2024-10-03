@@ -1,4 +1,4 @@
-#include "sphere.hpp"
+#include "geometry/sphere.hpp"
 
 Sphere::Sphere(Geometric center, float radius)
     : _center(center), _radius(radius)
@@ -9,7 +9,7 @@ float Sphere::implicit(Geometric x) const
     return (x-this->_center).dot(x-this->_center) - pow(this->_radius,2);
 }
 
-bool Sphere::intersect_with_ray(Ray r, Intersection& intersection) const
+bool Sphere::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     Geometric aux = r.point()-this->_center;
 

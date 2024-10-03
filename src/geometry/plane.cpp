@@ -1,5 +1,5 @@
 
-#include "plane.hpp"
+#include "geometry/plane.hpp"
 
 
 Plane::Plane(Geometric normal, Geometric point)
@@ -18,22 +18,20 @@ float Plane::implicit(Geometric x) const
     return this->_normal.dot(x) + this->_d;
 }
 
-bool Plane::intersect_with_ray(Ray r, Intersection& intersection) const
+bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
 {
-    if(eqFloat(r.direction().dot(this->_normal), 0) && !eqFloat(this->implicit(r.point()), 0) )
+    if(eqFloat(ray.direction().dot(this->_normal), 0) && !eqFloat(this->implicit(ray.point()), 0) )
         return false;
 
     
-    float distance = - (this->_c+r.point().dot(this->_normal))/r.direction().dot(this->_normal);
+    float distance = - (this->_d+ray.point().dot(this->_normal))/ray.direction().dot(this->_normal);
 
-    float point = r.point() + r.direction()*distance;
+    Geometric point = ray.point() + ray.direction()*distance;
 
-    float normal = this->_normal;
+    Geometric normal = this->_normal;
 
-    intersection = &Intersection(distance,normal,point);
+    intersection = Intersection(distance,normal,point);
 
     return true;
-
-    
     
 }
