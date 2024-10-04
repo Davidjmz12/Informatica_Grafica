@@ -1,4 +1,4 @@
-#include "ellipsoid.hpp"
+#include "geometry/ellipsoid.hpp"
 
 std::tuple<bool,float> solve_equation_second_degree(float a, float b, float c)
 {
@@ -34,16 +34,16 @@ Ellipsoid::Ellipsoid(float a, float b, float c, Geometric center)
         throw std::invalid_argument("Factors cannot be zero.");
 }
 
-bool Ellipsoid::intersect_with_ray(Ray r, Intersection& intersection) const
+bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     //Traslation to the canonical center of the ellipsoid
-    r = Ray(r.point()-(this->_center-Geometric::point0()),r.direction());
+    Ray ray = Ray(r.point()-(this->_center-Geometric::point0()),r.direction());
 
     //Compute the necessary data
-    Geometric direction = r.direction();
+    Geometric direction = ray.direction();
     float dx = direction[0], dy = direction[1], dz = direction[2];
     float A = 1/(pow(this->_a,2)), B = 1/(pow(this->_b,2)), C = 1/(pow(this->_c,2));
-    float ox = this->_center[0], oy = this->_center[1], oz = this->_center[2];
+    float ox = ray.point()[0], oy = ray.point()[1], oz = ray.point()[2];
 
     //Compute the coefficients
     float a = A*pow(dx,2) + B*pow(dy,2) + C*pow(dz,2);
@@ -64,8 +64,9 @@ bool Ellipsoid::intersect_with_ray(Ray r, Intersection& intersection) const
         //Construct intersection
         if (existSolution)
         {
-            Geometric point = r.evaluate_point(numericSolution);
-            intersection = Intersection(numericSolution, this->normal(point), point + (this->_center - Geometric::point0()));
+            Geometric point = ray.evaluate_point(numericSolution);
+            point = point + (this->_center - Geometric::point0());
+            intersection = Intersection(numericSolution, this->normal(point), point);
         }
 
         return existSolution;
@@ -79,15 +80,20 @@ Geometric Ellipsoid::normal(Geometric p) const
         throw std::runtime_error("The given point is not in the ellipsoid.");
 
     //Compute the normal vector
-    return Geometric::vector(   p[0]/pow(this->_a,2),
-                                p[1]/pow(this->_b,2),
-                                p[2]/pow(this->_c,2)).normalize();
+    return Geometric::vector(   (p[0]-this->_center[0])/pow(this->_a,2),
+                                (p[1]-this->_center[1])/pow(this->_b,2),
+                                (p[2]-this->_center[2])/pow(this->_c,2)).normalize();
 }
 
 bool Ellipsoid::is_in_ellipsoid(Geometric p) const
 {
     return  eqFloat(pow(p[0]-this->_center[0],2)/pow(this->_a,2) +
                     pow(p[1]-this->_center[1],2)/pow(this->_b,2) + 
-                    pow(p[2]-this->_center[2],2)/pow(this->_c,2),0);
+                    pow(p[2]-this->_center[2],2)/pow(this->_c,2),1);
+}
+
+float Ellipsoid::implicit(Geometric x) const
+{
+    return (float)0;
 }
 

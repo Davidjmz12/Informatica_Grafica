@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 #include <tuple>
-#include "geometry.hpp"
+#include "geometry/geometry.hpp"
 
 /**
  * @brief Defines a ellipsoid object in 3D
@@ -48,5 +48,7 @@ public:
      * to be stored.
      * @return True if there is an intersection. False otherwise.
      */
-    bool intersect_with_ray(Ray r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+
+    float implicit(Geometric x) const;
 };

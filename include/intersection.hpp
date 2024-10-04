@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <vector>
+#include <stdexcept>
 
 #include "geometric.hpp"
 
@@ -22,4 +23,7 @@ public:
     float distance() const;
     Geometric normal() const;
     Intersection min(std::vector<Intersection> intersections) const;
+
+    bool operator==(const Intersection i) const;
+    friend std::ostream& operator<<(std::ostream& os, const Intersection& i);
 };
