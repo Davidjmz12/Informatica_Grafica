@@ -1,4 +1,4 @@
-#include "ellipse.hpp"
+#include "ellipsoid.hpp"
 
 std::tuple<bool,float> solve_equation_second_degree(float a, float b, float c)
 {

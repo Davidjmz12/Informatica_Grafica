@@ -1,7 +1,7 @@
 #pragma once
 
 #include "geometry.hpp"
-#include "ellipse.hpp"
+#include "ellipsoid.hpp"
 
 /**
  * @brief Defines a sphere in 3D
