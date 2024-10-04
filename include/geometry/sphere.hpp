@@ -6,7 +6,7 @@
 /**
  * @brief Defines a sphere in 3D
  */
-class Sphere : Ellipsoid
+class Sphere : public Ellipsoid
 {
 public:
     /**
