@@ -1,5 +1,8 @@
 #include "geometry/triangle_mesh.hpp"
 
+TriangleMesh::TriangleMesh()
+    : _triangles(){}
+
 TriangleMesh::TriangleMesh(std::vector<Triangle> triangles)
     : _triangles(triangles){}
 

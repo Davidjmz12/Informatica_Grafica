@@ -12,6 +12,7 @@ private:
     std::vector<Triangle> _triangles;
     Intersection min_distance(std::vector<Intersection> intersections) const;
 public:
+    TriangleMesh();
 
     TriangleMesh(std::vector<Triangle> triangles);
     

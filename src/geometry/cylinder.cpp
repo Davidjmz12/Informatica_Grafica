@@ -15,7 +15,7 @@ float Cylinder::implicit(Geometric x) const
     return (x-_center).dot(x-_center)-pow(_radius,2) - pow((x-_center).dot(_axis),2);
 }
 
-Intersection Cylinder::intersection_in_a_point(const Ray& r, float distance) 
+Intersection Cylinder::intersection_in_a_point(const Ray& r, float distance) const
 {
     Geometric point_int = r.evaluate(distance);
     Geometric normal,projection;
@@ -46,7 +46,11 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
         return true;
     } else 
     {
-
+        Intersection i1,i2;
+        i1 = intersection_in_a_point(r,(-b+sqrt(delta))/(2*a));
+        i2 = intersection_in_a_point(r,(-b-sqrt(delta))/(2*a));
+        intersection = i1.distance()<i2.distance()?i1:i2;
+        return true;
     }
 }
 

@@ -11,6 +11,10 @@ private:
 public:
     Plane(Geometric normal, Geometric point);
     Plane(Geometric p1, Geometric p2, Geometric p3);
+
+    Geometric point() const;
+
+    Geometric normal() const;
     
     float implicit(Geometric x) const;
 
