@@ -2,10 +2,13 @@
 
 #include "intersection.hpp"
 #include "ray.hpp"
-#include "geometric.hpp"
 
 class Geometry
 {
 public:
-    virtual bool intersect_with_ray(Ray r, Intersection& intersection) const = 0; 
+
+    virtual float implicit(Geometric x) const = 0;
+
+    virtual bool intersect_with_ray(const Ray& r, Intersection& intersection) const = 0; 
+
 };

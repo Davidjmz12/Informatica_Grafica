@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "intersection.hpp"
 
 class Ray
 {
@@ -10,6 +10,7 @@ private:
     
 public:
     Ray(Geometric point, Geometric direction);
+    Geometric evaluate(float t) const;
     Geometric point() const;
     Geometric direction() const;
 

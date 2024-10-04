@@ -2,6 +2,8 @@
 
     "editor.colorDecorators": false,
     "files.associations": {
+        "*.py": "python",
+        "*.rmd": "markdown",
         "cmath": "cpp",
         "array": "cpp",
         "atomic": "cpp",
@@ -75,6 +77,7 @@
         "charconv": "cpp",
         "format": "cpp",
         "span": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "plyconfig.json": "jsonc"
     }
 }

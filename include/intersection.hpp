@@ -1,7 +1,11 @@
 
 #pragma once
 
+#include <limits>
+#include <vector>
+
 #include "geometric.hpp"
+
 
 class Intersection
 {
@@ -11,10 +15,11 @@ private:
     Geometric _point;
 
 public:
-
     Intersection();
-
     Intersection(float distance, Geometric normal, Geometric point);
     
-    bool operator=(Intersection i) const;
+    Geometric point() const;
+    float distance() const;
+    Geometric normal() const;
+    Intersection min(std::vector<Intersection> intersections) const;
 };
