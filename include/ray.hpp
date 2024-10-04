@@ -12,5 +12,7 @@ public:
     Ray(Geometric point, Geometric direction);
     Geometric point() const;
     Geometric direction() const;
+
+    Geometric evaluate_point(float t) const;
     bool intersects_with_geometry(Geometry* g, Intersection& intersection);
 };
