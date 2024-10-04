@@ -35,3 +35,13 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
     return true;
     
 }
+
+Geometric Plane::normal() const
+{
+    return this->_normal;
+}
+
+Geometric Plane::point() const
+{
+    return this->_point;
+}
