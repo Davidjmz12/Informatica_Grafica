@@ -55,3 +55,10 @@ add_executable(test_tone_mapping test_tone_mapping.cpp)
 target_link_libraries(test_tone_mapping PUBLIC tone_mapping)
 add_test(NAME test_tone_mapping COMMAND test_tone_mapping)
 target_include_directories(test_tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+
+# TEST ELLIPSOID
+add_executable(test_ellipsoid test_ellipsoid.cpp)
+target_link_libraries(test_ellipsoid PUBLIC ellipsoid)
+add_test(NAME test_ellipsoid COMMAND test_ellipsoid)
+target_include_directories(test_ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -9,6 +9,9 @@ target_link_libraries(plane PUBLIC geometry)
 add_library(sphere sphere.cpp)
 target_link_libraries(sphere PUBLIC geometry)
 
+add_library(ellipsoid ellipsoid.cpp)
+target_link_libraries(ellipsoid PUBLIC geometry)
+
 
 target_include_directories(geometry PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(geometry PUBLIC ${CMAKE_SOURCE_DIR}/include/geometry)
@@ -18,3 +21,6 @@ target_include_directories(plane PUBLIC ${CMAKE_SOURCE_DIR}/geometry)
 
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/geometry)
+
+target_include_directories(ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/geometry)

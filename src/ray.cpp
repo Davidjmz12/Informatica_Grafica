@@ -16,7 +16,7 @@ Geometric Ray::direction() const
 
 bool Ray::intersects_with_geometry(Geometry* g, Intersection& intersection)
 {
-    g->intersect_with_ray(*this, intersection);
+    return g->intersect_with_ray(*this, intersection);
 }
 
 Geometric Ray::evaluate_point(float t) const

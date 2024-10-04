@@ -36,6 +36,9 @@ Ellipsoid::Ellipsoid(float a, float b, float c, Geometric center)
 
 bool Ellipsoid::intersect_with_ray(Ray r, Intersection& intersection) const
 {
+    //Traslation to the canonical center of the ellipsoid
+    r = Ray(r.point()-(this->_center-Geometric::point0()),r.direction());
+
     //Compute the necessary data
     Geometric direction = r.direction();
     float dx = direction[0], dy = direction[1], dz = direction[2];
@@ -62,7 +65,7 @@ bool Ellipsoid::intersect_with_ray(Ray r, Intersection& intersection) const
         if (existSolution)
         {
             Geometric point = r.evaluate_point(numericSolution);
-            intersection = Intersection(numericSolution, this->normal(point), point);
+            intersection = Intersection(numericSolution, this->normal(point), point + (this->_center - Geometric::point0()));
         }
 
         return existSolution;
