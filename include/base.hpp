@@ -49,18 +49,14 @@ public:
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param x The coordinates of the x-canonical vector.
-    * @param y The coordinates of the y-canonical vector.
-    * @param z The coordinates of the z-canonical vector.
+    * @param g Point with coordinates (x,y,z) in cannonical base.
     * @return The coordinates of the point in the base-axis.
     */  
     Geometric coord_from_canonical(Geometric g) const;
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param x The coordinates of the x-basis vector.
-    * @param y The coordinates of the y-basis vector.
-    * @param z The coordinates of the z-basis vector.
+    * @param g Point with coordinates (x,y,z) in this base.
     * @return The point with the coordinates (x,y,z).
     */        
     Geometric coord_into_canonical(Geometric g) const;

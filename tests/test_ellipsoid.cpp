@@ -1,6 +1,7 @@
 /**
  * @file test_ellipsoid.cpp
  * @brief File that tests the Ellipsoid class.
+ * @author David Tizne Ondiviela.
  *
  * This file contains all the tests that has been made
  * for the Ellipsoid class.

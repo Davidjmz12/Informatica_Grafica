@@ -1,3 +1,11 @@
+/**
+ * @file ellipsoid.hpp
+ * @brief Defines a ellipsoid.
+ * @author David Tizne Ondiviela
+ *
+ * This file contains the definition of the Ellipsoid
+ * class, which represents a ellipsoid.
+*/
 #pragma once
 
 #include <stdexcept>

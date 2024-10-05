@@ -1,6 +1,7 @@
 /**
  * @file test_sphere.cpp
  * @brief File that tests the Sphere class.
+ * @author David Tizne Ondiviela.
  *
  * This file contains all the tests that has been made
  * for the Sphere class.

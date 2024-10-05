@@ -1,3 +1,11 @@
+/**
+ * @file sphere.hpp
+ * @brief Defines the class Sphere.
+ * @author David Tizne Ondiviela
+ *
+ * This file contains the definition of the Sphere class,
+ * which represents a sphere.
+*/
 #pragma once
 
 #include "geometry/geometry.hpp"
