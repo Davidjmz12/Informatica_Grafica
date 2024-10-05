@@ -6,7 +6,7 @@ TriangleMesh::TriangleMesh()
 TriangleMesh::TriangleMesh(std::vector<Triangle> triangles)
     : _triangles(triangles){}
 
-float TriangleMesh::implicit(Geometric x) const
+double TriangleMesh::implicit(Geometric x) const
 {
     return 1;
 }

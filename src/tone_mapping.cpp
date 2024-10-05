@@ -1,6 +1,6 @@
 #include "tone_mapping.hpp"
 
-ToneMapping::ToneMapping(float LMax)
+ToneMapping::ToneMapping(double LMax)
     : _LMax(LMax)
 {
     // Check LMax
@@ -8,7 +8,7 @@ ToneMapping::ToneMapping(float LMax)
         throw std::invalid_argument("LMax cannot is less or equal to 0.");
 }
 
-float ToneMapping::max_luminance() const
+double ToneMapping::max_luminance() const
 {
     return this->_LMax;
 }
@@ -17,11 +17,11 @@ float ToneMapping::max_luminance() const
 //                      CLAMPING
 // -----------------------------------------------------
 
-Clamping::Clamping(float LMax)
+Clamping::Clamping(double LMax)
     :ToneMapping(LMax)
 {}
 
-float Clamping::evaluate(float l_in) const
+double Clamping::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -36,11 +36,11 @@ float Clamping::evaluate(float l_in) const
 //                      EQUALIZATION
 // -----------------------------------------------------
 
-Equalization::Equalization(float LMax)
+Equalization::Equalization(double LMax)
     :ToneMapping(LMax)
 {}
 
-float Equalization::evaluate(float l_in) const
+double Equalization::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -53,7 +53,7 @@ float Equalization::evaluate(float l_in) const
 //              EQUALIZATION CLAMPING
 // -----------------------------------------------------
 
-EqualizationClamping::EqualizationClamping(float V, float LMax)
+EqualizationClamping::EqualizationClamping(double V, double LMax)
     :ToneMapping(LMax), _V(V)
 {
     // Check V
@@ -63,7 +63,7 @@ EqualizationClamping::EqualizationClamping(float V, float LMax)
         throw std::invalid_argument("Clamping value is greater than 0.");
 }
 
-float EqualizationClamping::evaluate(float l_in) const
+double EqualizationClamping::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -78,7 +78,7 @@ float EqualizationClamping::evaluate(float l_in) const
 //                      GAMMA
 // -----------------------------------------------------
 
-Gamma::Gamma(float gamma, float LMax)
+Gamma::Gamma(double gamma, double LMax)
     : ToneMapping(LMax), _gamma(gamma)
 {
     // Check gamma
@@ -86,7 +86,7 @@ Gamma::Gamma(float gamma, float LMax)
         throw std::invalid_argument("Gamma value is less than or equal to 0.");
 }
 
-float Gamma::evaluate(float l_in) const
+double Gamma::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -99,7 +99,7 @@ float Gamma::evaluate(float l_in) const
 //                  GAMMA CLAMPING
 // -----------------------------------------------------
 
-GammaClamping::GammaClamping(float gamma, float V, float LMax)
+GammaClamping::GammaClamping(double gamma, double V, double LMax)
     : ToneMapping(LMax), _gamma(gamma), _V(V)
 {
     // Check V
@@ -113,7 +113,7 @@ GammaClamping::GammaClamping(float gamma, float V, float LMax)
         throw std::invalid_argument("Gamma value is less than or equal to 0.");
 }
 
-float GammaClamping::evaluate(float l_in) const
+double GammaClamping::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -128,11 +128,11 @@ float GammaClamping::evaluate(float l_in) const
 //                        DRAGO
 // -----------------------------------------------------
 
-Drago::Drago(float LMax)
+Drago::Drago(double LMax)
     : ToneMapping(LMax)
 {}
 
-float Drago::evaluate(float l_in) const
+double Drago::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");
@@ -146,7 +146,7 @@ float Drago::evaluate(float l_in) const
 // -----------------------------------------------------
 
 
-Logarithmic::Logarithmic(float LMax, float alpha)
+Logarithmic::Logarithmic(double LMax, double alpha)
     : ToneMapping(LMax), _alpha(alpha)
 {
     // Check alpha
@@ -154,7 +154,7 @@ Logarithmic::Logarithmic(float LMax, float alpha)
         throw std::invalid_argument("Alpha must be greater than 0.");
 }
 
-float Logarithmic::evaluate(float l_in) const
+double Logarithmic::evaluate(double l_in) const
 {
     if (l_in < 0 || l_in > this->_LMax)
         throw std::invalid_argument("Luminance value is strange.");

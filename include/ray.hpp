@@ -10,7 +10,7 @@ private:
     
 public:
     Ray(Geometric point, Geometric direction);
-    Geometric evaluate(float t) const;
+    Geometric evaluate(double t) const;
     Geometric point() const;
     Geometric direction() const;
 };

@@ -25,7 +25,7 @@ int main()
     Base b2 = Base(Geometric::point(2,2,2),Geometric::vector(2,1,0),
                    Geometric::vector(0,1,2),Geometric::vector(2,0,1));
 
-    float m[4][4] = {{1/6.0 , 4/6.0 , -2/6.0, -3/6.0},
+    double m[4][4] = {{1/6.0 , 4/6.0 , -2/6.0, -3/6.0},
                                {-1/6.0, 2/6.0 , 2/6.0 , -3/6.0},
                                {2/6.0 , -4/6.0, 2/6.0 , 0     },
                                {0     , 0     , 0     , 1     }};
@@ -43,7 +43,7 @@ int main()
     t.addTest("4",Test::EXPECT_EQ(rot*rot2,LinearMap::identity()));
 
     // Constructors scale
-    float a[3] = {1.0,2.0,3.0}; float b[3] = {1,1.0/2.0,1/3.0};
+    double a[3] = {1.0,2.0,3.0}; double b[3] = {1,1.0/2.0,1/3.0};
     LinearMap scale= LinearMap::scale(a);
     LinearMap scale_inv = LinearMap::scale(b);
 

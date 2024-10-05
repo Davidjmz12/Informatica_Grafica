@@ -7,11 +7,11 @@ class Disk: public Geometry
 {
 private:
     Plane _plane;
-    float _radius;
+    double _radius;
 public:
-    Disk(Geometric center, Geometric normal, float radius);
+    Disk(Geometric center, Geometric normal, double radius);
 
-    float implicit(Geometric x) const;
+    double implicit(Geometric x) const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 

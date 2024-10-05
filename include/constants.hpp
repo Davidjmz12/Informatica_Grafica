@@ -9,7 +9,7 @@
 #include <cmath>
 #include <string>
 
-const float THRESHOLD_FLOAT = 1e-6; // Threshold for comparing float values
+const double EPSILON = 1e-6; // Threshold for comparing double values
 
 
 // Color constants
@@ -20,37 +20,42 @@ const std::string RED = "\033[31m"; // Red color
 
 
 /**
- * @brief Compares two floating-point numbers for equality within a specified threshold.
+ * @brief Compares two doubleing-point numbers for equality within a specified threshold.
  * 
- * This function checks if the absolute difference between two floating-point numbers
+ * This function checks if the absolute difference between two doubleing-point numbers
  * is less than a predefined threshold value (THRESHOLD_FLOAT). It is useful for 
- * comparing floating-point numbers where precision errors might occur.
+ * comparing doubleing-point numbers where precision errors might occur.
  * 
- * @param a The first floating-point number to compare.
- * @param b The second floating-point number to compare.
+ * @param a The first doubleing-point number to compare.
+ * @param b The second doubleing-point number to compare.
  * @return true if the absolute difference between a and b is less than THRESHOLD_FLOAT, false otherwise.
  */
-inline bool eqFloat(float a, float b)
+inline bool eqD(double a, double b)
 {
-    return fabs(a - b) < THRESHOLD_FLOAT;
+    return (fabs(a - b) < EPSILON);
 }
 
-inline bool ltFloat(float a, float b)
+inline bool neqD(double a, double b)
 {
-    return a - b < -THRESHOLD_FLOAT;
+    return !eqD(a, b);
 }
 
-inline bool gtFloat(float a, float b)
+inline bool ltD(double a, double b)
 {
-    return ltFloat(b, a);
+    return a - b < -EPSILON;
 }
 
-inline bool leFloat(float a, float b)
+inline bool gtD(double a, double b)
 {
-    return ltFloat(a, b) || eqFloat(a, b);
+    return b - a < -EPSILON;
 }
 
-inline bool geFloat(float a, float b)
+inline bool leF(double a, double b)
 {
-    return gtFloat(a, b) || eqFloat(a, b);
+    return a - b < EPSILON;
+}
+
+inline bool geF(double a, double b)
+{
+    return b - a < EPSILON;
 }

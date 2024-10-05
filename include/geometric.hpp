@@ -20,13 +20,13 @@ class Geometric
 {
 private:
 
-    std::array<float,4> v; // Coordinates v[0-2] and type of geometric v[3].
+    std::array<double,4> v; // Coordinates v[0-2] and type of geometric v[3].
 
     /**
     * @brief General constructor.
     * @throw std::invalid_argument if a3 != {0,1}
     */
-    Geometric(float a0, float a1, float a2, float a3);
+    Geometric(double a0, double a1, double a2, double a3);
 
 
 public:
@@ -39,7 +39,7 @@ public:
     * @param z The coordinates of the z-axis
     * @return A point with coordinates p.
     */
-    static Geometric point(float x, float y, float z);
+    static Geometric point(double x, double y, double z);
 
     /**
     * @brief Returns the (0,0,0) point.
@@ -60,7 +60,7 @@ public:
     * @param z The coordinates of the z-axis
     * @return A vector with coordinates v.
     */
-    static Geometric vector(float x, float y, float z);
+    static Geometric vector(double x, double y, double z);
 
     /**
     * @brief Checks if the geometric is a vector.
@@ -79,7 +79,7 @@ public:
     * @return The Euclidean norm of the vector.
     * @throw std::invalid_argument if the geometric is a point.
     */
-    float norm() const;
+    double norm() const;
 
     /**
     * @brief Normalizes the vector.
@@ -95,7 +95,7 @@ public:
     * @return The dot product of the geometric and g.
     * @throw std::invalid_argument if the geometric is a point.
     */
-    float dot(Geometric const g) const;
+    double dot(Geometric const g) const;
     
     /**
     * @brief A method that computes the cross product of two geometrics.
@@ -145,7 +145,7 @@ public:
     * @return The scaled geometric.
     * @throw std::invalid_argument if geometric is not a vector
     */
-    Geometric operator*(float scalar) const;
+    Geometric operator*(double scalar) const;
 
     /**
     * @brief A method that computes the division of the geometric.
@@ -155,7 +155,7 @@ public:
     * @throw std::runtime_error if scalar is zero.
     * @throw std::invalid_argument if geometric is not a vector
     */
-    Geometric operator/(float scalar) const;
+    Geometric operator/(double scalar) const;
 
     /**
     * @brief An operator two compare two geometrics.
@@ -173,7 +173,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os,const Geometric& g);
 
 
-    float operator[](int index) const;
+    double operator[](int index) const;
 
 };
 

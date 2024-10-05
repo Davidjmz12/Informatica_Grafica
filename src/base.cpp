@@ -19,7 +19,7 @@ Base::Base(Geometric p, Geometric i, Geometric j, Geometric k)
     if (!i.is_base(j,k))
         throw std::invalid_argument("Vectors must be linearly independent.");
     
-    float aux[4][4] = { {i[0], j[0], k[0], p[0]},
+    double aux[4][4] = { {i[0], j[0], k[0], p[0]},
                         {i[1], j[1], k[1], p[1]},
                         {i[2], j[2], k[2], p[2]},
                         {0   , 0   , 0   , 1   }};

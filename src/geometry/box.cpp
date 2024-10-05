@@ -1,6 +1,6 @@
 #include "geometry/box.hpp"
 
-Box::Box(Geometric center, std::array<float,3> sides, std::array<Geometric,3> axis)
+Box::Box(Geometric center, std::array<double,3> sides, std::array<Geometric,3> axis)
 {
     if(sides[0]<=0 || sides[1]<=0 || sides[2]<=0)
         throw std::invalid_argument("The sides of the box must be positive");
@@ -12,9 +12,9 @@ Box::Box(Geometric center, std::array<float,3> sides, std::array<Geometric,3> ax
     std::vector<Triangle> triangles;
 
     // Calculate the half-sizes
-    float halfX = sides[0] / 2.0f;
-    float halfY = sides[1] / 2.0f;
-    float halfZ = sides[2] / 2.0f;
+    double halfX = sides[0] / 2.0f;
+    double halfY = sides[1] / 2.0f;
+    double halfZ = sides[2] / 2.0f;
 
     // Calculate the vertices of the box
     std::array<Geometric, 8> vertices = {
@@ -54,7 +54,7 @@ Box::Box(Geometric center, std::array<float,3> sides, std::array<Geometric,3> ax
     _mesh = TriangleMesh(triangles);
 }
 
-float Box::implicit(Geometric x) const
+double Box::implicit(Geometric x) const
 {
     return _mesh.implicit(x);
 }

@@ -1,7 +1,7 @@
 
 #include "geometry/cylinder.hpp"
 
-Cylinder::Cylinder(Geometric center, float radius, Geometric axis)
+Cylinder::Cylinder(Geometric center, double radius, Geometric axis)
     : _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
       _top(Disk(center+axis,axis,radius)), _bottom(Disk(center,axis,radius))
 {
@@ -11,12 +11,12 @@ Cylinder::Cylinder(Geometric center, float radius, Geometric axis)
         throw std::invalid_argument("The radius of the cylinder must be positive");
 }
 
-float Cylinder::implicit(Geometric x) const
+double Cylinder::implicit(Geometric x) const
 {
     return (x-_center).dot(x-_center)-pow(_radius,2) - pow((x-_center).dot(_axis),2);
 }
 
-Intersection Cylinder::intersection_in_a_point(const Ray& r, float distance) const
+Intersection Cylinder::intersection_in_a_point(const Ray& r, double distance) const
 {
     Geometric point_int = r.evaluate(distance);
     Geometric normal,projection;
@@ -32,18 +32,18 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
     aux_1 = r.point()-_center-_axis*(r.point()-_center).dot(_axis);
     aux_2 = r.direction()-_axis*(r.direction().dot(_axis));
     
-    float a,b,c;
+    double a,b,c;
     a = aux_2.dot(aux_2);
     b = 2*aux_1.dot(aux_2);
     c = aux_1.dot(aux_1)-pow(_radius,2);
 
-    float delta = pow(b,2)-4*a*c;
+    double delta = pow(b,2)-4*a*c;
 
     if(delta<0)
         return false;
     else if (delta==0)
     {
-        if(eqFloat(a,0)) // no solution
+        if(eqD(a,0)) // no solution
             return false;
         
         intersection = intersection_in_a_point(r,-b/(2*a));
@@ -51,7 +51,7 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
     } else 
     {
         std::vector<Intersection> int_points;
-        if(eqFloat(a,0)) // There is solution because b!=0
+        if(eqD(a,0)) // There is solution because b!=0
         {
             Intersection i1;
             i1 = intersection_in_a_point(r,-c/b);
@@ -77,9 +77,9 @@ bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, Intersection& in
     if(!intersect_with_ray_infinite_cylinder(r, intersection))
         return false;
     
-    float int_point_dot_axis = (intersection.point()-Geometric::point0()).dot(_axis);
+    double int_point_dot_axis = (intersection.point()-Geometric::point0()).dot(_axis);
 
-    if( ltFloat(int_point_dot_axis, 0) || gtFloat(int_point_dot_axis, _height))
+    if( ltD(int_point_dot_axis, 0) || gtD(int_point_dot_axis, _height))
         return false;
     
     return true;

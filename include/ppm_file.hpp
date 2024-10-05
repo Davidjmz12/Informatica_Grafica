@@ -19,8 +19,8 @@
 class PpmFile {
     private:
         ColorMap _map;          // Matrix of colors.
-        float _maxRange;        // Max value in the file
-        float _colorResolution; // Max number of different tones
+        double _maxRange;        // Max value in the file
+        double _colorResolution; // Max number of different tones
         std::array<int,2> _dimension;      // Width and height of the matrix
         std::string _format;     // The format identifier
 
@@ -35,7 +35,7 @@ class PpmFile {
         */
         PpmFile(std::string path);
 
-        PpmFile(ColorMap map, float range, float colorResolution, std::array<int,2> dim, std::string format);
+        PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format);
 
         /**
         * @brief Apply clamping to the image.
@@ -51,20 +51,20 @@ class PpmFile {
         * @brief Apply equalization and clamping to the image.
         * @param V The clamping value.
         */
-        PpmFile apply_equalization_clamping(float V);
+        PpmFile apply_equalization_clamping(double V);
 
         /**
         * @brief Apply gamma correction to the image.
         * @param gamma The gamma correction value.
         */
-        PpmFile apply_gamma(float gamma);
+        PpmFile apply_gamma(double gamma);
 
         /**
         * @brief Apply gamma correction and clamping to the image.
         * @param gamma The gamma correction value.
         * @param V The clamping value.
         */
-        PpmFile apply_gamma_clamping(float gamma, float V);
+        PpmFile apply_gamma_clamping(double gamma, double V);
 
         /**
          * @brief Apply drago correction to the image.
@@ -74,7 +74,7 @@ class PpmFile {
         /**
          * @brief Apply logarithmic correction to the image.
          */
-        PpmFile apply_logarithmic(float alpha);
+        PpmFile apply_logarithmic(double alpha);
 
         /**
          * @brief Changes the resolution of the image.
@@ -94,8 +94,8 @@ class PpmFile {
         */
         void save(std::string output_file) const;
 
-        float get_range() const;
-        float get_color_resolution() const;
+        double get_range() const;
+        double get_color_resolution() const;
         std::array<int,2> get_dimension() const;
         std::string get_format() const;
 

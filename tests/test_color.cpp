@@ -16,52 +16,52 @@ int main()
     Color rgb1 = Color({255, 0, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv1 = rgb1.RGB_to_HSV();
     Color rgb1_converted = hsv1.HSV_to_RGB();
-    t.addTest("1", Test::EXPECT_EQ(rgb1, rgb1_converted));
+    t.addTest("1", Test::EXPECT_EQ(rgb1.normalize(), rgb1_converted));
 
     Color rgb2 = Color({0, 255, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv2 = rgb2.RGB_to_HSV();
     Color rgb2_converted = hsv2.HSV_to_RGB();
-    t.addTest("2", Test::EXPECT_EQ(rgb2, rgb2_converted));
+    t.addTest("2", Test::EXPECT_EQ(rgb2.normalize(), rgb2_converted));
 
     Color rgb3 = Color({0, 0, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv3 = rgb3.RGB_to_HSV();
     Color rgb3_converted = hsv3.HSV_to_RGB();
-    t.addTest("3", Test::EXPECT_EQ(rgb3, rgb3_converted));
+    t.addTest("3", Test::EXPECT_EQ(rgb3.normalize(), rgb3_converted));
 
     Color rgb4 = Color({255, 255, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv4 = rgb4.RGB_to_HSV();
     Color rgb4_converted = hsv4.HSV_to_RGB();
-    t.addTest("4", Test::EXPECT_EQ(rgb4, rgb4_converted));
+    t.addTest("4", Test::EXPECT_EQ(rgb4.normalize(), rgb4_converted));
 
     Color rgb5 = Color({0, 255, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv5 = rgb5.RGB_to_HSV();
     Color rgb5_converted = hsv5.HSV_to_RGB();
-    t.addTest("5", Test::EXPECT_EQ(rgb5, rgb5_converted));
+    t.addTest("5", Test::EXPECT_EQ(rgb5.normalize(), rgb5_converted));
 
     Color rgb6 = Color({255, 0, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv6 = rgb6.RGB_to_HSV();
     Color rgb6_converted = hsv6.HSV_to_RGB();
-    t.addTest("6", Test::EXPECT_EQ(rgb6, rgb6_converted));
+    t.addTest("6", Test::EXPECT_EQ(rgb6.normalize(), rgb6_converted));
 
     Color rgb7 = Color({192, 192, 192}, Color::RGB_255_RANGE, RGB);
     Color hsv7 = rgb7.RGB_to_HSV();
     Color rgb7_converted = hsv7.HSV_to_RGB();
-    t.addTest("7", Test::EXPECT_EQ(rgb7, rgb7_converted));
+    t.addTest("7", Test::EXPECT_EQ(rgb7.normalize(), rgb7_converted));
 
     Color rgb8 = Color({128, 150, 20}, Color::RGB_255_RANGE, RGB);
     Color hsv8 = rgb8.RGB_to_HSV();
     Color rgb8_converted = hsv8.HSV_to_RGB();
-    t.addTest("8", Test::EXPECT_EQ(rgb8, rgb8_converted));
+    t.addTest("8", Test::EXPECT_EQ(rgb8.normalize(), rgb8_converted));
 
     Color rgb9 = Color({128, 139, 100}, Color::RGB_255_RANGE, RGB);
     Color hsv9 = rgb9.RGB_to_HSV();
     Color rgb9_converted = hsv9.HSV_to_RGB();
-    t.addTest("9", Test::EXPECT_EQ(rgb9, rgb9_converted));
+    t.addTest("9", Test::EXPECT_EQ(rgb9.normalize(), rgb9_converted));
 
     Color rgb10 = Color({128, 138, 100}, Color::RGB_255_RANGE, RGB);
     Color hsv10 = rgb10.RGB_to_HSV();
     Color rgb10_converted = hsv10.HSV_to_RGB();
-    t.addTest("10", Test::EXPECT_EQ(rgb10, rgb10_converted));
+    t.addTest("10", Test::EXPECT_EQ(rgb10.normalize(), rgb10_converted));
 
 
     // Test cases for inequality
@@ -89,7 +89,7 @@ int main()
     t.addTest("14", Test::EXPECT_EQ(hsv11_tone_mapped_1, hsv11));
     t.addTest("15", Test::EXPECT_EQ(hsv11_tone_mapped_2, Color({0,0,1},Color::HSV_STANDARD_RANGE, HSV)));
     t.addTest("16", Test::EXPECT_NEQ(hsv11_tone_mapped_2, hsv11));
-    t.addTest("17", Test::EXPECT_EQ(hsv11_tone_mapped_3, Color({0,0,(float)sqrt(0.5)}, Color::HSV_STANDARD_RANGE, HSV)));
+    t.addTest("17", Test::EXPECT_EQ(hsv11_tone_mapped_3, Color({0,0,(double)sqrt(0.5)}, Color::HSV_STANDARD_RANGE, HSV)));
     t.addTest("18", Test::EXPECT_EQ(hsv11_tone_mapped_4, Color({0,0,1}, Color::HSV_STANDARD_RANGE, HSV)));
     t.addTest("19", Test::EXPECT_EQ(hsv11_tone_mapped_5, Color({0,0,0.25}, Color::HSV_STANDARD_RANGE, HSV)));
     t.addTest("20", Test::EXPECT_NEQ(hsv11_tone_mapped_5, Color({0,0,0.255}, Color::HSV_STANDARD_RANGE, HSV)));

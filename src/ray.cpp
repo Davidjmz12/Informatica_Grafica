@@ -4,7 +4,7 @@ Ray::Ray(Geometric point, Geometric direction)
     : _point(point), _direction(direction.normalize())
 {}
 
-Geometric Ray::evaluate(float t) const
+Geometric Ray::evaluate(double t) const
 {
     return _point+_direction*t;
 } 

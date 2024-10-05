@@ -13,7 +13,7 @@
 
 class Matrix4x4 {
     private:
-        float matrix[4][4]; // Matrix attribute
+        double matrix[4][4]; // Matrix attribute
         
     public:
 
@@ -27,12 +27,12 @@ class Matrix4x4 {
     *   the beggining and completing the last row and colum
     *   by the canonical vector
     */
-    Matrix4x4(float const m[3][3]);
+    Matrix4x4(double const m[3][3]);
 
     /**
     * @brief Basic constructor of a matrix 4x4.
     */
-    Matrix4x4(float const m[4][4]);
+    Matrix4x4(double const m[4][4]);
 
     /**
     * @brief Static method that gives the identity matrix.
@@ -47,7 +47,7 @@ class Matrix4x4 {
     * @throw std::invalid_argument if index out of range.
     * @return the (i,j) index of the matrix, M[i,j]
     */
-    float get(int i, int j) const;
+    double get(int i, int j) const;
 
     /**
     * @brief Computes the inverse of the matrix 4x4.
@@ -59,7 +59,7 @@ class Matrix4x4 {
     * @brief Computes the determinant of the matrix.
     * @return the determinant.
     */
-    float determinant() const;
+    double determinant() const;
 
     /**
     * @brief Computes the sum of the matrix by M.
@@ -83,11 +83,11 @@ class Matrix4x4 {
     Geometric operator*(Geometric g) const;
 
     /**
-    * @brief Computes the multiplication of the matrix by a float.
-    * @param f the float of the multiplication
+    * @brief Computes the multiplication of the matrix by a double.
+    * @param f the double of the multiplication
     * @return Result of the product of the matrix by f.
     */
-    Matrix4x4 operator*(float f) const;
+    Matrix4x4 operator*(double f) const;
 
 
     /**

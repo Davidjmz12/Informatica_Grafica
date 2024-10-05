@@ -10,16 +10,16 @@
 class Intersection
 {
 private:
-    float _distance;
+    double _distance;
     Geometric _normal;
     Geometric _point;
 
 public:
     Intersection();
-    Intersection(float distance, Geometric normal, Geometric point);
+    Intersection(double distance, Geometric normal, Geometric point);
     
     Geometric point() const;
-    float distance() const;
+    double distance() const;
     Geometric normal() const;
     static Intersection min(std::vector<Intersection> intersections);
 };

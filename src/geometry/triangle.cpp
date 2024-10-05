@@ -19,7 +19,7 @@ Plane Triangle::plane() const
     return Plane(this->_v0, this->normal());
 }
 
-float Triangle::implicit(Geometric x) const
+double Triangle::implicit(Geometric x) const
 {
     return plane().implicit(x);
 }
@@ -30,15 +30,15 @@ bool Triangle::point_inside_triangle(Geometric p) const
     Geometric v0v2 = _v2 - _v0;
     Geometric v0p = p - _v0;
 
-    float dot00 = v0v2.dot(v0v2);
-    float dot01 = v0v2.dot(v0v1);
-    float dot02 = v0v2.dot(v0p);
-    float dot11 = v0v1.dot(v0v1);
-    float dot12 = v0v1.dot(v0p);
+    double dot00 = v0v2.dot(v0v2);
+    double dot01 = v0v2.dot(v0v1);
+    double dot02 = v0v2.dot(v0p);
+    double dot11 = v0v1.dot(v0v1);
+    double dot12 = v0v1.dot(v0p);
 
-    float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-    float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-    float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+    double invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+    double u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+    double v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
     return (u >= 0) && (v >= 0) && (u + v < 1);
 }

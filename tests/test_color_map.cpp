@@ -26,9 +26,9 @@ int main()
                            }, RGB);
 
 
-    t.addTest("1", Test::EXPECT_EQ(c1, c1.RGB_to_HSV().HSV_to_RGB()));
-    t.addTest("2", Test::EXPECT_EQ(c2, c2.RGB_to_HSV().HSV_to_RGB()));
-    t.addTest("3", Test::EXPECT_EQ(c1, c2));
+    t.addTest("1", Test::EXPECT_EQ(c1.normalize(), c1.RGB_to_HSV().HSV_to_RGB()));
+    t.addTest("2", Test::EXPECT_EQ(c2.normalize(), c2.RGB_to_HSV().HSV_to_RGB()));
+    t.addTest("3", Test::EXPECT_EQ(c1.normalize(), c2.normalize()));
 
     return t.runAll();
 }

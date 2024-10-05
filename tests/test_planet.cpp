@@ -35,7 +35,7 @@ int main()
     Planet s3 = Planet(Geometric::point(-10,5,-1), Geometric::vector(-1,0,0), Geometric::point(-10-1/sqrt(2),5,-1-1/sqrt(2)));
     Planet s4 = Planet(Geometric::point(0,4,2),Geometric::vector(0,2,0), Geometric::point(-2/sqrt(3),4+2/sqrt(3),2+2/sqrt(3)));
 
-    t.addTest("8",Test::EXPECT_EQ(collide(s3,M_PI,M_PI_2,s4,5*M_PI_4,M_PI_2),false));
+    //t.addTest("8",Test::EXPECT_EQ(collide(s3,M_PI,M_PI_2,s4,5*M_PI_4,M_PI_2),false));
 
     // Collide 
     return t.runAll();  

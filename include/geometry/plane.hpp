@@ -15,7 +15,7 @@ public:
 
     Geometric normal() const;
     
-    float implicit(Geometric x) const;
+    double implicit(Geometric x) const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };

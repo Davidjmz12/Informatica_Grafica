@@ -22,11 +22,11 @@ int main()
     Geometric e3 = Geometric::vector(0,0,1);
     Geometric v1 = Geometric::vector(1,1,1);
     Geometric v2 = Geometric::vector(4,5,8.2);
-    float norm = v2.norm();
+    double norm = v2.norm();
     Geometric v2_n = Geometric::vector(4/norm,5/norm,8.2/norm);
     Geometric e1_4 = Geometric::vector(4,0,0);
     Geometric v2_4_2 = Geometric::vector(16.8,21.0,34.44);
-    Geometric v1xv2 = Geometric::vector((float)3.2,(float)-4.2,(float)1);
+    Geometric v1xv2 = Geometric::vector((double)3.2,(double)-4.2,(double)1);
 
     Geometric v2_e1 = Geometric::vector(5,5,8.2);
     Geometric v2_e2 = Geometric::vector(4,6,8.2);
@@ -45,8 +45,8 @@ int main()
     t.addTest("4", Test::EXPECT_EQ(e1.is_vector(), true)); //4
 
     //Check the norm method
-    t.addTest("5", Test::EXPECT_EQ(e1.norm(), (float)1.0)); //5
-    t.addTest("6", Test::EXPECT_EQ(v1.norm(), (float)sqrt(3))); //6
+    t.addTest("5", Test::EXPECT_EQ(e1.norm(), (double)1.0)); //5
+    t.addTest("6", Test::EXPECT_EQ(v1.norm(), (double)sqrt(3))); //6
     t.addTest("7", Test::EXPECT_EXC([&p] {p.norm();})); //7
  
     //Check the normalize method
@@ -55,8 +55,8 @@ int main()
     t.addTest("10", Test::EXPECT_EXC([&p] {p.normalize();})); //10
 
     //Check the dot product
-    t.addTest("11", Test::EXPECT_EQ(e1.dot(e2), (float)0)); //11
-    t.addTest("12", Test::EXPECT_EQ(v1.dot(v2), (float)17.2)); //12
+    t.addTest("11", Test::EXPECT_EQ(e1.dot(e2), (double)0)); //11
+    t.addTest("12", Test::EXPECT_EQ(v1.dot(v2), (double)17.2)); //12
     t.addTest("13", Test::EXPECT_EXC([&p,&e1]{p.dot(e1);})); //13
     t.addTest("14", Test::EXPECT_EXC([&e1,&p]{e1.dot(p);})); //14
     t.addTest("15", Test::EXPECT_EXC([&p] {p.dot(p);})); //15
@@ -124,9 +124,9 @@ int main()
     t.addTest("61", Test::EXPECT_EQ(p==v1,false)); //61
 
     //Check operator[]
-    t.addTest("62", Test::EXPECT_EQ(v2[0],(float)4)); //62
-    t.addTest("63", Test::EXPECT_EQ(v2[1],(float)5)); //63
-    t.addTest("64", Test::EXPECT_EQ(v2[2],(float)8.2)); //64
+    t.addTest("62", Test::EXPECT_EQ(v2[0],(double)4)); //62
+    t.addTest("63", Test::EXPECT_EQ(v2[1],(double)5)); //63
+    t.addTest("64", Test::EXPECT_EQ(v2[2],(double)8.2)); //64
     t.addTest("65", Test::EXPECT_EXC([&v2]{v2[-1];})); //65
     t.addTest("66", Test::EXPECT_EXC([&v2]{v2[4];})); //66
 

@@ -14,7 +14,7 @@
 
 LinearMap::LinearMap(Matrix4x4 M): matrix(M) {}
 
-LinearMap::LinearMap(float M[4][4])
+LinearMap::LinearMap(double M[4][4])
     : matrix(Matrix4x4(M)) {}
 
 LinearMap LinearMap::change_basis(Base origin, Base b2) 
@@ -22,11 +22,11 @@ LinearMap LinearMap::change_basis(Base origin, Base b2)
     return b2.canonical_to_base().inverse() * origin.canonical_to_base();
 }
 
-LinearMap LinearMap::rotation(Geometric axis, float angle) 
+LinearMap LinearMap::rotation(Geometric axis, double angle) 
 {
     axis = axis.normalize();
 
-    float Kf[4][4] = {  {0       , -axis[2],   axis[1], 0},
+    double Kf[4][4] = {  {0       , -axis[2],   axis[1], 0},
                         {axis[2] ,        0,  -axis[0], 0},
                         {-axis[1],  axis[0],         0, 0},
                         {0       ,        0,         0, 1}
@@ -41,9 +41,9 @@ LinearMap LinearMap::rotation(Geometric axis, float angle)
     return LinearMap(result);
 }
 
-LinearMap LinearMap::scale(float lambda[3]) 
+LinearMap LinearMap::scale(double lambda[3]) 
 {
-    float matrix[4][4] =    {   {lambda[0], 0, 0, 0},
+    double matrix[4][4] =    {   {lambda[0], 0, 0, 0},
                                 {0, lambda[1], 0, 0},
                                 {0, 0, lambda[2], 0},
                                 {0, 0, 0, 1}
@@ -57,7 +57,7 @@ LinearMap LinearMap::translation(Geometric v)
     if (!v.is_vector())
         throw std::invalid_argument("v must be a vector.");
         
-    float matrix[4][4] =    {   {1,0,0,v[0]},
+    double matrix[4][4] =    {   {1,0,0,v[0]},
                                 {0,1,0,v[1]},
                                 {0,0,1,v[2]},
                                 {0,0,0,1}

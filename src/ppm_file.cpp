@@ -28,8 +28,8 @@ std::string readOneLine(std::ifstream& file)
 std::vector<std::vector<Color>> PpmFile::readPixelMap(std::ifstream& file)
 {
     std::vector<std::vector<Color>> pixels;
-    float factor = this->_maxRange/this->_colorResolution;
-    float red, green, blue;
+    double factor = this->_maxRange/this->_colorResolution;
+    double red, green, blue;
 
     // Read the pixels
     for (int i = 0; i < this->_dimension[1]; i++)
@@ -84,7 +84,7 @@ PpmFile::PpmFile(std::string path)
     this->_map = ColorMap(readPixelMap(file), RGB);
 }
 
-PpmFile::PpmFile(ColorMap map, float range, float colorResolution, std::array<int,2> dim, std::string format)
+PpmFile::PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format)
     : _map(map), _maxRange(range), _colorResolution(colorResolution), _dimension{dim}, _format(format)
 {}
 
@@ -106,8 +106,8 @@ void PpmFile::save(std::string output_file) const
 
 void PpmFile::change_resolution(int resolution)
 {
-    this->_colorResolution = (float)resolution;
-    this->_map = this->_map.change_range({(float)resolution, (float)resolution, (float)resolution});
+    this->_colorResolution = (double)resolution;
+    this->_map = this->_map.change_range({(double)resolution, (double)resolution, (double)resolution});
 }
 
 PpmFile PpmFile::apply_clamping()
@@ -126,7 +126,7 @@ PpmFile PpmFile::apply_equalization()
     return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-PpmFile PpmFile::apply_equalization_clamping(float V)
+PpmFile PpmFile::apply_equalization_clamping(double V)
 {
     ToneMapping* equalization_clamping = new EqualizationClamping(V, this->_maxRange);
     ColorMap map = this->_map.apply_tone_mapping(equalization_clamping);
@@ -134,7 +134,7 @@ PpmFile PpmFile::apply_equalization_clamping(float V)
     return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-PpmFile PpmFile::apply_gamma(float gamma)
+PpmFile PpmFile::apply_gamma(double gamma)
 {
     ToneMapping* _gamma = new Gamma(gamma, this->_maxRange);
     ColorMap map = this->_map.apply_tone_mapping(_gamma);
@@ -142,7 +142,7 @@ PpmFile PpmFile::apply_gamma(float gamma)
     return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-PpmFile PpmFile::apply_gamma_clamping(float gamma, float V)
+PpmFile PpmFile::apply_gamma_clamping(double gamma, double V)
 {
     ToneMapping* _gamma_clamping = new GammaClamping(gamma, V, this->_maxRange);
     ColorMap map = this->_map.apply_tone_mapping(_gamma_clamping);
@@ -158,7 +158,7 @@ PpmFile PpmFile::apply_drago()
     return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-PpmFile PpmFile::apply_logarithmic(float alpha)
+PpmFile PpmFile::apply_logarithmic(double alpha)
 {
     ToneMapping* log = new Logarithmic(this->_maxRange, alpha);
     ColorMap map = this->_map.apply_tone_mapping(log);
@@ -166,12 +166,12 @@ PpmFile PpmFile::apply_logarithmic(float alpha)
     return PpmFile(map, this->get_range(), this->get_color_resolution(), this->get_dimension(), this->get_format());
 }
 
-float PpmFile::get_range() const
+double PpmFile::get_range() const
 {
     return this->_maxRange;
 }
 
-float PpmFile::get_color_resolution() const
+double PpmFile::get_color_resolution() const
 {
     return this->_colorResolution;
 }

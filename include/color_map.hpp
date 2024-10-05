@@ -45,14 +45,14 @@ class ColorMap {
          * @brief Adjusts the color map by changing its range based on the provided factor.
          * 
          * This function creates a new ColorMap instance where the range of colors is 
-         * modified according to the given factor. The factor is an array of three float 
+         * modified according to the given factor. The factor is an array of three double 
          * values that represent the scaling factors for the color components.
          * 
-         * @param factor An array of three float values representing the scaling factors 
+         * @param factor An array of three double values representing the scaling factors 
          *               for the color components (e.g., [red_factor, green_factor, blue_factor]).
          * @return A new ColorMap instance with the adjusted color range.
          */
-        ColorMap change_range(std::array<float,3> factor) const;
+        ColorMap change_range(std::array<double,3> factor) const;
         
         /**
          * @brief Convert all colors in the map from RGB to HSV.
@@ -72,6 +72,12 @@ class ColorMap {
          * @return ColorMap with tone-mapped colors.
          */
         ColorMap apply_tone_mapping(ToneMapping* t) const;
+
+        /**
+         * @brief Normalize de ColorMap.
+         * @return ColorMap normalized.
+         */
+        ColorMap normalize() const;
 
         /**
          * @brief Get the colors in the map.

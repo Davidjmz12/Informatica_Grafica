@@ -12,19 +12,19 @@ Plane::Plane(Geometric p1, Geometric p2, Geometric p3)
     this->_point = p1;
 }
 
-float Plane::implicit(Geometric x) const
+double Plane::implicit(Geometric x) const
 {
     return this->_normal.dot(x-this->_point);
 }
 
 bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
 {
-    float v_dot_n = ray.direction().dot(this->_normal);
-    if(eqFloat(v_dot_n, 0))
+    double v_dot_n = ray.direction().dot(this->_normal);
+    if(eqD(v_dot_n, 0))
         return false;
 
     
-    float distance = (this->_point - ray.point()).dot(this->_normal) / v_dot_n;
+    double distance = (this->_point - ray.point()).dot(this->_normal) / v_dot_n;
 
     Geometric point = ray.evaluate(distance);
 

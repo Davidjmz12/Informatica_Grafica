@@ -5,21 +5,21 @@ class Cylinder: public Geometry
 {
 private:
     Geometric _center;
-    float _radius;
+    double _radius;
     Geometric _axis;
-    float _height;
+    double _height;
     Disk _top, _bottom;
 
     bool intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const;
 
     bool intersect_with_ray_finite_cylinder(const Ray& r, Intersection& intersection) const;
 
-    Intersection intersection_in_a_point(const Ray& r, float distance) const;
+    Intersection intersection_in_a_point(const Ray& r, double distance) const;
 
 public:
-    Cylinder(Geometric center, float radius, Geometric axis);
+    Cylinder(Geometric center, double radius, Geometric axis);
 
-    float implicit(Geometric x) const;
+    double implicit(Geometric x) const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 

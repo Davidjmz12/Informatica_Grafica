@@ -13,7 +13,7 @@ PlyFile::PlyFile(std::string file_path)
     std::vector<Geometric> points;
     for(unsigned int i = 0; i < num_vertices; i++)
     {
-        float x, y, z;
+        double x, y, z;
         file >> x >> y >> z;
         points.push_back(Geometric::point(x,y,z));
     }

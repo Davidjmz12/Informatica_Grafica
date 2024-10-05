@@ -36,28 +36,28 @@ class Color
 {
 private:
 
-    std::array<float, 3> _colors; ///< Array to store color components
+    std::array<double, 3> _colors; ///< Array to store color components
     ColorEncoding _type; ///< Encoding type of the color
-    std::array<float, 3> _range; ///< Range of the color components
+    std::array<double, 3> _range; ///< Range of the color components
     
     /**
      * @brief Get the maximum value among the color components.
      * @return Maximum value among the color components.
      */
-    float max() const;
+    double max() const;
 
     /**
      * @brief Get the minimum value among the color components.
      * @return Minimum value among the color components.
      */
-    float min() const;
+    double min() const;
 
 
 public:
 
-    static const std::array<float, 3> RGB_STANDARD_RANGE; ///< Standard range for RGB colors
-    static const std::array<float, 3> HSV_STANDARD_RANGE; ///< Standard range for HSV colors
-    static const std::array<float, 3> RGB_255_RANGE; ///< Range for RGB colors with 255 as maximum value
+    static const std::array<double, 3> RGB_STANDARD_RANGE; ///< Standard range for RGB colors
+    static const std::array<double, 3> HSV_STANDARD_RANGE; ///< Standard range for HSV colors
+    static const std::array<double, 3> RGB_255_RANGE; ///< Range for RGB colors with 255 as maximum value
 
     /**
      * @brief Construct a new Color object with a range from 0 to 1.
@@ -67,15 +67,15 @@ public:
      * @param type Encoding type of the color.
      * @throws std::invalid_argument if any color component is out of the standard ranges.
      */
-    Color(std::array<float, 3> colors, std::array<float, 3> range , ColorEncoding type);
+    Color(std::array<double, 3> colors, std::array<double, 3> range , ColorEncoding type);
 
     /**
-     * @brief Generates an array of three float values, each equal to the input value.
+     * @brief Generates an array of three double values, each equal to the input value.
      * 
-     * @param f The float value to be repeated in the array.
-     * @return std::array<float, 3> An array containing three float values, all equal to the input value.
+     * @param f The double value to be repeated in the array.
+     * @return std::array<double, 3> An array containing three double values, all equal to the input value.
      */
-    static std::array<float, 3> same_range(float f);
+    static std::array<double, 3> same_range(double f);
 
     /**
      * @brief Normalizes the color values.
@@ -87,13 +87,13 @@ public:
     /**
      * @brief Changes the color range to a new specified range.
      * 
-     * This function takes a new range specified by an array of three float values
+     * This function takes a new range specified by an array of three double values
      * and returns a Color object with the updated range.
      * 
-     * @param new_range An array of three float values representing the new color range.
+     * @param new_range An array of three double values representing the new color range.
      * @return Color A Color object with the updated range.
      */
-    Color change_range(std::array<float, 3> new_range) const;
+    Color change_range(std::array<double, 3> new_range) const;
 
     /**
      * @brief Access color components by index.
@@ -101,7 +101,7 @@ public:
      * @return Value of the color component at the given index.
      * @throws std::out_of_range if the index is out of bounds.
      */
-    float operator[](int index) const;
+    double operator[](int index) const;
 
     /**
      * @brief Convert RGB color to HSV.
