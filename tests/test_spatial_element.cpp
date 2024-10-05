@@ -1,9 +1,9 @@
 /**
- * @file test_geometric.cpp
- * @brief File that tests the Geometric class
+ * @file test_spatial_element.cpp
+ * @brief File that tests the SpatialElement class
  *
  * This file contains all the tests that has been made
- * for the Geometric class.
+ * for the SpatialElement class.
 */
 #include <math.h>
 

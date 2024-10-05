@@ -1,9 +1,9 @@
 
 # TEST GEOMETRIC
-add_executable(test_geometric test_geometric.cpp)
-target_link_libraries(test_geometric PUBLIC spatial_element vector point)
-add_test(NAME test_geometric COMMAND test_geometric)
-target_include_directories(test_geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_executable(test_spatial_element test_spatial_element.cpp)
+target_link_libraries(test_spatial_element PUBLIC spatial_element vector point)
+add_test(NAME test_spatial_element COMMAND test_spatial_element)
+target_include_directories(test_spatial_element PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # TEST LINEAR MAP
 add_executable(test_linear_map test_linear_map.cpp)
