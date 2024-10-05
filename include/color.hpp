@@ -57,6 +57,7 @@ public:
 
     static const std::array<float, 3> RGB_STANDARD_RANGE; ///< Standard range for RGB colors
     static const std::array<float, 3> HSV_STANDARD_RANGE; ///< Standard range for HSV colors
+    static const std::array<float, 3> RGB_255_RANGE; ///< Range for RGB colors with 255 as maximum value
 
     /**
      * @brief Construct a new Color object with a range from 0 to 1.

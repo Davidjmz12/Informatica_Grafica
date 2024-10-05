@@ -2,7 +2,8 @@
 #include "geometry/cylinder.hpp"
 
 Cylinder::Cylinder(Geometric center, float radius, Geometric axis)
-    : _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm())
+    : _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
+      _top(Disk(center+axis,axis,radius)), _bottom(Disk(center,axis,radius))
 {
     if(axis.norm() == 0)
         throw std::invalid_argument("The axis of the cylinder must be different from the zero vector");
@@ -19,7 +20,7 @@ Intersection Cylinder::intersection_in_a_point(const Ray& r, float distance) con
 {
     Geometric point_int = r.evaluate(distance);
     Geometric normal,projection;
-    projection= _center + _axis*_center.dot(point_int-_center); 
+    projection= _center + _axis*(_center-Geometric::point0()).dot(point_int-_center); 
     normal = (point_int-projection).normalize();
     return Intersection(distance,normal,point_int);
 }
@@ -42,25 +43,69 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
         return false;
     else if (delta==0)
     {
+        if(eqFloat(a,0)) // no solution
+            return false;
+        
         intersection = intersection_in_a_point(r,-b/(2*a));
         return true;
     } else 
     {
-        Intersection i1,i2;
-        i1 = intersection_in_a_point(r,(-b+sqrt(delta))/(2*a));
-        i2 = intersection_in_a_point(r,(-b-sqrt(delta))/(2*a));
-        intersection = i1.distance()<i2.distance()?i1:i2;
+        std::vector<Intersection> int_points;
+        if(eqFloat(a,0)) // There is solution because b!=0
+        {
+            Intersection i1;
+            i1 = intersection_in_a_point(r,-c/b);
+            int_points.push_back(i1);
+        }
+        else
+        {
+            Intersection i1,i2;
+            i1 = intersection_in_a_point(r,(-b+sqrt(delta))/(2*a));
+            i2 = intersection_in_a_point(r,(-b-sqrt(delta))/(2*a));
+            int_points.push_back(i1);
+            int_points.push_back(i2);
+
+        }
+
+        intersection = Intersection::min(int_points);
         return true;
     }
 }
 
-bool Cylinder::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, Intersection& intersection) const
 {
     if(!intersect_with_ray_infinite_cylinder(r, intersection))
         return false;
     
-    if(intersection.point().dot(_axis) < 0 || intersection.point().dot(_axis) > _height)
+    float int_point_dot_axis = (intersection.point()-Geometric::point0()).dot(_axis);
+
+    if( ltFloat(int_point_dot_axis, 0) || gtFloat(int_point_dot_axis, _height))
         return false;
     
+    return true;
+}
+
+bool Cylinder::intersect_with_ray(const Ray& r, Intersection& intersection) const
+{
+    
+    if(!intersect_with_ray_finite_cylinder(r, intersection)){
+        std::vector<Intersection> int_bases;
+        for(auto i: { _top, _bottom })
+        {
+            Intersection intersection_aux;
+            if(i.intersect_with_ray(r, intersection_aux))
+            {
+                int_bases.push_back(intersection_aux);
+            }
+        }
+        
+        if(int_bases.size() == 0)
+            return false;
+        else{
+            intersection = Intersection::min(int_bases);
+            return true;
+        }    
+    }
+
     return true;
 }

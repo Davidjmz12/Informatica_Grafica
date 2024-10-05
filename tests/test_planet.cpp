@@ -22,8 +22,6 @@ int main()
 
     t.addTest("3",Test::EXPECT_EQ(collide(s1,M_PI,M_PI_2,s2,0,M_PI_2),true));
     t.addTest("4",Test::EXPECT_EQ(collide(s1,0,M_PI_2,s2,M_PI,M_PI_2),false));
-    
-
 
 
     Planet s13 = Planet(Geometric::point(1,0,0),Geometric::vector(sqrt(2)/2,sqrt(2)/2,0),Geometric::point(1/sqrt(2)+1,-1/sqrt(2),0));

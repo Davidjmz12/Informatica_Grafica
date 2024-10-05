@@ -21,5 +21,5 @@ public:
     Geometric point() const;
     float distance() const;
     Geometric normal() const;
-    Intersection min(std::vector<Intersection> intersections) const;
+    static Intersection min(std::vector<Intersection> intersections);
 };

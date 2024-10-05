@@ -12,6 +12,7 @@
 
 const std::array<float, 3> Color::RGB_STANDARD_RANGE = {1.0f, 1.0f, 1.0f};
 const std::array<float, 3> Color::HSV_STANDARD_RANGE = {6.0f, 1.0f, 1.0f};
+const std::array<float, 3> Color::RGB_255_RANGE = {255.0f, 255.0f, 255.0f};
 
 
 

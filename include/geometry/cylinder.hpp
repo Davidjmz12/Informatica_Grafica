@@ -1,4 +1,5 @@
 #include "geometry/geometry.hpp"
+#include "geometry/disk.hpp"
 
 class Cylinder: public Geometry
 {
@@ -7,8 +8,11 @@ private:
     float _radius;
     Geometric _axis;
     float _height;
+    Disk _top, _bottom;
 
-    bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const;
+
+    bool intersect_with_ray_finite_cylinder(const Ray& r, Intersection& intersection) const;
 
     Intersection intersection_in_a_point(const Ray& r, float distance) const;
 

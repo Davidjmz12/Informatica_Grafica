@@ -34,3 +34,23 @@ inline bool eqFloat(float a, float b)
 {
     return fabs(a - b) < THRESHOLD_FLOAT;
 }
+
+inline bool ltFloat(float a, float b)
+{
+    return a - b < -THRESHOLD_FLOAT;
+}
+
+inline bool gtFloat(float a, float b)
+{
+    return ltFloat(b, a);
+}
+
+inline bool leFloat(float a, float b)
+{
+    return ltFloat(a, b) || eqFloat(a, b);
+}
+
+inline bool geFloat(float a, float b)
+{
+    return gtFloat(a, b) || eqFloat(a, b);
+}

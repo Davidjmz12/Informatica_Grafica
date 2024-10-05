@@ -12,7 +12,7 @@ bool Disk::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     if(!_plane.intersect_with_ray(r, intersection))
         return false;
-    if((intersection.point()-_plane.point()).norm() > _radius)
+    if( gtFloat((intersection.point()-_plane.point()).norm(), _radius) )
         return false;
     return true;
 }

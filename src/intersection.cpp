@@ -21,7 +21,7 @@ Geometric Intersection::normal() const
     return this->_normal;
 }
 
-Intersection Intersection::min(std::vector<Intersection> intersections) const
+Intersection Intersection::min(std::vector<Intersection> intersections)
 {
     if(intersections.size() == 0)
         throw new std::invalid_argument("The vector of intersections must have at least one element");
