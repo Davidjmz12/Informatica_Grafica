@@ -8,11 +8,17 @@
 #include <math.h>
 
 #include "test.hpp"
-#include "geometric.hpp"
+#include "spatial_element/vector.hpp"
 
 int main()
 {
-    Tests t = Tests("GEOMETRIC_TEST");
+    Tests t = Tests("SPATIAL ELEMENTS TEST");
+
+    Vector v = Vector();
+
+    t.addTest("1", Test::EXPECT_EQ(v,Vector(0,0,0)));
+
+    /*
 
     Geometric p = Geometric::point(1,1,1);
     Geometric p_plus_v2 = Geometric::point(5,6,9.2);
@@ -129,6 +135,8 @@ int main()
     t.addTest("64", Test::EXPECT_EQ(v2[2],(float)8.2)); //64
     t.addTest("65", Test::EXPECT_EXC([&v2]{v2[-1];})); //65
     t.addTest("66", Test::EXPECT_EXC([&v2]{v2[4];})); //66
+
+    */
 
     return t.runAll();
 }

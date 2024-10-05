@@ -1,4 +1,3 @@
-
 # Libraries
 add_library(geometry geometry.cpp)
 target_link_libraries(geometry PUBLIC ray)

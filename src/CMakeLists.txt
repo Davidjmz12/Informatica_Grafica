@@ -45,6 +45,7 @@ target_link_libraries(ply_file PUBLIC triangle)
 
 
 add_subdirectory(geometry)
+add_subdirectory(spatial_element)
 
 # Include directories
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
