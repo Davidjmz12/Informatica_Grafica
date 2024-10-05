@@ -19,22 +19,23 @@ class Ellipsoid : Geometry
 {
 private:
     float _a, _b, _c; // Parameters for defining the ellipsoid
-    Geometric _center; // Center point
+    Point _center; // Center point
 
     /**
      * @brief Computes the normal vector of the ellipsoid in
      * the given point p.
      * @param p The point.
      * @throw std::runtime_error if the point is not in the ellipsoid.
+     * @return The normal vector to the surface in the point p
      */
-    Geometric normal(Geometric p) const;
+    Vector normal(Point p) const;
 
     /**
      * @brief Check if a point is in the ellipsoid
      * @param p The point that is going to be checked.
      * @return True if the point is in the ellipsoid. False otherwise.
      */
-    bool is_in_ellipsoid(Geometric p) const;
+    bool is_in_ellipsoid(Point p) const;
 
 public:
 
@@ -46,7 +47,7 @@ public:
      * @param center The center.
      * @throw std::invalid_argument if some factors are zero.
      */
-    Ellipsoid(float a, float b, float c, Geometric center);
+    Ellipsoid(float a, float b, float c, Point center);
 
     /**
      * @brief Computes if the ellipsoid intersects with a ray and stores
@@ -56,7 +57,7 @@ public:
      * to be stored.
      * @return True if there is an intersection. False otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
 
-    float implicit(Geometric x) const;
+    double implicit(Point x) const override;
 };

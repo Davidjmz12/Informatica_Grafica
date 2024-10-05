@@ -78,8 +78,8 @@ class Matrix4x4 {
     Matrix4x4 operator*(Matrix4x4 M) const;
 
     /**
-    * @brief Computes the multiplication of the matrix by a geometric (array 4x1).
-    * @param g the geometric to multiply with
+    * @brief Computes the multiplication of the matrix by a spatial element (array 4x1).
+    * @param s the spatial element to multiply with
     * @return Result of the product of the matrix by M.
     */
     SpatialElement* operator*(const SpatialElement* s) const;

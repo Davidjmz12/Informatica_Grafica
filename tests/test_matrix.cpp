@@ -92,10 +92,9 @@ int main()
     t.addTest("13",Test::EXPECT_EQ(m4*m4i, Matrix4x4::identity()));
 
     // OPERATOR * GEOMETRIC TEST 14
-    Vector v = Vector(-2,1.0/2,3.0/2);
-
-    SpatialElement* v = new Vector(7.0/2,-5,7.0/2);
-    t.addTest("14",Test::EXPECT_EQ(m5*(&v), v));
+    SpatialElement* v = new Vector(-2,1.0/2,3.0/2);
+    Point p = Point(7.0/2,-5,7.0/2);
+    t.addTest("14",Test::EXPECT_EQ(Point(m5*v), p));
 
     return t.runAll();
 }

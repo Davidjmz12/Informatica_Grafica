@@ -16,20 +16,16 @@ bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2)
 {
     Base b1 = s1.base_point(inc1,az1); 
     Base b2 = s2.base_point(inc2,az2);
-    Geometric coord_b1 = b1.coord_from_canonical(b2.center);
-    Geometric coord_b2 = b2.coord_from_canonical(b1.center);
+    SpatialElement* coord_b1 = b1.coord_from_canonical(new Point(b2._center));
+    SpatialElement* coord_b2 = b2.coord_from_canonical(new Point(b1._center));
     
-    return coord_b1[2] < -THRESHOLD_FLOAT || coord_b2[2] < -THRESHOLD_FLOAT;
+    return (*coord_b1)[2] < -THRESHOLD_FLOAT || (*coord_b2)[2] < -THRESHOLD_FLOAT;
 }
 
 
-Planet::Planet(Geometric center, Geometric axis, Geometric ref_point)
-    : center(center), ref_point(ref_point), axis(axis), radius(axis.norm())
+Planet::Planet(Point center, Vector axis, Point ref_point)
+    : _center(center), _ref_point(ref_point), _axis(axis), _radius(axis.norm())
 {
-    // Check if the parameters are correct
-    if (center.is_vector() || axis.is_point() || ref_point.is_vector())
-        throw std::invalid_argument("Center and ref_point must be points. Axis must be a vector.");
-
     // Check if the ref_point is in the planet
     if (!this->point_in_planet(ref_point))
         throw std::invalid_argument("Error: The ref_point is not in the planet.");
@@ -38,25 +34,28 @@ Planet::Planet(Geometric center, Geometric axis, Geometric ref_point)
 Base Planet::base_point(float inclination, float azimut)
 {
     //Compute the point
-    LinearMap r1 = LinearMap::rotation(this->axis,azimut);
-    Geometric v1 = r1*(this->ref_point-this->center);
-    Geometric axis_second_rotation =  this->axis.cross(v1);
+    LinearMap r1 = LinearMap::rotation(this->_axis,azimut);
+    SpatialElement* s = new Vector(this->_ref_point-this->_center);
+    SpatialElement* v1 = r1*s;
+    Vector v1_vec = Vector(v1);
+    Vector axis_second_rotation =  this->_axis.cross(&v1_vec);
 
-    float angle_ref_axis = acos(this->axis.normalize().dot((this->ref_point-this->center).normalize()));
+    Vector aux = Vector(s).normalize();
+    float angle_ref_axis = acos(this->_axis.normalize().dot(&aux));
 
     LinearMap r2 = LinearMap::rotation(axis_second_rotation,inclination - angle_ref_axis);
 
-    Geometric point = r2*v1 + this->center;
+    Point point = Point(r2*v1) + Vector(this->_center);
 
     //Compute the axis
-    Geometric normal = (point-this->center).normalize();
-    Geometric tangent_long = this->axis.cross(normal).normalize();
-    Geometric tangent_lat = normal.cross(tangent_long);
+    Vector normal = (point-this->_center).normalize();
+    Vector tangent_long = this->_axis.cross(&normal).normalize();
+    Vector tangent_lat = normal.cross(&tangent_long);
 
     return Base(point, tangent_long, tangent_lat, normal);
 }
 
-bool Planet::point_in_planet(Geometric p) {
-    float radius_point_p = (this->center - p).norm();
-    return eqFloat(radius_point_p, this->radius);
+bool Planet::point_in_planet(Point p) {
+    float radius_point_p = (this->_center - p).norm();
+    return eqFloat(radius_point_p, this->_radius);
 }

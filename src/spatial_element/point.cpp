@@ -14,6 +14,10 @@ Point::Point(double x, double y, double z)
     : SpatialElement(x,y,z)
 {}
 
+Point::Point(SpatialElement* s)
+    : SpatialElement(*s)
+{}
+
 Point::Point(const Vector v)
     : SpatialElement(v[0],v[1],v[2])
 {}

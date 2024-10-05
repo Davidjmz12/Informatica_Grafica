@@ -18,6 +18,10 @@ Vector::Vector(Point p)
     : SpatialElement(p[0],p[1],p[2])
 {}
 
+Vector::Vector(SpatialElement* s)
+    : SpatialElement(*s)
+{}
+
 Vector::Vector()
     : SpatialElement(0,0,0)
 {}

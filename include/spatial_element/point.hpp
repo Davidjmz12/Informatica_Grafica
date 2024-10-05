@@ -22,6 +22,8 @@ public:
 
     explicit Point(const Vector v);
 
+    explicit Point(SpatialElement* s);
+
     Point();
 
     bool is_point() const override;

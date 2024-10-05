@@ -2,8 +2,8 @@
  * @file linear_map.hpp
  * @brief Defines a linear map.
  *
- * This file contains the definition of the Geometric class, which represents
- * points and vectors with 3 components.
+ * This file contains the definition of the LinearMap class,
+ * which represents linear mappings.
 */
 
 #pragma once
@@ -95,10 +95,10 @@ class LinearMap {
 
         /**
         * @brief A method that redefines the product operator between
-        *   a linear map and a geometric.
-        * @param g The geometric which is going to be transformed.
-        * @return The geometric result of apply the linear map to
-        *   the geometric.
+        *   a linear map and a spatial element.
+        * @param s The spatial element which is going to be transformed.
+        * @return The spatial element result of apply the linear map to
+        *   the spatial element.
         */
         SpatialElement* operator*(const SpatialElement* s) const;
 

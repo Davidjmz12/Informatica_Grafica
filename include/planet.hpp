@@ -20,16 +20,16 @@
 class Planet
 {
     private:
-        Geometric center;       // Point: Center of the planet
-        Geometric ref_point;    // Point: Reference point
-        Geometric axis;         // Vector: Axis that connects north and south pole 
+        Point _center;       // Point: Center of the planet
+        Point _ref_point;    // Point: Reference point
+        Vector _axis;        // Vector: Axis that connects north and south pole 
 
-        float radius;           // The radius of the planet
+        float _radius;       // The radius of the planet
         
 
     public:
 
-        Planet(Geometric center, Geometric axis, Geometric ref_point);
+        Planet(Point center, Vector axis, Point ref_point);
 
         /**
         * @brief A method that computes the base_point reference
@@ -44,7 +44,7 @@ class Planet
         * @param p The point that is going to be checked.
         * @return True if the point is in the planet. False otherwise. 
         */
-        bool point_in_planet(Geometric p);
+        bool point_in_planet(Point p);
 };
 
 /**

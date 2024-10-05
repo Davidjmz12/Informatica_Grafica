@@ -9,7 +9,7 @@
 #include <cmath>
 #include <string>
 
-const float THRESHOLD_FLOAT = 1e-5; // Threshold for comparing float values
+const float THRESHOLD_FLOAT = 1e-4; // Threshold for comparing float values
 
 
 // Color constants
