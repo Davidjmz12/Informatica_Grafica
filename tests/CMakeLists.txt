@@ -1,7 +1,7 @@
 
 # TEST GEOMETRIC
 add_executable(test_geometric test_geometric.cpp)
-target_link_libraries(test_geometric PUBLIC geometric)
+target_link_libraries(test_geometric PUBLIC spatial_element vector point)
 add_test(NAME test_geometric COMMAND test_geometric)
 target_include_directories(test_geometric PUBLIC ${CMAKE_SOURCE_DIR}/include)
 

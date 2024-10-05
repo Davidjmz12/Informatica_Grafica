@@ -14,9 +14,18 @@ Point::Point(double x, double y, double z)
     : SpatialElement(x,y,z)
 {}
 
+Point::Point(const Vector v)
+    : SpatialElement(v[0],v[1],v[2])
+{}
+
 Point::Point()
     : SpatialElement(0,0,0)
 {}
+
+bool Point::is_point() const
+{
+    return true;
+}
 
 Point Point::operator+(const Vector v) const
 {

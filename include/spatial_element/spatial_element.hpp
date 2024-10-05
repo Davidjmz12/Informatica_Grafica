@@ -27,4 +27,8 @@ public:
     double operator[](int index) const;
 
     friend std::ostream& operator<<(std::ostream& os, const SpatialElement& s);
+
+    virtual bool is_point() const;
+
+    virtual bool is_vector() const;
 };

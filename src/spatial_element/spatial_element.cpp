@@ -19,7 +19,7 @@ double SpatialElement::operator[](int index) const
     if (index < 0 || index > 2)
         throw std::out_of_range("Index must be between 0-2");
 
-    return (*this)[index];
+    return this->_coordinates[index];
 }
 
 std::ostream&  operator<<(std::ostream& os, const SpatialElement& s) 
@@ -28,4 +28,14 @@ std::ostream&  operator<<(std::ostream& os, const SpatialElement& s)
                     std::setprecision(6) << s[1] << "," <<
                     std::setprecision(6) << s[2] << ")";
     return os;
+}
+
+bool SpatialElement::is_point() const
+{
+    return false;
+}
+
+bool SpatialElement::is_vector() const
+{
+    return false;
 }

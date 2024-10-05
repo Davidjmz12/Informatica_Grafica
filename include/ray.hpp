@@ -5,14 +5,12 @@
 class Ray
 {
 private:
-    Geometric _point;
-    Geometric _direction;
+    Point _point;
+    Vector _direction;
     
 public:
-    Ray(Geometric point, Geometric direction);
-    Geometric evaluate(float t) const;
-    Geometric point() const;
-    Geometric direction() const;
-
-    Geometric evaluate_point(float t) const;
+    Ray(Point point, Vector direction);
+    Point evaluate(float t) const;
+    Point get_point() const;
+    Vector get_direction() const;
 };

@@ -13,12 +13,18 @@
 #include <spatial_element/spatial_element.hpp>
 #include <spatial_element/vector.hpp>
 
+class Vector;
+
 class Point : public SpatialElement
 {
 public:
     Point(double x, double y, double z);
 
+    explicit Point(const Vector v);
+
     Point();
+
+    bool is_point() const override;
 
     Point operator+(const Vector v) const;
 

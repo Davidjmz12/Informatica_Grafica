@@ -14,9 +14,18 @@ Vector::Vector(double x, double y, double z)
     : SpatialElement(x,y,z)
 {}
 
+Vector::Vector(Point p)
+    : SpatialElement(p[0],p[1],p[2])
+{}
+
 Vector::Vector()
     : SpatialElement(0,0,0)
 {}
+
+bool Vector::is_vector() const
+{
+    return true;
+}
 
 double Vector::norm() const
 {
@@ -54,7 +63,7 @@ Vector Vector::cross(const Vector* v) const
 
 bool Vector::linearly_dependent(const Vector* v) const
 {
-    return Vector() == Vector();
+    return this->normalize() == v->normalize();
 }
 
 bool Vector::is_base(const Vector* v1, const Vector* v2) const

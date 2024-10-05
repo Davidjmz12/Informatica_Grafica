@@ -33,7 +33,7 @@ class LinearMap {
         * @brief Method that creates a linear map given an array.
         * @param matrix The matrix of the transformation.
         */
-        LinearMap(float M[4][4]);
+        LinearMap(double M[4][4]);
         
         /**
         * @brief A method that creates a linear map to make a
@@ -53,7 +53,7 @@ class LinearMap {
         * @return The linear map of the rotation around axis with
         *   a determined angle.
         */
-        static LinearMap rotation(Geometric axis, float angle);
+        static LinearMap rotation(Vector axis, double angle);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -61,7 +61,7 @@ class LinearMap {
         * @param lambda The scaled factor for each axis.
         * @return The linear map of the scale.
         */
-        static LinearMap scale(float lambda[3]);
+        static LinearMap scale(double lambda[3]);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -70,7 +70,7 @@ class LinearMap {
         * @return The linear map of the translation.
         * @throw std::invalid_argument if v is not a vector.
         */
-        static LinearMap translation(Geometric v);
+        static LinearMap translation(Vector v);
 
         /**
         * @brief A method that gives the identity map.
@@ -100,7 +100,7 @@ class LinearMap {
         * @return The geometric result of apply the linear map to
         *   the geometric.
         */
-        Geometric operator*(Geometric g) const;
+        SpatialElement* operator*(const SpatialElement* s) const;
 
         /**
         * @brief A method that redefines the equality operator between

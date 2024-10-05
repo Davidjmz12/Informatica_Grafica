@@ -1,28 +1,12 @@
 #include "intersection.hpp"
 
 Intersection::Intersection():
-    _distance(std::numeric_limits<float>::max()),_normal(Geometric::vector0()),_point(Geometric::point0()){}
+    _distance(std::numeric_limits<float>::max()),_normal(Vector()),_point(Point()){}
 
-Intersection::Intersection(float distance, Geometric normal, Geometric point):
+Intersection::Intersection(float distance, Vector normal, Point point):
     _distance(distance),_normal(normal),_point(point){}
 
-bool Intersection::operator==(const Intersection i) const
-{
-    return  eqFloat(this->_distance,i._distance) &&
-            this->_normal == i._normal &&
-            this->_point == i._point;
-}
-
-std::ostream& operator<<(std::ostream& os, const Intersection& i)
-{
-    std::string str = "hola";
-    os  << std::string("Intersection:\n\tPoint:\t") << i._point
-        << std::string("\tNormal:\t") << i._normal
-        << std::string("\tDistance:\t") << std::to_string(i._distance);
-    return os;
-}
-
-Geometric Intersection::point() const
+Point Intersection::get_point() const
 {
     return this->_point;
 }
@@ -32,7 +16,7 @@ float Intersection::distance() const
     return this->_distance;
 }
 
-Geometric Intersection::normal() const
+Vector Intersection::get_normal() const
 {
     return this->_normal;
 }
@@ -48,4 +32,20 @@ Intersection Intersection::min(std::vector<Intersection> intersections) const
             min_intersection = intersection;
     }
     return min_intersection;
+}
+
+bool Intersection::operator==(const Intersection i) const
+{
+    return  eqFloat(this->_distance,i._distance) &&
+            this->_normal == i._normal &&
+            this->_point == i._point;
+}
+
+std::ostream& operator<<(std::ostream& os, const Intersection& i)
+{
+    std::string str = "hola";
+    os  << std::string("Intersection:\n\tPoint:\t") << i._point
+        << std::string("\tNormal:\t") << i._normal
+        << std::string("\tDistance:\t") << std::to_string(i._distance);
+    return os;
 }

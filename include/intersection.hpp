@@ -5,23 +5,24 @@
 #include <vector>
 #include <stdexcept>
 
-#include "geometric.hpp"
+#include "spatial_element/vector.hpp"
+#include "spatial_element/point.hpp"
 
 
 class Intersection
 {
 private:
     float _distance;
-    Geometric _normal;
-    Geometric _point;
+    Vector _normal;
+    Point _point;
 
 public:
     Intersection();
-    Intersection(float distance, Geometric normal, Geometric point);
+    Intersection(float distance, Vector normal, Point point);
     
-    Geometric point() const;
+    Point get_point() const;
     float distance() const;
-    Geometric normal() const;
+    Vector get_normal() const;
     Intersection min(std::vector<Intersection> intersections) const;
 
     bool operator==(const Intersection i) const;

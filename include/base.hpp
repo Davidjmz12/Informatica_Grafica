@@ -25,12 +25,13 @@ class Base {
 
 private:
 
-    Matrix4x4 matrix;
-    Matrix4x4 matrix_inverse;
+    Matrix4x4 _matrix;
+    Matrix4x4 _matrix_inverse;
 
 public:
 
-    Geometric center,x,y,z;
+    Point _center;
+    Vector _i, _j, _k;
     
     /**
     * @brief Creates a base with center p and axis i,j,k.
@@ -39,7 +40,7 @@ public:
     * @param j The second vector of the base.
     * @param k The third vector of tha base.
     */
-    Base(Geometric p, Geometric i, Geometric j, Geometric k);
+    Base(Point p, Vector i, Vector j, Vector k);
 
     /**
     * @brief Method that gives the canionic base.
@@ -52,14 +53,14 @@ public:
     * @param g Point with coordinates (x,y,z) in cannonical base.
     * @return The coordinates of the point in the base-axis.
     */  
-    Geometric coord_from_canonical(Geometric g) const;
+    SpatialElement* coord_from_canonical(const SpatialElement* s) const;
 
     /**
     * @brief Method that gives the point in a basis.
     * @param g Point with coordinates (x,y,z) in this base.
     * @return The point with the coordinates (x,y,z).
     */        
-    Geometric coord_into_canonical(Geometric g) const;
+    SpatialElement* coord_into_canonical(const SpatialElement* s) const;
 
     /**
     * @brief Method that gives the matrix of this base.

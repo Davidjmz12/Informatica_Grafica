@@ -1,25 +1,20 @@
 #include "ray.hpp"
 
-Ray::Ray(Geometric point, Geometric direction)
+Ray::Ray(Point point, Vector direction)
     : _point(point), _direction(direction.normalize())
 {}
 
-Geometric Ray::evaluate(float t) const
+Point Ray::evaluate(float t) const
 {
     return _point+_direction*t;
 } 
 
-Geometric Ray::point() const
+Point Ray::get_point() const
 {
     return this->_point;
 }
 
-Geometric Ray::direction() const
+Vector Ray::get_direction() const
 {
     return this->_direction;
-}
-
-Geometric Ray::evaluate_point(float t) const
-{
-    return this->_point + this->_direction * t;
 }
