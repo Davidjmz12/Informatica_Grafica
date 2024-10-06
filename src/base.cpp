@@ -50,6 +50,11 @@ SpatialElement* Base::coord_into_canonical(const SpatialElement* s) const
     }
 }
 
+Point Base::get_center() const
+{
+    return this->_center;
+}
+
 Base Base::canonic_base(){
     return Base(Point(),
                 Vector(1,0,0),

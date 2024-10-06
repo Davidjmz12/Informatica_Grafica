@@ -9,10 +9,10 @@ Camera::Camera(Base base, float width, float height, float distance)
 
 Ray Camera::trace_ray(float x, float y) const
 {
-    return Ray( this->_base.center,
-                this->_base.coord_into_canonical(
-                    Geometric::point(x,y,this->_distance)) -
-                    this->_base.center);
+    return Ray( this->_base.get_center(),
+                (Point)this->_base.coord_into_canonical(
+                    new Point(x,y,this->_distance)) -
+                    this->_base.get_center());
 }
 
 Color Camera::compute_pixel_color(int x, int y, int k) const

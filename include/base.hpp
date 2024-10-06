@@ -68,6 +68,9 @@ public:
     */       
     LinearMap canonical_to_base() const;
 
+    
+    Point get_center() const;
+
     /**
     * @brief An operator to print a base.
     * @param b the base to be printed.
@@ -82,5 +85,8 @@ public:
     * @return True if the bases are equal. False otherwise.
     */
     bool operator==(Base b) const;
+
+
+
         
 };
