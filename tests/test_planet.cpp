@@ -40,5 +40,12 @@ int main()
     t.addTest("8",Test::EXPECT_EQ(collide(s3,M_PI,M_PI_2,s4,5*M_PI_4,M_PI_2),false));
 
     // Collide 
+
+    Planet p5 = Planet(Point(5,6,7),Vector(3,0,0),Point(5,6,10));
+    Base b3 = Base(Point(5,6,4),Vector(0,1,0),Vector(1,0,0),Vector(0,0,-1));
+
+    t.addTest("9", Test::EXPECT_EQ(
+                    p5.base_point(M_PI_2,M_PI),
+                    b3));
     return t.runAll();  
 }

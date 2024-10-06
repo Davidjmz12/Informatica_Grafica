@@ -23,6 +23,8 @@ class LinearMap {
         Matrix4x4 matrix;
         
     public:
+        LinearMap();
+        
         /**
         * @brief Method that creates a linear map given a Matrix4x4.
         * @param matrix The matrix of the transformation.

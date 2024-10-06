@@ -12,6 +12,8 @@
 
 #include "linear_map.hpp"
 
+LinearMap::LinearMap() {}
+
 LinearMap::LinearMap(Matrix4x4 M): matrix(M) {}
 
 LinearMap::LinearMap(double M[4][4])

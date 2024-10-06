@@ -29,23 +29,57 @@ Planet::Planet(Point center, Vector axis, Point ref_point)
     // Check if the ref_point is in the planet
     if (!this->point_in_planet(ref_point))
         throw std::invalid_argument("Error: The ref_point is not in the planet.");
+
+    Vector e1 = Vector(1,0,0);
+    Vector e3 = Vector(0,0,1);
+    Point ref_point_centered = ref_point - Vector(center);
+
+    // Rotation to fix azimut
+    Vector ref_proyected = Vector(  ref_point_centered[0],
+                                    ref_point_centered[1],
+                                    0).normalize();
+
+    LinearMap r1 = LinearMap::identity();
+    if (!(ref_proyected == e1))
+    {
+        Vector axis_ref = ref_proyected.cross(&e1);
+        double angle_first_rotation = ref_proyected.dot(&e1);
+
+        r1 = LinearMap::rotation(axis_ref,-angle_first_rotation);
+    }
+    
+
+    // Roatation to fix axe
+    LinearMap r2 = LinearMap::identity();
+    if (!(axis == e3))
+    {
+        Vector axis_second_rotation = axis.cross(&e3);
+        double angle_second_rotation = e3.dot(&axis) / this->_radius;
+
+        r2 = LinearMap::rotation( axis_second_rotation,
+                                            -angle_second_rotation);
+    }
+    
+
+    // Final traslation
+    LinearMap t = LinearMap::translation(Vector(this->_center));
+
+    // Composition of movements
+    this->_compute_point = t*r2*r1;
+}
+
+Point Planet::parametric_point(float inclination, float azimut) const
+{
+    Vector p = Vector(  sin(inclination)*cos(azimut),
+                        sin(inclination)*sin(azimut),
+                        cos(inclination));
+    return Point(p * this->_radius);
 }
 
 Base Planet::base_point(float inclination, float azimut)
 {
-    //Compute the point
-    LinearMap r1 = LinearMap::rotation(this->_axis,azimut);
-    SpatialElement* s = new Vector(this->_ref_point-this->_center);
-    SpatialElement* v1 = r1*s;
-    Vector v1_vec = Vector(v1);
-    Vector axis_second_rotation =  this->_axis.cross(&v1_vec);
-
-    Vector aux = Vector(s).normalize();
-    float angle_ref_axis = acos(this->_axis.normalize().dot(&aux));
-
-    LinearMap r2 = LinearMap::rotation(axis_second_rotation,inclination - angle_ref_axis);
-
-    Point point = Point(r2*v1) + Vector(this->_center);
+    SpatialElement* initial_point = new Point(parametric_point(inclination, azimut));
+    Point point = Point(this->_compute_point * initial_point);
 
     //Compute the axis
     Vector normal = (point-this->_center).normalize();

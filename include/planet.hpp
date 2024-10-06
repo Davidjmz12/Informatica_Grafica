@@ -26,7 +26,10 @@ class Planet
 
         float _radius;       // The radius of the planet
         
+        LinearMap _compute_point;
 
+        Point parametric_point(float inclination, float azimut) const;
+        
     public:
 
         Planet(Point center, Vector axis, Point ref_point);
