@@ -4,9 +4,9 @@
 class Cylinder: public Geometry
 {
 private:
-    Geometric _center;
+    Point _center;
     double _radius;
-    Geometric _axis;
+    Vector _axis;
     double _height;
     Disk _top, _bottom;
 
@@ -17,11 +17,7 @@ private:
     Intersection intersection_in_a_point(const Ray& r, double distance) const;
 
 public:
-    Cylinder(Geometric center, double radius, Geometric axis);
-
-    double implicit(Geometric x) const;
+    Cylinder(Point center, double radius, Vector axis);
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
-
-
 };

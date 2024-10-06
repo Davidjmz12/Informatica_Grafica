@@ -9,9 +9,7 @@ private:
     Plane _plane;
     double _radius;
 public:
-    Disk(Geometric center, Geometric normal, double radius);
-
-    double implicit(Geometric x) const;
+    Disk(Point center, Vector normal, double radius);
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 

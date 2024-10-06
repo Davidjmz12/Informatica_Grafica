@@ -1,6 +1,6 @@
 /**
- * @file geometric.cpp
- * @brief Implementation of the geometric header.
+ * @file linear_map.cpp
+ * @brief Implementation of the Linear Map header.
  * @authors DavidJimenez DavidTizne
  * @date 18/09/2024
  * @see linear_map.hpp for more information.

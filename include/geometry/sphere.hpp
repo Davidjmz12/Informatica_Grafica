@@ -23,5 +23,5 @@ public:
      * @param radius The radius of the sphere.
      * @throw std::invalid_argument if radius is zero.
      */
-    Sphere(Point center, float radius);
+    Sphere(Point center, double radius);
 };

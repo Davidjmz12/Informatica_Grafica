@@ -23,12 +23,12 @@ const std::string RED = "\033[31m"; // Red color
  * @brief Compares two doubleing-point numbers for equality within a specified threshold.
  * 
  * This function checks if the absolute difference between two doubleing-point numbers
- * is less than a predefined threshold value (THRESHOLD_FLOAT). It is useful for 
+ * is less than a predefined threshold value (THRESHOLD_double). It is useful for 
  * comparing doubleing-point numbers where precision errors might occur.
  * 
  * @param a The first doubleing-point number to compare.
  * @param b The second doubleing-point number to compare.
- * @return true if the absolute difference between a and b is less than THRESHOLD_FLOAT, false otherwise.
+ * @return true if the absolute difference between a and b is less than THRESHOLD_double, false otherwise.
  */
 inline bool eqD(double a, double b)
 {

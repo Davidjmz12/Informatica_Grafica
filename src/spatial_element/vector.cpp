@@ -42,7 +42,7 @@ Vector Vector::normalize() const
 {
     double norm = this->norm();
 
-    if (eqFloat(norm,0))
+    if (eqD(norm,0))
         throw std::invalid_argument("Cannot normalize vector 0.");
         
     return Vector(  (*this)[0] / norm,
@@ -83,7 +83,7 @@ bool Vector::is_base(const Vector* v1, const Vector* v2) const
                             (*this)[1]*(*v1)[0]*(*v2)[2] -
                             (*this)[0]*(*v1)[2]*(*v2)[1];
 
-    return !eqFloat(determinant,0); 
+    return !eqD(determinant,0); 
 }
 
 Vector Vector::operator+(const Vector v) const
@@ -128,7 +128,7 @@ Vector Vector::operator/(double scalar) const
 
 bool Vector::operator==(const Vector v) const
 {
-    return  eqFloat((*this)[0],v[0]) &&
-            eqFloat((*this)[1],v[1]) &&
-            eqFloat((*this)[2],v[2]);
+    return  eqD((*this)[0],v[0]) &&
+            eqD((*this)[1],v[1]) &&
+            eqD((*this)[2],v[2]);
 }

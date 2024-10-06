@@ -1,10 +1,10 @@
 #include "geometry/ellipsoid.hpp"
 
-std::tuple<bool,float> solve_equation_second_degree(float a, float b, float c)
+std::tuple<bool,double> solve_equation_second_degree(double a, double b, double c)
 {
     // Case a=0: Equation of one degree.
-    if (eqFloat(a,0))
-        if (eqFloat(b,0))
+    if (eqD(a,0))
+        if (eqD(b,0))
             throw std::invalid_argument("Parameters a and b cannot be 0 at the same time");
         else
             return std::make_tuple(true, -c/b);
@@ -18,8 +18,8 @@ std::tuple<bool,float> solve_equation_second_degree(float a, float b, float c)
     }
 
     // Compute the solution
-    float disc = sqrt(pow(b,2) - 4*a*c);
-    if (eqFloat(disc,0))
+    double disc = sqrt(pow(b,2) - 4*a*c);
+    if (eqD(disc,0))
         return std::make_tuple(true,-b/(2*a));
     else if (disc > 0)
         return std::make_tuple(true,(-b - disc)/(2*a));
@@ -27,10 +27,10 @@ std::tuple<bool,float> solve_equation_second_degree(float a, float b, float c)
         return std::make_tuple(false,0.0);
 }
 
-Ellipsoid::Ellipsoid(float a, float b, float c, Point center)
+Ellipsoid::Ellipsoid(double a, double b, double c, Point center)
     : _a(a), _b(b), _c(c), _center(center)
 {
-    if (eqFloat(a,0) || eqFloat(b,0) || eqFloat(c,0))
+    if (eqD(a,0) || eqD(b,0) || eqD(c,0))
         throw std::invalid_argument("Factors cannot be zero.");
 }
 
@@ -41,25 +41,25 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) con
 
     //Compute the necessary data
     Vector direction = ray.get_direction();
-    float dx = direction[0], dy = direction[1], dz = direction[2];
-    float A = 1/(pow(this->_a,2)), B = 1/(pow(this->_b,2)), C = 1/(pow(this->_c,2));
+    double dx = direction[0], dy = direction[1], dz = direction[2];
+    double A = 1/(pow(this->_a,2)), B = 1/(pow(this->_b,2)), C = 1/(pow(this->_c,2));
     Point point = ray.get_point();
-    float ox = point[0], oy = point[1], oz = point[2];
+    double ox = point[0], oy = point[1], oz = point[2];
 
     //Compute the coefficients
-    float a = A*pow(dx,2) + B*pow(dy,2) + C*pow(dz,2);
-    float b = 2*(A*dx*ox + B*dy*oy + C*dz*oz);
-    float c = A*pow(ox,2) + B*pow(oy,2) + C*pow(oz,2) - 1;
+    double a = A*pow(dx,2) + B*pow(dy,2) + C*pow(dz,2);
+    double b = 2*(A*dx*ox + B*dy*oy + C*dz*oz);
+    double c = A*pow(ox,2) + B*pow(oy,2) + C*pow(oz,2) - 1;
 
     // Check if exists solution
-    if (eqFloat(a,0) && eqFloat(b,0))
+    if (eqD(a,0) && eqD(b,0))
         return false;
     else
     {
         //Calculate the solution
         std::tuple solution = solve_equation_second_degree(a,b,c);
         bool existSolution;
-        float numericSolution;
+        double numericSolution;
         std::tie(existSolution,numericSolution) = solution;
 
         //Construct intersection
@@ -88,13 +88,8 @@ Vector Ellipsoid::normal(Point p) const
 
 bool Ellipsoid::is_in_ellipsoid(Point p) const
 {
-    return  eqFloat(pow(p[0]-this->_center[0],2)/pow(this->_a,2) +
+    return  eqD(pow(p[0]-this->_center[0],2)/pow(this->_a,2) +
                     pow(p[1]-this->_center[1],2)/pow(this->_b,2) + 
                     pow(p[2]-this->_center[2],2)/pow(this->_c,2),1);
-}
-
-double Ellipsoid::implicit(Point x) const
-{
-    return (float)0;
 }
 

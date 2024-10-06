@@ -1,5 +1,5 @@
 #include "geometry/sphere.hpp"
 
-Sphere::Sphere(Point center, float radius)
+Sphere::Sphere(Point center, double radius)
     : Ellipsoid(radius, radius, radius, center)
 {}

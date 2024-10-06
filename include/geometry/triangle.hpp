@@ -6,19 +6,17 @@
 class Triangle : Geometry
 {
 private:
-    Geometric _v0;
-    Geometric _v1;
-    Geometric _v2;
+    Point _v0;
+    Point _v1;
+    Point _v2;
 
-    bool point_inside_triangle(Geometric p) const;
+    bool point_inside_triangle(Point p) const;
 public:
 
-    Triangle(Geometric v0, Geometric v1, Geometric v2);
+    Triangle(Point v0, Point v1, Point v2);
 
-    Geometric normal() const;
+    Vector get_normal() const;
     Plane plane() const ;
-    
-    double implicit(Geometric x) const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };

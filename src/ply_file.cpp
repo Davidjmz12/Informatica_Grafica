@@ -10,12 +10,12 @@ PlyFile::PlyFile(std::string file_path)
     if (!read_header(file, num_vertices, num_faces))
         throw std::runtime_error("Invalid header");
 
-    std::vector<Geometric> points;
+    std::vector<Point> points;
     for(unsigned int i = 0; i < num_vertices; i++)
     {
         double x, y, z;
         file >> x >> y >> z;
-        points.push_back(Geometric::point(x,y,z));
+        points.push_back(Point(x,y,z));
     }
 
     std::vector<Triangle> triangles;

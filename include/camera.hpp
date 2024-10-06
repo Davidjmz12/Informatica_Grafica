@@ -19,8 +19,8 @@ class Camera
 {
 private:
     Base _base;             // Base that defines the camera
-    float _width, _height;  // Dimensions of the screen
-    float _distance;        // Distance to the screen
+    double _width, _height;  // Dimensions of the screen
+    double _distance;        // Distance to the screen
     ColorMap _screen;       // Screen
 
     /**
@@ -31,7 +31,7 @@ private:
      * @return A ray with origin in the camera and direction to the
      * coordinates (x,y) inside the screen.
      */
-    Ray trace_ray(float x, float y) const;
+    Ray trace_ray(double x, double y) const;
 
     /**
      * @brief Computes the color that a pixel must have.
@@ -53,7 +53,7 @@ public:
      * @throw std::invalid_argument if width, height or distance are not
      * positive numbers.
      */
-    Camera(Base base, float width, float height, float distance);
+    Camera(Base base, double width, double height, double distance);
 
     /**
      * @brief Writes the information of a camera.

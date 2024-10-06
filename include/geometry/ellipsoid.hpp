@@ -18,7 +18,7 @@
 class Ellipsoid : Geometry
 {
 private:
-    float _a, _b, _c; // Parameters for defining the ellipsoid
+    double _a, _b, _c; // Parameters for defining the ellipsoid
     Point _center; // Center point
 
     /**
@@ -47,7 +47,7 @@ public:
      * @param center The center.
      * @throw std::invalid_argument if some factors are zero.
      */
-    Ellipsoid(float a, float b, float c, Point center);
+    Ellipsoid(double a, double b, double c, Point center);
 
     /**
      * @brief Computes if the ellipsoid intersects with a ray and stores
@@ -59,5 +59,4 @@ public:
      */
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
 
-    double implicit(Point x) const override;
 };

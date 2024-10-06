@@ -57,7 +57,7 @@ Vector Point::operator-(const Point p) const
 
 bool Point::operator==(const Point v) const
 {
-    return  eqFloat((*this)[0],v[0]) &&
-            eqFloat((*this)[1],v[1]) &&
-            eqFloat((*this)[2],v[2]);
+    return  eqD((*this)[0],v[0]) &&
+            eqD((*this)[1],v[1]) &&
+            eqD((*this)[2],v[2]);
 }

@@ -28,7 +28,7 @@ class Planet
         
         LinearMap _compute_point;
 
-        Point parametric_point(float inclination, float azimut) const;
+        Point parametric_point(double inclination, double azimut) const;
 
         LinearMap compute_azimut_rotation(const LinearMap* r) const;
         LinearMap compute_axis_rotation() const;

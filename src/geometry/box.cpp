@@ -1,12 +1,12 @@
 #include "geometry/box.hpp"
 
-Box::Box(Geometric center, std::array<double,3> sides, std::array<Geometric,3> axis)
+Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis)
 {
     if(sides[0]<=0 || sides[1]<=0 || sides[2]<=0)
         throw std::invalid_argument("The sides of the box must be positive");
     if(axis[0].norm()!=1 || axis[1].norm()!=0 || axis[2].norm()!=0)
         throw std::invalid_argument("The axis of the box must be normalized.");
-    if(axis[0].dot(axis[1])!=0 || axis[0].dot(axis[2])!=0 || axis[1].dot(axis[2])!=0)
+    if(axis[0].dot(&axis[1])!=0 || axis[0].dot(&axis[2])!=0 || axis[1].dot(&axis[2])!=0)
         throw std::invalid_argument("The axis of the box must be orthogonal");
     
     std::vector<Triangle> triangles;
@@ -17,7 +17,7 @@ Box::Box(Geometric center, std::array<double,3> sides, std::array<Geometric,3> a
     double halfZ = sides[2] / 2.0f;
 
     // Calculate the vertices of the box
-    std::array<Geometric, 8> vertices = {
+    std::array<Point, 8> vertices = {
         center + axis[0] * halfX + axis[1] * halfY + axis[2] * halfZ,
         center + axis[0] * halfX + axis[1] * halfY - axis[2] * halfZ,
         center + axis[0] * halfX - axis[1] * halfY + axis[2] * halfZ,
@@ -52,11 +52,6 @@ Box::Box(Geometric center, std::array<double,3> sides, std::array<Geometric,3> a
 
     // Create the TriangleMesh
     _mesh = TriangleMesh(triangles);
-}
-
-double Box::implicit(Geometric x) const
-{
-    return _mesh.implicit(x);
 }
 
 bool Box::intersect_with_ray(const Ray& r, Intersection& intersection) const

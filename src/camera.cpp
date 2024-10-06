@@ -1,13 +1,13 @@
 #include "camera.hpp"
 
-Camera::Camera(Base base, float width, float height, float distance)
+Camera::Camera(Base base, double width, double height, double distance)
     : _base(base), _width(width), _height(height), _distance(distance)
 {
     if (width <= 0 || height <= 0 || distance <= 0)
         throw std::invalid_argument("Width, height and distance must be positive numbers.");
 }
 
-Ray Camera::trace_ray(float x, float y) const
+Ray Camera::trace_ray(double x, double y) const
 {
     return Ray( this->_base.get_center(),
                 (Point)this->_base.coord_into_canonical(

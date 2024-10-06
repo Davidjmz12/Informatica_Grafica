@@ -22,4 +22,13 @@ target_link_libraries(test_triangle PUBLIC triangle)
 add_test(NAME test_triangle COMMAND test_triangle)
 target_include_directories(test_triangle PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+add_executable(test_sphere test_sphere.cpp)
+target_link_libraries(test_sphere PUBLIC sphere)
+add_test(NAME test_sphere COMMAND test_sphere)
+target_include_directories(test_sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+add_executable(test_ellipsoid test_ellipsoid.cpp)
+target_link_libraries(test_ellipsoid PUBLIC ellipsoid)
+add_test(NAME test_ellipsoid COMMAND test_ellipsoid)
+target_include_directories(test_ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)
 

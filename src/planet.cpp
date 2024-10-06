@@ -87,7 +87,7 @@ Planet::Planet(Point center, Vector axis, Point ref_point)
     this->_compute_point = t*r1*r2;
 }
 
-Point Planet::parametric_point(float inclination, float azimut) const
+Point Planet::parametric_point(double inclination, double azimut) const
 {
     Vector p = Vector(  sin(inclination)*cos(azimut),
                         sin(inclination)*sin(azimut),
@@ -109,6 +109,6 @@ Base Planet::base_point(double inclination, double azimut)
 }
 
 bool Planet::point_in_planet(Point p) {
-    float radius_point_p = (this->_center - p).norm();
+    double radius_point_p = (this->_center - p).norm();
     return eqD(radius_point_p, this->_radius);
 }

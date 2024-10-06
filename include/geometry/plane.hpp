@@ -5,17 +5,15 @@
 class Plane : Geometry
 {
 private:
-    Geometric _normal;
-    Geometric _point;
+    Vector _normal;
+    Point _point;
 public:
-    Plane(Geometric normal, Geometric point);
-    Plane(Geometric p1, Geometric p2, Geometric p3);
+    Plane(Point point, Vector normal);
+    Plane(Point p1, Point p2, Point p3);
 
-    Geometric point() const;
+    Point get_point() const;
 
-    Geometric normal() const;
-    
-    double implicit(Geometric x) const;
+    Vector get_normal() const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };

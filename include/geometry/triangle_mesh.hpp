@@ -15,8 +15,6 @@ public:
     TriangleMesh();
 
     TriangleMesh(std::vector<Triangle> triangles);
-    
-    double implicit(Geometric x) const;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
 };
