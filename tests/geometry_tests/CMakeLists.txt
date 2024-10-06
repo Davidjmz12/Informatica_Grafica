@@ -17,4 +17,9 @@ target_link_libraries(test_plane PUBLIC plane)
 add_test(NAME test_plane COMMAND test_plane)
 target_include_directories(test_plane PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+add_executable(test_triangle test_triangle.cpp)
+target_link_libraries(test_triangle PUBLIC triangle)
+add_test(NAME test_triangle COMMAND test_triangle)
+target_include_directories(test_triangle PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
 
