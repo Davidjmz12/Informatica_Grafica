@@ -1,4 +1,8 @@
+add_subdirectory(geometry)
+add_subdirectory(tone_mapping)
 
+
+# Main executable
 add_executable(main main.cpp)
 target_link_libraries(main PUBLIC ply_file)
 
@@ -19,8 +23,6 @@ target_link_libraries(planet PUBLIC base)
 
 
 # Images
-
-add_library(tone_mapping tone_mapping.cpp)
 
 add_library(color color.cpp)
 target_link_libraries(color PUBLIC tone_mapping)
@@ -43,9 +45,6 @@ target_link_libraries(ray PUBLIC intersection)
 add_library(ply_file ply_file.cpp)
 target_link_libraries(ply_file PUBLIC triangle)
 
-
-add_subdirectory(geometry)
-
 # Include directories
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(base PUBLIC ${CMAKE_SOURCE_DIR}/include)
@@ -55,7 +54,6 @@ target_include_directories(matrix PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(planet PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 

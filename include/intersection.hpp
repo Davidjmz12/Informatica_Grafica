@@ -3,6 +3,7 @@
 
 #include <limits>
 #include <vector>
+#include <stdexcept>
 
 #include "geometric.hpp"
 

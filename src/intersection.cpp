@@ -24,7 +24,7 @@ Geometric Intersection::normal() const
 Intersection Intersection::min(std::vector<Intersection> intersections)
 {
     if(intersections.size() == 0)
-        throw new std::invalid_argument("The vector of intersections must have at least one element");
+        throw std::invalid_argument("The vector of intersections must have at least one element");
     Intersection min_intersection;
     for(auto intersection : intersections)
     {

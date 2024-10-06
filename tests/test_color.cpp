@@ -9,6 +9,8 @@
 #include "test.hpp"
 #include "color.hpp"
 
+#include "tone_mapping/all_tone_mapping.hpp"
+
 int main()
 {    
     Tests t = Tests("COLOR TESTS");

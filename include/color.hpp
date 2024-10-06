@@ -15,7 +15,7 @@
 #include <iostream>
 #include <array>
 
-#include "tone_mapping.hpp"
+#include "tone_mapping/tone_mapping.hpp"
 #include "constants.hpp"
 
 
