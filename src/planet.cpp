@@ -22,6 +22,51 @@ bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2)
     return (*coord_b1)[2] < -THRESHOLD_FLOAT || (*coord_b2)[2] < -THRESHOLD_FLOAT;
 }
 
+LinearMap Planet::compute_azimut_rotation(const LinearMap* r) const
+{
+    Vector e1 = Vector(1,0,0);
+    SpatialElement* ref_point_centered_aux = new Vector(this->_ref_point - Vector(this->_center));
+    Point ref_point_centered = Point((*r)*ref_point_centered_aux);
+
+    // Rotation to fix azimut
+    Vector ref_proyected = Vector(  ref_point_centered[0],
+                                    ref_point_centered[1],
+                                    0).normalize();
+    LinearMap res = LinearMap::identity();
+    if (!(ref_proyected.normalize() == e1))
+    {
+        Vector axis_ref = ref_proyected.cross(&e1);
+        double angle_first_rotation;
+        if (axis_ref == Vector())
+        {
+            axis_ref = Vector(0,0,1);
+            angle_first_rotation = M_PI;
+        }
+        else
+            angle_first_rotation = acos(ref_proyected.dot(&e1));
+        res = LinearMap::rotation(axis_ref,-angle_first_rotation);
+    }
+
+    return res;
+}
+
+LinearMap Planet::compute_axis_rotation() const
+{
+    Vector e3 = Vector(0,0,1);
+
+    // Roatation to fix axe
+    LinearMap r = LinearMap::identity();
+    if (!(this->_axis.normalize() == e3))
+    {
+        Vector axis_second_rotation = this->_axis.cross(&e3);
+        double angle_second_rotation = acos(e3.dot(&this->_axis) / this->_radius);
+
+        r = LinearMap::rotation(axis_second_rotation,
+                                angle_second_rotation);
+    }
+
+    return r;
+}
 
 Planet::Planet(Point center, Vector axis, Point ref_point)
     : _center(center), _ref_point(ref_point), _axis(axis), _radius(axis.norm())
@@ -30,42 +75,14 @@ Planet::Planet(Point center, Vector axis, Point ref_point)
     if (!this->point_in_planet(ref_point))
         throw std::invalid_argument("Error: The ref_point is not in the planet.");
 
-    Vector e1 = Vector(1,0,0);
-    Vector e3 = Vector(0,0,1);
-    Point ref_point_centered = ref_point - Vector(center);
-
-    // Rotation to fix azimut
-    Vector ref_proyected = Vector(  ref_point_centered[0],
-                                    ref_point_centered[1],
-                                    0).normalize();
-
-    LinearMap r1 = LinearMap::identity();
-    if (!(ref_proyected == e1))
-    {
-        Vector axis_ref = ref_proyected.cross(&e1);
-        double angle_first_rotation = ref_proyected.dot(&e1);
-
-        r1 = LinearMap::rotation(axis_ref,-angle_first_rotation);
-    }
-    
-
-    // Roatation to fix axe
-    LinearMap r2 = LinearMap::identity();
-    if (!(axis == e3))
-    {
-        Vector axis_second_rotation = axis.cross(&e3);
-        double angle_second_rotation = e3.dot(&axis) / this->_radius;
-
-        r2 = LinearMap::rotation( axis_second_rotation,
-                                            -angle_second_rotation);
-    }
-    
+    LinearMap r2 = this->compute_axis_rotation();
+    LinearMap r1 = this->compute_azimut_rotation(&r2);
 
     // Final traslation
     LinearMap t = LinearMap::translation(Vector(this->_center));
 
     // Composition of movements
-    this->_compute_point = t*r2*r1;
+    this->_compute_point = t*r1*r2;
 }
 
 Point Planet::parametric_point(float inclination, float azimut) const

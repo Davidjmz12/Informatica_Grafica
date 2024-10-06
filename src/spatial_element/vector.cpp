@@ -41,6 +41,10 @@ double Vector::norm() const
 Vector Vector::normalize() const
 {
     double norm = this->norm();
+
+    if (eqFloat(norm,0))
+        throw std::invalid_argument("Cannot normalize vector 0.");
+        
     return Vector(  (*this)[0] / norm,
                     (*this)[1] / norm,
                     (*this)[2] / norm

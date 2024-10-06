@@ -29,6 +29,9 @@ class Planet
         LinearMap _compute_point;
 
         Point parametric_point(float inclination, float azimut) const;
+
+        LinearMap compute_azimut_rotation(const LinearMap* r) const;
+        LinearMap compute_axis_rotation() const;
         
     public:
 
@@ -59,6 +62,6 @@ class Planet
 * @param s2 The second planet
 * @param az2 The azimut of the point in the second planet.
 * @param inc2 The inclination of the point in the second planet.
-* @return True if you can make a line between cities without touching the planets.
+* @return True if you cannot make a line between cities without touching the planets.
 */
 bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2);
