@@ -9,61 +9,61 @@
 #include "test.hpp"
 #include "color.hpp"
 
+#include "tone_mapping/all_tone_mapping.hpp"
+
 int main()
 {    
     Tests t = Tests("COLOR TESTS");
-    /*
-
     // Test cases for RGB to HSV and vice versa
-    Color rgb1 = Color::RGBNormalized(255, 0, 0, 255);
+    Color rgb1 = Color({255, 0, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv1 = rgb1.RGB_to_HSV();
     Color rgb1_converted = hsv1.HSV_to_RGB();
-    t.addTest("1", Test::EXPECT_EQ(rgb1, rgb1_converted));
+    t.addTest("1", Test::EXPECT_EQ(rgb1.normalize(), rgb1_converted));
 
-    Color rgb2 = Color::RGBNormalized(0, 255, 0, 255);
+    Color rgb2 = Color({0, 255, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv2 = rgb2.RGB_to_HSV();
     Color rgb2_converted = hsv2.HSV_to_RGB();
-    t.addTest("2", Test::EXPECT_EQ(rgb2, rgb2_converted));
+    t.addTest("2", Test::EXPECT_EQ(rgb2.normalize(), rgb2_converted));
 
-    Color rgb3 = Color::RGBNormalized(0, 0, 255, 255);
+    Color rgb3 = Color({0, 0, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv3 = rgb3.RGB_to_HSV();
     Color rgb3_converted = hsv3.HSV_to_RGB();
-    t.addTest("3", Test::EXPECT_EQ(rgb3, rgb3_converted));
+    t.addTest("3", Test::EXPECT_EQ(rgb3.normalize(), rgb3_converted));
 
-    Color rgb4 = Color::RGBNormalized(255, 255, 0, 255);
+    Color rgb4 = Color({255, 255, 0}, Color::RGB_255_RANGE, RGB);
     Color hsv4 = rgb4.RGB_to_HSV();
     Color rgb4_converted = hsv4.HSV_to_RGB();
-    t.addTest("4", Test::EXPECT_EQ(rgb4, rgb4_converted));
+    t.addTest("4", Test::EXPECT_EQ(rgb4.normalize(), rgb4_converted));
 
-    Color rgb5 = Color::RGBNormalized(0, 255, 255, 255);
+    Color rgb5 = Color({0, 255, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv5 = rgb5.RGB_to_HSV();
     Color rgb5_converted = hsv5.HSV_to_RGB();
-    t.addTest("5", Test::EXPECT_EQ(rgb5, rgb5_converted));
+    t.addTest("5", Test::EXPECT_EQ(rgb5.normalize(), rgb5_converted));
 
-    Color rgb6 = Color::RGBNormalized(255, 0, 255, 255);
+    Color rgb6 = Color({255, 0, 255}, Color::RGB_255_RANGE, RGB);
     Color hsv6 = rgb6.RGB_to_HSV();
     Color rgb6_converted = hsv6.HSV_to_RGB();
-    t.addTest("6", Test::EXPECT_EQ(rgb6, rgb6_converted));
+    t.addTest("6", Test::EXPECT_EQ(rgb6.normalize(), rgb6_converted));
 
-    Color rgb7 = Color::RGBNormalized(192, 192, 192, 255);
+    Color rgb7 = Color({192, 192, 192}, Color::RGB_255_RANGE, RGB);
     Color hsv7 = rgb7.RGB_to_HSV();
     Color rgb7_converted = hsv7.HSV_to_RGB();
-    t.addTest("7", Test::EXPECT_EQ(rgb7, rgb7_converted));
+    t.addTest("7", Test::EXPECT_EQ(rgb7.normalize(), rgb7_converted));
 
-    Color rgb8 = Color::RGBNormalized(128, 150, 20, 255);
+    Color rgb8 = Color({128, 150, 20}, Color::RGB_255_RANGE, RGB);
     Color hsv8 = rgb8.RGB_to_HSV();
     Color rgb8_converted = hsv8.HSV_to_RGB();
-    t.addTest("8", Test::EXPECT_EQ(rgb8, rgb8_converted));
+    t.addTest("8", Test::EXPECT_EQ(rgb8.normalize(), rgb8_converted));
 
-    Color rgb9 = Color::RGBNormalized(128, 139, 100, 255);
+    Color rgb9 = Color({128, 139, 100}, Color::RGB_255_RANGE, RGB);
     Color hsv9 = rgb9.RGB_to_HSV();
     Color rgb9_converted = hsv9.HSV_to_RGB();
-    t.addTest("9", Test::EXPECT_EQ(rgb9, rgb9_converted));
+    t.addTest("9", Test::EXPECT_EQ(rgb9.normalize(), rgb9_converted));
 
-    Color rgb10 = Color::RGBNormalized(128, 138, 100, 255);
+    Color rgb10 = Color({128, 138, 100}, Color::RGB_255_RANGE, RGB);
     Color hsv10 = rgb10.RGB_to_HSV();
     Color rgb10_converted = hsv10.HSV_to_RGB();
-    t.addTest("10", Test::EXPECT_EQ(rgb10, rgb10_converted));
+    t.addTest("10", Test::EXPECT_EQ(rgb10.normalize(), rgb10_converted));
 
 
     // Test cases for inequality
@@ -75,12 +75,12 @@ int main()
 
 
     // Test cases for apply_tone_mapping
-    Color hsv11 = Color(0, 0, 0.5, HSV);
-    ToneMapping t1 = ToneMapping::clamping(1);
-    ToneMapping t2 = ToneMapping::equalization_clamping(0.5,1);
-    ToneMapping t3 = ToneMapping::gamma_clamping(0.5,1,1);
-    ToneMapping t4 = ToneMapping::gamma_clamping(2,0.5,1);
-    ToneMapping t5 = ToneMapping::gamma_clamping(2,1,1);
+    Color hsv11 = Color({0, 0, 0.5}, Color::HSV_STANDARD_RANGE, HSV);
+    ToneMapping *t1 = new Clamping(1);
+    ToneMapping *t2 = new EqualizationClamping(0.5,1);
+    ToneMapping *t3 = new GammaClamping(0.5,1,1);
+    ToneMapping *t4 = new GammaClamping(2,0.5,1);
+    ToneMapping *t5 = new GammaClamping(2,1,1);
 
     Color hsv11_tone_mapped_1 = hsv11.apply_tone_mapping(t1);
     Color hsv11_tone_mapped_2 = hsv11.apply_tone_mapping(t2);
@@ -89,14 +89,13 @@ int main()
     Color hsv11_tone_mapped_5 = hsv11.apply_tone_mapping(t5);
 
     t.addTest("14", Test::EXPECT_EQ(hsv11_tone_mapped_1, hsv11));
-    t.addTest("15", Test::EXPECT_EQ(hsv11_tone_mapped_2, Color(0,0,1,HSV)));
+    t.addTest("15", Test::EXPECT_EQ(hsv11_tone_mapped_2, Color({0,0,1},Color::HSV_STANDARD_RANGE, HSV)));
     t.addTest("16", Test::EXPECT_NEQ(hsv11_tone_mapped_2, hsv11));
-    t.addTest("17", Test::EXPECT_EQ(hsv11_tone_mapped_3, Color(0,0,sqrt(0.5),HSV)));
-    t.addTest("18", Test::EXPECT_EQ(hsv11_tone_mapped_4, Color(0,0,1,HSV)));
-    t.addTest("19", Test::EXPECT_EQ(hsv11_tone_mapped_5, Color(0,0,0.25,HSV)));
-    t.addTest("20", Test::EXPECT_NEQ(hsv11_tone_mapped_5, Color(0,0,0.255,HSV)));
+    t.addTest("17", Test::EXPECT_EQ(hsv11_tone_mapped_3, Color({0,0,(double)sqrt(0.5)}, Color::HSV_STANDARD_RANGE, HSV)));
+    t.addTest("18", Test::EXPECT_EQ(hsv11_tone_mapped_4, Color({0,0,1}, Color::HSV_STANDARD_RANGE, HSV)));
+    t.addTest("19", Test::EXPECT_EQ(hsv11_tone_mapped_5, Color({0,0,0.25}, Color::HSV_STANDARD_RANGE, HSV)));
+    t.addTest("20", Test::EXPECT_NEQ(hsv11_tone_mapped_5, Color({0,0,0.255}, Color::HSV_STANDARD_RANGE, HSV)));
     
-    */
 
 
     return t.runAll();

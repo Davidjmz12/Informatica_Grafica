@@ -24,7 +24,7 @@ class Planet
         Point _ref_point;    // Point: Reference point
         Vector _axis;        // Vector: Axis that connects north and south pole 
 
-        float _radius;       // The radius of the planet
+        double _radius;           // The radius of the planet
         
         LinearMap _compute_point;
 
@@ -43,7 +43,7 @@ class Planet
         * @param azimut The azimut of the station.
         * @return A tuple with the point and a basis 
         */
-        Base base_point(float inclination, float azimut);
+        Base base_point(double inclination, double azimut);
 
         /**
         * @brief A method checks if a point is in the planet.
@@ -64,4 +64,4 @@ class Planet
 * @param inc2 The inclination of the point in the second planet.
 * @return True if you cannot make a line between cities without touching the planets.
 */
-bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2);
+bool collide(Planet s1, double az1, double inc1, Planet s2, double az2, double inc2);

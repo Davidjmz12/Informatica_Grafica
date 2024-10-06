@@ -212,7 +212,7 @@ bool Matrix4x4::operator==(Matrix4x4 const M) const
 {
     for (int i = 0; i < 4; i++) 
         for (int j = 0; j < 4; j++)
-            if (!eqFloat(this->get(i,j),M.get(i,j)))
+            if (!eqD(this->get(i,j),M.get(i,j)))
                 return false;
 
     return true;

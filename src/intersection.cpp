@@ -1,17 +1,18 @@
 #include "intersection.hpp"
 
-Intersection::Intersection():
-    _distance(std::numeric_limits<float>::max()),_normal(Vector()),_point(Point()){}
 
-Intersection::Intersection(float distance, Vector normal, Point point):
+Intersection::Intersection(double distance, Vector normal, Point point):
     _distance(distance),_normal(normal),_point(point){}
+
+Intersection::Intersection():
+    _distance(std::numeric_limits<double>::max()),_normal(Vector(0,0,0)),_point(Point(0,0,0)){}
 
 Point Intersection::get_point() const
 {
     return this->_point;
 }
 
-float Intersection::distance() const
+double Intersection::get_distance() const
 {
     return this->_distance;
 }
@@ -21,14 +22,14 @@ Vector Intersection::get_normal() const
     return this->_normal;
 }
 
-Intersection Intersection::min(std::vector<Intersection> intersections) const
+Intersection Intersection::min(std::vector<Intersection> intersections)
 {
     if(intersections.size() == 0)
         throw std::invalid_argument("The vector of intersections must have at least one element");
     Intersection min_intersection;
     for(auto intersection : intersections)
     {
-        if(intersection.distance() < min_intersection.distance())
+        if(intersection.get_distance() < min_intersection.get_distance())
             min_intersection = intersection;
     }
     return min_intersection;
@@ -36,7 +37,7 @@ Intersection Intersection::min(std::vector<Intersection> intersections) const
 
 bool Intersection::operator==(const Intersection i) const
 {
-    return  eqFloat(this->_distance,i._distance) &&
+    return  eqD(this->_distance,i._distance) &&
             this->_normal == i._normal &&
             this->_point == i._point;
 }

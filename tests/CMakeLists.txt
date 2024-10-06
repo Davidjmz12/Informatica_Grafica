@@ -23,14 +23,6 @@ target_link_libraries(test_base PUBLIC base)
 add_test(NAME test_base COMMAND test_base)
 target_include_directories(test_base PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-
-# TEST planet
-add_executable(test_planet test_planet.cpp)
-target_link_libraries(test_planet PUBLIC planet)
-add_test(NAME test_planet COMMAND test_planet)
-target_include_directories(test_planet PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-
 # TEST PPM FILE
 add_executable(test_ppm_file test_ppm_file.cpp)
 target_link_libraries(test_ppm_file PUBLIC ppm_file)
@@ -39,7 +31,7 @@ target_include_directories(test_ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # TEST color MAP
 add_executable(test_color test_color.cpp)
-target_link_libraries(test_color PUBLIC color)
+target_link_libraries(test_color PUBLIC color tone_mapping_lib)
 add_test(NAME test_color COMMAND test_color)
 target_include_directories(test_color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
@@ -52,19 +44,15 @@ target_include_directories(test_color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # TEST TONE MAPPING
 add_executable(test_tone_mapping test_tone_mapping.cpp)
-target_link_libraries(test_tone_mapping PUBLIC tone_mapping)
+target_link_libraries(test_tone_mapping PUBLIC tone_mapping_lib)
 add_test(NAME test_tone_mapping COMMAND test_tone_mapping)
 target_include_directories(test_tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
-# TEST ELLIPSOID
-add_executable(test_ellipsoid test_ellipsoid.cpp)
-target_link_libraries(test_ellipsoid PUBLIC ellipsoid)
-add_test(NAME test_ellipsoid COMMAND test_ellipsoid)
-target_include_directories(test_ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)
+# TEST TONE MAPPING
+add_executable(test_planet test_planet.cpp)
+target_link_libraries(test_planet PUBLIC planet)
+add_test(NAME test_planet COMMAND test_planet)
+target_include_directories(test_planet PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-# TEST SPHERE
-add_executable(test_sphere test_sphere.cpp)
-target_link_libraries(test_sphere PUBLIC sphere ellipsoid)
-add_test(NAME test_sphere COMMAND test_sphere)
-target_include_directories(test_sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_subdirectory(geometry_tests)

@@ -12,19 +12,21 @@
 class Intersection
 {
 private:
-    float _distance;
+    double _distance;
     Vector _normal;
     Point _point;
 
 public:
+
     Intersection();
-    Intersection(float distance, Vector normal, Point point);
+    Intersection(double distance, Vector normal, Point point);
     
     Point get_point() const;
-    float distance() const;
+    double get_distance() const;
     Vector get_normal() const;
-    Intersection min(std::vector<Intersection> intersections) const;
 
+    static Intersection min(std::vector<Intersection> intersections);
     bool operator==(const Intersection i) const;
     friend std::ostream& operator<<(std::ostream& os, const Intersection& i);
+    
 };

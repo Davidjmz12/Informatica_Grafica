@@ -25,9 +25,9 @@
  * @brief A class for representing an individual test
  */
 /**
-* @brief Test that is true if both float values are approximately equal.
-* @param a one float value.
-* @param b other float value.
+* @brief Test that is true if both double values are approximately equal.
+* @param a one double value.
+* @param b other double value.
 * @return the resultant test.
 */
 class Test {
@@ -69,21 +69,21 @@ public:
 
     
     /**
-     * @brief Compares two floating-point numbers for equality within a small tolerance.
+     * @brief Compares two doubleing-point numbers for equality within a small tolerance.
      * 
      * This function returns a Test object that, when executed, checks if the two 
-     * floating-point numbers `a` and `b` are equal within a tolerance of 1e-6. 
+     * doubleing-point numbers `a` and `b` are equal within a tolerance of 1e-6. 
      * It overrides the default equality operator to allow for a small tolerance.
      * 
-     * @param a The first floating-point number to compare.
-     * @param b The second floating-point number to compare.
+     * @param a The first doubleing-point number to compare.
+     * @param b The second doubleing-point number to compare.
      * @return Test A Test object that performs the equality check when executed.
      *     
      */
-    static Test EXPECT_EQ(const float& a, const float& b)
+    static Test EXPECT_EQ(const double& a, const double& b)
     {
         return Test([a, b]() {
-            if (!eqFloat(a, b)) {
+            if (!eqD(a, b)) {
                 std::ostringstream ss;
                 ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());
@@ -112,21 +112,21 @@ public:
     }
 
     /**
-     * @brief Compares two floating-point numbers for inequality within a small tolerance.
+     * @brief Compares two doubleing-point numbers for inequality within a small tolerance.
      * 
      * This function returns a Test object that, when executed, checks if the two 
-     * floating-point numbers `a` and `b` are not equal within a tolerance of 1e-6. 
+     * doubleing-point numbers `a` and `b` are not equal within a tolerance of 1e-6. 
      * It overrides the default inequality operator to allow for a small tolerance.
      * 
-     * @param a The first floating-point number to compare.
-     * @param b The second floating-point number to compare.
+     * @param a The first doubleing-point number to compare.
+     * @param b The second doubleing-point number to compare.
      * @return Test A Test object that performs the inequality check when executed.
      *     
      */
-   static Test EXPECT_NEQ(const float& a, const float& b)
+   static Test EXPECT_NEQ(const double& a, const double& b)
     {
         return Test([a, b]() {
-            if (eqFloat(a, b)) {
+            if (eqD(a, b)) {
                 std::ostringstream ss;
                 ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
                 throw std::logic_error(ss.str());

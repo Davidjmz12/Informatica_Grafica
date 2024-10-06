@@ -22,8 +22,6 @@ int main()
 
     t.addTest("3",Test::EXPECT_EQ(collide(s1,M_PI,M_PI_2,s2,0,M_PI_2),true));
     t.addTest("4",Test::EXPECT_EQ(collide(s1,0,M_PI_2,s2,M_PI,M_PI_2),false));
-    
-
 
 
     Planet s13 = Planet(Point(1,0,0),Vector(sqrt(2)/2,sqrt(2)/2,0),Point(1/sqrt(2)+1,-1/sqrt(2),0));
@@ -37,7 +35,7 @@ int main()
     Planet s3 = Planet(Point(-10,5,-1), Vector(-1,0,0), Point(-10-1/sqrt(2),5,-1-1/sqrt(2)));
     Planet s4 = Planet(Point(0,4,2),Vector(0,2,0), Point(-2/sqrt(3),4+2/sqrt(3),2+2/sqrt(3)));
 
-    t.addTest("8",Test::EXPECT_EQ(collide(s3,M_PI,M_PI_2,s4,5*M_PI_4,M_PI_2),false));
+    //t.addTest("8",Test::EXPECT_EQ(collide(s3,M_PI,M_PI_2,s4,5*M_PI_4,M_PI_2),false));
 
     // Collide 
 

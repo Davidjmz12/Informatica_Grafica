@@ -11,15 +11,17 @@
 
 #include "planet.hpp"
 
+#include "constants.hpp"
 
-bool collide(Planet s1, float az1, float inc1, Planet s2, float az2, float inc2)
+
+bool collide(Planet s1, double az1, double inc1, Planet s2, double az2, double inc2)
 {
     Base b1 = s1.base_point(inc1,az1); 
     Base b2 = s2.base_point(inc2,az2);
     SpatialElement* coord_b1 = b1.coord_from_canonical(new Point(b2._center));
     SpatialElement* coord_b2 = b2.coord_from_canonical(new Point(b1._center));
     
-    return (*coord_b1)[2] < -THRESHOLD_FLOAT || (*coord_b2)[2] < -THRESHOLD_FLOAT;
+    return leF((*coord_b1)[2],0) || leF((*coord_b2)[2],0);
 }
 
 LinearMap Planet::compute_azimut_rotation(const LinearMap* r) const
@@ -93,7 +95,7 @@ Point Planet::parametric_point(float inclination, float azimut) const
     return Point(p * this->_radius);
 }
 
-Base Planet::base_point(float inclination, float azimut)
+Base Planet::base_point(double inclination, double azimut)
 {
     SpatialElement* initial_point = new Point(parametric_point(inclination, azimut));
     Point point = Point(this->_compute_point * initial_point);
@@ -108,5 +110,5 @@ Base Planet::base_point(float inclination, float azimut)
 
 bool Planet::point_in_planet(Point p) {
     float radius_point_p = (this->_center - p).norm();
-    return eqFloat(radius_point_p, this->_radius);
+    return eqD(radius_point_p, this->_radius);
 }
