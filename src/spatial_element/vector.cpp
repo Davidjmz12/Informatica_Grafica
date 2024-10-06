@@ -11,11 +11,11 @@
 #include "spatial_element/vector.hpp"
 
 Vector::Vector(double x, double y, double z)
-    : SpatialElement(x,y,z)
+    : SpatialElement(x,y,z,0)
 {}
 
 Vector::Vector(Point p)
-    : SpatialElement(p[0],p[1],p[2])
+    : SpatialElement(p[0],p[1],p[2],0)
 {}
 
 Vector::Vector(SpatialElement* s)
@@ -23,7 +23,7 @@ Vector::Vector(SpatialElement* s)
 {}
 
 Vector::Vector()
-    : SpatialElement(0,0,0)
+    : SpatialElement(0,0,0,0)
 {}
 
 bool Vector::is_vector() const

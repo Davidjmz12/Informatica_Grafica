@@ -64,6 +64,9 @@ int main()
     SpatialElement* v3 = new Vector(2,4,2);
     t.addTest("10",Test::EXPECT_EQ(Point(rot*v3),Point(v3)));
 
+    SpatialElement* p0 = new Point();
+    t.addTest("11", Test::EXPECT_EQ(Vector(tras*p0), v));  
+
     
     return t.runAll();
 }

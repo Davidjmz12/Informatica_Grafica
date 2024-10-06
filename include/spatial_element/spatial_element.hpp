@@ -19,10 +19,10 @@
 class SpatialElement
 {
 protected:
-    std::array<double,3> _coordinates;
+    std::array<double,4> _coordinates;
 
 public:
-    SpatialElement(double x, double y, double z);
+    SpatialElement(double x, double y, double z, double type);
 
     double operator[](int index) const;
 

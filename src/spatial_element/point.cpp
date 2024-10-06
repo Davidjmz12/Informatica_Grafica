@@ -11,7 +11,7 @@
 #include "spatial_element/point.hpp"
 
 Point::Point(double x, double y, double z)
-    : SpatialElement(x,y,z)
+    : SpatialElement(x,y,z,1)
 {}
 
 Point::Point(SpatialElement* s)
@@ -19,11 +19,11 @@ Point::Point(SpatialElement* s)
 {}
 
 Point::Point(const Vector v)
-    : SpatialElement(v[0],v[1],v[2])
+    : SpatialElement(v[0],v[1],v[2],1)
 {}
 
 Point::Point()
-    : SpatialElement(0,0,0)
+    : SpatialElement(0,0,0,1)
 {}
 
 bool Point::is_point() const

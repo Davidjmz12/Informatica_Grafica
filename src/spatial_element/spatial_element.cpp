@@ -10,13 +10,13 @@
 
 #include "spatial_element/spatial_element.hpp"
 
-SpatialElement::SpatialElement(double x, double y, double z)
-    : _coordinates(std::array<double,3>{x,y,z})
+SpatialElement::SpatialElement(double x, double y, double z, double type)
+    : _coordinates(std::array<double,4>{x,y,z,type})
 {}
 
 double SpatialElement::operator[](int index) const
 {
-    if (index < 0 || index > 2)
+    if (index < 0 || index > 3)
         throw std::out_of_range("Index must be between 0-2");
 
     return this->_coordinates[index];
