@@ -65,4 +65,3 @@ target_link_libraries(camera PUBLIC ray color_map base)
 target_include_directories(camera PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
-

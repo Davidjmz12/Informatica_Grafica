@@ -13,7 +13,7 @@
 Base::Base(Point p, Vector i, Vector j, Vector k)
     : _center(p), _i(i), _j(j), _k(k)
 { 
-    if (!i.is_base(&j,&k))
+    if (!i.is_base(j, k))
         throw std::invalid_argument("Vectors must be linearly independent.");
     
     double aux[4][4] = { {i[0], j[0], k[0], p[0]},

@@ -51,37 +51,34 @@ Vector Vector::normalize() const
     );
 }
 
-double Vector::dot(const Vector* v) const
+double Vector::dot(const Vector& v) const
 {
-    return  (*this)[0] * v->_coordinates[0] +
-            (*this)[1] * v->_coordinates[1] +
-            (*this)[2] * v->_coordinates[2];
+    return  (*this)[0] * v[0] +
+            (*this)[1] * v[1] +
+            (*this)[2] * v._coordinates[2];
 }
 
-Vector Vector::cross(const Vector* v) const
+Vector Vector::cross(const Vector& v) const
 {
-    return Vector(  (*this)[1] * v->_coordinates[2] -
-                        (*this)[2] * v->_coordinates[1],
-                    (*this)[2] * v->_coordinates[0] -
-                        (*this)[0] * v->_coordinates[2],
-                    (*this)[0] * v->_coordinates[1] -
-                        (*this)[1] * v->_coordinates[0]
+    return Vector(  (*this)[1] * v._coordinates[2] - (*this)[2] * v[1],
+                    (*this)[2] * v[0] - (*this)[0] * v[2],
+                    (*this)[0] * v[1] - (*this)[1] * v[0]
     );
 }
 
-bool Vector::linearly_dependent(const Vector* v) const
+bool Vector::linearly_dependent(const Vector& v) const
 {
-    return this->normalize() == v->normalize();
+    return this->normalize() == v.normalize();
 }
 
-bool Vector::is_base(const Vector* v1, const Vector* v2) const
+bool Vector::is_base(const Vector& v1, const Vector& v2) const
 {
-    double determinant =    (*this)[0]*(*v1)[1]*(*v2)[2] +
-                            (*v1)[0]*(*v2)[1]*(*this)[2] + 
-                            (*v2)[0]*(*this)[1]*(*v1)[2] -
-                            (*this)[2]*(*v1)[1]*(*v2)[0] -
-                            (*this)[1]*(*v1)[0]*(*v2)[2] -
-                            (*this)[0]*(*v1)[2]*(*v2)[1];
+    double determinant =    (*this)[0]*v1[1]*v2[2] +
+                            v1[0]*v2[1]*(*this)[2] + 
+                            v2[0]*(*this)[1]*v1[2] -
+                            (*this)[2]*v1[1]*v2[0] -
+                            (*this)[1]*v1[0]*v2[2] -
+                            (*this)[0]*v1[2]*v2[1];
 
     return !eqD(determinant,0); 
 }

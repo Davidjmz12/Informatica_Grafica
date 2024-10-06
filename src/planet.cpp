@@ -37,7 +37,7 @@ LinearMap Planet::compute_azimut_rotation(const LinearMap* r) const
     LinearMap res = LinearMap::identity();
     if (!(ref_proyected.normalize() == e1))
     {
-        Vector axis_ref = ref_proyected.cross(&e1);
+        Vector axis_ref = ref_proyected.cross(e1);
         double angle_first_rotation;
         if (axis_ref == Vector())
         {
@@ -45,7 +45,7 @@ LinearMap Planet::compute_azimut_rotation(const LinearMap* r) const
             angle_first_rotation = M_PI;
         }
         else
-            angle_first_rotation = acos(ref_proyected.dot(&e1));
+            angle_first_rotation = acos(ref_proyected.dot(e1));
         res = LinearMap::rotation(axis_ref,-angle_first_rotation);
     }
 
@@ -60,8 +60,8 @@ LinearMap Planet::compute_axis_rotation() const
     LinearMap r = LinearMap::identity();
     if (!(this->_axis.normalize() == e3))
     {
-        Vector axis_second_rotation = this->_axis.cross(&e3);
-        double angle_second_rotation = acos(e3.dot(&this->_axis) / this->_radius);
+        Vector axis_second_rotation = this->_axis.cross(e3);
+        double angle_second_rotation = acos(e3.dot(this->_axis) / this->_radius);
 
         r = LinearMap::rotation(axis_second_rotation,
                                 angle_second_rotation);
@@ -102,8 +102,8 @@ Base Planet::base_point(double inclination, double azimut)
 
     //Compute the axis
     Vector normal = (point-this->_center).normalize();
-    Vector tangent_long = this->_axis.cross(&normal).normalize();
-    Vector tangent_lat = normal.cross(&tangent_long);
+    Vector tangent_long = this->_axis.cross(normal).normalize();
+    Vector tangent_lat = normal.cross(tangent_long);
 
     return Base(point, tangent_long, tangent_lat, normal);
 }

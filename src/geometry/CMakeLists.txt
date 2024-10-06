@@ -1,11 +1,13 @@
-# Libraries
+# Geometry header
+add_library(geometry INTERFACE)
+target_link_libraries(geometry INTERFACE intersection ray)
 
-
-add_library(sphere sphere.cpp)
-target_link_libraries(sphere PUBLIC geometry)
 
 add_library(ellipsoid ellipsoid.cpp)
 target_link_libraries(ellipsoid PUBLIC geometry)
+
+add_library(sphere sphere.cpp)
+target_link_libraries(sphere PUBLIC geometry ellipsoid)
 
 add_library(triangle triangle.cpp)
 target_link_libraries(triangle PUBLIC geometry plane)

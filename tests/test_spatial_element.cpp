@@ -47,18 +47,18 @@ int main()
     // Dot and cross
     Vector v3 = Vector(-1,2,3);
     Vector v4 = Vector(8,3,4.5);
-    t.addTest("17", Test::EXPECT_EQ(v3.dot(&v4), 11.5));
-    t.addTest("18", Test::EXPECT_EQ(v3.cross(&v4), Vector(0,28.5,-19)));
+    t.addTest("17", Test::EXPECT_EQ(v3.dot(v4), 11.5));
+    t.addTest("18", Test::EXPECT_EQ(v3.cross(v4), Vector(0,28.5,-19)));
 
     // Linearly dependent
-    t.addTest("19", Test::EXPECT_EQ(e1.linearly_dependent(&v2),false));
-    t.addTest("20", Test::EXPECT_EQ((v3*3.8).linearly_dependent(&v3),true));
+    t.addTest("19", Test::EXPECT_EQ(e1.linearly_dependent(v2),false));
+    t.addTest("20", Test::EXPECT_EQ((v3*3.8).linearly_dependent(v3),true));
 
     // Base
     Vector e2 = Vector(0,1,0);
     Vector e3 = Vector(0,0,1);
-    t.addTest("21", Test::EXPECT_EQ(e1.is_base(&e2,&e3),true));
-    t.addTest("22", Test::EXPECT_EQ((e2*-9.7).is_base(&e2,&e3),false));
+    t.addTest("21", Test::EXPECT_EQ(e1.is_base(e2, e3),true));
+    t.addTest("22", Test::EXPECT_EQ((e2*-9.7).is_base(e2, e3),false));
 
     return t.runAll();
 }

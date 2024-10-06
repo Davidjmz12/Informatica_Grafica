@@ -32,13 +32,13 @@ public:
 
     Vector normalize() const;
 
-    double dot(const Vector* v) const;
+    double dot(const Vector& v) const;
 
-    Vector cross(const Vector* v) const;
+    Vector cross(const Vector& v) const;
 
-    bool linearly_dependent(const Vector* v) const;
+    bool linearly_dependent(const Vector& v) const;
 
-    bool is_base(const Vector* v1, const Vector* v2) const;
+    bool is_base(const Vector& v1, const Vector& v2) const;
 
     Vector operator+(const Vector v) const;
 

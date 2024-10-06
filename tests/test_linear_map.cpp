@@ -11,7 +11,6 @@
 #include "test.hpp"
 #include "linear_map.hpp"
 #include "base.hpp"
-#include "geometric.hpp"
 
 int main()
 {

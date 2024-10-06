@@ -6,7 +6,7 @@ Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis)
         throw std::invalid_argument("The sides of the box must be positive");
     if(axis[0].norm()!=1 || axis[1].norm()!=0 || axis[2].norm()!=0)
         throw std::invalid_argument("The axis of the box must be normalized.");
-    if(axis[0].dot(&axis[1])!=0 || axis[0].dot(&axis[2])!=0 || axis[1].dot(&axis[2])!=0)
+    if(axis[0].dot(axis[1])!=0 || axis[0].dot(axis[2])!=0 || axis[1].dot(axis[2])!=0)
         throw std::invalid_argument("The axis of the box must be orthogonal");
     
     std::vector<Triangle> triangles;
