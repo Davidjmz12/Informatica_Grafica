@@ -8,7 +8,7 @@ int main()
 {
     Tests t = Tests("TESTS cylinder");
 
-    Cylinder c = Cylinder(Point(0,0,0), 1.0F, Vector(0,0,1));
+    Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1));
 
     Ray r1 = Ray(Point(-2,0,0), Vector(1,0,0));
     Ray r2 = Ray(Point(-1,0,1), Vector(0,0,1));
@@ -47,7 +47,7 @@ int main()
     t.addTest("18",Test::EXPECT_EQ(c.intersect_with_ray(r6, i1), true));
     t.addTest("19",Test::EXPECT_EQ(i1.get_distance(), 3.0F));
     t.addTest("20",Test::EXPECT_EQ(i1.get_normal(), Vector(0,0,-1)));
-    t.addTest("21",Test::EXPECT_EQ(i1.get_point(), Point(0,0,0)));
+    t.addTest("21",Test::EXPECT_EQ(i1.get_point(), Point()));
 
     return t.runAll();
 }

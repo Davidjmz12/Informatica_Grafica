@@ -10,14 +10,14 @@ int main()
 
     Triangle tr= Triangle(Point(1,2,3),Point(0,5,0),Point(3,3,3));
 
-    Ray r1 = Ray(Point(0,0,0),Vector(0,1,0));
-    Ray r2 = Ray(Point(0,0,0),Vector(0.5,1,1));
+    Ray r1 = Ray(Point(),Vector(0,1,0));
+    Ray r2 = Ray(Point(),Vector(0.5,1,1));
     Ray r3 = Ray(Point(0,5,0),Vector(1,-3,3));
     Ray r4 = Ray(Point(1,5.5,0),Vector(1,-3,3));
 
     Ray r5 = Ray(Point(1.5,3,3),Vector(-0.5,-1,-1));
 
-    Ray r6 = Ray(Point(0,0,0),Vector(0,0,1));
+    Ray r6 = Ray(Point(),Vector(0,0,1));
     Intersection i1;
     t.addTest("1", Test::EXPECT_EQ(tr.intersect_with_ray(r1,i1),false));
 

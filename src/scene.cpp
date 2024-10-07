@@ -11,7 +11,7 @@ void Scene::add_geometry(Geometry* g)
 
 ColorMap Scene::paint_scene()
 {
-    return ColorMap();
+    return this->_camera.paint_scene(this->_objects);
 }
 
 std::ostream& operator<<(std::ostream& os, Scene s)

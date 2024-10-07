@@ -1,6 +1,6 @@
 # Geometry header
 add_library(geometry INTERFACE)
-target_link_libraries(geometry INTERFACE intersection ray)
+target_link_libraries(geometry INTERFACE intersection ray ellipsoid sphere triangle triangle_mesh cylinder disk box plane)
 
 
 add_library(ellipsoid ellipsoid.cpp)

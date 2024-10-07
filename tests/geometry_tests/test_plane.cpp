@@ -5,13 +5,13 @@ int main()
 {
     Tests t = Tests("TESTS plane");
 
-    Plane p = Plane(Point(0,0,0), Vector(0,0,1));
+    Plane p = Plane(Point(), Vector(0,0,1));
     Plane p2 = Plane(Point(1,2,3), Vector(3,2,1));
 
     Ray r1 = Ray(Point(-2,0,0), Vector(1,0,0));
-    Ray r2 = Ray(Point(0,0,0), Vector(0,0,1));
-    Ray r3 = Ray(Point(0,0,0), Vector(-1,1,1));
-    Ray r4 = Ray(Point(0,0,0), Vector(1,-4,5));
+    Ray r2 = Ray(Point(), Vector(0,0,1));
+    Ray r3 = Ray(Point(), Vector(-1,1,1));
+    Ray r4 = Ray(Point(), Vector(1,-4,5));
     Ray r5 = Ray(Point(4,0,0), Vector(-1,0,0));
     Intersection i1;
 

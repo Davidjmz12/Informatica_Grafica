@@ -5,6 +5,7 @@ add_subdirectory(spatial_element)
 # ------------------------------------------------------------------------------
 # Main executable
 add_executable(main main.cpp)
+target_link_libraries(main PUBLIC ppm_file scene geometry)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
@@ -37,7 +38,7 @@ target_link_libraries(color_map PUBLIC color)
 target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(ppm_file ppm_file.cpp)
-target_link_libraries(ppm_file PUBLIC color_map)
+target_link_libraries(ppm_file PUBLIC color_map tone_mapping_lib)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
@@ -57,11 +58,11 @@ target_link_libraries(ply_file PUBLIC triangle)
 target_include_directories(ply_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(scene scene.cpp)
-target_link_libraries(scene PUBLIC camera geometry)
+target_link_libraries(scene PUBLIC camera)
 target_include_directories(scene PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(camera camera.cpp)
-target_link_libraries(camera PUBLIC ray color_map base)
+target_link_libraries(camera PUBLIC ray color_map base geometry)
 target_include_directories(camera PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------

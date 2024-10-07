@@ -71,6 +71,8 @@ public:
     
     Point get_center() const;
 
+    Base normalize() const;
+
     /**
     * @brief An operator to print a base.
     * @param b the base to be printed.

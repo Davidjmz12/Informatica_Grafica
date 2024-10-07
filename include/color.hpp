@@ -69,6 +69,8 @@ public:
      */
     Color(std::array<double, 3> colors, std::array<double, 3> range , ColorEncoding type);
 
+    Color();
+
     /**
      * @brief Generates an array of three double values, each equal to the input value.
      * 

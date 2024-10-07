@@ -55,11 +55,20 @@ Point Base::get_center() const
     return this->_center;
 }
 
-Base Base::canonic_base(){
+Base Base::canonic_base()
+{
     return Base(Point(),
                 Vector(1,0,0),
                 Vector(0,1,0),
                 Vector(0,0,1));
+}
+
+Base Base::normalize() const
+{
+    return Base(this->_center,
+                this->_i.normalize(),
+                this->_j.normalize(),
+                this->_k.normalize());
 }
 
 std::ostream& operator<<(std::ostream& os, const Base& b)

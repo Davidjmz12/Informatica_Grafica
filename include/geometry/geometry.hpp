@@ -9,4 +9,5 @@ public:
 
     virtual bool intersect_with_ray(const Ray& r, Intersection& intersection) const = 0; 
 
+    friend std::ostream& operator<<(std::ostream& os, const Geometry& g);
 };

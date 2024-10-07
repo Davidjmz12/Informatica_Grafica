@@ -2,7 +2,7 @@
 
 #include "geometry/geometry.hpp"
 
-class Plane : Geometry
+class Plane : public Geometry
 {
 private:
     Vector _normal;

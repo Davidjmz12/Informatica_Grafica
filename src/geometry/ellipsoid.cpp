@@ -93,3 +93,9 @@ bool Ellipsoid::is_in_ellipsoid(Point p) const
                     pow(p[2]-this->_center[2],2)/pow(this->_c,2),1);
 }
 
+std::ostream& operator<<(std::ostream& os, const Ellipsoid& e)
+{
+    os << "Ellipsoid: " << e._center << " ; " << e._a << " ; " << e._b << " ; " << e._c;
+    return os;
+}
+

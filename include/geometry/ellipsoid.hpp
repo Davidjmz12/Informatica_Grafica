@@ -15,9 +15,9 @@
 /**
  * @brief Defines a ellipsoid object in 3D
  */
-class Ellipsoid : Geometry
+class Ellipsoid : public Geometry
 {
-private:
+protected:
     double _a, _b, _c; // Parameters for defining the ellipsoid
     Point _center; // Center point
 
@@ -59,4 +59,5 @@ public:
      */
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
 
+    friend std::ostream& operator<<(std::ostream& os, const Ellipsoid& e);
 };

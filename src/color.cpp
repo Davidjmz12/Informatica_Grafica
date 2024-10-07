@@ -44,6 +44,12 @@ double Color::min() const
     return aux;
 }
 
+Color::Color()
+{
+    this->_colors = {255,255,255};
+    this->_range = RGB_255_RANGE;
+    this->_type = RGB;
+}
 
 Color::Color(std::array<double, 3> colors, std::array<double, 3> range , ColorEncoding type)
 {

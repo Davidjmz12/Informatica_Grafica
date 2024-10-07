@@ -3,7 +3,7 @@
 #include "geometry/geometry.hpp"
 #include "geometry/plane.hpp"
 
-class Triangle : Geometry
+class Triangle : public Geometry
 {
 private:
     Point _v0;

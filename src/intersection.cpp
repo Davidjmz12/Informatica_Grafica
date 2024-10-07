@@ -5,7 +5,7 @@ Intersection::Intersection(double distance, Vector normal, Point point):
     _distance(distance),_normal(normal),_point(point){}
 
 Intersection::Intersection():
-    _distance(std::numeric_limits<double>::max()),_normal(Vector(0,0,0)),_point(Point(0,0,0)){}
+    _distance(std::numeric_limits<double>::max()),_normal(Vector()),_point(Point()){}
 
 Point Intersection::get_point() const
 {

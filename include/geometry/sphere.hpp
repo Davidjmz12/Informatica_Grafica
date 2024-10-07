@@ -24,4 +24,6 @@ public:
      * @throw std::invalid_argument if radius is zero.
      */
     Sphere(Point center, double radius);
+
+    friend std::ostream& operator<<(std::ostream& os, const Sphere& s);
 };

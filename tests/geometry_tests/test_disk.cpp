@@ -9,7 +9,7 @@ int main()
 
     Disk d1 = Disk(Point(1,1,0), Vector(0,0,1), 1);
 
-    Ray r1 = Ray(Point(0,0,0), Vector(1,0,0));
+    Ray r1 = Ray(Point(), Vector(1,0,0));
     Ray r2 = Ray(Point(0,1,0), Vector(1,0,0));
     Ray r3 = Ray(Point(1,1,1), Vector(0,0,-1));
     Ray r4 = Ray(Point(1,1,-1), Vector(0,0,1));

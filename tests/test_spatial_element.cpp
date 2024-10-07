@@ -18,10 +18,10 @@ int main()
     Vector v = Vector();
     Point p = Point();
 
-    t.addTest("1", Test::EXPECT_EQ(v,Vector(0,0,0)));
+    t.addTest("1", Test::EXPECT_EQ(v,Vector()));
     t.addTest("2", Test::EXPECT_EQ(v.is_vector(),true));
     t.addTest("3", Test::EXPECT_EQ(v.is_point(),false));
-    t.addTest("4", Test::EXPECT_EQ(p,Point(0,0,0)));
+    t.addTest("4", Test::EXPECT_EQ(p,Point()));
     t.addTest("5", Test::EXPECT_EQ(p.is_vector(),false));
     t.addTest("6", Test::EXPECT_EQ(p.is_point(),true));
 

@@ -11,6 +11,7 @@
 #include "base.hpp"
 #include "color_map.hpp"
 #include "ray.hpp"
+#include "geometry/geometry.hpp"
 
 /**
  * @brief Class that defines a Camera with a Screen
@@ -18,10 +19,10 @@
 class Camera
 {
 private:
-    Base _base;             // Base that defines the camera
-    double _width, _height;  // Dimensions of the screen
+    Base _screen_base;             // Base that defines the camera
+    unsigned int _width, _height;  // Dimensions of the screen
     double _distance;        // Distance to the screen
-    ColorMap _screen;       // Screen
+    Point _camera;
 
     /**
      * @brief Generate a ray with origin in the camera and direction
@@ -40,7 +41,7 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    Color compute_pixel_color(int x, int y, int k) const;
+    Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
 
 public:
 
@@ -53,7 +54,11 @@ public:
      * @throw std::invalid_argument if width, height or distance are not
      * positive numbers.
      */
-    Camera(Base base, double width, double height, double distance);
+    Camera(Base base, unsigned int width, unsigned int height, double distance);
+
+    ColorMap paint_scene(std::vector<Geometry*> objects) const;
+
+    SpatialElement* c_cam(const SpatialElement* s) const;
 
     /**
      * @brief Writes the information of a camera.
@@ -61,4 +66,6 @@ public:
      * @param c The camera.
      */
     friend std::ostream& operator<<(std::ostream& os, Camera c);
+
+
 };
