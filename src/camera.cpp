@@ -1,25 +1,20 @@
 #include "camera.hpp"
 
-Camera::Camera(Base base, unsigned int width, unsigned int height, double distance)
-    : _screen_base(base.normalize()), _width(width), _height(height), 
-    _distance(distance), _camera(_screen_base.coord_into_canonical(new Point(width/2.0,height/2.0,0)))
-{
-    if (width <= 0 || height <= 0 || distance <= 0)
-        throw std::invalid_argument("Width, height and distance must be positive numbers.");
-}
+Camera::Camera(Base base)
+    : _screen_base(base)
+{}
 
 Ray Camera::trace_ray(double x, double y) const
 {
-    Ray r = Ray( this->_camera,
-                (Point)this->_screen_base.coord_into_canonical(
-                    new Point(x,y,this->_distance)) -
-                    this->_camera);
+    x = 1-x/this->_screen_base[0].norm();
+    y = 1-y/this->_screen_base[1].norm();
+    Ray r = Ray(this->_screen_base.get_center(),
+                Vector(x,y,1));
     return r;
 }
 
 Color Camera::compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const
 {
-    Color mean_color();
     Ray r = this->trace_ray(x,y);
     Intersection min_int;
     bool intersects = false;
@@ -46,12 +41,15 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects) const
 {
     std::vector<std::vector<Color>> colors;
 
-    for(unsigned int i=0;i<this->_height;i++)
+    int width = this->_screen_base[0].norm();
+    int height = this->_screen_base[1].norm();
+    
+    for(int i=0;i<2*height;i++)
     {
         std::vector<Color> row;
-        for(unsigned int j=0;j<this->_width;j++)
+        for(int j=0;j<2*width;j++)
         {
-            row.push_back(this->compute_pixel_color(i,j,1,objects));
+            row.push_back(this->compute_pixel_color(j,i,1,objects));
         }
         colors.push_back(row);
     }
@@ -67,9 +65,5 @@ SpatialElement* Camera::c_cam(const SpatialElement* s) const
 std::ostream& operator<<(std::ostream& os, Camera c)
 {
     os << "Camera:" << std::endl;
-    os << c._screen_base << std::endl;
-    os << "Dimensions: " << c._width << "x" << c._height << std::endl;
-    os << "Distance: " << c._distance; 
-
     return os;
 }

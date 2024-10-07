@@ -20,10 +20,7 @@ class Camera
 {
 private:
     Base _screen_base;             // Base that defines the camera
-    unsigned int _width, _height;  // Dimensions of the screen
-    double _distance;        // Distance to the screen
-    Point _camera;
-
+    
     /**
      * @brief Generate a ray with origin in the camera and direction
      * to the coordinates (X,y) inside the screen.
@@ -54,7 +51,7 @@ public:
      * @throw std::invalid_argument if width, height or distance are not
      * positive numbers.
      */
-    Camera(Base base, unsigned int width, unsigned int height, double distance);
+    Camera(Base base);
 
     ColorMap paint_scene(std::vector<Geometry*> objects) const;
 

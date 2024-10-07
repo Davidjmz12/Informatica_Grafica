@@ -9,20 +9,23 @@
 
 int main()
 {
-    Base b = Base(Point(),Vector(0,1,0),Vector(0,0,1),Vector(1,0,0));
-    Camera c = Camera(b, 800, 600, 3600);
-    Geometry* el = new Sphere(Point(c.c_cam(new Point(300,400,3600))),100);
-    Geometry* t = new Triangle( Point(c.c_cam(new Point(300,400,3600))),
-                                Point(c.c_cam(new Point(300,600,3600))),
-                                Point(c.c_cam(new Point(400,400,3600))));
-    Geometry* ccc = new Cylinder(Point(c.c_cam(new Point(300,400,3600))),100,Vector(0,200,0));
+    Base b = Base(Point(),Vector(800,0,0),Vector(0,600,0),Vector(0,0,10000));
+    Camera c = Camera(b);
+    //Geometry* e1 = new Sphere(Point(new Point(0,0,3600)),1000);
     //Geometry* e2 = new Sphere(Point(4000,600,500),100);
-    //Geometry* el = new Disk(Point(4000,400,300),Vector(1,0,0),200);
-    std::vector<Geometry*> ve = {ccc};
+    //Geometry* e1 = new Disk(Point(0,0,10),Vector(0,0,1),1);
+    Geometry* e1 = new Plane(Point(0,-1,0),Vector(0,1,0));
+    Geometry* e2 = new Plane(Point(0,1,0),Vector(0,-1,0));
+    Geometry* e3 = new Plane(Point(1,0,0),Vector(-1,0,0));
+    Geometry* e4 = new Plane(Point(-1,0,0),Vector(1,0,0));
+    Geometry* e5 = new Plane(Point(0,0,3),Vector(0,0,-1));
+    //Geometry* ss = new Sphere(Point(0,0,2),0.1);
+    Geometry* ss = new Cylinder(Point(0,0,1.5),0.2,Vector(1/4.0,1/3.0,0.3));
+    std::vector<Geometry*> ve = {e1,e2,e3,e4,e5,ss};
     Scene s = Scene(ve, c);
 
     ColorMap cm = s.paint_scene();
 
-    PpmFile ppm = PpmFile(cm, 255, 255, {800,600}, "P3");
+    PpmFile ppm = PpmFile(cm, 255, 255, {1600,1200}, "P3");
     ppm.save("../../assets/out/scene.ppm");
 }

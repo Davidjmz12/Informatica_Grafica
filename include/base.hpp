@@ -81,6 +81,8 @@ public:
     */
     friend std::ostream& operator<<(std::ostream& os, const Base& b);
 
+    Vector operator[](int i) const;
+
     /**
     * @brief An operator to check if two bases are the same.
     * @param b the second base.

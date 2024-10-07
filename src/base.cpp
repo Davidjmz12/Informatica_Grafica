@@ -77,6 +77,18 @@ std::ostream& operator<<(std::ostream& os, const Base& b)
     return os;
 }
 
+Vector Base::operator[](int i) const
+{
+    if(i < 0 || i > 2)
+        throw std::invalid_argument("Index out of bounds.");
+    if(i == 0)
+        return this->_i;
+    if(i == 1) 
+        return this->_j;
+    else
+        return this->_k;
+}
+
 bool Base::operator==(Base b) const
 {
     return (this->_matrix == b._matrix);
