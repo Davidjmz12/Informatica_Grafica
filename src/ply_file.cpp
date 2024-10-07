@@ -28,7 +28,7 @@ PlyFile::PlyFile(std::string file_path)
 
     std::vector<Triangle> triangles;
 
-    for(unsigned int i=0;i< num_vertices;i++)
+    for(unsigned int i=0; i< num_faces; i++)
     {
         unsigned int n_vertex_face; 
         unsigned int p0,p1,p2;

@@ -20,7 +20,6 @@ int main()
     Geometry* e3 = new Plane(Point(1,0,0),Vector(-1,0,0));
     Geometry* e4 = new Plane(Point(-1,0,0),Vector(1,0,0));
     Geometry* e5 = new Plane(Point(0,0,4),Vector(0,0,-1));
-    Geometry* e6 = new Triangle(Point(0.5,0.5,3),Point(1,0.5,2),Point(0.5,0,2));
     //Geometry* ss = new Sphere(Point(0,0,2),0.1);
     Geometry* ss = new Cylinder(Point(0,0,1.5),0.2,Vector(1/4.0,1/3.0,0.3));
     std::vector<Geometry*> ve = {e1,e2,e3,e4,e5,t};

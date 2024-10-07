@@ -30,7 +30,7 @@ Color Camera::compute_pixel_color(int x, int y, int k, std::vector<Geometry*> ob
     }
     if(intersects)
     {
-        Vector v = (min_int.get_normal().normalize()+Vector(1,1,1))/2*255;
+        Vector v = (min_int.get_normal().normalize()+Vector(1,1,1))/2.0*255;
         return Color({v[0],v[1],v[2]},Color::RGB_255_RANGE,RGB);
     } else {
         return Color();
