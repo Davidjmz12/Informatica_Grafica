@@ -19,4 +19,10 @@ public:
     Plane plane() const ;
 
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+
+    std::string to_string() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Triangle& t);
+
+    Point operator[](int i) const;
 };

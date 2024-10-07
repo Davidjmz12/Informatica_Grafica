@@ -61,3 +61,8 @@ bool Point::operator==(const Point v) const
             eqD((*this)[1],v[1]) &&
             eqD((*this)[2],v[2]);
 }
+
+std::string Point::to_string() const
+{
+    return "Point: (" + std::to_string((*this)[0]) + "," + std::to_string((*this)[1]) + "," + std::to_string((*this)[2]) + ")";
+}

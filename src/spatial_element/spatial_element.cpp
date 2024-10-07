@@ -24,9 +24,7 @@ double SpatialElement::operator[](int index) const
 
 std::ostream&  operator<<(std::ostream& os, const SpatialElement& s) 
 {
-    os  <<  "(" <<  std::setprecision(6) << s[0] << "," <<
-                    std::setprecision(6) << s[1] << "," <<
-                    std::setprecision(6) << s[2] << ")";
+    os  <<  s.to_string();
     return os;
 }
 

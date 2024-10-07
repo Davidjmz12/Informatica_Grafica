@@ -31,4 +31,6 @@ public:
     virtual bool is_point() const;
 
     virtual bool is_vector() const;
+
+    virtual std::string to_string() const = 0;
 };

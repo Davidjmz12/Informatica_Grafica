@@ -35,4 +35,6 @@ public:
     Vector operator-(const Point p) const;
 
     bool operator==(const Point v) const;
+
+    std::string to_string() const;
 };

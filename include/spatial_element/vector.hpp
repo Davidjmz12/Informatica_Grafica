@@ -51,4 +51,6 @@ public:
     Vector operator/(double scalar) const;
 
     bool operator==(const Vector v) const;
+
+    std::string to_string() const;
 };

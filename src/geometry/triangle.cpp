@@ -56,3 +56,26 @@ bool Triangle::intersect_with_ray(const Ray& r, Intersection& intersection) cons
     
     return false;
 }
+
+std::string Triangle::to_string() const
+{
+    return "Triangle: " + this->_v0.to_string() + " " + this->_v1.to_string() + " " + this->_v2.to_string();
+}
+
+Point Triangle::operator[](int i) const
+{
+    if(i == 0)
+        return this->_v0;
+    else if(i == 1)
+        return this->_v1;
+    else if(i == 2)
+        return this->_v2;
+    else
+        throw std::invalid_argument("Index out of bounds");
+}
+
+std::ostream& operator<<(std::ostream& os, const Triangle& t)
+{
+    os << t.to_string();
+    return os;
+}

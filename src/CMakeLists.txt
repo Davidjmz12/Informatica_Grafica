@@ -5,7 +5,7 @@ add_subdirectory(spatial_element)
 # ------------------------------------------------------------------------------
 # Main executable
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC ppm_file scene geometry)
+target_link_libraries(main PUBLIC ppm_file scene geometry ply_file)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------

@@ -23,8 +23,7 @@ bool TriangleMesh::intersect_with_ray(const Ray& r, Intersection& intersection) 
 
     }
 
-    if(intersects)
-        intersection = min_intersection;
+    intersection = min_intersection;
+    return intersects;
 
-    return false;
 }

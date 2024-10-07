@@ -73,7 +73,7 @@ bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, Intersection& in
     if(!intersect_with_ray_infinite_cylinder(r, intersection))
         return false;
     
-    double int_point_dot_axis = (intersection.get_point()-Point()).dot(_axis);
+    double int_point_dot_axis = (intersection.get_point()-this->_center).dot(_axis);
 
     if( ltD(int_point_dot_axis, 0) || gtD(int_point_dot_axis, _height))
         return false;
@@ -85,23 +85,28 @@ bool Cylinder::intersect_with_ray(const Ray& r, Intersection& intersection) cons
 {
     
     if(!intersect_with_ray_finite_cylinder(r, intersection)){
-        std::vector<Intersection> int_bases;
+        Intersection int_min;
+        bool int_min_exists = false;
         for(auto i: { _top, _bottom })
         {
             Intersection intersection_aux;
             if(i.intersect_with_ray(r, intersection_aux))
-            {
-                int_bases.push_back(intersection_aux);
+            {   
+                int_min_exists=true;
+                if(int_min.get_distance()>intersection_aux.get_distance())
+                    int_min = intersection_aux;
             }
         }
-        
-        if(int_bases.size() == 0)
-            return false;
-        else{
-            intersection = Intersection::min(int_bases);
-            return true;
-        }    
+        intersection = int_min;
+        return int_min_exists;
     }
 
     return true;
+}
+
+std::string Cylinder::to_string() const
+{
+    std::stringstream ss;
+    ss << "Cylinder: " << _center << " " << _radius << " " << _axis  << " " << _height;
+    return ss.str();
 }

@@ -129,3 +129,8 @@ bool Vector::operator==(const Vector v) const
             eqD((*this)[1],v[1]) &&
             eqD((*this)[2],v[2]);
 }
+
+std::string Vector::to_string() const
+{
+    return "Vector: (" + std::to_string((*this)[0]) + "," + std::to_string((*this)[1]) + "," + std::to_string((*this)[2]) + ")";
+}

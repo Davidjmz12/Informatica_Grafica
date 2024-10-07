@@ -1,14 +1,15 @@
 #include <iostream>
 #include "scene.hpp"
-#include "geometry/sphere.hpp"
-#include "geometry/disk.hpp"
-#include "geometry/plane.hpp"
-#include "geometry/triangle.hpp"
+#include "geometry/all_geometry.hpp"
 #include "ppm_file.hpp"
-#include "geometry/cylinder.hpp"
+#include "ply_file.hpp"
 
 int main()
 {
+    PlyFile ply = PlyFile("../../assets/in/cow.ply");
+    PlyFile ply2 = ply.change_bounding_box({-0.5,0.5,-0.5,0.5,2,3});
+    Geometry* t = new TriangleMesh(ply2.get_triangles());
+
     Base b = Base(Point(),Vector(800,0,0),Vector(0,600,0),Vector(0,0,10000));
     Camera c = Camera(b);
     //Geometry* e1 = new Sphere(Point(new Point(0,0,3600)),1000);
@@ -18,10 +19,11 @@ int main()
     Geometry* e2 = new Plane(Point(0,1,0),Vector(0,-1,0));
     Geometry* e3 = new Plane(Point(1,0,0),Vector(-1,0,0));
     Geometry* e4 = new Plane(Point(-1,0,0),Vector(1,0,0));
-    Geometry* e5 = new Plane(Point(0,0,3),Vector(0,0,-1));
+    Geometry* e5 = new Plane(Point(0,0,4),Vector(0,0,-1));
+    Geometry* e6 = new Triangle(Point(0.5,0.5,3),Point(1,0.5,2),Point(0.5,0,2));
     //Geometry* ss = new Sphere(Point(0,0,2),0.1);
     Geometry* ss = new Cylinder(Point(0,0,1.5),0.2,Vector(1/4.0,1/3.0,0.3));
-    std::vector<Geometry*> ve = {e1,e2,e3,e4,e5,ss};
+    std::vector<Geometry*> ve = {e1,e2,e3,e4,e5,t};
     Scene s = Scene(ve, c);
 
     ColorMap cm = s.paint_scene();
