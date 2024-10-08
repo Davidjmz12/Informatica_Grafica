@@ -1,16 +1,20 @@
 /**
  * @file ellipsoid.hpp
  * @brief Defines a ellipsoid.
- * @author David Tizne Ondiviela
+ * @authors Davidjmz12 DavidTizne
+ * @date 08/10/2024
  *
- * This file contains the definition of the Ellipsoid
- * class, which represents a ellipsoid.
+ * This file contains the definition of the Ellipsoid class, which represents
+ * a ellipsoid in R^3.
 */
+
 #pragma once
 
 #include <stdexcept>
 #include <tuple>
 #include "geometry/geometry.hpp"
+
+
 
 /**
  * @brief Defines a ellipsoid object in 3D

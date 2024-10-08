@@ -14,3 +14,14 @@ bool Disk::intersect_with_ray(const Ray& r, Intersection& intersection) const
         return false;
     return true;
 }
+
+std::ostream& operator<<(std::ostream& os, const Disk& d)
+{
+    os << d.to_string();
+    return os;
+}
+
+std::string Disk::to_string() const
+{
+    return "Disk in plane:\n" + this->_plane.to_string() + "\nRadius: " + std::to_string(this->_radius);
+}

@@ -6,9 +6,9 @@
 
 int main()
 {
-    PlyFile ply = PlyFile("../../assets/in/cow.ply");
-    PlyFile ply2 = ply.change_bounding_box({-0.5,0.5,-0.5,0.5,2,3});
-    Geometry* t = new TriangleMesh(ply2.get_triangles());
+    //PlyFile ply = PlyFile("../../assets/in/cow.ply");
+    //PlyFile ply2 = ply.change_bounding_box({-0.5,0.5,-0.5,0.5,2,3});
+    //Geometry* t = new TriangleMesh(ply2.get_triangles());
 
     Base b = Base(Point(),Vector(800,0,0),Vector(0,600,0),Vector(0,0,10000));
     Camera c = Camera(b);
@@ -22,7 +22,7 @@ int main()
     Geometry* e5 = new Plane(Point(0,0,4),Vector(0,0,-1));
     //Geometry* ss = new Sphere(Point(0,0,2),0.1);
     Geometry* ss = new Cylinder(Point(0,0,1.5),0.2,Vector(1/4.0,1/3.0,0.3));
-    std::vector<Geometry*> ve = {e1,e2,e3,e4,e5,t};
+    std::vector<Geometry*> ve = {e1,e2,e3,e4,e5};
     Scene s = Scene(ve, c);
 
     ColorMap cm = s.paint_scene();

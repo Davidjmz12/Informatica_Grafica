@@ -6,7 +6,11 @@ Sphere::Sphere(Point center, double radius)
 
 std::ostream& operator<<(std::ostream& os, const Sphere& s)
 {
-    os << "Sphere: " << s._center << " " << s._a;
+    os << s.to_string();
     return os;
 }
 
+std::string Sphere::to_string() const
+{
+    return "Sphere: " + this->_center.to_string() + " " + std::to_string(this->_a);
+}

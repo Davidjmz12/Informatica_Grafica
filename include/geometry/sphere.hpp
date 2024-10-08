@@ -1,7 +1,7 @@
 /**
  * @file sphere.hpp
  * @brief Defines the class Sphere.
- * @author David Tizne Ondiviela
+ * @author Davidjmz12 DavidTizne
  *
  * This file contains the definition of the Sphere class,
  * which represents a sphere.
@@ -26,4 +26,6 @@ public:
     Sphere(Point center, double radius);
 
     friend std::ostream& operator<<(std::ostream& os, const Sphere& s);
+
+    std::string to_string() const override;
 };

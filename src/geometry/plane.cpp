@@ -42,3 +42,14 @@ Point Plane::get_point() const
 {
     return this->_point;
 }
+
+std::ostream& operator<<(std::ostream& os, const Plane& p)
+{
+    os << p.to_string();
+    return os;
+}
+
+std::string Plane::to_string() const
+{
+    return "Plane with normal: " + this->_normal.to_string() + " and point: " + this->_point.to_string();
+}

@@ -57,11 +57,6 @@ bool Triangle::intersect_with_ray(const Ray& r, Intersection& intersection) cons
     return false;
 }
 
-std::string Triangle::to_string() const
-{
-    return "Triangle: " + this->_v0.to_string() + " " + this->_v1.to_string() + " " + this->_v2.to_string();
-}
-
 Point Triangle::operator[](int i) const
 {
     if(i == 0)
@@ -78,4 +73,9 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t)
 {
     os << t.to_string();
     return os;
+}
+
+std::string Triangle::to_string() const
+{
+    return "Triangle: " + this->_v0.to_string() + " " + this->_v1.to_string() + " " + this->_v2.to_string();
 }

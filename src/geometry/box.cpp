@@ -6,8 +6,8 @@ Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis)
         throw std::invalid_argument("The sides of the box must be positive");
     if(axis[0].norm()!=1 || axis[1].norm()!=0 || axis[2].norm()!=0)
         throw std::invalid_argument("The axis of the box must be normalized.");
-    if(axis[0].dot(axis[1])!=0 || axis[0].dot(axis[2])!=0 || axis[1].dot(axis[2])!=0)
-        throw std::invalid_argument("The axis of the box must be orthogonal");
+    if(axis[0].is_base(axis[1],axis[2]))
+        throw std::invalid_argument("The axis of the box must be a R^3 base.");
     
     std::vector<Triangle> triangles;
 
@@ -57,4 +57,15 @@ Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis)
 bool Box::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     return _mesh.intersect_with_ray(r, intersection);
+}
+
+std::ostream& operator<<(std::ostream& os, const Box& b)
+{
+    os << b.to_string(); 
+    return os;
+}
+
+std::string Box::to_string() const
+{
+    return "Box with mesh:\n" + this->_mesh.to_string();
 }

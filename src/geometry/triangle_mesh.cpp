@@ -27,3 +27,19 @@ bool TriangleMesh::intersect_with_ray(const Ray& r, Intersection& intersection) 
     return intersects;
 
 }
+
+std::ostream& operator<<(std::ostream& os, const TriangleMesh& tm)
+{
+    os << tm.to_string();
+    return os;
+}
+
+std::string TriangleMesh::to_string() const
+{
+    std::string s = "TriangleMesh with triangles:\n";
+    for(auto triangle : _triangles)
+    {
+        s += triangle.to_string() + "\n";
+    }
+    return s;
+}

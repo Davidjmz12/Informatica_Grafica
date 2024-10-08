@@ -1,3 +1,13 @@
+/**
+ * @file all_geometry.hpp
+ * @brief Defines a header for every geometric.
+ * @authors Davidjmz12 DavidTizne
+ * @date 08/10/2024
+ *
+ * This file contains the definition of the header that includes
+ * every geometric class.
+*/
+
 #pragma once
 
 #include "geometry/box.hpp"
