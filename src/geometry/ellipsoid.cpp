@@ -95,7 +95,11 @@ bool Ellipsoid::is_in_ellipsoid(Point p) const
 
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& e)
 {
-    os << "Ellipsoid: " << e._center << " ; " << e._a << " ; " << e._b << " ; " << e._c;
+    os << e.to_string();
     return os;
 }
 
+std::string Ellipsoid::to_string() const
+{
+    return "Ellipsoid: " + this->_center.to_string() + " ; " + std::to_string(this->_a) + " ; " + std::to_string(this->_b) + " ; " + std::to_string(this->_c);
+}

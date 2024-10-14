@@ -1,6 +1,6 @@
 # Geometry header
 add_library(geometry INTERFACE)
-target_link_libraries(geometry INTERFACE intersection ray ellipsoid sphere triangle triangle_mesh cylinder disk box plane)
+target_link_libraries(geometry INTERFACE intersection ray ellipsoid sphere triangle triangle_mesh cylinder disk box plane face)
 
 
 add_library(ellipsoid ellipsoid.cpp)
@@ -27,6 +27,9 @@ target_link_libraries(box PUBLIC triangle_mesh)
 add_library(plane plane.cpp)
 target_link_libraries(plane PUBLIC geometry)
 
+add_library(face face.cpp)
+target_link_libraries(face PUBLIC geometry)
+
 
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)
@@ -36,3 +39,4 @@ target_include_directories(cylinder PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(disk PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(box PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(plane PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(face PUBLIC ${CMAKE_SOURCE_DIR}/include)

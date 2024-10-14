@@ -50,12 +50,12 @@ inline bool gtD(double a, double b)
     return b - a < -EPSILON;
 }
 
-inline bool leF(double a, double b)
+inline bool leD(double a, double b)
 {
     return a - b < EPSILON;
 }
 
-inline bool geF(double a, double b)
+inline bool geD(double a, double b)
 {
     return b - a < EPSILON;
 }

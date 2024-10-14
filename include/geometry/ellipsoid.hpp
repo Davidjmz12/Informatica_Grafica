@@ -64,4 +64,6 @@ public:
     bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
 
     friend std::ostream& operator<<(std::ostream& os, const Ellipsoid& e);
+
+    std::string to_string() const override;
 };

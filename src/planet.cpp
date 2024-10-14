@@ -21,7 +21,7 @@ bool collide(Planet s1, double az1, double inc1, Planet s2, double az2, double i
     SpatialElement* coord_b1 = b1.coord_from_canonical(new Point(b2._center));
     SpatialElement* coord_b2 = b2.coord_from_canonical(new Point(b1._center));
     
-    return leF((*coord_b1)[2],0) || leF((*coord_b2)[2],0);
+    return leD((*coord_b1)[2],0) || leD((*coord_b2)[2],0);
 }
 
 LinearMap Planet::compute_azimut_rotation(const LinearMap* r) const
