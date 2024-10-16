@@ -20,16 +20,16 @@ class Camera
 {
 private:
     Base _screen_base;             // Base that defines the camera
-    
+    std::array<int,2> _resolution;
     /**
      * @brief Generate a ray with origin in the camera and direction
      * to the coordinates (X,y) inside the screen.
-     * @param x The x-axis coordinates.
-     * @param y The y-axis coordinates.
+     * @param coordinates Coordinates of the pixel ((0,0) is the top-left
+     * pixel of the screen)
      * @return A ray with origin in the camera and direction to the
      * coordinates (x,y) inside the screen.
      */
-    Ray trace_ray(double x, double y) const;
+    Ray trace_ray(std::array<float,2> coordinates) const;
 
     /**
      * @brief Computes the color that a pixel must have.
@@ -39,6 +39,15 @@ private:
      * @return The color that the pixel (x,y) must have.
      */
     Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
+
+    /**
+     * @brief Compute the coordinates of the pixel x,y in the camera
+     * base
+     * @param x The position in the width axis.
+     * @param y The position in the height axis.
+     * @return The coordinates of the pixel in the camera-base.
+     */
+    std::array<float,2> get_random_pixel_coordinates(int x, int y) const;
 
 public:
 
@@ -51,7 +60,7 @@ public:
      * @throw std::invalid_argument if width, height or distance are not
      * positive numbers.
      */
-    Camera(Base base);
+    Camera(Base base, std::array<int,2> resolution);
 
     ColorMap paint_scene(std::vector<Geometry*> objects) const;
 

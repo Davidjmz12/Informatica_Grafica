@@ -1,21 +1,29 @@
 #include "camera.hpp"
 
-Camera::Camera(Base base)
-    : _screen_base(base)
+Camera::Camera(Base base, std::array<int,2> resolution)
+    : _screen_base(base), _resolution(resolution)
 {}
 
-Ray Camera::trace_ray(double x, double y) const
+Ray Camera::trace_ray(std::array<float,2> coordinates) const
 {
-    x = 1-x/this->_screen_base[0].norm();
-    y = 1-y/this->_screen_base[1].norm();
-    Ray r = Ray(this->_screen_base.get_center(),
-                Vector(x,y,1));
+    SpatialElement* p = new Point(coordinates[0],coordinates[1],1);
+    Vector dir = (Point(this->_screen_base.coord_into_canonical(p))-this->_screen_base.get_center());
+    Ray r = Ray(this->_screen_base.get_center(),dir);
     return r;
+}
+
+std::array<float,2> Camera::get_random_pixel_coordinates(int x, int y) const
+{
+    auto x_coordinate = (1-2*x/this->_resolution[0]);
+    auto y_coordinate = (1-2*y/this->_resolution[1]);
+
+    return {x_coordinate,y_coordinate};
 }
 
 Color Camera::compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const
 {
-    Ray r = this->trace_ray(x,y);
+    std::array<float,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
+    Ray r = this->trace_ray(pixel_coordinates);
     Intersection min_int;
     bool intersects = false;
     for(auto element: objects)
