@@ -13,15 +13,15 @@
 int main()
 {
     Tests t = Tests("ELLIPSOID_TEST");
-
-    Ellipsoid e = Ellipsoid(1,2,3,Point());
+    Property property = Property();
+    Ellipsoid e = Ellipsoid(1,2,3,Point(),property);
     Ray r = Ray(Point(-2,0,0),Vector(1,0,0));
     Intersection res = Intersection();
 
     t.addTest("1", Test::EXPECT_EQ(e.intersect_with_ray(r,res),true));
     t.addTest("2", Test::EXPECT_EQ(res,Intersection(1,Vector(-1,0,0),Point(-1,0,0))));
 
-    Ellipsoid e2 = Ellipsoid(3,2,1,Point(2,3,5));
+    Ellipsoid e2 = Ellipsoid(3,2,1,Point(2,3,5),property);
     Ray r2 = Ray(Point(6,0,0),Vector(-4,3,4));
 
     t.addTest("3", Test::EXPECT_EQ(e2.intersect_with_ray(r2,res),true));

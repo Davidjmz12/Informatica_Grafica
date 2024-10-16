@@ -6,8 +6,8 @@ int main()
 {
 
     Tests t = Tests("TESTS disk");
-
-    Disk d1 = Disk(Point(1,1,0), Vector(0,0,1), 1);
+    Property property = Property();
+    Disk d1 = Disk(Point(1,1,0), Vector(0,0,1), 1,property);
 
     Ray r1 = Ray(Point(), Vector(1,0,0));
     Ray r2 = Ray(Point(0,1,0), Vector(1,0,0));

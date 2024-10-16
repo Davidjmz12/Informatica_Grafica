@@ -2,14 +2,19 @@
 #include "geometry/plane.hpp"
 
 
-Plane::Plane(Point point, Vector normal)
-    : _normal(normal.normalize()), _point(point)
+Plane::Plane(Point point, Vector normal, Property properties)
+    : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(normal))
 {}
 
-Plane::Plane(Point p1, Point p2, Point p3) 
+Plane::Plane(Vector normal, float distance, Property properties)
+    : Geometry(properties), _normal(normal.normalize()), _distance(distance)
+{}
+
+Plane::Plane(Point p1, Point p2, Point p3, Property properties) 
+    : Geometry(properties)
 {
     this->_normal = (p1-p2).cross((p3-p1)).normalize();
-    this->_point = p1;
+    this->_distance = -Vector(p1).dot(this->_normal);
 }
 
 
@@ -21,7 +26,7 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
         return false;
 
     
-    double distance = (this->_point - ray.get_point()).dot(this->_normal) / v_dot_n;
+    double distance = (-this->_distance-Vector(ray.get_point()).dot(this->_normal))/(ray.get_direction().dot(this->_normal));
 
     Point point = ray.evaluate(distance);
 
@@ -38,9 +43,9 @@ Vector Plane::get_normal() const
     return this->_normal;
 }
 
-Point Plane::get_point() const
+float Plane::get_distance() const
 {
-    return this->_point;
+    return this->_distance;
 }
 
 std::ostream& operator<<(std::ostream& os, const Plane& p)
@@ -51,5 +56,5 @@ std::ostream& operator<<(std::ostream& os, const Plane& p)
 
 std::string Plane::to_string() const
 {
-    return "Plane with normal: " + this->_normal.to_string() + " and point: " + this->_point.to_string();
+    return "Plane with normal: " + this->_normal.to_string() + " and distance: " + std::to_string(this->_distance);
 }

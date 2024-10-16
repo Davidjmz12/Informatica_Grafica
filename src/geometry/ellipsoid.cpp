@@ -27,8 +27,8 @@ std::tuple<bool,double> solve_equation_second_degree(double a, double b, double 
         return std::make_tuple(false,0.0);
 }
 
-Ellipsoid::Ellipsoid(double a, double b, double c, Point center)
-    : _a(a), _b(b), _c(c), _center(center)
+Ellipsoid::Ellipsoid(double a, double b, double c, Point center, Property properties)
+    : Geometry(properties), _a(a), _b(b), _c(c), _center(center)
 {
     if (eqD(a,0) || eqD(b,0) || eqD(c,0))
         throw std::invalid_argument("Factors cannot be zero.");

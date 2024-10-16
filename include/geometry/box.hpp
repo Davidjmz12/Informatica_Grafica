@@ -57,7 +57,7 @@ public:
      * @param axis The axis of the box.
      * @throw std::invalid_argument if the sides are not positive, the axis are not normalized or the axis are not a R^3 basis.
      */
-    Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis);
+    Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis, Property properties);
 
     /**
      * @brief Method that checks if a ray intersects with the box.

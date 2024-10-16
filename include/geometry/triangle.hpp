@@ -73,7 +73,7 @@ public:
      * @param v2 The third vertex of the triangle.
      * @throw std::invalid_argument if the vertices are not different or if they are linearly dependent.
      */
-    Triangle(Point v0, Point v1, Point v2);
+    Triangle(Point v0, Point v1, Point v2, Property properties);
 
     /**
      * @brief Gets the normal vector of the triangle.

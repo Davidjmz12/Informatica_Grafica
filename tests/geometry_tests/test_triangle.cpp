@@ -5,10 +5,10 @@
 
 int main()
 {
-
+    Property property = Property();
     Tests t = Tests("TEST TRIANGLE");
 
-    Triangle tr= Triangle(Point(1,2,3),Point(0,5,0),Point(3,3,3));
+    Triangle tr= Triangle(Point(1,2,3),Point(0,5,0),Point(3,3,3),property);
 
     Ray r1 = Ray(Point(),Vector(0,1,0));
     Ray r2 = Ray(Point(),Vector(0.5,1,1));

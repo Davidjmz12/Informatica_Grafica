@@ -47,6 +47,7 @@ private:
     Vector _u,_v; ///> Two vectors that define the plane
     Point _point; ///> Point in the plane
     std::array<double,2> _sizes; ///> Sizes of the face
+    
 public:
 
     /**
@@ -55,7 +56,7 @@ public:
      * @param u The first vector that defines the boundary of the face.
      * @param v The second vector that defines the boundary of the face.
      */
-    Face(Vector normal, Vector u, Vector v, Point point);
+    Face(Vector normal, Vector u, Vector v, Point point, Property properties);
 
 
     /**

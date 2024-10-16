@@ -12,16 +12,18 @@
 
 int main()
 {
+
+    Property property = Property();
     Tests t = Tests("SPHERE TEST");
 
-    Sphere s = Sphere(Point(), 1);
+    Sphere s = Sphere(Point(), 1,property);
     Ray r = Ray(Point(-2,0,0),Vector(1,0,0));
     Intersection res = Intersection();
 
     t.addTest("1", Test::EXPECT_EQ(s.intersect_with_ray(r,res),true));
     t.addTest("2", Test::EXPECT_EQ(res,Intersection(1,Vector(-1,0,0),Point(-1,0,0))));
 
-    Sphere s2 = Sphere(Point(2,3,5), 2);
+    Sphere s2 = Sphere(Point(2,3,5), 2,property);
     Ray r2 = Ray(Point(6,0,0),Vector(-2,3,5));
 
     t.addTest("3", Test::EXPECT_EQ(s2.intersect_with_ray(r2,res),true));

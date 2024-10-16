@@ -1,7 +1,7 @@
 #include "geometry/face.hpp"
 
-Face::Face(Vector normal, Vector u, Vector v, Point point)
-    : _normal(normal), _point(point)
+Face::Face(Vector normal, Vector u, Vector v, Point point, Property properties)
+    :  Geometry(properties), _normal(normal), _point(point)
 {
     if (neqD(normal.dot(u),0) || neqD(normal.dot(v),0))
         throw std::invalid_argument("The vectors u and v must be perpendicular to the normal vector.");
@@ -15,7 +15,7 @@ Face::Face(Vector normal, Vector u, Vector v, Point point)
 
 bool Face::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
-    Plane plane = Plane(this->_point,this->_normal);
+    Plane plane = Plane(this->_point,this->_normal, this->_properties);
 
     if(!plane.intersect_with_ray(r,intersection))
         return false;

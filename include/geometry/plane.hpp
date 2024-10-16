@@ -43,14 +43,17 @@ class Plane : public Geometry
 {
 private:
     Vector _normal; ///< The normal vector of the plane.
-    Point _point;   ///< A point on the plane.
+    float _distance;   ///< A point on the plane.
+    
 public:
     /**
      * @brief Constructs a plane from a point and a normal vector.
      * @param point A point on the plane.
      * @param normal The normal vector of the plane.
      */
-    Plane(Point point, Vector normal);
+    Plane(Point point, Vector normal, Property properties);
+
+    Plane(Vector normal, float distance, Property properties);
 
     /**
      * @brief Constructs a plane from three points.
@@ -58,13 +61,10 @@ public:
      * @param p2 The second point.
      * @param p3 The third point.
      */
-    Plane(Point p1, Point p2, Point p3);
+    Plane(Point p1, Point p2, Point p3, Property properties);
 
-    /**
-     * @brief Gets the point on the plane.
-     * @return The point on the plane.
-     */
-    Point get_point() const;
+
+    float get_distance() const;
 
     /**
      * @brief Gets the normal vector of the plane.

@@ -63,7 +63,7 @@ public:
      * @brief Constructor for the TriangleMesh class.
      * @param triangles The triangles that make up the mesh.
      */
-    TriangleMesh(std::vector<Triangle> triangles);
+    TriangleMesh(std::vector<Triangle> triangles, Property properties);
 
     /**
      * @brief Checks if a given ray intersects with the triangle mesh.

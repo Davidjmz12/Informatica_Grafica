@@ -35,7 +35,7 @@ PlyFile::PlyFile(std::string file_path)
         file >> n_vertex_face >> p0 >> p1 >> p2;
         if(n_vertex_face != 3)
             throw std::runtime_error("Only triangles supported");
-        triangles.push_back(Triangle(points[p0],points[p1],points[p2]));
+        triangles.push_back(Triangle(points[p0],points[p1],points[p2],Property()));
     }
 
     this->_triangles = triangles;
@@ -100,7 +100,8 @@ PlyFile PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
     {
         Triangle new_tr = Triangle(Point(x_op(triangle[0][0]),y_op(triangle[0][1]),z_op(triangle[0][2])),
                                     Point(x_op(triangle[1][0]),y_op(triangle[1][1]),z_op(triangle[1][2])),
-                                    Point(x_op(triangle[2][0]),y_op(triangle[2][1]),z_op(triangle[2][2])));
+                                    Point(x_op(triangle[2][0]),y_op(triangle[2][1]),z_op(triangle[2][2])),
+                                    Property());
         new_triangles.push_back(new_tr);
     }
 

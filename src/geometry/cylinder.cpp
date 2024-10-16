@@ -1,9 +1,9 @@
 
 #include "geometry/cylinder.hpp"
 
-Cylinder::Cylinder(Point center, double radius, Vector axis)
-    : _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
-      _top(Disk(center+axis,axis,radius)), _bottom(Disk(center,axis,radius))
+Cylinder::Cylinder(Point center, double radius, Vector axis, Property properties)
+    : Geometry(properties), _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
+      _top(Disk(center+axis,axis,radius,properties)), _bottom(Disk(center,axis,radius,properties))
 {
     if(axis.norm() == 0)
         throw std::invalid_argument("The axis of the cylinder must be different from the zero vector");

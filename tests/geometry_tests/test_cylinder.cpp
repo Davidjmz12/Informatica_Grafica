@@ -7,8 +7,9 @@
 int main()
 {
     Tests t = Tests("TESTS cylinder");
+    Property property = Property();
 
-    Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1));
+    Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1),property);
 
     Ray r1 = Ray(Point(-2,0,0), Vector(1,0,0));
     Ray r2 = Ray(Point(-1,0,1), Vector(0,0,1));

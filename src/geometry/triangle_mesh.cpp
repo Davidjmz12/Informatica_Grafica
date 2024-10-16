@@ -1,10 +1,12 @@
 #include "geometry/triangle_mesh.hpp"
 
 TriangleMesh::TriangleMesh()
-    : _triangles(){}
+    : _triangles(), Geometry()
+{}
 
-TriangleMesh::TriangleMesh(std::vector<Triangle> triangles)
-    : _triangles(triangles){}
+TriangleMesh::TriangleMesh(std::vector<Triangle> triangles, Property properties)
+    : Geometry(properties), _triangles(triangles)
+{}
 
 
 bool TriangleMesh::intersect_with_ray(const Ray& r, Intersection& intersection) const

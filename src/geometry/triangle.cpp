@@ -1,8 +1,8 @@
 
 #include "geometry/triangle.hpp"
 
-Triangle::Triangle(Point v0, Point v1, Point v2)
-    : _v0(v0), _v1(v1), _v2(v2)
+Triangle::Triangle(Point v0, Point v1, Point v2, Property properties)
+    : Geometry(properties), _v0(v0), _v1(v1), _v2(v2)
 {
     if(_v0 == _v1 || _v0 == _v2 || _v1 == _v2)
         throw std::invalid_argument("The vertices of the triangle must be different");
@@ -18,7 +18,7 @@ Vector Triangle::get_normal() const
 
 Plane Triangle::plane() const
 {
-    return Plane(this->_v0, this->get_normal());
+    return Plane(this->_v0, this->get_normal(), this->_properties);
 }
 
 bool Triangle::point_inside_triangle(Point p) const

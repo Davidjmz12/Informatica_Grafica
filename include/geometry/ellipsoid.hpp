@@ -51,7 +51,7 @@ public:
      * @param center The center.
      * @throw std::invalid_argument if some factors are zero.
      */
-    Ellipsoid(double a, double b, double c, Point center);
+    Ellipsoid(double a, double b, double c, Point center, Property properties);
 
     /**
      * @brief Computes if the ellipsoid intersects with a ray and stores

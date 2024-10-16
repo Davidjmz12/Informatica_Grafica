@@ -49,7 +49,9 @@
 class Disk: public Geometry
 {
 private:
-    Plane _plane; ///< The plane that contains the disk
+    Plane _plane;
+    Point _center;
+    Vector _normal;
     double _radius; ///< The radius of the disk
 public:
 
@@ -59,7 +61,7 @@ public:
      * @param normal The normal vector to the plane of the disk.
      * @param radius The radius of the disk.
      */
-    Disk(Point center, Vector normal, double radius);
+    Disk(Point center, Vector normal, double radius, Property properties);
 
     /**
      * @brief Checks if a given ray intersects with the disk.

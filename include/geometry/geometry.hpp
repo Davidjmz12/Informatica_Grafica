@@ -11,6 +11,7 @@
 #pragma once
 
 #include "intersection.hpp"
+#include "geometry/property.hpp"
 #include "ray.hpp"
 
 /**
@@ -42,8 +43,17 @@
  */
 class Geometry
 {
+protected:
+    Property _properties;
+    
 public:
 
+    Geometry()
+    {}
+
+    Geometry(Property properties)
+        : _properties(properties)
+    {}
     
     /**
      * @brief Pure virtual function to check intersection with a ray.
