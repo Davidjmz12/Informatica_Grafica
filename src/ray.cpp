@@ -18,3 +18,14 @@ Vector Ray::get_direction() const
 {
     return this->_direction;
 }
+
+std::ostream& operator<<(std::ostream& os, const Ray& r)
+{
+    os << r.to_string();
+    return os;
+}
+
+std::string Ray::to_string() const
+{
+    return "Ray with point: " + this->_point.to_string() + " and direction: " + this->_direction.to_string();
+}

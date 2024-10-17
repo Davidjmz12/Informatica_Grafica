@@ -1,11 +1,14 @@
 #include "intersection.hpp"
 
 
-Intersection::Intersection(double distance, Vector normal, Point point):
-    _distance(distance),_normal(normal),_point(point){}
+Intersection::Intersection(double distance, Vector normal, Point point, Property properties):
+    _distance(distance), _normal(normal), _point(point), _properties(properties)
+{}
 
 Intersection::Intersection():
-    _distance(std::numeric_limits<double>::max()),_normal(Vector()),_point(Point()){}
+    _distance(std::numeric_limits<double>::max()),_normal(Vector()),
+    _point(Point()),_properties(Property())
+{}
 
 Point Intersection::get_point() const
 {
@@ -22,6 +25,11 @@ Vector Intersection::get_normal() const
     return this->_normal;
 }
 
+Property Intersection::get_properties() const
+{
+    return this->_properties;
+}
+
 Intersection Intersection::min(std::vector<Intersection> intersections)
 {
     if(intersections.size() == 0)
@@ -29,7 +37,7 @@ Intersection Intersection::min(std::vector<Intersection> intersections)
     Intersection min_intersection;
     for(auto intersection : intersections)
     {
-        if(intersection.get_distance() < min_intersection.get_distance())
+        if(intersection < min_intersection)
             min_intersection = intersection;
     }
     return min_intersection;
@@ -40,6 +48,16 @@ bool Intersection::operator==(const Intersection i) const
     return  eqD(this->_distance,i._distance) &&
             this->_normal == i._normal &&
             this->_point == i._point;
+}
+
+bool Intersection::operator<(const Intersection i) const
+{
+    return ltD(this->_distance, i._distance);
+}
+
+bool Intersection::operator>(const Intersection i) const
+{
+    return gtD(this->_distance, i._distance);
 }
 
 std::ostream& operator<<(std::ostream& os, const Intersection& i)

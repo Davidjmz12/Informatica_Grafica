@@ -38,7 +38,7 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
+    Color compute_one_ray_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
 
     /**
      * @brief Compute the coordinates of the pixel x,y in the camera
@@ -65,6 +65,9 @@ public:
     ColorMap paint_scene(std::vector<Geometry*> objects) const;
 
     SpatialElement* c_cam(const SpatialElement* s) const;
+
+
+    std::array<int,2> get_resolution() const;
 
     /**
      * @brief Writes the information of a camera.

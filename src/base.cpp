@@ -36,18 +36,9 @@ SpatialElement* Base::coord_from_canonical(const SpatialElement* s) const
     return LinearMap(this->_matrix_inverse)*s;
 }
         
-SpatialElement* Base::coord_into_canonical(const SpatialElement* s) const
+SpatialElement* Base::coord_into_canonical(const SpatialElement* s) const 
 {
-    if (s->is_vector())
-        return  new Vector( this->_i*(*s)[0] +
-                            this->_j*(*s)[1] +
-                            this->_k*(*s)[2]);
-    else
-    {
-        return  new Point(  this->_i*(*s)[0] +
-                            this->_j*(*s)[1] +
-                            this->_k*(*s)[2]);
-    }
+    return LinearMap(this->_matrix)*s;
 }
 
 Point Base::get_center() const

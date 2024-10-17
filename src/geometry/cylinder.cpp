@@ -18,7 +18,7 @@ Intersection Cylinder::intersection_in_a_point(const Ray& r, double distance) co
     Vector normal;
     projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    return Intersection(distance,normal,point_int);
+    return Intersection(distance, normal, point_int, this->_properties);
 }
 
 bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const
@@ -93,7 +93,7 @@ bool Cylinder::intersect_with_ray(const Ray& r, Intersection& intersection) cons
             if(i.intersect_with_ray(r, intersection_aux))
             {   
                 int_min_exists=true;
-                if(int_min.get_distance()>intersection_aux.get_distance())
+                if(int_min>intersection_aux)
                     int_min = intersection_aux;
             }
         }

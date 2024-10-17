@@ -13,4 +13,8 @@ public:
     Point evaluate(double t) const;
     Point get_point() const;
     Vector get_direction() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Ray& r);
+
+    std::string to_string() const;
 };

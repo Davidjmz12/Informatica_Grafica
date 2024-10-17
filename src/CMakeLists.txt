@@ -38,14 +38,14 @@ target_link_libraries(color_map PUBLIC color)
 target_include_directories(color_map PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(ppm_file ppm_file.cpp)
-target_link_libraries(ppm_file PUBLIC color_map tone_mapping_lib)
+target_link_libraries(ppm_file PUBLIC color_map tone_mapping_lib scene)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
 # Rays
 
 add_library(intersection intersection.cpp)
-target_link_libraries(intersection PUBLIC spatial_element point vector)
+target_link_libraries(intersection PUBLIC spatial_element point vector property)
 target_include_directories(intersection PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(ray ray.cpp)

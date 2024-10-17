@@ -14,6 +14,11 @@ ColorMap Scene::paint_scene()
     return this->_camera.paint_scene(this->_objects);
 }
 
+std::array<int,2> Scene::get_resolution() const
+{
+    return this->_camera.get_resolution();
+}
+
 std::ostream& operator<<(std::ostream& os, Scene s)
 {
     os << s._camera << std::endl;

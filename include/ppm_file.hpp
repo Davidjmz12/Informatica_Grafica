@@ -13,6 +13,7 @@
 #include "color_map.hpp"
 #include "tone_mapping/tone_mapping.hpp"
 #include "tone_mapping/all_tone_mapping.hpp"
+#include "scene.hpp"
 
 /**
  * @brief A class for represents a PPM file.
@@ -37,6 +38,8 @@ class PpmFile {
         PpmFile(std::string path);
 
         PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format);
+
+        PpmFile(Scene s);
 
         /**
         * @brief Apply clamping to the image.

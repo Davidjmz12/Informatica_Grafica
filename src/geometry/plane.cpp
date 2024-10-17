@@ -3,7 +3,7 @@
 
 
 Plane::Plane(Point point, Vector normal, Property properties)
-    : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(normal))
+    : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(_normal))
 {}
 
 Plane::Plane(Vector normal, float distance, Property properties)
@@ -24,15 +24,18 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
 
     if(eqD(v_dot_n, 0))
         return false;
-
     
     double distance = (-this->_distance-Vector(ray.get_point()).dot(this->_normal))/(ray.get_direction().dot(this->_normal));
+
+    if(ltD(distance,0))
+        return false;
 
     Point point = ray.evaluate(distance);
 
     Vector normal = (ray.get_direction()).dot(this->_normal)>0 ? this->_normal*(-1):this->_normal;
 
-    intersection = Intersection(fabs(distance), normal, point);
+    
+    intersection = Intersection(distance, normal, point,this->_properties);
 
     return true;
     

@@ -42,6 +42,8 @@ public:
      */
     ColorMap paint_scene();
 
+    std::array<int,2> get_resolution() const;
+
     /**
      * @brief Write the information of the scene.
      * @param os The ostream.
