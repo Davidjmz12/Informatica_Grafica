@@ -38,7 +38,7 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    Color compute_one_ray_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
+    Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
 
     /**
      * @brief Compute the coordinates of the pixel x,y in the camera
