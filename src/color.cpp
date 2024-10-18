@@ -46,7 +46,7 @@ double Color::min() const
 
 Color::Color()
 {
-    this->_colors = {255,255,255};
+    this->_colors = {0,0,0};
     this->_range = RGB_255_RANGE;
     this->_type = RGB;
 }
@@ -219,6 +219,16 @@ ColorEncoding Color::get_type() const
     return this->_type;
 }
 
+std::array<double, 3> Color::get_colors() const
+{
+    return this->_colors;
+}
+
+std::array<double, 3> Color::get_range() const
+{
+    return this->_range;
+}
+
 Color Color::apply_tone_mapping(ToneMapping* t) const
 {
     if(this->_type == RGB)
@@ -253,4 +263,32 @@ std::ostream& operator<<(std::ostream& os,const Color& g)
     os << g[0] << " " << g[1] << " " << g[2];
 
     return os;
+}
+
+Color Color::operator+(Color c) const
+{
+    if(c.get_type() != this->get_type())
+        throw std::invalid_argument("Colors must have the same encoding type to be added.");
+
+    std::array<double, 3> new_colors;
+    for(unsigned int i=0; i<3; ++i)
+        new_colors[i] = this->_colors[i] + c[i];
+
+    std::array<double,3> new_range;
+    for(unsigned int i=0;i<3; ++i)
+        new_range[i] = this->_range[i] + c.get_range()[i];
+    return Color(new_colors, new_range, this->_type);
+}
+
+Color Color::operator/(double f) const
+{
+    std::array<double, 3> new_colors;
+    for(unsigned int i=0; i<3; ++i)
+        new_colors[i] = this->_colors[i] / f;
+
+    std::array<double,3> new_range;
+    for(unsigned int i=0;i<3; ++i)
+        new_range[i] = this->_range[i] / f;
+
+    return Color(new_colors, new_range, this->_type);
 }

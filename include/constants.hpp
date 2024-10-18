@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <string>
+#include <random>
 
 const double EPSILON = 1e-6; // Threshold for comparing double values
 
@@ -58,4 +59,10 @@ inline bool leD(double a, double b)
 inline bool geD(double a, double b)
 {
     return b - a < EPSILON;
+}
+
+inline double randomD(double a, double b)
+{
+    double r2 = static_cast <double> (rand()) / (static_cast <double> (RAND_MAX));
+    return a + r2*(b-a);
 }

@@ -62,7 +62,6 @@ bool Intersection::operator>(const Intersection i) const
 
 std::ostream& operator<<(std::ostream& os, const Intersection& i)
 {
-    std::string str = "hola";
     os  << std::string("Intersection:\n\tPoint:\t") << i._point
         << std::string("\tNormal:\t") << i._normal
         << std::string("\tDistance:\t") << std::to_string(i._distance);

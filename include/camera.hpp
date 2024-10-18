@@ -29,7 +29,7 @@ private:
      * @return A ray with origin in the camera and direction to the
      * coordinates (x,y) inside the screen.
      */
-    Ray trace_ray(std::array<float,2> coordinates) const;
+    Ray trace_ray(std::array<double,2> coordinates) const;
 
     /**
      * @brief Computes the color that a pixel must have.
@@ -40,6 +40,8 @@ private:
      */
     Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
 
+    Color compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects) const;
+
     /**
      * @brief Compute the coordinates of the pixel x,y in the camera
      * base
@@ -47,7 +49,7 @@ private:
      * @param y The position in the height axis.
      * @return The coordinates of the pixel in the camera-base.
      */
-    std::array<float,2> get_random_pixel_coordinates(int x, int y) const;
+    std::array<double,2> get_random_pixel_coordinates(int x, int y) const;
 
 public:
 
@@ -62,7 +64,7 @@ public:
      */
     Camera(Base base, std::array<int,2> resolution);
 
-    ColorMap paint_scene(std::vector<Geometry*> objects) const;
+    ColorMap paint_scene(std::vector<Geometry*> objects, int num_rays) const;
 
     SpatialElement* c_cam(const SpatialElement* s) const;
 

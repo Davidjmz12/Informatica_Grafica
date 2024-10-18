@@ -40,7 +40,7 @@ public:
      * @brief Paint the scene.
      * @return The image of the scene.
      */
-    ColorMap paint_scene();
+    ColorMap paint_scene(int num_rays) const;
 
     std::array<int,2> get_resolution() const;
 

@@ -6,7 +6,7 @@ Plane::Plane(Point point, Vector normal, Property properties)
     : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(_normal))
 {}
 
-Plane::Plane(Vector normal, float distance, Property properties)
+Plane::Plane(Vector normal, double distance, Property properties)
     : Geometry(properties), _normal(normal.normalize()), _distance(distance)
 {}
 
@@ -46,7 +46,7 @@ Vector Plane::get_normal() const
     return this->_normal;
 }
 
-float Plane::get_distance() const
+double Plane::get_distance() const
 {
     return this->_distance;
 }

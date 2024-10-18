@@ -123,6 +123,9 @@ public:
      */
     ColorEncoding get_type() const;
 
+    std::array<double, 3> get_colors() const;
+    std::array<double, 3> get_range() const;
+
     /**
      * @brief Apply tone mapping to the color.
      * @param t Tone mapping type.
@@ -146,5 +149,8 @@ public:
      * @return Output stream.
      */
     friend std::ostream& operator<<(std::ostream& os, const Color& g);
+
+    Color operator+(Color c) const;
+    Color operator/(double f) const;
 };
 
