@@ -1,42 +1,41 @@
 #include <iostream>
+#include "scene.hpp"
+#include "geometry/all_geometry.hpp"
 #include "ppm_file.hpp"
+#include "ply_file.hpp"
 
 int main()
 {
-    try {
-        PpmFile file = PpmFile("..\\..\\assets\\in\\forest_path.ppm");
-        PpmFile clamping = file.apply_clamping();
-        clamping.change_resolution(255);
-        clamping.save("..\\..\\assets\\out\\forest_path_clamping.ppm");
 
-        PpmFile equalization = file.apply_equalization();
-        equalization.change_resolution(255);
-        equalization.save("..\\..\\assets\\out\\forest_path_equalization.ppm");
+    Base b = Base(Point(0,0,-3.5),Vector(-1,0,0),Vector(0,1,0),Vector(0,0,3));
+    Camera c = Camera(b,{256,256});
 
-        PpmFile eq_clamping = file.apply_equalization_clamping(24);
-        eq_clamping.change_resolution(255);
-        eq_clamping.save("..\\..\\assets\\out\\forest_path_equalization_clamping.ppm");
+    Property red = Property(Color({255,0,0},{255,255,255},ColorEncoding::RGB));
+    Property green = Property(Color({0,255,0},{255,255,255},ColorEncoding::RGB));
+    Property blue = Property(Color({0,0,255},{255,255,255},ColorEncoding::RGB));
+    Property yellow = Property(Color({255,255,0},{255,255,255},ColorEncoding::RGB));
+    Property cyan = Property(Color({0,255,255},{255,255,255},ColorEncoding::RGB));
+    Property magenta = Property(Color({255,0,255},{255,255,255},ColorEncoding::RGB));
+    Property white = Property(Color({255,255,255},{255,255,255},ColorEncoding::RGB));
 
-        PpmFile gamma = file.apply_gamma(0.5); // sqrt(x/8)
-        gamma.change_resolution(255);
-        gamma.save("..\\..\\assets\\out\\forest_path_gamma.ppm");
+    Geometry* p1 = new Plane(Vector(1,0,0),1,cyan);
+    Geometry* p2 = new Plane(Vector(-1,0,0),1,yellow);
+    Geometry* p3 = new Plane(Vector(0,1,0),1,blue);
+    Geometry* p4 = new Plane(Vector(0,-1,0),1,green);
+    Geometry* p5 = new Plane(Vector(0,0,-1),1,red);
 
-        PpmFile gamma_clamping = file.apply_gamma_clamping(0.5,4); // sqrt(x/4) clamped from 4
-        gamma_clamping.change_resolution(255);
-        gamma_clamping.save("..\\..\\assets\\out\\forest_path_gamma_clamping.ppm");
+    Geometry *face1 = new Face(Vector(0,0.5,0.5),Vector(0.5,0,0),Vector(0,0.5,0),Point(0,0,0),white);
 
-        PpmFile drago = file.apply_drago();
-        drago.change_resolution(255);
-        drago.save("..\\..\\assets\\out\\forest_path_drago.ppm");
+    //PlyFile ply = PlyFile("../../assets/in/diamond.ply");
+    //PlyFile ply2 = ply.change_bounding_box({0.2,-1,-0.55,0.8,-0.4,0.05});
+    //Geometry* sp3 = new TriangleMesh(ply2.get_triangles(),white);
 
-        PpmFile log = file.apply_logarithmic(5);
-        log.change_resolution(255);
-        log.save("..\\..\\assets\\out\\forest_path_logarithmic.ppm");
-    }
-    catch (const std::exception& e)
-    {
-        std::cout << e.what() << std::endl;
-    }
+    //Geometry* sp3 = new Ellipsoid(0.3,0.1,0.5,Point(0.5,-0.7,-0.25),white);
+    //Geometry* sp3 = new Cylinder(Point(0.5,-0.7,-0.25),0.3,Vector(0,1,0),white);
+    //Geometry* ss = new Box(Point(0.5,0.5,2),{0.5,0.5,0.5},{Vector(1,2,0).normalize(),Vector(0,1,3).normalize(),Vector(5,0,1).normalize()});
+    Scene s = Scene({p1,p2,p3,p4,p5,face1}, c);
 
-    return 0;
+    PpmFile ppm = PpmFile(s,10);
+
+    ppm.save("../../assets/out/scene.ppm");
 }
