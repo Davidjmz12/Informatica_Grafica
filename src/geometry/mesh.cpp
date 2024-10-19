@@ -4,13 +4,22 @@ Mesh::Mesh()
     : _elements(), Geometry()
 {}
 
-Mesh::Mesh(std::vector<Geometry*> elements, Property properties)
-    : Geometry(properties), _elements(elements)
+Mesh::Mesh(std::vector<Geometry*> elements)
+    : Geometry(), _elements(elements)
 {}
 
+Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
+    : Geometry(), _elements(elements), _bounding_box(bounding_box)
+{}
 
 bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
+    if(_bounding_box.has_value())
+    {
+        if(!_bounding_box.value().intersects_with_ray(r))
+            return false;
+    }
+
     bool intersects = false;
     Intersection min_intersection;
     for(auto element : _elements)

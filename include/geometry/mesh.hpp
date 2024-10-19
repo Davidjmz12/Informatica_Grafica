@@ -9,8 +9,10 @@
 #pragma once
 
 #include <vector>
+#include <optional>
 
 #include "geometry/geometry.hpp"
+#include "geometry/bounding_box.hpp"
 
 
 /**
@@ -44,7 +46,7 @@ class Mesh : public Geometry
 {
 protected:
     std::vector<Geometry*> _elements; ///< The elements that make up the mesh
-
+    std::optional<BoundingBox> _bounding_box;
 public:
 
     /**
@@ -56,7 +58,9 @@ public:
      * @brief Constructor for the Mesh class.
      * @param elements The geometries that make up the mesh.
      */
-    Mesh(std::vector<Geometry*> elements, Property properties);
+    Mesh(std::vector<Geometry*> elements);
+
+    Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box);
 
     /**
      * @brief Checks if a given ray intersects with the mesh.

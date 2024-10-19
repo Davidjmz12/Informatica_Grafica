@@ -8,7 +8,7 @@ add_subdirectory(global_config)
 add_executable(main main.cpp)
 target_link_libraries(main PUBLIC ppm_file scene geometry ply_file global_config)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
+target_compile_definitions(main PUBLIC ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets")
 # ------------------------------------------------------------------------------
 # Planet executable
 add_library(matrix matrix.cpp)
@@ -55,7 +55,7 @@ target_include_directories(ray PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
 add_library(ply_file ply_file.cpp)
-target_link_libraries(ply_file PUBLIC triangle)
+target_link_libraries(ply_file PUBLIC triangle mesh)
 target_include_directories(ply_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(scene scene.cpp)

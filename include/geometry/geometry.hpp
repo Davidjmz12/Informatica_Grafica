@@ -88,4 +88,9 @@ public:
      * @return std::string The string representation of the geometry.
      */
     virtual std::string to_string() const = 0;
+
+    Property get_properties() const
+    {
+        return this->_properties;
+    }
 };

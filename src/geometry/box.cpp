@@ -20,7 +20,7 @@ Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis, Pr
         new Face(axis[2], axis[0]*sides[0], axis[1]*sides[1], center - axis[2]*sides[2], properties)
     };
 
-    _mesh = Mesh(elements, properties);
+    _mesh = Mesh(elements);
 }
 
 bool Box::intersect_with_ray(const Ray& r, Intersection& intersection) const
