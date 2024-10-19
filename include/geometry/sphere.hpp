@@ -1,16 +1,31 @@
+/**
+ * @file sphere.hpp
+ * @brief Defines the class Sphere.
+ * @author Davidjmz12 DavidTizne
+ *
+ * This file contains the definition of the Sphere class,
+ * which represents a sphere.
+*/
 #pragma once
 
-#include "geometry.hpp"
+#include "geometry/geometry.hpp"
+#include "ellipsoid.hpp"
 
-class Sphere : Geometry
+/**
+ * @brief Defines a sphere in 3D
+ */
+class Sphere : public Ellipsoid
 {
-private:
-    Geometric _center;
-    float _radius;
 public:
-    Sphere(Geometric center, float radius);
-    
-    float implicit(Geometric x) const;
+    /**
+     * @brief Constructor for the class Sphere.
+     * @param center The center of the sphere.
+     * @param radius The radius of the sphere.
+     * @throw std::invalid_argument if radius is zero.
+     */
+    Sphere(Point center, double radius, Property properties);
 
-    bool intersect_with_ray(Ray r, Intersection& intersection) const;
+    friend std::ostream& operator<<(std::ostream& os, const Sphere& s);
+
+    std::string to_string() const override;
 };

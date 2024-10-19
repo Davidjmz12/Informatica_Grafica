@@ -5,6 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/include/geometry",
+                "${workspaceFolder}/include/spatial_element",
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/build"
             ],

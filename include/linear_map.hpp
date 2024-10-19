@@ -2,8 +2,8 @@
  * @file linear_map.hpp
  * @brief Defines a linear map.
  *
- * This file contains the definition of the Geometric class, which represents
- * points and vectors with 3 components.
+ * This file contains the definition of the LinearMap class,
+ * which represents linear mappings.
 */
 
 #pragma once
@@ -23,6 +23,8 @@ class LinearMap {
         Matrix4x4 matrix;
         
     public:
+        LinearMap();
+        
         /**
         * @brief Method that creates a linear map given a Matrix4x4.
         * @param matrix The matrix of the transformation.
@@ -33,7 +35,7 @@ class LinearMap {
         * @brief Method that creates a linear map given an array.
         * @param matrix The matrix of the transformation.
         */
-        LinearMap(float M[4][4]);
+        LinearMap(double M[4][4]);
         
         /**
         * @brief A method that creates a linear map to make a
@@ -53,7 +55,7 @@ class LinearMap {
         * @return The linear map of the rotation around axis with
         *   a determined angle.
         */
-        static LinearMap rotation(Geometric axis, float angle);
+        static LinearMap rotation(Vector axis, double angle);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -61,7 +63,7 @@ class LinearMap {
         * @param lambda The scaled factor for each axis.
         * @return The linear map of the scale.
         */
-        static LinearMap scale(float lambda[3]);
+        static LinearMap scale(double lambda[3]);
 
         /**
         * @brief A method that creates a linear map to make a
@@ -70,7 +72,7 @@ class LinearMap {
         * @return The linear map of the translation.
         * @throw std::invalid_argument if v is not a vector.
         */
-        static LinearMap translation(Geometric v);
+        static LinearMap translation(Vector v);
 
         /**
         * @brief A method that gives the identity map.
@@ -95,12 +97,12 @@ class LinearMap {
 
         /**
         * @brief A method that redefines the product operator between
-        *   a linear map and a geometric.
-        * @param g The geometric which is going to be transformed.
-        * @return The geometric result of apply the linear map to
-        *   the geometric.
+        *   a linear map and a spatial element.
+        * @param s The spatial element which is going to be transformed.
+        * @return The spatial element result of apply the linear map to
+        *   the spatial element.
         */
-        Geometric operator*(Geometric g) const;
+        SpatialElement* operator*(const SpatialElement* s) const;
 
         /**
         * @brief A method that redefines the equality operator between

@@ -14,14 +14,14 @@
 
 #include "matrix.hpp"
 
-float determinant3x3(float mat[3][3]) {
-    float det = mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
+double determinant3x3(double mat[3][3]) {
+    double det = mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
                 - mat[0][1] * (mat[1][0] * mat[2][2] - mat[1][2] * mat[2][0])
                 + mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
     return det;
 }
 
-void getCofactor(float const mat[4][4], float temp[3][3], int p, int q) {
+void getCofactor(double const mat[4][4], double temp[3][3], int p, int q) {
     int i = 0, j = 0;
     for (int row = 0; row < 4; row++) {
         for (int col = 0; col < 4; col++) {
@@ -36,10 +36,10 @@ void getCofactor(float const mat[4][4], float temp[3][3], int p, int q) {
     }
 }
 
-void adjoint(float const mat[4][4], float adj[4][4]) {
+void adjoint(double const mat[4][4], double adj[4][4]) {
 
     int sign = 1;
-    float temp[3][3];
+    double temp[3][3];
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -52,7 +52,7 @@ void adjoint(float const mat[4][4], float adj[4][4]) {
 
 Matrix4x4::Matrix4x4() {}
 
-Matrix4x4::Matrix4x4(float const m[4][4])
+Matrix4x4::Matrix4x4(double const m[4][4])
 {
     for (int row = 0; row < 4; row++){
         for (int col = 0; col < 4; col++){
@@ -61,7 +61,7 @@ Matrix4x4::Matrix4x4(float const m[4][4])
     }
 }
 
-Matrix4x4::Matrix4x4(float const m[3][3])
+Matrix4x4::Matrix4x4(double const m[3][3])
 {
     for (int row = 0; row < 3; row++){
         for (int col = 0; col < 3; col++){
@@ -79,14 +79,14 @@ Matrix4x4::Matrix4x4(float const m[3][3])
 
 Matrix4x4 Matrix4x4::identity()
 {
-    float v[4][4] = {{1,0,0,0},
+    double v[4][4] = {{1,0,0,0},
                      {0,1,0,0},
                      {0,0,1,0},
                      {0,0,0,1}};
     return Matrix4x4(v);
 }
 
-float Matrix4x4::get(int i, int j) const
+double Matrix4x4::get(int i, int j) const
 {
     if (i < 0 || i > 4 || j < 0 || j > 4)
         throw std::invalid_argument("Index out of range.");
@@ -96,16 +96,16 @@ float Matrix4x4::get(int i, int j) const
 Matrix4x4 Matrix4x4::inverse() const
 {
     //Compute the determinant
-    float det = this->determinant();
+    double det = this->determinant();
     if (det == 0)
         throw std::invalid_argument("Matrix cannot have determinant 0.");
 
     //Compute of the adjoint matrix
-    float adj[4][4];
+    double adj[4][4];
     adjoint(this->matrix, adj);
 
     //Compute the inverse matrix
-    float res[4][4];
+    double res[4][4];
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             res[i][j] = adj[i][j] / det;
@@ -115,10 +115,10 @@ Matrix4x4 Matrix4x4::inverse() const
     return Matrix4x4(res);
 }
 
-float Matrix4x4::determinant() const
+double Matrix4x4::determinant() const
 {
-    float det = 0.0;
-    float temp[3][3];
+    double det = 0.0;
+    double temp[3][3];
     int sign = 1;
 
     for (int f = 0; f < 4; f++) {
@@ -144,11 +144,11 @@ std::ostream& operator<<(std::ostream& os,const Matrix4x4 M)
 
 Matrix4x4 Matrix4x4::operator*(Matrix4x4 M) const
 {
-    float result [4][4];
+    double result [4][4];
 
 	for(int row=0; row<4; row++){
         for(int column=0; column<4; column++){
-            float aux = 0;
+            double aux = 0;
             for(int col=0; col<4; col++){
                 aux += this->get(row,col)*M.get(col,column);
             }
@@ -159,66 +159,62 @@ Matrix4x4 Matrix4x4::operator*(Matrix4x4 M) const
     return Matrix4x4(result);
 }
 
-Geometric Matrix4x4::operator*(Geometric g) const
+SpatialElement* Matrix4x4::operator*(const SpatialElement* s) const
 {
-    float res[4];
-    float aux = 0;
+    double res[3];
+    double aux = 0;
 
     //Multiply the matrix and the vector
     for(int row=0; row<4; row++){
         aux = 0;
-        for(int col=0; col<4; col++){
-            aux += this->get(row,col) * g[col];
-        }
+
+        for(int col=0; col<4; col++)
+            aux += this->get(row,col) * (*s)[col];
+
         res[row] = aux;
 	}
 
     //Return the correct type of geometric
-    if (g.is_point()) {
-        return Geometric::point(res[0], res[1], res[2]);
-    } else {
-        return Geometric::vector(res[0], res[1], res[2]);
-    }
+    if (s->is_vector())
+        return new Vector(res[0], res[1], res[2]);
+    else
+        return new Point(res[0], res[1], res[2]);
 }
 
-Matrix4x4 Matrix4x4::operator*(float f) const
+Matrix4x4 Matrix4x4::operator*(double f) const
 {
-    float res[3][3];
-    float aux = 0;
+    double res[3][3];
+    double aux = 0;
 
     //Multiply the matrix and the vector
-    for(int row=0; row<3; row++){
-        for(int col=0; col<3; col++){
+    for(int row=0; row<3; row++)
+        for(int col=0; col<3; col++)
             res[row][col] = this->get(row,col) * f;
-        }
-	}
+        
     
     return Matrix4x4(res);
 }
 
 Matrix4x4 Matrix4x4::operator+(Matrix4x4 M) const
 {
-    float res[3][3];
-    float aux = 0;
+    double res[3][3];
+    double aux = 0;
 
     //Multiply the matrix and the vector
-    for(int row=0; row<3; row++){
-        for(int col=0; col<3; col++){
+    for(int row=0; row<3; row++)
+        for(int col=0; col<3; col++)
             res[row][col] = this->get(row,col) + M.get(row,col);
-        }
-	}  
 
     return Matrix4x4(res); 
 }
 
 bool Matrix4x4::operator==(Matrix4x4 const M) const
 {
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (!eqFloat(this->get(i,j),M.get(i,j)))
+    for (int i = 0; i < 4; i++) 
+        for (int j = 0; j < 4; j++)
+            if (!eqD(this->get(i,j),M.get(i,j)))
                 return false;
-        }
-    }
+
     return true;
 }
 

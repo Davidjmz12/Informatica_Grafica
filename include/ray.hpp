@@ -1,16 +1,20 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "intersection.hpp"
 
 class Ray
 {
 private:
-    Geometric _point;
-    Geometric _direction;
+    Point _point;
+    Vector _direction;
     
 public:
-    Ray(Geometric point, Geometric direction);
-    Geometric point() const;
-    Geometric direction() const;
-    bool intersects_with_geometry(Geometry* g, Intersection& intersection);
+    Ray(Point point, Vector direction);
+    Point evaluate(double t) const;
+    Point get_point() const;
+    Vector get_direction() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Ray& r);
+
+    std::string to_string() const;
 };

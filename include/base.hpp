@@ -25,12 +25,13 @@ class Base {
 
 private:
 
-    Matrix4x4 matrix;
-    Matrix4x4 matrix_inverse;
+    Matrix4x4 _matrix;
+    Matrix4x4 _matrix_inverse;
 
 public:
 
-    Geometric center,x,y,z;
+    Point _center;
+    Vector _i, _j, _k;
     
     /**
     * @brief Creates a base with center p and axis i,j,k.
@@ -39,7 +40,7 @@ public:
     * @param j The second vector of the base.
     * @param k The third vector of tha base.
     */
-    Base(Geometric p, Geometric i, Geometric j, Geometric k);
+    Base(Point p, Vector i, Vector j, Vector k);
 
     /**
     * @brief Method that gives the canionic base.
@@ -49,27 +50,28 @@ public:
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param x The coordinates of the x-canonical vector.
-    * @param y The coordinates of the y-canonical vector.
-    * @param z The coordinates of the z-canonical vector.
+    * @param g Point with coordinates (x,y,z) in cannonical base.
     * @return The coordinates of the point in the base-axis.
     */  
-    Geometric coord_from_canonical(Geometric g) const;
+    SpatialElement* coord_from_canonical(const SpatialElement* s) const;
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param x The coordinates of the x-basis vector.
-    * @param y The coordinates of the y-basis vector.
-    * @param z The coordinates of the z-basis vector.
+    * @param g Point with coordinates (x,y,z) in this base.
     * @return The point with the coordinates (x,y,z).
     */        
-    Geometric coord_into_canonical(Geometric g) const;
+    SpatialElement* coord_into_canonical(const SpatialElement* s) const;
 
     /**
     * @brief Method that gives the matrix of this base.
     * @return the linear transformation of that matrix.
     */       
     LinearMap canonical_to_base() const;
+
+    
+    Point get_center() const;
+
+    Base normalize() const;
 
     /**
     * @brief An operator to print a base.
@@ -79,11 +81,16 @@ public:
     */
     friend std::ostream& operator<<(std::ostream& os, const Base& b);
 
+    Vector operator[](int i) const;
+
     /**
     * @brief An operator to check if two bases are the same.
     * @param b the second base.
     * @return True if the bases are equal. False otherwise.
     */
     bool operator==(Base b) const;
+
+
+
         
 };

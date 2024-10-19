@@ -30,7 +30,7 @@ ColorMap::ColorMap(vector<vector<Color>> colors, ColorEncoding encode)
 }
 
 
-ColorMap ColorMap::change_range(std::array<float,3> factor) const
+ColorMap ColorMap::change_range(std::array<double,3> factor) const
 {
     vector<vector<Color>> colors; // Vector to store the new colors
     for(auto v: this->_colors)
@@ -111,6 +111,23 @@ ColorMap ColorMap::apply_tone_mapping(ToneMapping* t) const
     }
     aux = ColorMap(colors,HSV).HSV_to_RGB().change_range(Color::same_range(t->max_luminance()));
     return aux; // Return the new ColorMap object with RGB colors.
+}
+
+ColorMap ColorMap::normalize() const
+{
+    vector<vector<Color>> colors; // Vector to store the new colors
+    for(auto i: this->_colors)
+    {
+        vector<Color> colors_row; // Vector to store the new colors of the row
+        for (Color color: i)
+        {
+            colors_row.push_back(color.normalize());
+        }
+        colors.push_back(colors_row);
+    }    
+
+    // Return the new ColorMap object with normalized colors.
+    return ColorMap(colors,this->_encode);
 }
 
 vector<vector<Color>> ColorMap::colors() const

@@ -15,3 +15,4 @@ add_subdirectory(tests)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/include/geometry)
+include_directories(${CMAKE_SOURCE_DIR}/include/spatial_element)
