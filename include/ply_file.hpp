@@ -14,7 +14,7 @@ private:
     std::vector<Triangle> _triangles;
     std::array<double,6> _bounding_box;
 
-    bool read_header(std::ifstream& file, unsigned int& num_vertices, unsigned int& num_faces);
+    bool read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces);
 
     double standarize(double value, double min, double max) const;
 

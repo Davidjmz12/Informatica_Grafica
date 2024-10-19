@@ -6,6 +6,7 @@
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/include/geometry",
                 "${workspaceFolder}/include/spatial_element",
+                "${workspaceFolder}/include/global_config",
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/build"
             ],

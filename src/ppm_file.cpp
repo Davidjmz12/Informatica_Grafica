@@ -88,8 +88,8 @@ PpmFile::PpmFile(ColorMap map, double range, double colorResolution, std::array<
     : _map(map), _maxRange(range), _colorResolution(colorResolution), _dimension{dim}, _format(format)
 {}
 
-PpmFile::PpmFile(Scene s, int num_rays)
-    : _map(s.paint_scene(num_rays)), _maxRange(255), _colorResolution(255), _dimension(s.get_resolution()), _format("P3")
+PpmFile::PpmFile(Scene s)
+    : _map(s.paint_scene()), _maxRange(255), _colorResolution(255), _dimension(s.get_resolution()), _format("P3")
 {}
 
 void PpmFile::save(std::string output_file) const

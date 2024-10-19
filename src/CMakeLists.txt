@@ -1,11 +1,12 @@
 add_subdirectory(geometry)
 add_subdirectory(tone_mapping)
 add_subdirectory(spatial_element)
+add_subdirectory(global_config)
 
 # ------------------------------------------------------------------------------
 # Main executable
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC ppm_file scene geometry ply_file)
+target_link_libraries(main PUBLIC ppm_file scene geometry ply_file global_config)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------

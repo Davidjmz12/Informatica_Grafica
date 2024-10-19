@@ -9,9 +9,9 @@ void Scene::add_geometry(Geometry* g)
     this->_objects.push_back(g);
 }
 
-ColorMap Scene::paint_scene(int num_rays) const
+ColorMap Scene::paint_scene() const
 {
-    return this->_camera.paint_scene(this->_objects, num_rays);
+    return this->_camera.paint_scene(this->_objects);
 }
 
 std::array<int,2> Scene::get_resolution() const

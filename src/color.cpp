@@ -20,7 +20,7 @@ double Color::max() const
 {
     double aux = this->_colors[0];
 
-    for(unsigned int i=1; i<3; ++i)
+    for(size_t i=1; i<3; ++i)
     {
         if(this->_colors[i]>aux)
         {
@@ -34,7 +34,7 @@ double Color::min() const
 {
     double aux = this->_colors[0];
 
-    for(unsigned int i=1; i<3; ++i)
+    for(size_t i=1; i<3; ++i)
     {
         if(this->_colors[i]<aux)
         {
@@ -73,7 +73,7 @@ Color Color::normalize() const
 {
     std::array<double, 3> normalized_colors;
     std::array<double, 3> standard_range = this->_type == RGB ? RGB_STANDARD_RANGE : HSV_STANDARD_RANGE;
-    for(unsigned int i=0; i<3; ++i)
+    for(size_t i=0; i<3; ++i)
     {
         normalized_colors[i] = this->_colors[i]*standard_range[i]/this->_range[i];
     }
@@ -84,7 +84,7 @@ Color Color::normalize() const
 Color Color::change_range(std::array<double, 3> new_range) const
 {
     std::array<double, 3> new_colors;
-    for(unsigned int i=0; i<3; ++i)
+    for(size_t i=0; i<3; ++i)
     {
         new_colors[i] = this->_colors[i]*new_range[i]/this->_range[i];
     }
@@ -250,7 +250,7 @@ Color Color::apply_tone_mapping(ToneMapping* t) const
 
 bool Color::operator==(Color l) const
 {
-    for(unsigned int i=0;i<3;i++)
+    for(size_t i=0;i<3;i++)
     {
         if (!eqD((*this)[i],l[i])) return false; 
     }
@@ -271,11 +271,11 @@ Color Color::operator+(Color c) const
         throw std::invalid_argument("Colors must have the same encoding type to be added.");
 
     std::array<double, 3> new_colors;
-    for(unsigned int i=0; i<3; ++i)
+    for(size_t i=0; i<3; ++i)
         new_colors[i] = this->_colors[i] + c[i];
 
     std::array<double,3> new_range;
-    for(unsigned int i=0;i<3; ++i)
+    for(size_t i=0;i<3; ++i)
         new_range[i] = this->_range[i] + c.get_range()[i];
     return Color(new_colors, new_range, this->_type);
 }
@@ -283,11 +283,11 @@ Color Color::operator+(Color c) const
 Color Color::operator/(double f) const
 {
     std::array<double, 3> new_colors;
-    for(unsigned int i=0; i<3; ++i)
+    for(size_t i=0; i<3; ++i)
         new_colors[i] = this->_colors[i] / f;
 
     std::array<double,3> new_range;
-    for(unsigned int i=0;i<3; ++i)
+    for(size_t i=0;i<3; ++i)
         new_range[i] = this->_range[i] / f;
 
     return Color(new_colors, new_range, this->_type);

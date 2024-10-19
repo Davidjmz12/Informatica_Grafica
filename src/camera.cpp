@@ -41,34 +41,58 @@ Color Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> ob
     return min_int.get_properties().get_color();
 }
 
-Color Camera::compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const
+Color Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> objects) const
 {
-    if(k<1)
+    size_t num_rays = GlobalConf::get_instance()->get_number_of_rays();
+
+    if(num_rays<1)
         throw std::invalid_argument("The number of rays must be greater than 0.");
     
     Color sum = this->compute_random_pixel_color(x,y,objects);
     
-    for(unsigned int i=1; i<k; ++i)
+    for(size_t i=1; i<num_rays; ++i)
         sum = sum + this->compute_random_pixel_color(x,y,objects);
 
-    return sum/k;
+    return sum/num_rays;
 }
 
-ColorMap Camera::paint_scene(std::vector<Geometry*> objects, int num_rays) const
+std::vector<Color> Camera::paint_one_row(std::vector<Geometry*> objects,  size_t row) const
 {
-    std::vector<std::vector<Color>> colors;
-
-    for(int i=0;i<this->_resolution[1];i++)
+    std::vector<Color> colors;
+    for(size_t i=0;i<this->_resolution[1];i++)
     {
-        std::vector<Color> row;
-        for(int j=0;j<this->_resolution[0];j++)
-        {
-            row.push_back(this->compute_pixel_color(j,i,num_rays,objects));
-        }
-        colors.push_back(row);
+        colors.push_back(this->compute_pixel_color(i, row, objects));
+    }
+    return colors;
+}
+
+ColorMap Camera::paint_scene(std::vector<Geometry*> objects) const
+{   
+    size_t num_threads = GlobalConf::get_instance()->get_number_of_threads();
+
+    ThreadPool pool(num_threads);
+
+    std::vector<std::future<std::vector<Color>>> futures;
+
+    for(size_t i=0; i<this->_resolution[0]; ++i)
+    {
+        futures.push_back(
+            pool.enqueue(
+                [this,objects,i](){
+                    return this->paint_one_row(objects,i);
+                }
+            )
+        );
     }
 
-    return ColorMap(colors, RGB);
+    std::vector<std::vector<Color>> colors;
+    for(size_t i=0; i<this->_resolution[0]; ++i)
+    {
+        std::vector<Color> row_colors = futures[i].get();
+        colors.push_back(row_colors);
+    }
+
+    return ColorMap(colors,RGB);
 }
 
 SpatialElement* Camera::c_cam(const SpatialElement* s) const

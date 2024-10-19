@@ -39,7 +39,7 @@ class PpmFile {
 
         PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format);
 
-        PpmFile(Scene s, int num_rays);
+        PpmFile(Scene s);
 
         /**
         * @brief Apply clamping to the image.

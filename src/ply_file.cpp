@@ -10,13 +10,13 @@ PlyFile::PlyFile(std::string file_path)
     if(!file.is_open())
         throw std::runtime_error("Could not open file: " + file_path);
     
-    unsigned int num_vertices, num_faces;
+    size_t num_vertices, num_faces;
     if (!read_header(file, num_vertices, num_faces))
         throw std::runtime_error("Invalid header");
 
     std::vector<Point> points;
     double x_min, x_max, y_min, y_max, z_min, z_max;
-    for(unsigned int i = 0; i < num_vertices; i++)
+    for(size_t i = 0; i < num_vertices; i++)
     {
         double x, y, z;
         x_min = std::min(x_min, x); x_max = std::max(x_max, x); 
@@ -28,10 +28,10 @@ PlyFile::PlyFile(std::string file_path)
 
     std::vector<Triangle> triangles;
 
-    for(unsigned int i=0; i< num_faces; i++)
+    for(size_t i=0; i< num_faces; i++)
     {
-        unsigned int n_vertex_face; 
-        unsigned int p0,p1,p2;
+        size_t n_vertex_face; 
+        size_t p0,p1,p2;
         file >> n_vertex_face >> p0 >> p1 >> p2;
         if(n_vertex_face != 3)
             throw std::runtime_error("Only triangles supported");
@@ -44,7 +44,7 @@ PlyFile::PlyFile(std::string file_path)
 }
 
 
-bool PlyFile::read_header(std::ifstream& file, unsigned int& num_vertices, unsigned int& num_faces)
+bool PlyFile::read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces)
 {
     std::string line;
     int wanted_headers = 3;

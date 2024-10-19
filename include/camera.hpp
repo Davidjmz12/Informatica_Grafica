@@ -8,11 +8,14 @@
 */
 #pragma once
 
+#include <future>
+
 #include "base.hpp"
 #include "color_map.hpp"
 #include "ray.hpp"
 #include "geometry/geometry.hpp"
-
+#include "threading/thread_pool.hpp"
+#include "global_config/global_config.hpp"
 /**
  * @brief Class that defines a Camera with a Screen
  */
@@ -38,7 +41,7 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    Color compute_pixel_color(int x, int y, int k, std::vector<Geometry*> objects) const;
+    Color compute_pixel_color(int x, int y, std::vector<Geometry*> objects) const;
 
     Color compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects) const;
 
@@ -64,10 +67,11 @@ public:
      */
     Camera(Base base, std::array<int,2> resolution);
 
-    ColorMap paint_scene(std::vector<Geometry*> objects, int num_rays) const;
+    std::vector<Color> paint_one_row(std::vector<Geometry*> objects, size_t row) const;
+
+    ColorMap paint_scene(std::vector<Geometry*> objects) const;
 
     SpatialElement* c_cam(const SpatialElement* s) const;
-
 
     std::array<int,2> get_resolution() const;
 

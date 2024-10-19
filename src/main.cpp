@@ -1,11 +1,46 @@
 #include <iostream>
+#include <cstring>
+
+#include "global_config/global_config.hpp"
+#include "threading/thread_pool.hpp"
+
 #include "scene.hpp"
 #include "geometry/all_geometry.hpp"
 #include "ppm_file.hpp"
 #include "ply_file.hpp"
 
-int main()
+
+HashMap get_default_conf() {
+    HashMap conf;
+    conf["threads"] = int(1);
+    conf["rays"] = int(10);
+    return conf;
+}
+
+void parse_init(int argc, char* argv[]) {
+    HashMap conf = get_default_conf();
+    for (int i = 1; i < argc; i++) {
+        if(std::strcmp(argv[i], "--threads") == 0)
+        {
+            int threads = int(std::stoi(argv[i+1]));
+            conf["threads"] = threads;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--rays") == 0)
+        {
+            int rays = int(std::stoi(argv[i+1]));
+            conf["rays"] = rays;
+            i++;
+        }
+    }
+
+    GlobalConf::get_instance(conf);
+}
+
+int main(int argc, char* argv[]) 
 {
+    parse_init(argc, argv);
 
     Base b = Base(Point(0,0,-3.5),Vector(-1,0,0),Vector(0,1,0),Vector(0,0,3));
     Camera c = Camera(b,{256,256});
@@ -26,17 +61,11 @@ int main()
     Geometry* sp1 = new Sphere(Point(-0.5,-0.7,0.25),0.3,magenta);
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
     
-
-    //PlyFile ply = PlyFile("../../assets/in/diamond.ply");
-    //PlyFile ply2 = ply.change_bounding_box({0.2,-1,-0.55,0.8,-0.4,0.05});
-    //Geometry* sp3 = new TriangleMesh(ply2.get_triangles(),white);
-
-    //Geometry* sp3 = new Ellipsoid(0.3,0.1,0.5,Point(0.5,-0.7,-0.25),white);
-    //Geometry* sp3 = new Cylinder(Point(0.5,-0.7,-0.25),0.3,Vector(0,1,0),white);
-    //Geometry* ss = new Box(Point(0.5,0.5,2),{0.5,0.5,0.5},{Vector(1,2,0).normalize(),Vector(0,1,3).normalize(),Vector(5,0,1).normalize()});
     Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2}, c);
 
-    PpmFile ppm = PpmFile(s,10);
+    PpmFile ppm = PpmFile(s);
 
-    ppm.save("../../assets/out/scene.ppm");
+    ppm.save("assets/out/scene.ppm");
+
+    return 0;
 }
