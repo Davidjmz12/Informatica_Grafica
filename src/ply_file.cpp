@@ -39,9 +39,7 @@ PlyFile::PlyFile(std::string file_path, Property properties)
             file >> p0 >> p1 >> p2;
             try{
                 elements.push_back(new Triangle(points[p0],points[p1],points[p2],properties));
-            } catch (std::exception& e){
-                std::cout << e.what() << std::endl;
-            }
+            } catch (std::invalid_argument& e){}
         } else
         {
             throw std::runtime_error("Only supported triangles and faces");
@@ -109,12 +107,14 @@ PlyFile PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
     for(auto element:this->_elements)
     {
         Triangle el_trig = (*dynamic_cast<Triangle*>(element));
+        try{
+            Geometry* new_element = new Triangle(Point(x_op(el_trig[0][0]),y_op(el_trig[0][1]),z_op(el_trig[0][2])),
+                                        Point(x_op(el_trig[1][0]),y_op(el_trig[1][1]),z_op(el_trig[1][2])),
+                                        Point(x_op(el_trig[2][0]),y_op(el_trig[2][1]),z_op(el_trig[2][2])),
+                                        el_trig.get_properties());
+            new_elements.push_back(new_element);
+        } catch (std::invalid_argument& e){}
 
-        Geometry* new_element = new Triangle(Point(x_op(el_trig[0][0]),y_op(el_trig[0][1]),z_op(el_trig[0][2])),
-                                    Point(x_op(el_trig[1][0]),y_op(el_trig[1][1]),z_op(el_trig[1][2])),
-                                    Point(x_op(el_trig[2][0]),y_op(el_trig[2][1]),z_op(el_trig[2][2])),
-                                    el_trig.get_properties());
-        new_elements.push_back(new_element);
     }
 
     return PlyFile(new_elements, new_bounding_box);

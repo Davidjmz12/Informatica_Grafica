@@ -6,7 +6,7 @@ Triangle::Triangle(Point v0, Point v1, Point v2, Property properties)
 {
     if(_v0 == _v1 || _v0 == _v2 || _v1 == _v2)
         throw std::invalid_argument("The vertices of the triangle must be different");
-    if((_v1-_v0).cross((_v2-_v0)).norm() == 0)
+    if(eqD((_v1-_v0).cross((_v2-_v0)).norm(),0))
         throw std::invalid_argument("All three vertices of the triangle cannot be linearly dependent");
 }
 
