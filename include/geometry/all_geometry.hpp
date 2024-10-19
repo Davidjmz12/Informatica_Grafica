@@ -18,5 +18,5 @@
 #include "geometry/plane.hpp"
 #include "geometry/sphere.hpp"
 #include "geometry/triangle.hpp"
-#include "geometry/triangle_mesh.hpp"
+#include "geometry/mesh.hpp"
 #include "geometry/face.hpp"

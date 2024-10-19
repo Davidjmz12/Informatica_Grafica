@@ -61,7 +61,9 @@ int main(int argc, char* argv[])
     Geometry* sp1 = new Sphere(Point(-0.5,-0.7,0.25),0.3,magenta);
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
     
-    Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2}, c);
+    Geometry* sp3 = new Box(Point(-0.5,-0.7,0.25),{0.3,0.3,0.3},{Vector(1,0,0),Vector(0,1,0),Vector(0,0,1)},magenta);
+
+    Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2,sp3}, c);
 
     PpmFile ppm = PpmFile(s);
 

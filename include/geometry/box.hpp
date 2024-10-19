@@ -12,13 +12,14 @@
 
 #include <array>
 
-#include "geometry/triangle_mesh.hpp"
+#include "geometry/mesh.hpp"
+#include "geometry/face.hpp"
 
 /**
  * @class Box
  * @brief Represents a 3D box geometry.
  * 
- * The Box class inherits from the Geometry class and represents a 3D box using a triangular mesh.
+ * The Box class inherits from the Geometry class and represents a 3D box using a face mesh.
  * It provides methods to construct the box and check for ray intersections.
  * 
  * @note The box is defined by its center, half side lengths, and axis.
@@ -32,7 +33,7 @@
  * @endcode
  * 
  * @section SeeAlso
- * Geometry, TriangleMesh, Ray, Intersection
+ * Geometry, Mesh, Ray, Intersection
  * 
  * @author
  * Davidjmz12 
@@ -47,7 +48,7 @@
 class Box : public Geometry
 {
 private:
-    TriangleMesh _mesh; ///< The mesh that represents the box
+    Mesh _mesh; ///< The mesh that represents the box
 public:
 
     /**

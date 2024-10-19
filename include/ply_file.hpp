@@ -6,24 +6,26 @@
 #include <fstream>
 #include <array>
 
+#include "geometry/geometry.hpp"
 #include "geometry/triangle.hpp"
 
 class PlyFile
 {
 private:
-    std::vector<Triangle> _triangles;
+    std::vector<Geometry*> _elements;
     std::array<double,6> _bounding_box;
+    Property _properties;
 
     bool read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces);
 
-    double standarize(double value, double min, double max) const;
+    double standardize(double value, double min, double max) const;
 
-    PlyFile(std::vector<Triangle> triangles, std::array<double,6> bounding_box);
+    PlyFile(std::vector<Geometry*> elements, std::array<double,6> bounding_box, Property properties);
 
 public:
-    PlyFile(std::string file_path);
+    PlyFile(std::string file_path, Property properties);
 
-    std::vector<Triangle> get_triangles() const;
+    std::vector<Geometry*> get_elements() const;
 
     std::array<double,6> get_bounding_box() const;
 

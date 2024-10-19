@@ -1,10 +1,11 @@
 #include "ply_file.hpp"
 
-PlyFile::PlyFile(std::vector<Triangle> triangles, std::array<double,6> bounding_box)
-    : _triangles(triangles), _bounding_box(bounding_box)
+PlyFile::PlyFile(std::vector<Geometry*> elements, std::array<double,6> bounding_box, Property properties)
+    : _elements(elements), _bounding_box(bounding_box), _properties(properties)
 {}
 
-PlyFile::PlyFile(std::string file_path)
+PlyFile::PlyFile(std::string file_path, Property properties)
+    : _properties(properties)
 {
     std::ifstream file(file_path);
     if(!file.is_open())
@@ -26,19 +27,25 @@ PlyFile::PlyFile(std::string file_path)
         points.push_back(Point(x,y,z));
     }
 
-    std::vector<Triangle> triangles;
+    std::vector<Geometry*> elements;
 
     for(size_t i=0; i< num_faces; i++)
     {
         size_t n_vertex_face; 
-        size_t p0,p1,p2;
-        file >> n_vertex_face >> p0 >> p1 >> p2;
-        if(n_vertex_face != 3)
-            throw std::runtime_error("Only triangles supported");
-        triangles.push_back(Triangle(points[p0],points[p1],points[p2],Property()));
+        size_t p0,p1,p2,p3;
+        file >> n_vertex_face;
+
+        if(n_vertex_face == 3)
+        {
+            file >> p0 >> p1 >> p2;
+            elements.push_back(new Triangle(points[p0],points[p1],points[p2],this->_properties));
+        } else
+        {
+            throw std::runtime_error("Only supported triangles and faces");
+        }
     }
 
-    this->_triangles = triangles;
+    this->_elements = elements;
     this->_bounding_box = {x_min, x_max, y_min, y_max, z_min, z_max};
     
 }
@@ -47,7 +54,7 @@ PlyFile::PlyFile(std::string file_path)
 bool PlyFile::read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces)
 {
     std::string line;
-    int wanted_headers = 3;
+    size_t wanted_headers = 3;
     while(std::getline(file, line))
     {
         if(std::regex_match(line,std::regex(" *element vertex +[0-9]+")))
@@ -74,9 +81,9 @@ bool PlyFile::read_header(std::ifstream& file, size_t& num_vertices, size_t& num
     return wanted_headers==0;
 }
 
-std::vector<Triangle> PlyFile::get_triangles() const
+std::vector<Geometry*> PlyFile::get_elements() const
 {
-    return this->_triangles;
+    return this->_elements;
 }
 
 std::array<double,6> PlyFile::get_bounding_box() const
@@ -84,35 +91,37 @@ std::array<double,6> PlyFile::get_bounding_box() const
     return this->_bounding_box;
 }
 
-double PlyFile::standarize(double value, double min, double max) const
+double PlyFile::standardize(double value, double min, double max) const
 {
     return (value-min)/(max-min);
 }
 
 PlyFile PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
 {
-    auto x_op = [new_bounding_box,this](double x){return this->standarize(x,this->_bounding_box[0], this->_bounding_box[1])*(new_bounding_box[1]-new_bounding_box[0])+new_bounding_box[0];};
-    auto y_op = [new_bounding_box,this](double y){return this->standarize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
-    auto z_op = [new_bounding_box,this](double z){return this->standarize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
+    auto x_op = [new_bounding_box,this](double x){return this->standardize(x,this->_bounding_box[0], this->_bounding_box[1])*(new_bounding_box[1]-new_bounding_box[0])+new_bounding_box[0];};
+    auto y_op = [new_bounding_box,this](double y){return this->standardize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
+    auto z_op = [new_bounding_box,this](double z){return this->standardize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
 
-    std::vector<Triangle> new_triangles;
-    for(auto triangle:this->_triangles)
+    std::vector<Geometry*> new_elements;
+    for(auto element:this->_elements)
     {
-        Triangle new_tr = Triangle(Point(x_op(triangle[0][0]),y_op(triangle[0][1]),z_op(triangle[0][2])),
-                                    Point(x_op(triangle[1][0]),y_op(triangle[1][1]),z_op(triangle[1][2])),
-                                    Point(x_op(triangle[2][0]),y_op(triangle[2][1]),z_op(triangle[2][2])),
-                                    Property());
-        new_triangles.push_back(new_tr);
+        Triangle el_trig = (*dynamic_cast<Triangle*>(element));
+        
+        Geometry* new_element = new Triangle(Point(x_op(el_trig[0][0]),y_op(el_trig[0][1]),z_op(el_trig[0][2])),
+                                    Point(x_op(el_trig[1][0]),y_op(el_trig[1][1]),z_op(el_trig[1][2])),
+                                    Point(x_op(el_trig[2][0]),y_op(el_trig[2][1]),z_op(el_trig[2][2])),
+                                    this->_properties);
+        new_elements.push_back(new_element);
     }
 
-    return PlyFile(new_triangles, new_bounding_box);
+    return PlyFile(new_elements, new_bounding_box, this->_properties);
 
 }
 
 std::string PlyFile::to_string() const
 {
     std::string str = "PlyFile: ";
-    for(auto triangle: this->_triangles)
-        str += triangle.to_string() + "\n";
+    for(auto element: this->_elements)
+        str += element->to_string() + "\n";
     return str;
 }
