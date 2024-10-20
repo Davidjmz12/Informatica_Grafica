@@ -14,8 +14,11 @@
 #include "color_map.hpp"
 #include "ray.hpp"
 #include "geometry/geometry.hpp"
+
 #include "threading/thread_pool.hpp"
 #include "global_config/global_config.hpp"
+#include "metrics/metrics.hpp"
+
 /**
  * @brief Class that defines a Camera with a Screen
  */

@@ -10,14 +10,29 @@ Mesh::Mesh(std::vector<Geometry*> elements)
 
 Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
     : Geometry(), _elements(elements), _bounding_box(bounding_box)
-{}
+{
+    GlobalConf *gc = GlobalConf::get_instance();
+    if(gc->has_metrics())
+    {
+        Metrics& m = gc->get_metrics();
+        //m.init_time_metric("mesh_intersection", "Time doing intersection with mesh");
+        m.add_counter("mesh_intersections_avoided", "Number of intersections avoided with bounding box");
+    }
+}
 
 bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     if(_bounding_box.has_value())
     {
         if(!_bounding_box.value().intersect_with_ray(r))
+        {
+            if(GlobalConf::get_instance()->has_metrics())
+            {
+                Metrics& m = GlobalConf::get_instance()->get_metrics();
+                m.increment_counter("mesh_intersections_avoided");
+            }
             return false;
+        } 
     }
 
     bool intersects = false;

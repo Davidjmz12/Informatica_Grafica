@@ -68,7 +68,13 @@ std::vector<Color> Camera::paint_one_row(std::vector<Geometry*> objects,  size_t
 
 ColorMap Camera::paint_scene(std::vector<Geometry*> objects) const
 {   
-    size_t num_threads = GlobalConf::get_instance()->get_number_of_threads();
+    GlobalConf *gc = GlobalConf::get_instance();
+    if(gc->has_metrics())
+    {
+        Metrics& m = gc->get_metrics();
+        m.start_timer_metric("paint_scene");
+    }
+    size_t num_threads = gc->get_number_of_threads();
 
     ThreadPool pool(num_threads);
 
@@ -90,6 +96,12 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects) const
     {
         std::vector<Color> row_colors = futures[i].get();
         colors.push_back(row_colors);
+    }
+
+    if(gc->has_metrics())
+    {
+        Metrics& m = gc->get_metrics();
+        m.finish_timer_metric("paint_scene");
     }
 
     return ColorMap(colors,RGB);

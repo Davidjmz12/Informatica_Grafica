@@ -9,6 +9,9 @@
 #include <future>
 #include <atomic>
 
+#include "metrics/metrics.hpp"
+#include "global_config/global_config.hpp"
+
 class ThreadPool {
 
 private:
@@ -26,33 +29,80 @@ private:
     std::atomic<bool> _stopFlag;
 
 public:
+
+    void thread_work(size_t id)
+    {
+        GlobalConf *gc = GlobalConf::get_instance();
+        bool has_metrics = gc->has_metrics();
+
+        std::string name_working = "thread_" + std::to_string(id) + "_working";
+        std::string name_waiting = "thread_" + std::to_string(id) + "_waiting";
+
+        if (has_metrics)
+        {
+            Metrics& m = gc->get_metrics();
+            m.init_time_metric(name_working, "Thread " + std::to_string(id) + " working time");
+            m.init_time_metric(name_waiting, "Thread " + std::to_string(id) + " waiting time");
+        }
+
+        while (true) {
+            std::function<void()> task;
+
+            {   
+                if (has_metrics)
+                {
+                    Metrics& m = gc->get_metrics();
+                    m.start_duration_time_metric(name_waiting);
+                }
+                // Critical section for queue access
+                std::unique_lock<std::mutex> lock(this->_queueMutex);
+
+                // Wait until we are signaled for a task or to stop
+                this->_condition.wait(lock, [this]() {
+                    return this->_stopFlag || !this->_tasks.empty();
+                });
+
+                if (has_metrics)
+                {
+                    Metrics& m = gc->get_metrics();
+                    m.add_duration_to_time_metric(name_waiting);
+                }
+
+                if (this->_stopFlag && this->_tasks.empty()) {
+                    return; // Break out of the loop and end the thread
+                }
+
+                task = std::move(this->_tasks.front());
+                this->_tasks.pop();
+            }
+
+            if (has_metrics)
+            {
+                Metrics& m = gc->get_metrics();
+                m.start_duration_time_metric(name_working);
+            }
+
+            // Execute the task
+            task();
+
+            if (has_metrics)
+            {
+                Metrics& m = gc->get_metrics();
+                m.add_duration_to_time_metric(name_working);
+            }
+
+        }
+    }
+
+
     // Constructor: Creates the thread pool and starts the worker threads
     ThreadPool(size_t numThreads) : _stopFlag(false) {
         for (size_t i = 0; i < numThreads; ++i) {
-            _workers.emplace_back([this]() {
-                while (true) {
-                    std::function<void()> task;
-
-                    {   // Critical section for queue access
-                        std::unique_lock<std::mutex> lock(this->_queueMutex);
-
-                        // Wait until we are signaled for a task or to stop
-                        this->_condition.wait(lock, [this]() {
-                            return this->_stopFlag || !this->_tasks.empty();
-                        });
-
-                        if (this->_stopFlag && this->_tasks.empty()) {
-                            return; // Break out of the loop and end the thread
-                        }
-
-                        task = std::move(this->_tasks.front());
-                        this->_tasks.pop();
-                    }
-
-                    // Execute the task
-                    task();
+            _workers.emplace_back(
+                [this,i] {
+                    this->thread_work(i);
                 }
-            });
+            );
         }
     }
 

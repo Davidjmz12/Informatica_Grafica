@@ -67,3 +67,7 @@ target_link_libraries(camera PUBLIC ray color_map base geometry)
 target_include_directories(camera PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
+
+
+add_executable(testing testing.cpp)
+target_include_directories(testing PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <any>
 
+#include "metrics/metrics.hpp"
+
 using HashMap = std::unordered_map<std::string, std::any>;
 
 /**
@@ -64,6 +66,24 @@ public:
         } catch (const std::out_of_range& e) {
             throw std::invalid_argument("Key not found");
         }
+    }
+
+    bool has(const std::string key)
+    {
+        return _values.find(key) != _values.end();
+    }
+
+    bool has_metrics()
+    {
+        return this->has("is-metrics") && std::any_cast<bool>(this->get("is-metrics"));
+    }
+
+    Metrics& get_metrics()
+    {
+        if(!this->has_metrics())
+            throw std::runtime_error("No metrics available");
+
+        return std::any_cast<Metrics&>(_values.at("metrics"));
     }
 
 };

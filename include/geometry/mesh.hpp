@@ -14,6 +14,7 @@
 #include "geometry/geometry.hpp"
 #include "geometry/bounding_box.hpp"
 
+#include "global_config/global_config.hpp"
 
 /**
  * @class Mesh
