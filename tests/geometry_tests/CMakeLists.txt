@@ -37,3 +37,8 @@ target_link_libraries(test_face PUBLIC face)
 add_test(NAME test_face COMMAND test_face)
 target_include_directories(test_face PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+add_executable(test_bounding_box test_bounding_box.cpp)
+target_link_libraries(test_bounding_box PUBLIC bounding_box)
+add_test(NAME test_bounding_box COMMAND test_bounding_box)
+target_include_directories(test_bounding_box PUBLIC ${CMAKE_SOURCE_DIR}/include)
+

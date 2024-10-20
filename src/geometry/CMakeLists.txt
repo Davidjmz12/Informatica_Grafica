@@ -34,7 +34,7 @@ add_library(property property.cpp)
 target_link_libraries(property PUBLIC color)
 
 add_library(bounding_box bounding_box.cpp)
-target_link_libraries(bounding_box PUBLIC color)
+target_link_libraries(bounding_box PUBLIC color ray)
 
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)

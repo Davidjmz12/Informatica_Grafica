@@ -16,7 +16,7 @@ bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     if(_bounding_box.has_value())
     {
-        if(!_bounding_box.value().intersects_with_ray(r))
+        if(!_bounding_box.value().intersect_with_ray(r))
             return false;
     }
 
