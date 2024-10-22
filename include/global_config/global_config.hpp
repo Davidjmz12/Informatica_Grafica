@@ -17,10 +17,6 @@ using HashMap = std::unordered_map<std::string, std::any>;
 class GlobalConf
 {
 
-    /**
-     * The GlobalConf's constructor should always be private to prevent direct
-     * construction calls with the `new` operator.
-     */
 
 protected:
     GlobalConf(const HashMap values): 
