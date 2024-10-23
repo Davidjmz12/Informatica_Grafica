@@ -1,7 +1,7 @@
 #pragma once
 
 #include "color.hpp"
-#include "intersection.hpp"
+#include "geometry/geometry.hpp"
 
 class Light
 {
@@ -13,5 +13,5 @@ public:
 
     Light(Point center, Color power);
     
-    bool meets_light(std::vector<Geometry> geometries, const Intersection& intersection) const;
-}
+    bool meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const;
+};

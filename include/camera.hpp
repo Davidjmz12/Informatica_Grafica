@@ -14,6 +14,7 @@
 #include "color_map.hpp"
 #include "ray.hpp"
 #include "geometry/geometry.hpp"
+#include "light.hpp"
 
 #include "threading/thread_pool.hpp"
 #include "global_config/global_config.hpp"

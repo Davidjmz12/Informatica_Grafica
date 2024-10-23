@@ -119,6 +119,13 @@ std::array<int,2> Camera::get_resolution() const
     return this->_resolution;
 }
 
+
+Color Camera::compute_final_color(Intersection intersec, 
+    std::vector<Geometry*> objects, std::vector<Light*> lights) const
+{
+    
+}
+
 std::ostream& operator<<(std::ostream& os, Camera c)
 {
     os << "Camera:" << std::endl;

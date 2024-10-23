@@ -64,11 +64,11 @@ target_link_libraries(scene PUBLIC camera)
 target_include_directories(scene PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(camera camera.cpp)
-target_link_libraries(camera PUBLIC ray color_map base geometry)
+target_link_libraries(camera PUBLIC ray color_map base geometry light)
 target_include_directories(camera PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(light light.cpp)
-target_link_libraries(light PUBLIC color intersection)
+target_link_libraries(light PUBLIC geometry)
 target_include_directories(light PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 # ------------------------------------------------------------------------------
