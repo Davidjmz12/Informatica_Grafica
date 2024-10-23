@@ -57,6 +57,10 @@ private:
      */
     std::array<double,2> get_random_pixel_coordinates(int x, int y) const;
 
+    std::vector<Color> paint_one_row(std::vector<Geometry*> objects, size_t row) const;
+
+    Color compute_final_color(Intersection intersec, std::vector<Geometry*> objects, std::vector<Light*> lights) const;
+
 public:
 
     /**
@@ -70,7 +74,6 @@ public:
      */
     Camera(Base base, std::array<int,2> resolution);
 
-    std::vector<Color> paint_one_row(std::vector<Geometry*> objects, size_t row) const;
 
     ColorMap paint_scene(std::vector<Geometry*> objects) const;
 

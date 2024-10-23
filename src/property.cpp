@@ -1,4 +1,4 @@
-#include "geometry/property.hpp"
+#include "properties/property.hpp"
 
 Property::Property()
     : _color()

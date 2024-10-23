@@ -7,7 +7,7 @@
 
 #include "spatial_element/vector.hpp"
 #include "spatial_element/point.hpp"
-#include "geometry/property.hpp"
+#include "properties/property.hpp"
 
 
 class Intersection

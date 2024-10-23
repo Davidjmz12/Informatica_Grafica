@@ -11,7 +11,7 @@
 #pragma once
 
 #include "intersection.hpp"
-#include "geometry/property.hpp"
+#include "properties/property.hpp"
 #include "ray.hpp"
 
 /**

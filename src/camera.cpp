@@ -38,6 +38,8 @@ Color Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> ob
                 min_int = aux_int;
         }
     }
+    
+    // AQUÍ HAY QUE HACER EL CÁLCULO DE LA ILUMINACIÓN
     return min_int.get_properties().get_color();
 }
 

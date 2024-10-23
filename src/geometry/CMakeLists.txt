@@ -30,9 +30,6 @@ target_link_libraries(plane PUBLIC geometry)
 add_library(face face.cpp)
 target_link_libraries(face PUBLIC geometry)
 
-add_library(property property.cpp)
-target_link_libraries(property PUBLIC color)
-
 add_library(bounding_box bounding_box.cpp)
 target_link_libraries(bounding_box PUBLIC color ray)
 
@@ -45,5 +42,4 @@ target_include_directories(disk PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(box PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(plane PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(face PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_include_directories(property PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(bounding_box PUBLIC ${CMAKE_SOURCE_DIR}/include)
