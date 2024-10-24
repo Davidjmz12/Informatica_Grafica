@@ -10,7 +10,7 @@ bool Disk::intersect_with_ray(const Ray& r, Intersection& intersection) const
     if(!_plane.intersect_with_ray(r, intersection))
         return false;
         
-    if( gtD((intersection.get_point()-this->_center).norm(), _radius) )
+    if(gtD((intersection.get_point()-this->_center).norm(), _radius))
         return false;
     return true;
 }

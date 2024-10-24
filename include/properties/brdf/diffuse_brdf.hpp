@@ -17,4 +17,8 @@ public:
     DiffuseBRDF();
     
     Color eval(Point p, Vector v, Vector w0) const override;
+
+    std::string to_string() const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const DiffuseBRDF& d);
 };

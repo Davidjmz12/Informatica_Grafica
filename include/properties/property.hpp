@@ -12,9 +12,14 @@ private:
 public:
 
     Property();
-    Property(Color color, BRDF* brdf);
+    Property(Color color, BRDF* brdf = new DiffuseBRDF());
 
 
     Color get_color() const;
     BRDF* get_BRDF() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Property& p);
+
+    std::string to_string() const;
+
 };

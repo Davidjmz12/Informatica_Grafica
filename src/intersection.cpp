@@ -1,8 +1,8 @@
 #include "intersection.hpp"
 
 
-Intersection::Intersection(double distance, Vector normal, Point point, Property properties):
-    _distance(distance), _normal(normal), _point(point), _properties(properties)
+Intersection::Intersection(double distance, Vector normal, Point point, Property properties, Vector origin):
+    _distance(distance), _normal(normal), _point(point), _properties(properties), _origin(origin)
 {}
 
 Intersection::Intersection():
@@ -28,6 +28,11 @@ Vector Intersection::get_normal() const
 Property Intersection::get_properties() const
 {
     return this->_properties;
+}
+
+Vector Intersection::get_origin() const
+{
+    return this->_origin;
 }
 
 Intersection Intersection::min(std::vector<Intersection> intersections)
@@ -64,6 +69,8 @@ std::ostream& operator<<(std::ostream& os, const Intersection& i)
 {
     os  << std::string("Intersection:\n\tPoint:\t") << i._point
         << std::string("\tNormal:\t") << i._normal
-        << std::string("\tDistance:\t") << std::to_string(i._distance);
+        << std::string("\tDistance:\t") << std::to_string(i._distance)
+        << std::string("\tProperties:\t") << i._properties
+        << std::string("\tOrigin:\t") << i._origin;
     return os;
 }

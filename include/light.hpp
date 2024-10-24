@@ -13,5 +13,5 @@ public:
 
     Light(Point center, Color power);
     
-    bool meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const;
+    Color meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const;
 };

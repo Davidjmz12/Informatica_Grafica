@@ -35,7 +35,7 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
     Vector normal = (ray.get_direction()).dot(this->_normal)>0 ? this->_normal*(-1):this->_normal;
 
     
-    intersection = Intersection(distance, normal, point,this->_properties);
+    intersection = Intersection(distance, normal, point,this->_properties, ray.get_direction());
 
     return true;
     

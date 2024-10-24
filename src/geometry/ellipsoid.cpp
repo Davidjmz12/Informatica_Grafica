@@ -67,7 +67,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) con
         {
             Point point = ray.evaluate(numericSolution);
             point = point + (this->_center - Point());
-            intersection = Intersection(numericSolution, this->normal(point), point, this->_properties);
+            intersection = Intersection(numericSolution, this->normal(point), point, this->_properties, ray.get_direction());
         }
 
         return existSolution;

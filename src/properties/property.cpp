@@ -17,3 +17,14 @@ BRDF* Property::get_BRDF() const
 {
     return this->_brdf;
 }
+
+std::ostream& operator<<(std::ostream& os, const Property& p)
+{
+    os << p.to_string();
+    return os;
+}
+
+std::string Property::to_string() const
+{
+    return "Color: " + this->_color.to_string() + "\n" + this->_brdf->to_string();
+}

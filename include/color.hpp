@@ -150,7 +150,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Color& g);
 
+    std::string to_string() const;
+
+    Color operator*(Color c) const;
+    
     Color operator+(Color c) const;
+
+    Color operator*(double f) const;
+
     Color operator/(double f) const;
 };
 

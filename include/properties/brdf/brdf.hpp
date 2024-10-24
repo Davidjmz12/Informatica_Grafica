@@ -7,4 +7,8 @@
 class BRDF {
 public:
     virtual Color eval(Point p, Vector v, Vector w0) const = 0;
+
+    virtual std::string to_string() const = 0;
+
+    friend std::ostream& operator<<(std::ostream& os, const BRDF& b);
 };

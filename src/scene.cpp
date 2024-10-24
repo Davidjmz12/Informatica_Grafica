@@ -1,7 +1,7 @@
 #include "scene.hpp"
 
-Scene::Scene(std::vector<Geometry*> objects, Camera camera)
-    : _objects(objects), _camera(camera)
+Scene::Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera)
+    : _objects(objects), _camera(camera), _lights(lights)
 {}
 
 void Scene::add_geometry(Geometry* g)
@@ -9,9 +9,14 @@ void Scene::add_geometry(Geometry* g)
     this->_objects.push_back(g);
 }
 
+void Scene::add_light(Light l)
+{
+    this->_lights.push_back(l);
+}
+
 ColorMap Scene::paint_scene() const
 {
-    return this->_camera.paint_scene(this->_objects);
+    return this->_camera.paint_scene(this->_objects, this->_lights);
 }
 
 std::array<int,2> Scene::get_resolution() const

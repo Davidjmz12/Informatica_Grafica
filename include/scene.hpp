@@ -19,7 +19,8 @@ class Scene
 {
 private:
     std::vector<Geometry*> _objects; // Vector of objects
-    Camera _camera;                 // Camera
+    std::vector<Light> _lights;      // Vector of lights
+    Camera _camera;                  // Camera
 
 public:
     /**
@@ -28,13 +29,15 @@ public:
      * scene.
      * @param camera Camera on the scene.
      */
-    Scene(std::vector<Geometry*> objects, Camera camera);
+    Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera);
 
     /**
      * @brief Add a Geometry object to the scene.
      * @param g The geomtry to add.
      */
     void add_geometry(Geometry* g);
+
+    void add_light(Light l);
 
     /**
      * @brief Paint the scene.

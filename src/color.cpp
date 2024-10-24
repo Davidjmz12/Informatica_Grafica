@@ -260,9 +260,15 @@ bool Color::operator==(Color l) const
 
 std::ostream& operator<<(std::ostream& os,const Color& g)
 {
-    os << g[0] << " " << g[1] << " " << g[2];
+    os << g.to_string();
 
     return os;
+}
+
+std::string Color::to_string() const
+{
+    std::string s = std::to_string(this->_colors[0]) + " " + std::to_string(this->_colors[1]) + " " + std::to_string(this->_colors[2]);
+    return s;
 }
 
 Color Color::operator+(Color c) const
@@ -277,6 +283,34 @@ Color Color::operator+(Color c) const
     std::array<double,3> new_range;
     for(size_t i=0;i<3; ++i)
         new_range[i] = this->_range[i] + c.get_range()[i];
+    return Color(new_colors, new_range, this->_type);
+}
+
+Color Color::operator*(Color c) const
+{
+    if(c.get_type() != this->get_type())
+        throw std::invalid_argument("Colors must have the same encoding type to be multiplied.");
+
+    std::array<double, 3> new_colors;
+    for(size_t i=0; i<3; ++i)
+        new_colors[i] = this->_colors[i] * c[i];
+
+    std::array<double,3> new_range;
+    for(size_t i=0;i<3; ++i)
+        new_range[i] = this->_range[i] * c.get_range()[i];
+    return Color(new_colors, new_range, this->_type);
+}
+
+Color Color::operator*(double f) const
+{
+    std::array<double, 3> new_colors;
+    for(size_t i=0; i<3; ++i)
+        new_colors[i] = this->_colors[i] * f;
+
+    std::array<double,3> new_range;
+    for(size_t i=0;i<3; ++i)
+        new_range[i] = this->_range[i] * f;
+
     return Color(new_colors, new_range, this->_type);
 }
 
