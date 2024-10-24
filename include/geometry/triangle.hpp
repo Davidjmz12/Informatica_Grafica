@@ -75,6 +75,8 @@ public:
      */
     Triangle(Point v0, Point v1, Point v2, Property properties);
 
+    BoundingBox get_bounding_box() const override;
+    
     /**
      * @brief Gets the normal vector of the triangle.
      * @return The normal vector of the triangle.

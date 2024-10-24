@@ -68,7 +68,9 @@ private:
     double _height; ///< The height of the cylinder
     Disk _top, _bottom; ///< The top and bottom disks of the cylinder
 
-    
+
+    BoundingBox get_bounding_box() const override;
+
     /**
      * @brief Computes the intersection of a ray with an infinite cylinder.
      * 

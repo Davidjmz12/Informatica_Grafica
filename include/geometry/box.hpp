@@ -60,6 +60,8 @@ public:
      */
     Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis, Property properties);
 
+    BoundingBox get_bounding_box() const override;
+    
     /**
      * @brief Method that checks if a ray intersects with the box.
      * @param r The ray that is going to be checked.
