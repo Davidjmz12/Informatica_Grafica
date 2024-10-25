@@ -4,9 +4,15 @@ Property::Property(Color color, BRDF* brdf):
     _color(color), _brdf(brdf)
 {}
 
+Property::Property(Color color)
+    : _color(color), _brdf(new DiffuseBRDF(color))
+{}
+
+
 Property::Property()
     : _color(Color()), _brdf(new DiffuseBRDF())
 {}
+
 
 Color Property::get_color() const
 {

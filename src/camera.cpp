@@ -44,7 +44,7 @@ Color Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> ob
         return Color();
     
     Color final_color = compute_final_color(min_int, objects, lights);
-    return min_int.get_properties().get_color();
+    return final_color;
 }
 
 Color Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const
@@ -127,7 +127,12 @@ std::array<int,2> Camera::get_resolution() const
 Color Camera::compute_final_color(Intersection intersec, 
     std::vector<Geometry*> objects, std::vector<Light> lights) const
 {
-    
+    Color final_color = lights[0].meets_light(objects, intersec);
+    for(size_t i=1; i<lights.size(); ++i)
+    {
+        final_color = final_color + lights[i].meets_light(objects, intersec);
+    }
+    return final_color;
 }
 
 std::ostream& operator<<(std::ostream& os, Camera c)

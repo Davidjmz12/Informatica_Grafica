@@ -85,11 +85,11 @@ int main(int argc, char* argv[])
 
     Light l = Light(Point(0,0.5,0),Color({1,1,1},{1,1,1}, ColorEncoding::RGB));
     //Geometry* sp3 = new Box(Point(-0.5,-0.7,0.25),{0.3,0.3,0.3},{Vector(1,0,0),Vector(0,1,0),Vector(0,0,1)},magenta);
-    PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/airplane.ply",magenta);
-    ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
-    Geometry* sp3 = ply.to_mesh();
+    //PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/airplane.ply",magenta);
+    //ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
+    //Geometry* sp3 = ply.to_mesh();
 
-    Scene s = Scene({p1,p2,p3,p4,p5,sp2,sp3}, {l}, c);
+    Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2}, {l}, c);
 
     PpmFile ppm = PpmFile(s);
 

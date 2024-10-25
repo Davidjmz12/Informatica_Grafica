@@ -103,7 +103,7 @@ void PpmFile::save(std::string output_file) const
     // Write headers
     file << std::fixed << this->_format << std::endl;
     file << "#MAX=" << this->_maxRange << std::endl;
-    file << this->_dimension[0] << " " << this->_dimension[1] << std::endl;
+    file << (int)this->_dimension[0] << " " << (int)this->_dimension[1] << std::endl;
     file << (int)this->_colorResolution << std::endl;
     file << this->_map << std::endl;
 }

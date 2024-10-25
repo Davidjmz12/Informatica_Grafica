@@ -267,7 +267,7 @@ std::ostream& operator<<(std::ostream& os,const Color& g)
 
 std::string Color::to_string() const
 {
-    std::string s = std::to_string(this->_colors[0]) + " " + std::to_string(this->_colors[1]) + " " + std::to_string(this->_colors[2]);
+    std::string s = std::to_string((int)this->_colors[0]) + " " + std::to_string((int)this->_colors[1]) + " " + std::to_string((int)this->_colors[2]);
     return s;
 }
 

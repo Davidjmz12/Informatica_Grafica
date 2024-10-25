@@ -12,7 +12,8 @@ private:
 public:
 
     Property();
-    Property(Color color, BRDF* brdf = new DiffuseBRDF());
+    Property(Color color);
+    Property(Color color, BRDF* brdf);
 
 
     Color get_color() const;
