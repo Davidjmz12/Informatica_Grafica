@@ -1,7 +1,7 @@
 #include "color/spectral_color.hpp"
 
 SpectralColor::SpectralColor():
-    _chanels({0,0}), _size(1)
+    _chanels({0,0,0}), _size(3), _wave_lengths({435, 546, 700})
 {}
     
 SpectralColor::SpectralColor(std::vector<double> chanels):
@@ -89,6 +89,10 @@ ColorRGB SpectralColor::to_rgb() const
     double R = 3.2406*X - 1.5372*Y - 0.4986*Z;
     double G = -0.9689*X + 1.8758*Y + 0.0415*Z;
     double B = 0.0557*X - 0.2040*Y + 1.0570*Z;
+
+    R = std::max(0.0, R);
+    G = std::max(0.0, G);
+    B = std::max(0.0, B);
 
     //R = gamma_correction(R);
     //G = gamma_correction(G);

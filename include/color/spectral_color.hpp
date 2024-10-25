@@ -17,6 +17,7 @@ private:
 
     double get_increment(size_t i) const;
 
+
 public:
     
     SpectralColor();

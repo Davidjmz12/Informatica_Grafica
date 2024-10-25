@@ -55,6 +55,7 @@ class PpmFile {
 
         double get_range() const;
         double get_color_resolution() const;
+        double get_max_range() const;
         std::array<int,2> get_dimension() const;
         std::string get_format() const;
 

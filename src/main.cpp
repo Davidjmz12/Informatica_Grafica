@@ -9,6 +9,7 @@
 #include "geometry/all_geometry.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
+#include "color/tone_mapping/all_tone_mapping.hpp"
 
 
 HashMap get_default_conf() {
@@ -83,7 +84,7 @@ int main(int argc, char* argv[])
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
     
 
-    Light l1 = Light(Point(0,0.5,0),SpectralColor({1,1,1}));
+    Light l1 = Light(Point(0,0.5,0),SpectralColor({100,100,100}));
     Light l2 = Light(Point(0.5,0,0),SpectralColor({2,2,2}));
     //Geometry* sp3 = new Box(Point(-0.5,-0.7,0.25),{0.3,0.3,0.3},{Vector(1,0,0),Vector(0,1,0),Vector(0,0,1)},magenta);
     //PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/airplane.ply",magenta);
@@ -93,6 +94,8 @@ int main(int argc, char* argv[])
     Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2}, {l1,l2}, c);
 
     PpmFile ppm = PpmFile(s);
+
+    ppm = ppm.apply_tone_mapping(new Equalization(ppm.get_max_range()));
 
     ppm.save(std::string(ASSETS_DIR) + "/out/scene.ppm");
 
