@@ -6,8 +6,8 @@
  * for the Matrix class.
 */
 
-#include "test.hpp"
-#include "matrix.hpp"
+#include "test/test.hpp"
+#include "spatial_element/matrix.hpp"
 
 int main()
 {    

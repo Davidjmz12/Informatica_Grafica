@@ -7,7 +7,7 @@
  * for the Sphere class.
 */
 
-#include "test.hpp"
+#include "test/test.hpp"
 #include "geometry/sphere.hpp"
 
 int main()

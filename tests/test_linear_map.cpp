@@ -8,9 +8,9 @@
 
 #include <math.h>
 
-#include "test.hpp"
-#include "linear_map.hpp"
-#include "base.hpp"
+#include "test/test.hpp"
+#include "spatial_element/linear_map.hpp"
+#include "spatial_element/base.hpp"
 
 int main()
 {

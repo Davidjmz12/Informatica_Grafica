@@ -6,8 +6,8 @@
  * for the ColorMap class.
 */
 
-#include "test.hpp"
-#include "color_map.hpp"
+#include "test/test.hpp"
+#include "color/color_map.hpp"
 
 int main()
 {    

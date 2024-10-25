@@ -1,4 +1,4 @@
-#include "test.hpp"
+#include "test/test.hpp"
 #include "geometry/bounding_box.hpp"
 
 int main()

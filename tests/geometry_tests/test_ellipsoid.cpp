@@ -7,7 +7,7 @@
  * for the Ellipsoid class.
 */
 
-#include "test.hpp"
+#include "test/test.hpp"
 #include "geometry/ellipsoid.hpp"
 
 int main()

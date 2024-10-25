@@ -31,7 +31,7 @@ add_library(face face.cpp)
 target_link_libraries(face PUBLIC geometry)
 
 add_library(bounding_box bounding_box.cpp)
-target_link_libraries(bounding_box PUBLIC color ray)
+target_link_libraries(bounding_box PUBLIC spectral_color ray)
 
 target_include_directories(sphere PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_include_directories(ellipsoid PUBLIC ${CMAKE_SOURCE_DIR}/include)

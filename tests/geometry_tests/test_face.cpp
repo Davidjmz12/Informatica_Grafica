@@ -1,5 +1,5 @@
 #include "geometry/face.hpp"
-#include "test.hpp"
+#include "test/test.hpp"
 
 int main()
 {

@@ -10,8 +10,8 @@
 
 #include <future>
 
-#include "base.hpp"
-#include "color_map.hpp"
+#include "spatial_element/base.hpp"
+#include "color/color_map.hpp"
 #include "ray.hpp"
 #include "geometry/geometry.hpp"
 #include "light.hpp"
@@ -45,9 +45,9 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    Color compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
+    SpectralColor compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
 
-    Color compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
+    SpectralColor compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
 
     /**
      * @brief Compute the coordinates of the pixel x,y in the camera
@@ -58,9 +58,9 @@ private:
      */
     std::array<double,2> get_random_pixel_coordinates(int x, int y) const;
 
-    std::vector<Color> paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights, size_t row) const;
+    std::vector<SpectralColor> paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights, size_t row) const;
 
-    Color compute_final_color(Intersection intersec, std::vector<Geometry*> objects, std::vector<Light> lights) const;
+    SpectralColor compute_final_color(Intersection intersec, std::vector<Geometry*> objects, std::vector<Light> lights) const;
 
 public:
 

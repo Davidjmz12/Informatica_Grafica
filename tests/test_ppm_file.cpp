@@ -6,8 +6,8 @@
  * for the PpmFile class.
 */
 
-#include "test.hpp"
-#include "ppm_file.hpp"
+#include "test/test.hpp"
+#include "files/ppm_file.hpp"
 
 int main()
 {    

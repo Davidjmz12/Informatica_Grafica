@@ -14,7 +14,7 @@
 #include <stdexcept>
 #include <iomanip>
 
-#include "constants.hpp"
+#include "global_config/constants.hpp"
 
 class SpatialElement
 {

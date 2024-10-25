@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include "test.hpp"
+#include "test/test.hpp"
 #include "planet.hpp"
 
 int main()

@@ -7,7 +7,7 @@
 */
 #include <math.h>
 
-#include "test.hpp"
+#include "test/test.hpp"
 #include "spatial_element/vector.hpp"
 
 int main()

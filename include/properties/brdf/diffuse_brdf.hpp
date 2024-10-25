@@ -9,14 +9,14 @@
 class DiffuseBRDF : public BRDF
 {
 private:
-    Color _k; // The color of the object
+    SpectralColor _k; // The color of the object
 
 public:
-    DiffuseBRDF(Color k);
+    DiffuseBRDF(SpectralColor k);
 
     DiffuseBRDF();
     
-    Color eval(Point p, Vector v, Vector w0) const override;
+    SpectralColor eval(Point p, Vector v, Vector w0) const override;
 
     std::string to_string() const override;
 

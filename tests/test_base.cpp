@@ -6,8 +6,8 @@
  * for the Base class.
 */
 
-#include "test.hpp"
-#include "base.hpp"
+#include "test/test.hpp"
+#include "spatial_element/base.hpp"
 
 int main()
 {

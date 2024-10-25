@@ -1,5 +1,5 @@
 #include "geometry/plane.hpp"
-#include "test.hpp"
+#include "test/test.hpp"
 
 int main()
 {

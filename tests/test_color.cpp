@@ -6,10 +6,10 @@
  * for the Color class.
 */
 
-#include "test.hpp"
-#include "color.hpp"
+#include "test/test.hpp"
+#include "color/spectral_color.hpp"
 
-#include "tone_mapping/all_tone_mapping.hpp"
+#include"color/tone_mapping/all_tone_mapping.hpp"
 
 int main()
 {    
@@ -77,10 +77,10 @@ int main()
     // Test cases for apply_tone_mapping
     Color hsv11 = Color({0, 0, 0.5}, Color::HSV_STANDARD_RANGE, HSV);
     ToneMapping *t1 = new Clamping(1);
-    ToneMapping *t2 = new EqualizationClamping(0.5,1);
-    ToneMapping *t3 = new GammaClamping(0.5,1,1);
-    ToneMapping *t4 = new GammaClamping(2,0.5,1);
-    ToneMapping *t5 = new GammaClamping(2,1,1);
+    ToneMapping *t2 = new Equalization(0.5,1);
+    ToneMapping *t3 = new Gamma(0.5,1,1);
+    ToneMapping *t4 = new Gamma(2,0.5,1);
+    ToneMapping *t5 = new Gamma(2,1,1);
 
     Color hsv11_tone_mapped_1 = hsv11.apply_tone_mapping(t1);
     Color hsv11_tone_mapped_2 = hsv11.apply_tone_mapping(t2);
