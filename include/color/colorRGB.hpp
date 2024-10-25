@@ -6,8 +6,6 @@
 #include "global_config/constants.hpp"
 
 
-
-
 class ColorRGB
 {
 private:

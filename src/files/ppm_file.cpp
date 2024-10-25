@@ -25,24 +25,23 @@ std::string readOneLine(std::ifstream& file)
     return line;
 }
 
-MatrixSC PpmFile::readPixelMap(std::ifstream& file)
+MatrixRGB PpmFile::readPixelMap(std::ifstream& file)
 {
-    MatrixSC pixels;
+    MatrixRGB pixels;
     double factor = this->_maxRange/this->_colorResolution;
     double red, green, blue;
 
     // Read the pixels
     for (int i = 0; i < this->_dimension[1]; i++)
     {
-        std::vector<SpectralColor> row;
+        std::vector<ColorRGB> row;
         std::istringstream s(readOneLine(file));
 
         // Read each pixel of the line
         for (int j = 0; j < this->_dimension[0]; j++)
         {
             s >> red >> green >> blue;
-            row.push_back(SpectralColor({red*factor,green*factor,blue*factor},
-                                {this->_maxRange, this->_maxRange,this->_maxRange}));
+            row.push_back(ColorRGB({red*factor,green*factor,blue*factor}));
         }
         pixels.push_back(row);
     }
@@ -88,8 +87,18 @@ PpmFile::PpmFile(ColorMap map, double range, double colorResolution, std::array<
 {}
 
 PpmFile::PpmFile(Scene s)
-    : _map(s.paint_scene()), _maxRange(255), _colorResolution(255), _dimension(s.get_resolution()), _format("P3")
-{}
+    : _map(s.paint_scene()), _dimension(s.get_resolution()), _format("P3")
+{
+    this->_maxRange = 1;
+    this->_colorResolution = this->_maxRange;
+}
+
+
+PpmFile PpmFile::apply_tone_mapping(ToneMapping* t) const
+{
+    return PpmFile(this->_map.apply_tone_mapping(t), this->_maxRange, 1, this->_dimension, this->_format);
+}
+
 
 void PpmFile::save(std::string output_file) const
 {

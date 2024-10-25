@@ -14,7 +14,7 @@
 #include "color/tone_mapping/tone_mapping.hpp"
 #include "scene.hpp"
 
-using MatrixSC = std::vector<std::vector<SpectralColor>>;
+
 
 /**
  * @brief A class for represents a PPM file.
@@ -27,7 +27,7 @@ class PpmFile {
         std::array<int,2> _dimension;      // Width and height of the matrix
         std::string _format;     // The format identifier
 
-        MatrixSC readPixelMap(std::ifstream& file);
+        MatrixRGB readPixelMap(std::ifstream& file);
 
     public:
         /**

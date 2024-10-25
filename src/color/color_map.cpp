@@ -13,19 +13,52 @@
 
 ColorMap::ColorMap(){}
 
-ColorMap::ColorMap(vector<vector<SpectralColor>> colors):
+ColorMap::ColorMap(MatrixSC spectral_colors)
+{
+    MatrixRGB colors; // Vector to store the new colors
+    for(auto i: spectral_colors)
+    {
+        std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
+        for (SpectralColor color: i)
+        {
+            colors_row.push_back(color.to_rgb());
+        }
+        colors.push_back(colors_row);
+    }
+    this->_colors = colors;
+}
+
+ColorMap::ColorMap(MatrixRGB colors):
     _colors(colors)
 {}
 
+double ColorMap::max() const
+{
+    double max = 0;
+    for(auto i: this->_colors)
+    {
+        for (ColorRGB color: i)
+        {
+            for(size_t j=0; j<3; ++j)
+            {
+                if(color[j]>max)
+                {
+                    max = color[j];
+                }
+            }
+        }
+    }
+    return max;
+}
 
 ColorMap ColorMap::apply_tone_mapping(ToneMapping* t) const
 {
 
-    vector<vector<SpectralColor>> colors; // Vector to store the new colors
+    MatrixRGB colors; // Vector to store the new colors
     for(auto i: this->_colors)
     {
-        vector<SpectralColor> colors_row; // Vector to store the new colors of the row
-        for (SpectralColor color: i)
+        std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
+        for (ColorRGB color: i)
         {
             colors_row.push_back(color.apply_tone_mapping(t));
         }
@@ -34,7 +67,7 @@ ColorMap ColorMap::apply_tone_mapping(ToneMapping* t) const
     return ColorMap(colors);
 }
 
-vector<vector<SpectralColor>> ColorMap::colors() const
+MatrixRGB ColorMap::colors() const
 {
     return this->_colors;
 }

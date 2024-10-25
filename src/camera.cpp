@@ -97,7 +97,7 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> 
         );
     }
 
-    std::vector<std::vector<SpectralColor>> colors;
+    MatrixSC colors;
     for(size_t i=0; i<this->_resolution[0]; ++i)
     {
         std::vector<SpectralColor> row_colors = futures[i].get();

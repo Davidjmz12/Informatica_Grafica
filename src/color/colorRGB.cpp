@@ -12,36 +12,12 @@ ColorRGB::ColorRGB():
     _colors({0,0,0})
 {}
 
-
-ColorRGB ColorRGB::normalize(double max_value) const
-{
-    std::array<double, 3> new_colors;
-    for(size_t i=0; i<3; ++i)
-    {
-        new_colors[i] = this->_colors[i]/max_value;
-    }
-
-    return ColorRGB(new_colors);
-}
-
-ColorRGB ColorRGB::standardize(double max_value) const
-{
-    ColorRGB normalized = this->normalize(max_value);
-
-    std::array<double, 3> new_colors;                          
-    for(size_t i=0; i<3; ++i)
-    {
-        new_colors[i] = normalized[i]*255;
-    }
-    return ColorRGB(new_colors);
-}
-
 ColorRGB ColorRGB::apply_tone_mapping(ToneMapping* t) const
 {
     std::array<double, 3> new_colors;
     for(size_t i=0; i<3; ++i)
     {
-        new_colors[i] = t->evaluate(this->_colors[i]);
+        new_colors[i] = t->evaluate(this->_colors[i])*255;
     }
     return ColorRGB(new_colors);
 }

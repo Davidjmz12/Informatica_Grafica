@@ -4,8 +4,10 @@
 #include <iomanip>
 
 #include "color/spectral_color.hpp"
+#include "color/colorRGB.hpp"
 
-using std::vector;
+using MatrixSC = std::vector<std::vector<SpectralColor>>;
+using MatrixRGB = std::vector<std::vector<ColorRGB>>;
 
 
 /**
@@ -15,7 +17,7 @@ using std::vector;
 class ColorMap {
     private:
     
-        vector<vector<SpectralColor>> _colors; ///< 2D vector to store colors.
+        MatrixRGB _colors; ///< 2D vector to store colors.
 
     public:
 
@@ -27,7 +29,13 @@ class ColorMap {
          * @param encode Encoding type of the colors.
          * @throw invalid_argument If the colors are not equally encoded.
          */
-        ColorMap(vector<vector<SpectralColor>> colors);
+        ColorMap(MatrixSC spectral_colors);
+
+        ColorMap(MatrixRGB colors);
+
+
+        double max() const;
+
 
         /**
          * @brief Apply a tone mapping to all colors in the map.
@@ -36,13 +44,12 @@ class ColorMap {
          */
         ColorMap apply_tone_mapping(ToneMapping* t) const;
 
-        
 
         /**
          * @brief Get the colors in the map.
          * @return 2D vector of colors.
          */
-        vector<vector<SpectralColor>> colors() const;
+        MatrixRGB colors() const;
 
         /**
          * @brief Compare two color maps for equality.
