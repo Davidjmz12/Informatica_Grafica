@@ -94,9 +94,9 @@ PpmFile::PpmFile(Scene s)
 }
 
 
-PpmFile PpmFile::apply_tone_mapping(ToneMapping* t) const
+PpmFile PpmFile::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
 {
-    return PpmFile(this->_map.apply_tone_mapping(t), this->_maxRange, 255, this->_dimension, this->_format);
+    return PpmFile(this->_map.apply_tone_mapping(t, new_resolution), this->_maxRange, new_resolution, this->_dimension, this->_format);
 }
 
 

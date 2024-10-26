@@ -1,34 +1,51 @@
 #pragma once
 
-#include <vector>
+#include <array>
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 #include "color/colorRGB.hpp"
 #include "color/CIE_1931_nvidia.hpp"
 
+using SC3 = std::array<double,3>;
+using SC8 = std::array<double,8>;
+using SC16 = std::array<double,16>;
+using SC32 = std::array<double,32>;
+
 class SpectralColor{
 private:
 
-    std::vector<double> _chanels;
-    std::vector<double> _wave_lengths;
-    size_t _size;
+    static constexpr size_t SIZE = 32;
 
-    double get_increment(size_t i) const;
+    std::array<double,SIZE> _chanels;
 
+    static constexpr std::array<double, SIZE> WAVELENGTHS = {
+        380.00, 392.90, 405.81, 418.71, 431.61, 444.52, 457.42, 470.32, 
+        483.23, 496.13, 509.03, 521.94, 534.84, 547.74, 560.65, 573.55, 
+        586.45, 599.35, 612.26, 625.16, 638.06, 650.97, 663.87, 676.77, 
+        689.68, 702.58, 715.48, 728.39, 741.29, 754.19, 767.10, 780.00, 
+    };  
+
+    static constexpr double increment = 12.9;
 
 public:
     
     SpectralColor();
 
-    SpectralColor(std::vector<double> chanels);
+    SpectralColor(std::array<double,32> chanels_32);
 
-    SpectralColor(std::vector<double> chanels, std::vector<double> wave_lengths);
+    SpectralColor(std::array<double,16> chanels_16);
 
-    static SpectralColor from_rgb(std::array<double,3> rgb);
+    SpectralColor(std::array<double,8> chanels_8);
 
-    std::vector<double> get_wave_lengths() const;
+    SpectralColor(std::array<double,3> rgb);
+
+    SpectralColor(std::function<double(double)> f);
+    
+    SpectralColor(double intensity);
+
 
     ColorRGB to_rgb() const;
     

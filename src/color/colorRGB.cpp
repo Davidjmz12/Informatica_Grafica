@@ -12,12 +12,12 @@ ColorRGB::ColorRGB():
     _colors({0,0,0})
 {}
 
-ColorRGB ColorRGB::apply_tone_mapping(ToneMapping* t) const
+ColorRGB ColorRGB::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
 {
     std::array<double, 3> new_colors;
     for(size_t i=0; i<3; ++i)
     {
-        new_colors[i] = t->evaluate(this->_colors[i])*255;
+        new_colors[i] = t->evaluate(this->_colors[i])*new_resolution;
     }
     return ColorRGB(new_colors);
 }

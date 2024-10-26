@@ -22,6 +22,8 @@ int main()
     Ray r18 = Ray(Point(2, 2, 2), Vector(0, 0, 1));
     Ray r19 = Ray(Point(-1, -1, -1), Vector(-1, -1, -1));
 
+    Ray r20 = Ray(Point(0.5, 0.5, 0.5), Vector(1, 1, 1));
+
 
     t.addTest("1", Test::EXPECT_EQ(bb.intersect_with_ray(r11), true));
     t.addTest("2", Test::EXPECT_EQ(bb.intersect_with_ray(r12), true));
@@ -32,6 +34,8 @@ int main()
     t.addTest("7", Test::EXPECT_EQ(bb.intersect_with_ray(r17), false));
     t.addTest("8", Test::EXPECT_EQ(bb.intersect_with_ray(r18), false));
     t.addTest("9", Test::EXPECT_EQ(bb.intersect_with_ray(r19), false));
+
+    t.addTest("10", Test::EXPECT_EQ(bb.intersect_with_ray(r20), true));
 
     return t.runAll();
 }

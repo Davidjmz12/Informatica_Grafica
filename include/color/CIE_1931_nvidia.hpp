@@ -28,3 +28,12 @@ inline double gamma_correction(double value)
         return 12.92*value;
     return 1.055*pow(value,1/2.4)-0.055;
 }
+
+const double h = 6.62607015e-34; // Planck's constant
+const double c = 2.998e8; // Speed of light
+const double k = 1.380649e-23; // Boltzmann constant
+
+inline double planck(double lambda, double T = 6504) {
+    double v = c / lambda;
+    return (2 * h * v * v * v) / (pow(exp(h * v / (k * T)), 2) - 1);
+}

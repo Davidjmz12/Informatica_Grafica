@@ -42,7 +42,7 @@ class PpmFile {
 
         PpmFile(Scene s);
 
-        PpmFile apply_tone_mapping(ToneMapping* t) const;
+        PpmFile apply_tone_mapping(ToneMapping* t, size_t new_resolution) const;
 
         /**
         * @brief Stores the PPM file

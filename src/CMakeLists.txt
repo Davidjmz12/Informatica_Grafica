@@ -40,4 +40,5 @@ target_include_directories(light PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
 add_executable(testing testing.cpp)
+target_link_libraries(testing PUBLIC spectral_color)
 target_include_directories(testing PUBLIC ${CMAKE_SOURCE_DIR}/include)

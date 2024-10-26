@@ -38,24 +38,31 @@ public:
         std::string name_working = "thread_" + std::to_string(id) + "_working";
         std::string name_waiting = "thread_" + std::to_string(id) + "_waiting";
 
-        if (has_metrics)
         {
-            Metrics& m = gc->get_metrics();
-            m.init_time_metric(name_working, "Thread " + std::to_string(id) + " working time");
-            m.init_time_metric(name_waiting, "Thread " + std::to_string(id) + " waiting time");
+            // Critical section for queue access
+            std::unique_lock<std::mutex> lock(this->_queueMutex);
+            if (has_metrics)
+            {
+                Metrics& m = gc->get_metrics();
+                m.init_time_metric(name_working, "Thread " + std::to_string(id) + " working time");
+                m.init_time_metric(name_waiting, "Thread " + std::to_string(id) + " waiting time");
+            }
         }
+
 
         while (true) {
             std::function<void()> task;
 
             {   
+                // Critical section for queue access
+                std::unique_lock<std::mutex> lock(this->_queueMutex);
+
                 if (has_metrics)
                 {
                     Metrics& m = gc->get_metrics();
                     m.start_duration_time_metric(name_waiting);
                 }
-                // Critical section for queue access
-                std::unique_lock<std::mutex> lock(this->_queueMutex);
+                
 
                 // Wait until we are signaled for a task or to stop
                 this->_condition.wait(lock, [this]() {

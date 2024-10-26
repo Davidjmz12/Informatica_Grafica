@@ -51,7 +51,7 @@ double ColorMap::max() const
     return max;
 }
 
-ColorMap ColorMap::apply_tone_mapping(ToneMapping* t) const
+ColorMap ColorMap::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
 {
 
     MatrixRGB colors; // Vector to store the new colors
@@ -60,7 +60,7 @@ ColorMap ColorMap::apply_tone_mapping(ToneMapping* t) const
         std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
         for (ColorRGB color: i)
         {
-            colors_row.push_back(color.apply_tone_mapping(t));
+            colors_row.push_back(color.apply_tone_mapping(t, new_resolution));
         }
         colors.push_back(colors_row);
     }

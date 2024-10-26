@@ -42,7 +42,7 @@ class ColorMap {
          * @param t Tone mapping to apply.
          * @return ColorMap with tone-mapped colors.
          */
-        ColorMap apply_tone_mapping(ToneMapping* t) const;
+        ColorMap apply_tone_mapping(ToneMapping* t, size_t new_resolution) const;
 
 
         /**
