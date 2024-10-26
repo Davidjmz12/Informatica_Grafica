@@ -68,7 +68,7 @@ Cone::Cone(Point vertex, Vector axe, double height, double radius, Property prop
     else
         r = LinearMap::rotation(axe.cross(e3),acos(axe.dot(e3)/axe.norm()));
     
-    double scaler[3] = {1/radius, 1/radius, 1};
+    double scaler[3] = {1/radius, 1/radius, 1/height};
     LinearMap s = LinearMap::scale(scaler);
 
     this->_max_distance = height;
@@ -103,7 +103,7 @@ bool Cone::intersect_with_ray(const Ray& r, Intersection& intersection) const
     Point intersection_point = origin + direction*distance;
 
     // Check if intersects in a finite cone
-    if (gtD(intersection_point[2],this->_max_distance) ||
+    if (gtD(intersection_point[2],1) ||
         ltD(intersection_point[2],0))
         return false;
 
