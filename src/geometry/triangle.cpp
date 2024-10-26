@@ -43,14 +43,12 @@ bool Triangle::point_inside_triangle(Point p) const
 
 bool Triangle::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
-    Intersection plane_intersection;
     Plane triangle_plane = this->plane();
-    if(!triangle_plane.intersect_with_ray(r, plane_intersection))
+    if(!triangle_plane.intersect_with_ray(r, intersection))
         return false;
     
-    if(this->point_inside_triangle(plane_intersection.get_point()))
+    if(this->point_inside_triangle(intersection.get_point()))
     {
-        intersection = plane_intersection;
         return true;
     } 
     

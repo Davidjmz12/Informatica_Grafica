@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
     ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
     Geometry* sp3 = ply.to_mesh();
 
-    Scene s = Scene({p1,p2,p3,p4,p5,sp3,sp2}, {l1,l2}, c);
+    Scene s = Scene({p1,p2,p3,p4,p5,sp3,sp2}, {l1}, c);
 
     PpmFile ppm = PpmFile(s);
 

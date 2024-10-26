@@ -27,7 +27,7 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
     
     double distance = (-this->_distance-Vector(ray.get_point()).dot(this->_normal))/(ray.get_direction().dot(this->_normal));
 
-    if(ltD(distance,0))
+    if(leD(distance,0))
         return false;
 
     Point point = ray.evaluate(distance);
