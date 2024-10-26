@@ -68,10 +68,9 @@ Cone::Cone(Point vertex, Vector axe, double height, double radius, Property prop
     else
         r = LinearMap::rotation(axe.cross(e3),acos(axe.dot(e3)/axe.norm()));
     
+    // Scale all dimensions for having a cone of height 1 and radius 1
     double scaler[3] = {1/radius, 1/radius, 1/height};
     LinearMap s = LinearMap::scale(scaler);
-
-    this->_max_distance = height;
     
     // Compose tranformations
     this->_centering = s*r*t;
@@ -112,18 +111,21 @@ bool Cone::intersect_with_ray(const Ray& r, Intersection& intersection) const
     if (!(Point() == intersection_point))
     {
         Vector v1 = Vector(intersection_point);
-        Vector v2 = Vector(0,0,1).cross(Vector( intersection_point[0],
-                                                intersection_point[1],
-                                                0));
+        Vector v2 = Vector( intersection_point[0],
+                            intersection_point[1],
+                            0).cross(Vector(0,0,1));
         normal_vector = v1.cross(v2);
     }
     else
         normal_vector = Vector(0,0,1);
 
-    // Create the intersection object
+    normal_vector = normal_vector.normalize();
+
+    // Compute the real normal and intersection point
     normal_vector = Vector(this->_centering_inverse*(new Vector(normal_vector)));
     intersection_point = Point(this->_centering_inverse*(new Point(intersection_point)));
 
+    // Construct the intersection object
     intersection = Intersection(distance,normal_vector,intersection_point,this->_properties,r.get_direction());
 
     return true;

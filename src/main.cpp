@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     Geometry* p5 = new Plane(Vector(0,0,-1),1,red);
     Geometry* sp1 = new Sphere(Point(-0.5,-0.7,0.25),0.3,magenta);
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
-    Geometry* cone = new Cone(Point(0,0,0),Vector(0,-1,0),0.5,0.95,white);
+    Geometry* cone = new Cone(Point(0,0,0),Vector(0,-1,0),0.5,0.5,white);
     
 
     Light l1 = Light(Point(0,0.5,0),Color({1,1,1},{1,1,1}, ColorEncoding::RGB));
