@@ -104,7 +104,16 @@ void PpmFile::save(std::string output_file) const
     file << std::fixed << this->_format << std::endl;
     file << "#MAX=" << this->_maxRange << std::endl;
     file << (int)this->_dimension[0] << " " << (int)this->_dimension[1] << std::endl;
-    file << (int)this->_colorResolution << std::endl;
+
+    double colorResolution = 0;
+    for (int i = 0; i < _dimension[1]; i++)
+        for (int j = 0; j < this->_dimension[0]; j++)
+        {
+            Color c = this->_map.get_rgb(i,j);
+            colorResolution = std::max(colorResolution, std::max(c[0], std::max(c[1], c[2])));
+        }
+
+    file << (int)colorResolution << std::endl;
     file << this->_map << std::endl;
 }
 

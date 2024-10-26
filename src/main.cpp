@@ -81,6 +81,7 @@ int main(int argc, char* argv[])
     Geometry* p5 = new Plane(Vector(0,0,-1),1,red);
     Geometry* sp1 = new Sphere(Point(-0.5,-0.7,0.25),0.3,magenta);
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
+    Geometry* cone = new Cone(Point(0,0,0),Vector(0,-1,0),0.5,2,white);
     
 
     Light l1 = Light(Point(0,0.5,0),Color({1,1,1},{1,1,1}, ColorEncoding::RGB));
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
     //ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
     //Geometry* sp3 = ply.to_mesh();
 
-    Scene s = Scene({p1,p2,p3,p4,p5,sp1,sp2}, {l1,l2}, c);
+    Scene s = Scene({p1,p2,p3,p4,p5,cone}, {l1}, c);
 
     PpmFile ppm = PpmFile(s);
 

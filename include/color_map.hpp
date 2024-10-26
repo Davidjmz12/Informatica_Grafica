@@ -85,6 +85,8 @@ class ColorMap {
          */
         vector<vector<Color>> colors() const;
 
+        Color get_rgb(int row, int col) const;
+
         /**
          * @brief Compare two color maps for equality.
          * @param l Color map to compare with.

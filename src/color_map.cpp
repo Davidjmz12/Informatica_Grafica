@@ -135,6 +135,11 @@ vector<vector<Color>> ColorMap::colors() const
     return this->_colors;
 }
 
+Color ColorMap::get_rgb(int row, int col) const
+{
+    return this->_colors[row][col];
+}
+
 bool ColorMap::operator==(ColorMap l) const
 {
     return(l.colors()==this->_colors);   // Compare the colors of the two ColorMap objects

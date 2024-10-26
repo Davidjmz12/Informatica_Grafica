@@ -68,7 +68,10 @@ Vector Vector::cross(const Vector& v) const
 
 bool Vector::linearly_dependent(const Vector& v) const
 {
-    return this->normalize() == v.normalize();
+    Vector v1 = v.normalize();
+    Vector v2 = this->normalize();
+
+    return v1 == v2 || v1 == v2 * -1;
 }
 
 bool Vector::is_base(const Vector& v1, const Vector& v2) const
