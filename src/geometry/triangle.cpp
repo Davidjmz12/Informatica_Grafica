@@ -10,6 +10,11 @@ Triangle::Triangle(Point v0, Point v1, Point v2, Property properties)
         throw std::invalid_argument("All three vertices of the triangle cannot be linearly dependent");
 }
 
+BoundingBox Triangle::get_bounding_box() const
+{
+    return BoundingBox::get_BB_by_corners({_v0,_v1,_v2});
+}
+
 
 Vector Triangle::get_normal() const
 {

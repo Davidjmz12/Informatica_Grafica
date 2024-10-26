@@ -60,7 +60,6 @@ public:
 
     BoundingBox get_bounding_box() const override;
 
-
     /**
      * @brief Computes if the face intersects with a ray and stores
      * the instersection information.

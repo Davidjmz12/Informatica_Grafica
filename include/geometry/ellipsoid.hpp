@@ -53,6 +53,8 @@ public:
      */
     Ellipsoid(double a, double b, double c, Point center, Property properties);
 
+    BoundingBox get_bounding_box() const;
+
     /**
      * @brief Computes if the ellipsoid intersects with a ray and stores
      * the instersection information.

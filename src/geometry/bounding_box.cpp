@@ -1,6 +1,27 @@
 
 #include "geometry/bounding_box.hpp"
 
+BoundingBox BoundingBox::get_BB_by_corners(const std::vector<Point>& corners)
+{
+    double max_x,min_x,max_y,min_y,max_z,min_z;
+    for(size_t i=0; i<corners.size(); i++)
+    {
+        max_x = std::max(corners[i][0],max_x);
+        min_x = std::min(corners[i][0],min_x);
+        max_y = std::max(corners[i][1],max_y);
+        min_y = std::min(corners[i][1],min_y);
+        max_z = std::max(corners[i][2],max_z);
+        min_z = std::min(corners[i][2],min_z);
+    }
+    return BoundingBox({min_x, max_x, min_y, max_y, min_z, max_z});
+}
+
+BoundingBox::BoundingBox() 
+    : _bound_box({-std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
+                  -std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
+                  -std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()})
+{}
+
 // Constructor that accepts a std::array<double, 6>
 BoundingBox::BoundingBox(const std::array<double, 6>& bounds) 
     : _bound_box(bounds)

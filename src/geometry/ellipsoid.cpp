@@ -45,6 +45,17 @@ std::vector<double> solve_equation_second_degree(double a, double b, double c)
 
 }
 
+BoundingBox Ellipsoid::get_bounding_box() const
+{
+    return BoundingBox(
+        {
+            this->_center[0]-this->_a, this->_center[0]+this->_a,
+            this->_center[1]-this->_b, this->_center[1]+this->_b,
+            this->_center[2]-this->_c, this->_center[2]+this->_c
+        }
+    );
+}
+
 Ellipsoid::Ellipsoid(double a, double b, double c, Point center, Property properties)
     : Geometry(properties), _a(a), _b(b), _c(c), _center(center)
 {

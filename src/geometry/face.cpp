@@ -13,6 +13,16 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, Property properties)
     this->_v = v.normalize();
 }
 
+BoundingBox Face::get_bounding_box() const
+{
+    std::vector<Point> corners;
+    for(size_t i:{0,1})
+        for(size_t j:{0,1})
+            corners.push_back(this->_point + this->_u*i*this->_sizes[0] + this->_v*j*this->_sizes[1]);
+    
+    return BoundingBox::get_BB_by_corners(corners);
+}
+
 bool Face::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
     Plane plane = Plane(this->_point,this->_normal, this->_properties);

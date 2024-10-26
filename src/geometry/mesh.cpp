@@ -4,6 +4,10 @@ Mesh::Mesh()
     : _elements(), Geometry()
 {}
 
+Mesh::Mesh(std::vector<Geometry*> elements):
+    Geometry(), _elements(elements)
+{}
+
 Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
     : Geometry(), _elements(elements), _bounding_box(bounding_box)
 {
@@ -18,6 +22,9 @@ Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
 
 BoundingBox Mesh::get_bounding_box() const
 {
+    if(!this->_bounding_box.has_value())
+        throw std::invalid_argument("The bounding box has not been set for this mesh");
+    
     return _bounding_box.value();
 }
 
@@ -37,20 +44,17 @@ bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
     }
 
     bool intersects = false;
-    Intersection min_intersection;
     for(auto element : _elements)
     {
         Intersection one_intersection;
         if(element->intersect_with_ray(r, one_intersection))
         {
-            if(one_intersection < min_intersection)
-                min_intersection = one_intersection;
+            if(one_intersection < intersection)
+                intersection = one_intersection;
             intersects = true;
         }
 
     }
-
-    intersection = min_intersection;
     return intersects;
 
 }
