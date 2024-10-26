@@ -20,7 +20,19 @@ Box::Box(Point center, std::array<double,3> sides, std::array<Vector,3> axis, Pr
         new Face(axis[2], axis[0]*sides[0], axis[1]*sides[1], center - axis[2]*sides[2], properties)
     };
 
-    _mesh = Mesh(elements);
+    BoundingBox b = BoundingBox({
+                                 center[0]-sides[0],center[0]+sides[0],
+                                 center[1]-sides[1],center[1]+sides[1],
+                                 center[2]-sides[2],center[2]+sides[2]
+                                 });
+
+    _mesh = Mesh(elements, b);
+}
+
+
+BoundingBox Box::get_bounding_box() const
+{
+    return _mesh.get_bounding_box();
 }
 
 bool Box::intersect_with_ray(const Ray& r, Intersection& intersection) const

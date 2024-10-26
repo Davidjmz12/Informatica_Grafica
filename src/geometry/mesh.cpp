@@ -4,10 +4,6 @@ Mesh::Mesh()
     : _elements(), Geometry()
 {}
 
-Mesh::Mesh(std::vector<Geometry*> elements)
-    : Geometry(), _elements(elements)
-{}
-
 Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
     : Geometry(), _elements(elements), _bounding_box(bounding_box)
 {
@@ -18,6 +14,11 @@ Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
         //m.init_time_metric("mesh_intersection", "Time doing intersection with mesh");
         m.add_counter("mesh_intersections_avoided", "Number of intersections avoided with bounding box");
     }
+}
+
+BoundingBox Mesh::get_bounding_box() const
+{
+    return _bounding_box.value();
 }
 
 bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const

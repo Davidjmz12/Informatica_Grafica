@@ -13,6 +13,7 @@
 #include "intersection.hpp"
 #include "properties/property.hpp"
 #include "ray.hpp"
+#include "geometry/bounding_box.hpp"
 
 /**
  * @class Geometry
@@ -55,6 +56,9 @@ public:
         : _properties(properties)
     {}
     
+
+    virtual BoundingBox get_bounding_box() const = 0;
+
     /**
      * @brief Pure virtual function to check intersection with a ray.
      * 
