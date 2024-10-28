@@ -1,51 +1,5 @@
 #include "geometry/cone.hpp"
 
-/**
- * @brief Function that solves a equation of second degree
- * @param a The coefficient of x**2
- * @param b The coefficient of x
- * @param c The independent term
- * @return A vector of solutions ordered form lower to greater
- */
-std::vector<double> solve_equation_second_degree(double a, double b, double c)
-{
-    std::vector<double> solutions;
-    // Case a=0: Equation of one degree.
-    if (eqD(a,0))
-    {
-        if (eqD(b,0))
-            return solutions;
-        else
-        {
-            solutions.push_back(-c/b);
-            return solutions;
-        }
-    }
-
-    // Make a > 0 
-    if (a < 0)
-    {
-        a = -a;
-        b = -b;
-        c = -c;
-    }
-
-    // Compute the solution
-    double disc = sqrt(pow(b,2) - 4*a*c);
-    if (eqD(disc,0))
-    {
-        solutions.push_back(-b/(2*a));
-        return solutions;
-    } else if (disc > 0)
-    {
-        solutions.push_back((-b + disc)/(2*a));
-        solutions.push_back((-b - disc)/(2*a));
-        return solutions;
-    } else 
-        return solutions;
-
-}
-
 Cone::Cone(Point vertex, Vector axe, double height, double radius, Property properties)
     : Geometry(properties),
     _vertex(vertex),
