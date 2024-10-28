@@ -20,3 +20,4 @@
 #include "geometry/triangle.hpp"
 #include "geometry/mesh.hpp"
 #include "geometry/face.hpp"
+#include "geometry/cone.hpp"

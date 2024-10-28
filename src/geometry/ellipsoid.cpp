@@ -1,23 +1,26 @@
 #include "geometry/ellipsoid.hpp"
 
-std::vector<double> solve_equation_second_degree(double a, double b, double c)
+/**
+ * @brief Function that solves a equation of second degree
+ * @param a The coefficient of x**2
+ * @param b The coefficient of x
+ * @param c The independent term
+ * @return A vector of solutions ordered form lower to greater
+ */
+std::vector<double> solve_equation_second_degree_(double a, double b, double c)
 {
     std::vector<double> solutions;
     // Case a=0: Equation of one degree.
     if (eqD(a,0))
     {
         if (eqD(b,0))
-        {
             return solutions;
-        }
         else
         {
             solutions.push_back(-c/b);
             return solutions;
         }
     }
-
-
 
     // Make a > 0 
     if (a < 0)
@@ -39,9 +42,7 @@ std::vector<double> solve_equation_second_degree(double a, double b, double c)
         solutions.push_back((-b - disc)/(2*a));
         return solutions;
     } else 
-    {
         return solutions;
-    }
 
 }
 
@@ -71,7 +72,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) con
 
 
     //Calculate the solution
-    std::vector<double> solution = solve_equation_second_degree(a,b,c);
+    std::vector<double> solution = solve_equation_second_degree_(a,b,c);
     bool existSolution = solution.size() > 0;
 
     // If there is no solution, return false

@@ -97,7 +97,7 @@ Matrix4x4 Matrix4x4::inverse() const
 {
     //Compute the determinant
     double det = this->determinant();
-    if (det == 0)
+    if (eqD(det,0))
         throw std::invalid_argument("Matrix cannot have determinant 0.");
 
     //Compute of the adjoint matrix
