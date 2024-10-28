@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "intersection.hpp"
+#include "scene/intersection.hpp"
 #include "properties/property.hpp"
-#include "ray.hpp"
+#include "scene/ray.hpp"
 
 /**
  * @class Geometry

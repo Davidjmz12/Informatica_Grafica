@@ -1,4 +1,4 @@
-#include "ray.hpp"
+#include "scene/ray.hpp"
 
 Ray::Ray(Point point, Vector direction)
     : _point(point), _direction(direction.normalize())

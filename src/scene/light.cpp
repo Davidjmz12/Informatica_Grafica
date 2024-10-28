@@ -1,4 +1,4 @@
-#include "light.hpp"
+#include "scene/light.hpp"
 
 Light::Light(Point center, SpectralColor power)
     : _center(center), _power(power)

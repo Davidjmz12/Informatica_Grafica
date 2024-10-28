@@ -9,7 +9,7 @@
 #pragma once
 
 #include "geometry/geometry.hpp"
-#include "camera.hpp"
+#include "scene/camera.hpp"
 
 /**
  * @brief Class for representing a scene with geometry

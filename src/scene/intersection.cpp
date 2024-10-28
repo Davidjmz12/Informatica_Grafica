@@ -1,4 +1,4 @@
-#include "intersection.hpp"
+#include "scene/intersection.hpp"
 
 
 Intersection::Intersection(double distance, Vector normal, Point point, Property properties, Vector origin):

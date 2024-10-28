@@ -1,4 +1,4 @@
-#include "scene.hpp"
+#include "scene/scene.hpp"
 
 Scene::Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera)
     : _objects(objects), _camera(camera), _lights(lights)

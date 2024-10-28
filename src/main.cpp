@@ -5,7 +5,7 @@
 #include "threading/thread_pool.hpp"
 #include "metrics/metrics.hpp"
 
-#include "scene.hpp"
+#include "scene/scene.hpp"
 #include "geometry/all_geometry.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
@@ -89,15 +89,15 @@ int main(int argc, char* argv[])
 
     Light l1 = Light(Point(0,0.5,0),SpectralColor(0.5));
     Light l2 = Light(Point(0.5,0,0),SpectralColor(0.5));
-    PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/cow.ply",magenta);
-    ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
-    Geometry* sp3 = ply.to_mesh();
+    // PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/cow.ply",magenta);
+    // ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
+    // Geometry* sp3 = ply.to_mesh();
 
-    Scene s = Scene({p1,p2,p3,p4,p5,sp3,sp2}, {l1}, c);
+    Scene s = Scene({p1,p2,p3,p4,p5,cone,sp2}, {l1}, c);
 
     PpmFile ppm = PpmFile(s);
 
-    ppm = ppm.apply_tone_mapping(new Gamma(2,ppm.get_max_range()), 255);
+    ppm = ppm.apply_tone_mapping(new Gamma(1,ppm.get_max_range()), 255);
 
     ppm.save(std::string(ASSETS_DIR) + "/out/scene.ppm");
 

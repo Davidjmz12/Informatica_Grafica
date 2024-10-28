@@ -1,4 +1,4 @@
-#include "camera.hpp"
+#include "scene/camera.hpp"
 
 Camera::Camera(Base base, std::array<int,2> resolution)
     : _screen_base(base), _resolution(resolution)

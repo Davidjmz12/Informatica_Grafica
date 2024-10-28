@@ -7,7 +7,7 @@
 #pragma once
 
 #include "geometry/disk.hpp"
-#include "linear_map.hpp"
+#include "spatial_element/linear_map.hpp"
 
 /**
  * @brief Class that describes a cone

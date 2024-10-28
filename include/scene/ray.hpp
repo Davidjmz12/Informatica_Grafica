@@ -1,6 +1,6 @@
 #pragma once
 
-#include "intersection.hpp"
+#include "scene/intersection.hpp"
 
 class Ray
 {

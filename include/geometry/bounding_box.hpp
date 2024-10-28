@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "ray.hpp"
+#include "scene/ray.hpp"
 
 class BoundingBox {
 private:

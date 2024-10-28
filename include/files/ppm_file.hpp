@@ -12,7 +12,7 @@
 
 #include "color/color_map.hpp"
 #include "color/tone_mapping/tone_mapping.hpp"
-#include "scene.hpp"
+#include "scene/scene.hpp"
 
 
 
