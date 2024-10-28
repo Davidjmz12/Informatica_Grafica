@@ -84,16 +84,17 @@ int main(int argc, char* argv[])
     Geometry* p5 = new Plane(Vector(0,0,-1),1,cyan);
     Geometry* sp1 = new Sphere(Point(-0.5,-0.7,0.25),0.3,magenta);
     Geometry* sp2 = new Sphere(Point(0.5,-0.7,-0.25),0.3,white);
-    Geometry* cone = new Cone(Point(0,0,0),Vector(0,-1,0),0.5,0.5,white);
-    
+    Geometry* cone = new Cone(Point(0,0,0),Vector(0,1,0),0.5,0.5,white);
+    //Geometry* lamp = new Sphere(Point(0,0.5,0),0.2,red);
 
     Light l1 = Light(Point(0,0.5,0),SpectralColor(0.5));
     Light l2 = Light(Point(0.5,0,0),SpectralColor(0.5));
     // PlyFile ply = PlyFile(std::string(ASSETS_DIR) + "/in/cow.ply",magenta);
     // ply = ply.change_bounding_box({-0.8,-0.2,-1,-0.4,-0.05,0.55});
     // Geometry* sp3 = ply.to_mesh();
+    Geometry* cylinder = new Cylinder(Point(-0.5,-1,0.25),0.3,Vector(0,1,0),white);
+    Scene s = Scene({p1,p2,p3,p4,p5,cylinder,sp2}, {l1}, c);
 
-    Scene s = Scene({p1,p2,p3,p4,p5,cone,sp2}, {l1}, c);
 
     PpmFile ppm = PpmFile(s);
 
