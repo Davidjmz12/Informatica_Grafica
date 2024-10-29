@@ -155,6 +155,14 @@ PropertyHash SceneFile::read_properties() const
     return ch;
 }
 
+Property SceneFile::read_property(std::string key, PropertyHash ch) const
+{
+    if (ch.find(key) == ch.end())
+        throw std::invalid_argument("The property " + key + " does not exist");
+    return ch[key];
+}
+
+
 Geometry* SceneFile::read_plane(PropertyHash ch) const
 {
     Vector normal = this->read_vector();
@@ -162,10 +170,7 @@ Geometry* SceneFile::read_plane(PropertyHash ch) const
     std::string line = this->read_line();
     double d = std::stod(line);
 
-    line = this->read_line();
-    if (ch.find(line) == ch.end())
-        throw std::invalid_argument("The property " + line + " does not exist");
-    Property color = ch[line];
+    Property color = this->read_property(this->read_line(), ch);
     return new Plane(normal, d, color);
 }
 
@@ -173,10 +178,7 @@ Geometry* SceneFile::read_sphere(PropertyHash ch) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
-    std::string line = this->read_line();
-    if (ch.find(line) == ch.end())
-        throw std::invalid_argument("The property " + line + " does not exist");
-    Property color = ch[line];
+    Property color = this->read_property(this->read_line(), ch);
     return new Sphere(center, r, color);
 }
 
@@ -185,10 +187,7 @@ Geometry* SceneFile::read_cylinder(PropertyHash ch) const
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     Vector h = this->read_vector();
-    std::string line = this->read_line();
-    if (ch.find(line) == ch.end())
-        throw std::invalid_argument("The property " + line + " does not exist");
-    Property color = ch[line];
+    Property color = this->read_property(this->read_line(), ch);
     return new Cylinder(center, r, h, color);
 }
 
@@ -205,13 +204,63 @@ Geometry* SceneFile::read_mesh(PropertyHash ch) const
 {
     std::string file =  this->_ply_dir + "/" +  this->read_line();
     std::array<double,6> bb = this->read_bounding_box();
-    std::string line = this->read_line();
-    if (ch.find(line) == ch.end())
-        throw std::invalid_argument("The property " + line + " does not exist");
-    PlyFile ply = PlyFile(file, ch[line]);
+    Property color = this->read_property(this->read_line(), ch);
+    PlyFile ply = PlyFile(file, color);
     ply = ply.change_bounding_box(bb);
     return ply.to_mesh();
 }
+
+Geometry* SceneFile::read_box(PropertyHash ch) const
+{
+    Point center = this->read_point();
+    std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
+    Property color = this->read_property(this->read_line(), ch);
+    return new Box(center, axis, color);
+}
+
+Geometry* SceneFile::read_face(PropertyHash ch) const
+{
+    Vector normal = this->read_vector();
+    Vector u = this->read_vector();
+    Vector v = this->read_vector();
+    Point point = this->read_point();
+    Property color = this->read_property(this->read_line(), ch);
+    return new Face(normal, u, v, point, color);
+}
+
+Geometry* SceneFile::read_cone(PropertyHash ch) const
+{
+    return nullptr;
+}
+
+Geometry* SceneFile::read_disk(PropertyHash ch) const
+{
+    Point center = this->read_point();
+    Vector normal = this->read_vector();
+    double r = std::stod(this->read_line());
+    Property color = this->read_property(this->read_line(), ch);
+    return new Disk(center, normal, r, color);
+}
+
+Geometry* SceneFile::read_ellipsoid(PropertyHash ch) const
+{
+    double a = std::stod(this->read_line());
+    double b = std::stod(this->read_line());
+    double c = std::stod(this->read_line());
+    Point center = this->read_point();
+    Property color = this->read_property(this->read_line(), ch);
+    return new Ellipsoid(a, b, c, center, color);
+}
+
+Geometry* SceneFile::read_triangle(PropertyHash ch) const
+{
+    Point p1 = this->read_point();
+    Point p2 = this->read_point();
+    Point p3 = this->read_point();
+    Property color = this->read_property(this->read_line(), ch);
+    return new Triangle(p1, p2, p3, color);
+}
+
 
 
 std::vector<Geometry*> SceneFile::read_geometries(PropertyHash ch) const
@@ -229,6 +278,18 @@ std::vector<Geometry*> SceneFile::read_geometries(PropertyHash ch) const
             g.push_back(this->read_cylinder(ch));
         else if(line == "mesh")
             g.push_back(this->read_mesh(ch));
+        else if(line == "box")
+            g.push_back(this->read_box(ch));
+        else if(line == "face")
+            g.push_back(this->read_face(ch));
+        else if(line == "cone")
+            g.push_back(this->read_cone(ch));
+        else if(line == "disk")
+            g.push_back(this->read_disk(ch));
+        else if(line == "ellipsoid")
+            g.push_back(this->read_ellipsoid(ch));
+        else if(line == "triangle")
+            g.push_back(this->read_triangle(ch));
         else
             throw std::invalid_argument("The geometry type must be Plane, Sphere, Cone or Ply");
     }

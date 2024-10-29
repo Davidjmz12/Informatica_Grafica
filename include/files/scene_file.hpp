@@ -32,12 +32,20 @@ private:
     BRDF* read_brdf(SpectralColor c) const;
     std::array<double,6> read_bounding_box() const;
 
+    Property read_property(std::string key, PropertyHash ch) const;
 
 
     Geometry* read_plane(PropertyHash ch) const;
     Geometry* read_sphere(PropertyHash ch) const;
     Geometry* read_cylinder(PropertyHash ch) const;
     Geometry* read_mesh(PropertyHash ch) const;
+    Geometry* read_box(PropertyHash ch) const;
+    Geometry* read_face(PropertyHash ch) const;
+    Geometry* read_cone(PropertyHash ch) const;
+    Geometry* read_disk(PropertyHash ch) const;	
+    Geometry* read_ellipsoid(PropertyHash ch) const;
+    Geometry* read_triangle(PropertyHash ch) const;
+
 
     ToneMapping* read_gamma_tm(double max) const;
 
