@@ -15,25 +15,23 @@
 class Cone : public Geometry
 {
 private:
-    Point _vertex;  // Vertex of the cone
+    Point _center;  // Vertex of the cone
     Vector _axe;    // Direction of the cone (from the vertex to the base)
     double _height; // Height
     double _radius; // Radius of the base
     Disk _base;     // Base
 
-    LinearMap _centering;           // LinearMap for make counts easier
-    LinearMap _centering_inverse;   // The inverse
-
+    bool intersection_in_a_point(const Ray& r, double distance, Intersection& intersection) const;
+    bool intersect_with_cone(const Ray& r, Intersection& intersection) const;
 public:
     /**
      * @brief Method that constructs a cone
-     * @param vertex The vertex of the cone
+     * @param center The center of the cone
      * @param axe Direction of the cone. From vertex to base
-     * @param height Height
      * @param radius Radius of the base
      * @param properties Properties
      */
-    Cone(Point vertex, Vector axe, double height, double radius, Property properties);
+    Cone(Point center, Vector axe, double radius, Property properties);
 
     /**
      * @brief Method that computes if a ray intersects with the cone

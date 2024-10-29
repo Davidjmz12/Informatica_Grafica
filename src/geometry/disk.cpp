@@ -1,7 +1,7 @@
 #include "geometry/disk.hpp"
 
 Disk::Disk(Point center, Vector normal, double radius, Property properties)
-    : Geometry(properties), _plane(Plane(center, normal, properties)), _center(center), _normal(normal), _radius(radius){}
+    : Geometry(properties), _plane(Plane(center, normal, properties)), _center(center), _normal(normal.normalize()), _radius(radius){}
 
 
 

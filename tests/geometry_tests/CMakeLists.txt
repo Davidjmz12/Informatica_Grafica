@@ -42,3 +42,7 @@ target_link_libraries(test_bounding_box PUBLIC bounding_box)
 add_test(NAME test_bounding_box COMMAND test_bounding_box)
 target_include_directories(test_bounding_box PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
+add_executable(test_cone test_cone.cpp)
+target_link_libraries(test_cone PUBLIC cone)
+add_test(NAME test_cone COMMAND test_cone)
+target_include_directories(test_cone PUBLIC ${CMAKE_SOURCE_DIR}/include)

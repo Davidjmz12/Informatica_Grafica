@@ -39,7 +39,7 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
 
     if(delta<0)
         return false;
-    else if (delta==0)
+    else if (eqD(delta,0))
     {
         if(eqD(a,0) || eqD(b,0)) // no solution
             return false;
@@ -52,6 +52,8 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
         int_points.push_back(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a)));
         int_points.push_back(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a)));
         intersection = Intersection::min(int_points);
+        if(leD(intersection.get_distance(),0))
+            return false;
         return true;
     }
 }

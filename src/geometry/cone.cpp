@@ -1,97 +1,123 @@
 #include "geometry/cone.hpp"
 
-Cone::Cone(Point vertex, Vector axe, double height, double radius, Property properties)
-    : Geometry(properties),
-    _vertex(vertex),
-    _axe(axe),
-    _height(height),
-    _radius(radius),
-    _base(Disk(vertex + axe.normalize()*height, axe.normalize(), radius, properties))
-{
-    // Translate the vertex of the cone to the origin
-    LinearMap t = LinearMap::translation(Vector(vertex)*-1);
+#include <cmath>
 
-    // Rotate the cone to put the axe on the z-axe
-    Vector e3 = Vector(0,0,1);
-    LinearMap r = LinearMap::identity();
-    if (axe.linearly_dependent(e3))
+Cone::Cone(Point center, Vector axe, double radius, Property properties)
+    : Geometry(properties),
+    _center(center),
+    _axe(axe.normalize()),
+    _height(axe.norm()),
+    _radius(radius),
+    _base(Disk(center, axe, radius, properties))
+{}
+
+bool Cone::intersection_in_a_point(const Ray& r, double distance, Intersection& intersection) const
+{
+
+    // Calculate the intersection point on the cone surface
+    Point point_int = r.evaluate(distance);
+
+    if(eqD(distance,0))
+        return false;
+
+    double h = (point_int-this->_center).dot(this->_axe);
+    if(ltD(h,0) || gtD(h,this->_height))
+        return false;
+
+    // Vector from the apex of the cone to the intersection point
+    Vector v = (point_int - (this->_center + this->_axe * this->_height)).normalize(); 
+
+    // Project v onto the cone axis
+    Vector v_parallel = this->_axe*v.dot(this->_axe);
+    Vector v_perpendicular = (v - v_parallel).normalize();
+
+    Vector normal = v_perpendicular-v*v_perpendicular.dot(v);
+    
+
+    // Normalize the normal vector
+    normal = normal.normalize();
+    intersection = Intersection(distance, normal, point_int, this->_properties, r.get_direction());
+    return true;
+}
+
+bool Cone::intersect_with_cone(const Ray& r, Intersection& intersection) const
+{
+    Vector o = r.get_point()-this->_center;
+    double ov = o.dot(r.get_direction());
+    double od = o.dot(this->_axe);
+    double vd = r.get_direction().dot(this->_axe);
+    double r2 = pow(this->_radius,2);
+    double h2 = pow(this->_height,2);
+
+
+    double c = o.dot(o) - od*od - r2 + 2*r2*od/this->_height - r2/h2*pow(od,2);
+    double b = 2*ov - 2*od*vd + 2*r2*vd/this->_height - 2*r2/h2*od*vd;
+    double a = 1 - vd*vd  - r2/h2*vd*vd;
+
+    double delta = pow(b,2) - 4*a*c;
+
+    if(delta<0)
+        return false;
+    else if(eqD(delta,0))
     {
-        if (!(axe.normalize() == e3))
-            r = LinearMap::rotation(Vector(1,0,0),M_PI);
+        if(eqD(a,0) || eqD(b,0))
+            return false;
+        
+        ;
+        return intersection_in_a_point(r,-b/(2*a),intersection);
+    } else
+    {
+        Intersection min_int;
+        bool min_int_set = false;
+        if(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a),intersection))
+        {
+            min_int_set = true;
+            if(intersection < min_int)
+                min_int = intersection;
+        }
+
+        if(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a),intersection))
+        {
+            min_int_set = true;
+            if(intersection < min_int)
+                min_int = intersection;
+        }
+
+        intersection = min_int;
+
+        return min_int_set;
     }
-    else
-        r = LinearMap::rotation(axe.cross(e3),acos(axe.dot(e3)/axe.norm()));
-    
-    // Scale all dimensions for having a cone of height 1 and radius 1
-    double scaler[3] = {1/radius, 1/radius, 1/height};
-    LinearMap s = LinearMap::scale(scaler);
-    
-    // Compose tranformations
-    this->_centering = s*r*t;
-    this->_centering_inverse = this->_centering.inverse();
 }
 
 bool Cone::intersect_with_ray(const Ray& r, Intersection& intersection) const
 {
-    // Information of the ray centralized in vertex (0,0,0) and axe (0,0,1)
-    Vector direction = Vector(this->_centering*new Vector(r.get_direction()));
-    Point origin = Point(this->_centering*new Point(r.get_point()));
-
-    // Compute the coefficients of the equation of second degree at**2 + bt + c = 0
-    double a = pow(direction[0],2) + pow(direction[1],2) - pow(direction[2],2);
-    double b = 2*(origin[0]*direction[0] + origin[1]*direction[1] - origin[2]*direction[2]);
-    double c = pow(origin[0],2) + pow(origin[1],2) - pow(origin[2],2);
-    
-    // Compute the solution
-    std::vector<double> solution = solve_equation_second_degree(a,b,c);
-    if (solution.size() == 0)
-        return false;
-
-    // Check if we have positive solution
-    double distance = solution[solution.size()-1]; // Minimum
-    if (!gtD(distance,0))
-        return false;
-
-    // Compute the normal vector
-    Point intersection_point = origin + direction*distance;
-
-    // Check if intersects in a finite cone
-    if (gtD(intersection_point[2],1) ||
-        ltD(intersection_point[2],0))
-        return false;
-
-    // Compute the normal vector
-    Vector normal_vector = Vector();
-    if (!(Point() == intersection_point))
+    if(this->intersect_with_cone(r, intersection))
     {
-        Vector v1 = Vector(intersection_point);
-        Vector v2 = Vector( intersection_point[0],
-                            intersection_point[1],
-                            0).cross(Vector(0,0,1));
-        normal_vector = v1.cross(v2);
-    }
-    else
-        normal_vector = Vector(0,0,1);
+        Intersection base_int;
+        if(this->_base.intersect_with_ray(r, base_int))
+        {
+            if(base_int < intersection)
+                intersection = base_int;
+        }
+        return true;
+    } else 
+        return this->_base.intersect_with_ray(r, intersection);
 
-    normal_vector = normal_vector.normalize();
-
-    // Compute the real normal and intersection point
-    normal_vector = Vector(this->_centering_inverse*(new Vector(normal_vector)));
-    intersection_point = Point(this->_centering_inverse*(new Point(intersection_point)));
-
-    // Construct the intersection object
-    intersection = Intersection(distance,normal_vector,intersection_point,this->_properties,r.get_direction());
-
-    return true;
 }
 
 std::string Cone::to_string() const
 {
     std::stringstream ss;
-    ss  << "Cone\n\tVertex: " << this->_vertex
+    ss  << "Cone\n\tCenter: " << this->_center
         << "\n\tAxe: " << this->_axe
         << "\n\tHeight: " << this->_height
         << "\n\tRadius: " << this->_radius;
 
     return ss.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const Cone& c)
+{
+    os << c.to_string();
+    return os;
 }
