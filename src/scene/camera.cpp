@@ -80,7 +80,7 @@ std::vector<SpectralColor> Camera::paint_k_pixels(std::vector<Geometry*> objects
     {
         size_t x = (start[1]+i)%this->_resolution[1];
         size_t y = start[0] + (start[1]+i)/this->_resolution[1];
-        colors.push_back(this->compute_pixel_color(y, x, objects, lights));
+        colors.push_back(this->compute_pixel_color(x, y, objects, lights));
     }
     return colors;
 }
@@ -108,32 +108,49 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> 
     }
     size_t num_threads = gc->get_number_of_threads();
     size_t task_size = gc->get_task_size();
-    size_t num_tasks = std::ceil(this->_resolution[0]*this->_resolution[1]*1.0/task_size);
-    
+    size_t num_full_tasks = std::floor(this->_resolution[0]*this->_resolution[1]*1.0/task_size);
+    size_t rest = (this->_resolution[0]*this->_resolution[1])%task_size;
+    size_t num_real_tasks = rest==0?num_full_tasks:num_full_tasks+1;
     ThreadPool pool(num_threads);
 
     std::vector<std::future<std::vector<SpectralColor>>> futures;
 
-    for(size_t i=0; i<num_tasks; ++i)
+    for(size_t i=0; i<num_full_tasks; ++i)
     {
         std::array<size_t,2> start = {(i*task_size)/this->_resolution[1],(i*task_size)%this->_resolution[1]};
-        task_size = i==num_tasks-1 ? (this->_resolution[0]*this->_resolution[1]%task_size) : task_size;
         futures.push_back(
             pool.enqueue(
-                [this,objects,lights,i,start,task_size](){
+                [this,objects,lights,start,task_size](){
                     return this->paint_k_pixels(objects, lights, start, task_size);
                 }
             )
         );
     }
+
+
+    if(rest != 0)
+    {
+        std::array<size_t,2> start = {(num_full_tasks*task_size)/this->_resolution[1],(num_full_tasks*task_size)%this->_resolution[1]};
+        futures.push_back(
+            pool.enqueue(
+                [this,objects,lights,rest,start](){
+                    return this->paint_k_pixels(objects, lights, start, rest);
+                }
+            )
+        );
+    }
+    
     std::vector<SpectralColor> all_colors;
-    for(size_t i=0; i<num_tasks; ++i)
+    for(size_t i=0; i<num_real_tasks; ++i)
     {
         std::vector<SpectralColor> row_colors = futures[i].get();
         all_colors.insert(std::end(all_colors), std::begin(row_colors), std::end(row_colors));
     }
-    MatrixSC colors = createMatrix(this->_resolution, all_colors);
+
+    if(all_colors.size() != this->_resolution[0]*this->_resolution[1])
+        throw std::runtime_error("The number of colors is not the expected.");
     
+    MatrixSC colors = createMatrix(this->_resolution, all_colors);
     if(gc->has_metrics())
     {
         Metrics& m = gc->get_metrics();
