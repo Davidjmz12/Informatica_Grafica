@@ -72,6 +72,32 @@ std::vector<SpectralColor> Camera::paint_one_row(std::vector<Geometry*> objects,
     return colors;
 }
 
+std::vector<SpectralColor> Camera::paint_k_pixels(std::vector<Geometry*> objects, std::vector<Light> lights, 
+    std::array<size_t,2> start, size_t k) const
+{
+    std::vector<SpectralColor> colors;
+    for(size_t i=0; i<k; i++)
+    {
+        size_t x = (start[1]+i)%this->_resolution[1];
+        size_t y = start[0] + (start[1]+i)/this->_resolution[1];
+        colors.push_back(this->compute_pixel_color(y, x, objects, lights));
+    }
+    return colors;
+}
+
+MatrixSC createMatrix(std::array<int,2> dim, std::vector<SpectralColor> colors) {
+
+    // Initialize a std::vector of std::vector<int> with each row pointing to part of 'data'
+    MatrixSC matrix;
+
+    for (int i = 0; i < dim[1]; ++i) {
+        matrix.push_back(std::vector<SpectralColor>(colors.begin() + i * dim[0], colors.begin() + (i + 1) * dim[0]));
+    }
+
+    return matrix;
+}
+
+
 ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> lights) const
 {   
     GlobalConf *gc = GlobalConf::get_instance();
@@ -81,29 +107,33 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> 
         m.start_timer_metric("paint_scene");
     }
     size_t num_threads = gc->get_number_of_threads();
-
+    size_t task_size = gc->get_task_size();
+    size_t num_tasks = std::ceil(this->_resolution[0]*this->_resolution[1]*1.0/task_size);
+    
     ThreadPool pool(num_threads);
 
     std::vector<std::future<std::vector<SpectralColor>>> futures;
 
-    for(size_t i=0; i<this->_resolution[0]; ++i)
+    for(size_t i=0; i<num_tasks; ++i)
     {
+        std::array<size_t,2> start = {(i*task_size)/this->_resolution[1],(i*task_size)%this->_resolution[1]};
+        task_size = i==num_tasks-1 ? (this->_resolution[0]*this->_resolution[1]%task_size) : task_size;
         futures.push_back(
             pool.enqueue(
-                [this,objects,lights,i](){
-                    return this->paint_one_row(objects, lights, i);
+                [this,objects,lights,i,start,task_size](){
+                    return this->paint_k_pixels(objects, lights, start, task_size);
                 }
             )
         );
     }
-
-    MatrixSC colors;
-    for(size_t i=0; i<this->_resolution[0]; ++i)
+    std::vector<SpectralColor> all_colors;
+    for(size_t i=0; i<num_tasks; ++i)
     {
         std::vector<SpectralColor> row_colors = futures[i].get();
-        colors.push_back(row_colors);
+        all_colors.insert(std::end(all_colors), std::begin(row_colors), std::end(row_colors));
     }
-
+    MatrixSC colors = createMatrix(this->_resolution, all_colors);
+    
     if(gc->has_metrics())
     {
         Metrics& m = gc->get_metrics();

@@ -49,6 +49,10 @@ public:
         return std::any_cast<int>(this->get("threads"));
     }
 
+    size_t get_task_size(){
+        return std::any_cast<int>(this->get("task-size"));
+    }
+
     size_t get_number_of_rays(){
         return std::any_cast<int>(this->get("rays"));
     }
