@@ -60,9 +60,11 @@ private:
 
     std::vector<SpectralColor> paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights, size_t row) const;
 
-    SpectralColor compute_final_color(Intersection intersec, std::vector<Geometry*> objects, std::vector<Light> lights) const;
+    SpectralColor compute_power_light(Intersection& intersection, std::vector<Geometry*> objects, std::vector<Light> lights) const;
 
     std::vector<SpectralColor> paint_k_pixels(std::vector<Geometry*> objects,  std::vector<Light> lights, std::array<size_t,2> start, size_t k) const;
+
+    SpectralColor compute_ray_intersection_color(std::vector<Geometry*> objects, std::vector<Light> lights, Ray r, size_t n_rec) const;
 public:
 
     /**

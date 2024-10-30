@@ -4,7 +4,7 @@ Light::Light(Point center, SpectralColor power)
     : _center(center), _power(power)
 {}
 
-SpectralColor Light::meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const
+SpectralColor Light::light_contribution(std::vector<Geometry*> geometries, const Intersection& intersection) const
 {
     Vector ray_dir = (this->_center-intersection.get_point());
     double norm_ray_dir = ray_dir.norm();
@@ -17,15 +17,8 @@ SpectralColor Light::meets_light(std::vector<Geometry*> geometries, const Inters
             return SpectralColor();
     }
 
-    double z = fabs(intersection.get_normal().dot(ray_dir.normalize()));
-    SpectralColor c1 = (this->_power/pow(norm_ray_dir,2));
-    SpectralColor c2 = (intersection.get_properties().get_BRDF()->eval(
-                                    intersection.get_point(), 
-                                    ray_dir.normalize(),
-                                    intersection.get_origin()));
+    SpectralColor light = (this->_power/pow(norm_ray_dir,2));
 
-    SpectralColor light_color = c1*c2*z;
-
-    return light_color;
+    return light;
 
 }

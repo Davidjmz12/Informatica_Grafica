@@ -15,6 +15,7 @@ HashMap get_default_conf() {
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();
     conf["task-size"] = int(100);
+    conf["n-bounces"] = int(5);
     return conf;
 }
 
@@ -45,6 +46,13 @@ void parse_init(int argc, char* argv[]) {
         {
             int task_size = int(std::stoi(argv[i+1]));
             conf["task-size"] = task_size;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--bounces") == 0)
+        {
+            int n_bounces = int(std::stoi(argv[i+1]));
+            conf["n-bounces"] = n_bounces;
             i++;
         }
     }

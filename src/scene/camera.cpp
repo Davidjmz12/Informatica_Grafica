@@ -24,10 +24,12 @@ std::array<double,2> Camera::get_random_pixel_coordinates(int x, int y) const
             randomD(y_coordinate_1,y_coordinate_2)};
 }
 
-SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects, std::vector<Light> lights) const
+SpectralColor Camera::compute_ray_intersection_color(std::vector<Geometry*> objects, std::vector<Light> lights, Ray r, size_t n_rec) const
 {
-    std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
-    Ray r = this->trace_ray(pixel_coordinates);
+    // If the number of bounces is 0, return black.
+    if(n_rec == 0)
+        return SpectralColor(0.0);
+
     Intersection min_int;
     bool intersects = false;
     for(auto element: objects)
@@ -40,11 +42,27 @@ SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geome
                 min_int = aux_int;
         }
     }
+
+    // If the ray does not intersect with any object, return black.
     if(!intersects)
         return SpectralColor();
     
-    SpectralColor final_color = compute_final_color(min_int, objects, lights);
+
+    SpectralColor light_power = compute_power_light(min_int, objects, lights);
+
+    SpectralColor final_color = min_int.get_geometry()->get_material().get_color()*light_power;
     return final_color;
+
+}
+
+SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects, std::vector<Light> lights) const
+{
+    std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
+    Ray r = this->trace_ray(pixel_coordinates);
+    
+    GlobalConf *gc = GlobalConf::get_instance();
+
+    return this->compute_ray_intersection_color(objects, lights, r, gc->get_number_of_bounces());
 }
 
 SpectralColor Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const
@@ -60,6 +78,18 @@ SpectralColor Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> o
         sum = sum + this->compute_random_pixel_color(x, y, objects, lights);
 
     return sum/num_rays;
+}
+
+
+SpectralColor Camera::compute_power_light(Intersection& intersection, 
+    std::vector<Geometry*> objects, std::vector<Light> lights) const
+{
+    SpectralColor color_contribution = lights[0].light_contribution(objects, intersection);
+    for(size_t i=1; i<lights.size(); ++i)
+    {
+        color_contribution = color_contribution + lights[i].light_contribution(objects, intersec);
+    }
+    return color_contribution;
 }
 
 std::vector<SpectralColor> Camera::paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights,  size_t row) const
@@ -171,16 +201,6 @@ std::array<int,2> Camera::get_resolution() const
 }
 
 
-SpectralColor Camera::compute_final_color(Intersection intersec, 
-    std::vector<Geometry*> objects, std::vector<Light> lights) const
-{
-    SpectralColor final_color = lights[0].meets_light(objects, intersec);
-    for(size_t i=1; i<lights.size(); ++i)
-    {
-        final_color = final_color + lights[i].meets_light(objects, intersec);
-    }
-    return final_color;
-}
 
 std::ostream& operator<<(std::ostream& os, Camera c)
 {
