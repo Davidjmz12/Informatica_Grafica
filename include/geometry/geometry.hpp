@@ -13,6 +13,7 @@
 #include "scene/intersection.hpp"
 #include "properties/property.hpp"
 #include "scene/ray.hpp"
+#include "global_config/constants.hpp"
 
 /**
  * @class Geometry

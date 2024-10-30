@@ -62,6 +62,7 @@ private:
 
     SpectralColor compute_final_color(Intersection intersec, std::vector<Geometry*> objects, std::vector<Light> lights) const;
 
+    std::vector<SpectralColor> paint_k_pixels(std::vector<Geometry*> objects,  std::vector<Light> lights, std::array<size_t,2> start, size_t k) const;
 public:
 
     /**

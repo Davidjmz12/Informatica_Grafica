@@ -14,6 +14,8 @@ Cylinder::Cylinder(Point center, double radius, Vector axis, Property properties
 
 Intersection Cylinder::intersection_in_a_point(const Ray& r, double distance) const
 {
+    if(eqD(distance,0))
+        return Intersection();
     Point point_int = r.evaluate(distance), projection;
     Vector normal;
     projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
@@ -39,7 +41,7 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
         return false;
     else if (delta==0)
     {
-        if(eqD(a,0)) // no solution
+        if(eqD(a,0) || eqD(b,0)) // no solution
             return false;
         
         intersection = intersection_in_a_point(r,-b/(2*a));
@@ -47,22 +49,8 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
     } else 
     {
         std::vector<Intersection> int_points;
-        if(eqD(a,0)) // There is solution because b!=0
-        {
-            Intersection i1;
-            i1 = intersection_in_a_point(r,-c/b);
-            int_points.push_back(i1);
-        }
-        else
-        {
-            Intersection i1,i2;
-            i1 = intersection_in_a_point(r,(-b+sqrt(delta))/(2*a));
-            i2 = intersection_in_a_point(r,(-b-sqrt(delta))/(2*a));
-            int_points.push_back(i1);
-            int_points.push_back(i2);
-
-        }
-
+        int_points.push_back(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a)));
+        int_points.push_back(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a)));
         intersection = Intersection::min(int_points);
         return true;
     }
