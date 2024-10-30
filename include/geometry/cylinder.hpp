@@ -80,7 +80,7 @@ private:
      *                     of the intersection will be stored if an intersection occurs.
      * @return true if the ray intersects with the infinite cylinder, false otherwise.
      */
-    bool intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const;
 
 
 
@@ -94,7 +94,7 @@ private:
      * @param intersection An output parameter that will contain details about the intersection if one occurs.
      * @return true if the ray intersects with the finite cylinder, false otherwise.
      */
-    bool intersect_with_ray_finite_cylinder(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObject& intersection) const;
 
     /**
      * @brief Computes the intersection of a ray with a point in the cylinder.
@@ -107,7 +107,7 @@ private:
      *                 This distance determines the point of intersection.
      * @return An Intersection object containing details about the intersection.
      */
-    Intersection intersection_in_a_point(const Ray& r, double distance) const;
+    IntersectionObject intersection_in_a_point(const Ray& r, double distance) const;
 
 public:
 
@@ -134,7 +134,7 @@ public:
      * @param intersection The intersection details to be updated if an intersection occurs.
      * @return true if the ray intersects with the cylinder, false otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
 
     /**

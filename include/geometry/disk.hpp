@@ -73,7 +73,7 @@ public:
      * @param intersection An output parameter that will contain details about the intersection if one occurs.
      * @return true if the ray intersects with the disk, false otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
 
     /**

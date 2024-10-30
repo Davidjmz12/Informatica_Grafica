@@ -5,7 +5,7 @@ Disk::Disk(Point center, Vector normal, double radius, Property properties)
 
 
 
-bool Disk::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Disk::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     if(!_plane.intersect_with_ray(r, intersection))
         return false;

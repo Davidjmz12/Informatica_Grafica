@@ -78,7 +78,7 @@ public:
      * @param intersection The intersection details if an intersection occurs.
      * @return True if the ray intersects with the plane, false otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
     /**
      * @brief Overloads the << operator to output the details of a Plane object.

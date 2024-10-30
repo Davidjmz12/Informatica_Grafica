@@ -31,7 +31,7 @@ Cone::Cone(Point vertex, Vector axe, double height, double radius, Property prop
     this->_centering_inverse = this->_centering.inverse();
 }
 
-bool Cone::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Cone::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     // Information of the ray centralized in vertex (0,0,0) and axe (0,0,1)
     Vector direction = Vector(this->_centering*new Vector(r.get_direction()));
@@ -80,7 +80,7 @@ bool Cone::intersect_with_ray(const Ray& r, Intersection& intersection) const
     intersection_point = Point(this->_centering_inverse*(new Point(intersection_point)));
 
     // Construct the intersection object
-    intersection = Intersection(distance,normal_vector,intersection_point,this->_properties,r.get_direction());
+    intersection = IntersectionObject(distance,normal_vector,intersection_point,this->_properties,r.get_direction());
 
     return true;
 }

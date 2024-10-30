@@ -13,7 +13,7 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, Property properties)
     this->_v = v.normalize();
 }
 
-bool Face::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     Plane plane = Plane(this->_point,this->_normal, this->_properties);
 

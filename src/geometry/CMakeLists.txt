@@ -2,7 +2,7 @@ add_subdirectory(area_light)
 
 # Geometry header
 add_library(geometry INTERFACE)
-target_link_libraries(geometry INTERFACE intersection ray ellipsoid sphere triangle mesh cylinder disk box plane face property cone)
+target_link_libraries(geometry INTERFACE intersection_object ray ellipsoid sphere triangle mesh cylinder disk box plane face property cone)
 
 
 add_library(ellipsoid ellipsoid.cpp)

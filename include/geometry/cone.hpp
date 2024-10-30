@@ -43,7 +43,7 @@ public:
      *  If the ray intersects, the information is contained in the intersection
      *  object.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const override;
 
     /**
      * @brief Method that converts the information of the cone to a string

@@ -67,7 +67,7 @@ public:
      * to be stored.
      * @return True if the face intersects with the ray. False otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const override;
 
 
     /**

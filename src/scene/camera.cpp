@@ -28,11 +28,11 @@ SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geome
 {
     std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
     Ray r = this->trace_ray(pixel_coordinates);
-    Intersection min_int;
+    IntersectionObject min_int;
     bool intersects = false;
     for(auto element: objects)
     {
-        Intersection aux_int;
+        IntersectionObject aux_int;
         if(element->intersect_with_ray(r, aux_int))
         {
             intersects = true;
@@ -171,7 +171,7 @@ std::array<int,2> Camera::get_resolution() const
 }
 
 
-SpectralColor Camera::compute_final_color(Intersection intersec, 
+SpectralColor Camera::compute_final_color(IntersectionObject intersec, 
     std::vector<Geometry*> objects, std::vector<Light> lights) const
 {
     SpectralColor final_color = lights[0].meets_light(objects, intersec);

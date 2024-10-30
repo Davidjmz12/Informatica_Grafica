@@ -61,7 +61,7 @@ public:
      * to be stored.
      * @return True if there is an intersection. False otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const override;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const override;
 
     friend std::ostream& operator<<(std::ostream& os, const Ellipsoid& e);
 

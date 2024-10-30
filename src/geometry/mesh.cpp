@@ -20,7 +20,7 @@ Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
     }
 }
 
-bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Mesh::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     if(_bounding_box.has_value())
     {
@@ -36,10 +36,10 @@ bool Mesh::intersect_with_ray(const Ray& r, Intersection& intersection) const
     }
 
     bool intersects = false;
-    Intersection min_intersection;
+    IntersectionObject min_intersection;
     for(auto element : _elements)
     {
-        Intersection one_intersection;
+        IntersectionObject one_intersection;
         if(element->intersect_with_ray(r, one_intersection))
         {
             if(one_intersection < min_intersection)

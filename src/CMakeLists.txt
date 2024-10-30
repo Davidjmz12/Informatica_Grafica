@@ -5,6 +5,7 @@ add_subdirectory(properties)
 add_subdirectory(files)
 add_subdirectory(color)
 add_subdirectory(scene)
+add_subdirectory(intersection)
 
 # ------------------------------------------------------------------------------
 # Main executable

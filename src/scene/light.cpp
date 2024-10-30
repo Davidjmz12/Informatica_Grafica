@@ -4,12 +4,12 @@ Light::Light(Point center, SpectralColor power)
     : _center(center), _power(power)
 {}
 
-SpectralColor Light::meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const
+SpectralColor Light::meets_light(std::vector<Geometry*> geometries, const IntersectionObject& intersection) const
 {
     Vector ray_dir = (this->_center-intersection.get_point());
     double norm_ray_dir = ray_dir.norm();
     Ray r = Ray(intersection.get_point(),ray_dir);
-    Intersection shadow_intersect;
+    IntersectionObject shadow_intersect;
     for(Geometry* g: geometries)
     {
         if(g->intersect_with_ray(r,shadow_intersect) && ltD(shadow_intersect.get_distance(),norm_ray_dir)

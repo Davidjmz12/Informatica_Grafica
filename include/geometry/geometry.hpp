@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "scene/intersection.hpp"
+#include "intersection/intersection_object.hpp"
 #include "properties/property.hpp"
 #include "scene/ray.hpp"
 #include "global_config/constants.hpp"
@@ -30,7 +30,7 @@
  * Derived classes must implement the intersect_with_ray and to_string methods.
  * 
  * @see Ray
- * @see Intersection
+ * @see IntersectionObject
  * 
  * @author
  * Davidjmz12
@@ -60,13 +60,13 @@ public:
      * @brief Pure virtual function to check intersection with a ray.
      * 
      * This function determines whether a given ray intersects with the geometry.
-     * If an intersection occurs, the details of the intersection are stored in the provided Intersection object.
+     * If an intersection occurs, the details of the intersection are stored in the provided IntersectionObject object.
      * 
      * @param r The ray to check for intersection.
-     * @param intersection An Intersection object to store the details of the intersection if it occurs.
+     * @param intersection An IntersectionObject object to store the details of the intersection if it occurs.
      * @return true if the ray intersects with the geometry, false otherwise.
      */
-    virtual bool intersect_with_ray(const Ray& r, Intersection& intersection) const = 0; 
+    virtual bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const = 0; 
 
 
     /**

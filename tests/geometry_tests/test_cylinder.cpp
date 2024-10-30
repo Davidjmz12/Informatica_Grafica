@@ -20,7 +20,7 @@ int main()
 
     Ray r6 = Ray(Point(0,0,-3), Vector(0,0,1));
 
-    Intersection i1;
+    IntersectionObject i1;
 
     t.addTest("1", Test::EXPECT_EQ(c.intersect_with_ray(r1, i1), true));
     t.addTest("2", Test::EXPECT_EQ(i1.get_distance(), 1.0F));

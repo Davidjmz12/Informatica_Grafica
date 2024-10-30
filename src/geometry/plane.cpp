@@ -18,7 +18,7 @@ Plane::Plane(Point p1, Point p2, Point p3, Property properties)
 }
 
 
-bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
+bool Plane::intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const
 {
     double v_dot_n = ray.get_direction().dot(this->_normal);
 
@@ -35,7 +35,7 @@ bool Plane::intersect_with_ray(const Ray& ray, Intersection& intersection) const
     Vector normal = (ray.get_direction()).dot(this->_normal)>0 ? this->_normal*(-1):this->_normal;
 
     
-    intersection = Intersection(distance, normal, point,this->_properties, ray.get_direction());
+    intersection = IntersectionObject(distance, normal, point,this->_properties, ray.get_direction());
 
     return true;
     

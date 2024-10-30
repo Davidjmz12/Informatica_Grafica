@@ -13,5 +13,5 @@ public:
 
     Light(Point center, SpectralColor power);
     
-    SpectralColor meets_light(std::vector<Geometry*> geometries, const Intersection& intersection) const;
+    SpectralColor meets_light(std::vector<Geometry*> geometries, const IntersectionObject& intersection) const;
 };

@@ -4,7 +4,7 @@ BoxLight::BoxLight(Box box, SpectralColor power)
     : AreaLight(power), _box(box)
 {}
 
-bool BoxLight::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool BoxLight::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     return this->_box.intersect_with_ray(r, intersection);
 }
