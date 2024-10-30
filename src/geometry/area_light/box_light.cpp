@@ -4,9 +4,21 @@ BoxLight::BoxLight(Box box, SpectralColor power)
     : AreaLight(power), _box(box)
 {}
 
-bool BoxLight::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
+bool BoxLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection) const
 {
-    return this->_box.intersect_with_ray(r, intersection);
+    // Compute the intersection with the box
+    IntersectionObject intersectionObject = IntersectionObject();
+    bool intersects = this->_box.intersect_with_ray(r, intersectionObject);
+
+    // Check if do not intersects
+    if (!intersects)
+        return false;
+    
+    // Construct the intersection light object
+    intersection = IntersectionLight(   intersectionObject.get_distance(),
+                                        this->_power,
+                                        r.get_direction());
+    return true;            
 }
 
 std::string BoxLight::to_string() const
