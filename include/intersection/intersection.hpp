@@ -2,23 +2,23 @@
 
 #include <vector>
 #include <stdexcept>
-#include <memory>
 
 #include "global_config/constants.hpp"
+#include "spatial_element/vector.hpp"
 
 class Intersection
 {
 protected:
     double _distance;
+    Vector _origin;
 
 public:
-    Intersection(double distance);
+    Intersection(double distance, Vector origin);
 
     Intersection();
     
     double get_distance() const;
-
-    static std::shared_ptr<Intersection> min(std::vector<std::shared_ptr<Intersection>> intersections);
+    Vector get_origin() const;
 
     bool operator<(const Intersection& i) const;
     bool operator>(const Intersection& i) const;

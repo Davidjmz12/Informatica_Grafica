@@ -17,8 +17,7 @@ private:
     Vector _normal;
     Point _point;
     Property _properties;
-    Vector _origin;
-
+    
 public:
 
     IntersectionObject();
@@ -27,7 +26,7 @@ public:
     Point get_point() const;
     Vector get_normal() const;
     Property get_properties() const;
-    Vector get_origin() const;
+
 
     bool operator==(const IntersectionObject i) const;
     friend std::ostream& operator<<(std::ostream& os, const IntersectionObject& i);

@@ -1,7 +1,7 @@
 #include "intersection/intersection.hpp"
 
-Intersection::Intersection(double distance)
-    : _distance(distance)
+Intersection::Intersection(double distance, Vector origin)
+    : _distance(distance), _origin(origin)
 {}
 
 Intersection::Intersection()
@@ -13,19 +13,9 @@ double Intersection::get_distance() const
     return this->_distance;
 }
 
-std::shared_ptr<Intersection> Intersection::min(std::vector<std::shared_ptr<Intersection>> intersections)
+Vector Intersection::get_origin() const
 {
-    if(intersections.size() == 0)
-        throw std::invalid_argument("The vector of intersections must have at least one element");
-    std::shared_ptr<Intersection> min_intersection = NULL;
-    for(auto intersection : intersections)
-    {
-        if (min_intersection == NULL && gtD(intersection->get_distance(),0))
-            min_intersection = intersection;
-        else if (*intersection < *min_intersection && gtD(intersection->get_distance(),0))
-            min_intersection = intersection;
-    }
-    return min_intersection;
+    return this->_origin;
 }
 
 bool Intersection::operator<(const Intersection& i) const
