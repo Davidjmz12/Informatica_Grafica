@@ -27,9 +27,12 @@ bool IntersectionObject::operator==(const IntersectionObject i) const
 SpectralColor IntersectionObject::evalRenderEquation(SpectralColor power_light, Point point_light) const
 {
     Vector c1_x = point_light-this->_point;
-    SpectralColor Lwi = power_light/c1_x.dot(c1_x);
+    SpectralColor Lwi = power_light/pow(c1_x.norm()+1,2);
     SpectralColor brdf = this->_properties.get_BRDF()->eval(this->_point,c1_x.normalize(), this->_origin);
     double cosine = fabs(this->_normal.dot(c1_x.normalize()));
+
+    SpectralColor results = Lwi*brdf*cosine;
+
     return Lwi*brdf*cosine;
 }
 

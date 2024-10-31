@@ -65,4 +65,6 @@ public:
 
     bool operator==(SpectralColor c) const;
 
+    bool check_less_1() const;
+
 };

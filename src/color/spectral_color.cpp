@@ -173,3 +173,13 @@ bool SpectralColor::operator==(SpectralColor c) const
 
     return true;
 }
+
+bool SpectralColor::check_less_1() const
+{
+    for(size_t i=0;i<SIZE;i++)
+    {
+        if (gtD((*this)[i],1.0)) return false; 
+    }
+
+    return true;
+}
