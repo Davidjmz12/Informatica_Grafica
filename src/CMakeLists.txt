@@ -5,11 +5,13 @@ add_subdirectory(properties)
 add_subdirectory(files)
 add_subdirectory(color)
 add_subdirectory(scene)
+add_subdirectory(intersection)
+add_subdirectory(light)
 
 # ------------------------------------------------------------------------------
 # Main executable
 add_executable(main main.cpp)
-target_link_libraries(main PUBLIC scene_file)
+target_link_libraries(main PUBLIC scene_file box_light)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_compile_definitions(main PUBLIC ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets")
 

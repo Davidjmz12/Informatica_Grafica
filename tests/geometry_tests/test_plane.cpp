@@ -13,7 +13,7 @@ int main()
     Ray r3 = Ray(Point(), Vector(-1,1,1));
     Ray r4 = Ray(Point(), Vector(1,-4,5));
     Ray r5 = Ray(Point(4,0,0), Vector(-1,0,0));
-    Intersection i1;
+    IntersectionObject i1;
 
     // All ray intersects with the plane
     t.addTest("1", Test::EXPECT_EQ(p.intersect_with_ray(r1, i1), false));

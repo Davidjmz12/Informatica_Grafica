@@ -4,13 +4,11 @@
 #include "global_config/global_config.hpp"
 #include "threading/thread_pool.hpp"
 #include "metrics/metrics.hpp"
-
 #include "files/scene_file.hpp"
-
 
 HashMap get_default_conf() {
     HashMap conf;
-    conf["threads"] = int(12);
+    conf["threads"] = int(1);
     conf["rays"] = int(10);
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();
@@ -75,6 +73,8 @@ void parse_end() {
 int main(int argc, char* argv[]) 
 {
     parse_init(argc, argv);
+
+    BoxLight(Box(Point(),{Vector(1,0,0),Vector(0,1,0),Vector(0,0,1)},Property()), SpectralColor());
 
     SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
 

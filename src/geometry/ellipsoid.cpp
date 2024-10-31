@@ -7,7 +7,7 @@ Ellipsoid::Ellipsoid(double a, double b, double c, Point center, Property proper
         throw std::invalid_argument("Factors cannot be zero.");
 }
 
-bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     Vector dir_ray = r.get_direction();
     Point point_centered = Point(r.get_point()-this->_center);
@@ -44,7 +44,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, Intersection& intersection) con
 
 
     Point point_int = r.evaluate(distance);
-    intersection = Intersection(distance, this->normal(point_int), point_int, this->_properties, r.get_direction());
+    intersection = IntersectionObject(distance, this->normal(point_int), point_int, this->_properties, r.get_direction());
 
     return existSolution;    
 }

@@ -41,7 +41,7 @@ bool Triangle::point_inside_triangle(Point p) const
 }
 
 
-bool Triangle::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     Plane triangle_plane = this->plane();
     if(!triangle_plane.intersect_with_ray(r, intersection))

@@ -33,7 +33,7 @@
  * @endcode
  * 
  * @section SeeAlso
- * Geometry, Mesh, Ray, Intersection
+ * Geometry, Mesh, Ray, IntersectionObject
  * 
  * @author
  * Davidjmz12 
@@ -68,7 +68,7 @@ public:
      *         If the ray intersects, the intersection is stored in the intersection parameter.
      *         If not, the intersection parameter can be modified with a non-expected value.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
     /**
      * @brief Overloads the << operator to output the details of a Box object.

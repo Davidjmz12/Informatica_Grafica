@@ -34,7 +34,7 @@
  * 
  * @note This class inherits from the Geometry class.
  *
- * @see Geometry, Ray, Intersection
+ * @see Geometry, Ray, IntersectionObject
  * 
  * @version
  * 1.0
@@ -73,7 +73,7 @@ public:
      * @param intersection An output parameter that will contain details about the intersection if one occurs.
      * @return true if the ray intersects with the mesh, false otherwise.
      */
-    bool intersect_with_ray(const Ray& r, Intersection& intersection) const;
+    bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
 
     /**

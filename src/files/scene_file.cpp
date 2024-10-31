@@ -304,18 +304,38 @@ SceneFile::SceneFile(std::string file, std::string ply_dir):
         throw std::invalid_argument("The file " + file + " does not exist");
 }
 
-std::vector<Light> SceneFile::read_lights() const
+void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const
 {
     int n_lights = this->read_header("Lights");
-    std::vector<Light> l;
     for (int i = 0; i < n_lights; i++)
     {
-        this->read_line(); // Discard the light name
-        Point p = this->read_point();
-        SpectralColor c = this->read_color();
-        l.push_back(Light(p, c));
+        std::string name = this->read_line(); // Discard the light name
+        if(name == "punctual")
+        {
+            pl.push_back(this->read_punctual_light());
+        } else if (name == "box-light")
+        {
+            al.push_back(this->read_box_light());
+        }
     }
-    return l;
+}
+
+PunctualLight* SceneFile::read_punctual_light() const
+{
+    Point center = this->read_point();
+    SpectralColor power = this->read_color();
+    return new PunctualLight(center, power);
+}
+
+AreaLight* SceneFile::read_box_light() const
+{
+    Point p = this->read_point();
+    Vector v1 = this->read_vector();
+    Vector v2 = this->read_vector();
+    Vector v3 = this->read_vector();
+    Box box = Box(p, {v1,v2,v3}, Property());
+    SpectralColor power = this->read_color();
+    return new BoxLight(box, power);
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const
@@ -352,9 +372,11 @@ void SceneFile::read_scene(std::string path, std::string file_save) const
     Camera c = this->read_camera();
     PropertyHash ch = this->read_properties();
     std::vector<Geometry*> g = this->read_geometries(ch);
-    std::vector<Light> l = this->read_lights();
+    std::vector<PunctualLight*> pl;
+    std::vector<AreaLight*> al;
+    this->read_lights(pl, al);
     
-    Render rend = Render(Scene(g, l, c));
+    Render rend = Render(Scene(g, pl, al, c));
 
     ColorMap cm = rend.render_scene();
     double max = cm.max();

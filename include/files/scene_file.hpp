@@ -9,6 +9,7 @@
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
 #include "color/tone_mapping/all_tone_mapping.hpp"
+#include "light/area_light/all_area_light.hpp"
 
 using PropertyHash = std::unordered_map<std::string, Property>;
 
@@ -24,7 +25,7 @@ private:
     Camera read_camera() const;
     PropertyHash read_properties() const;
     std::vector<Geometry*> read_geometries(PropertyHash ch) const;
-    std::vector<Light> read_lights() const;
+    void read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const;
     ToneMapping* read_tone_mapping(double max) const;
     std::array<int,2> read_resolution() const;
     int read_header(std::string expected) const;
@@ -34,6 +35,9 @@ private:
 
     Property read_property(std::string key, PropertyHash ch) const;
 
+
+    PunctualLight* read_punctual_light() const;
+    AreaLight* read_box_light() const;
 
     Geometry* read_plane(PropertyHash ch) const;
     Geometry* read_sphere(PropertyHash ch) const;

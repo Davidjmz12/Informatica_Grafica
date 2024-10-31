@@ -9,7 +9,9 @@
 #pragma once
 
 #include "scene/camera.hpp"
-#include "scene/light.hpp"
+#include "light/area_light/area_light.hpp"
+#include "light/light.hpp"
+
 
 /**
  * @brief Class for representing a scene with geometry
@@ -19,7 +21,8 @@ class Scene
 {
 private:
     std::vector<Geometry*> _objects; // Vector of objects
-    std::vector<Light> _lights;      // Vector of lights
+    std::vector<PunctualLight*> _punctual_lights;      // Vector of lights
+    std::vector<AreaLight*> _area_lights;
     Camera _camera;                  // Camera
 
 public:
@@ -29,7 +32,7 @@ public:
      * scene.
      * @param camera Camera on the scene.
      */
-    Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera);
+    Scene(std::vector<Geometry*> objects,  std::vector<PunctualLight*> lights, std::vector<AreaLight*> area_lights, Camera camera);
 
     /**
      * @brief Add a Geometry object to the scene.
@@ -37,12 +40,13 @@ public:
      */
     void add_geometry(Geometry* g);
 
-    void add_light(Light l);
+    void add_light(PunctualLight* l);
 
     std::array<int,2> get_resolution() const;
 
     std::vector<Geometry*> get_objects() const;
-    std::vector<Light> get_lights() const;
+    std::vector<PunctualLight*> get_punctual_lights() const;
+    std::vector<AreaLight*> get_area_lights() const;
     Camera get_camera() const;
 
     /**

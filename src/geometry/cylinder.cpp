@@ -12,18 +12,18 @@ Cylinder::Cylinder(Point center, double radius, Vector axis, Property properties
 }
 
 
-Intersection Cylinder::intersection_in_a_point(const Ray& r, double distance) const
+IntersectionObject Cylinder::intersection_in_a_point(const Ray& r, double distance) const
 {
     if(eqD(distance,0))
-        return Intersection();
+        return IntersectionObject();
     Point point_int = r.evaluate(distance), projection;
     Vector normal;
     projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    return Intersection(distance, normal, point_int, this->_properties, r.get_direction());
+    return IntersectionObject(distance, normal, point_int, this->_properties, r.get_direction());
 }
 
-bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& intersection) const
+bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const
 {
     
     Vector aux_1,aux_2 ;
@@ -48,15 +48,20 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, Intersection& 
         return true;
     } else 
     {
-        std::vector<Intersection> int_points;
+        std::vector<IntersectionObject> int_points;
         int_points.push_back(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a)));
         int_points.push_back(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a)));
-        intersection = Intersection::min(int_points);
+
+        if (int_points[0] < int_points[1])
+            intersection = int_points[0];
+        else
+            intersection = int_points[1];
+
         return true;
     }
 }
 
-bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, Intersection& intersection) const
+bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObject& intersection) const
 {
     if(!intersect_with_ray_infinite_cylinder(r, intersection))
         return false;
@@ -69,15 +74,15 @@ bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, Intersection& in
     return true;
 }
 
-bool Cylinder::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Cylinder::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     
     if(!intersect_with_ray_finite_cylinder(r, intersection)){
-        Intersection int_min;
+        IntersectionObject int_min;
         bool int_min_exists = false;
         for(auto i: { _top, _bottom })
         {
-            Intersection intersection_aux;
+            IntersectionObject intersection_aux;
             if(i.intersect_with_ray(r, intersection_aux))
             {   
                 int_min_exists=true;

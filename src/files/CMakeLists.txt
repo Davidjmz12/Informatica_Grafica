@@ -8,5 +8,5 @@ target_link_libraries(ppm_file PUBLIC color_map tone_mapping_lib scene)
 target_include_directories(ppm_file PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(scene_file scene_file.cpp)
-target_link_libraries(scene_file PUBLIC ppm_file render geometry ply_file global_config)
+target_link_libraries(scene_file PUBLIC ppm_file render geometry ply_file global_config area_light_lib)
 target_include_directories(scene_file PUBLIC ${CMAKE_SOURCE_DIR}/include)

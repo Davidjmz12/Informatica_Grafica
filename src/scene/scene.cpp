@@ -1,7 +1,7 @@
 #include "scene/scene.hpp"
 
-Scene::Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera)
-    : _objects(objects), _camera(camera), _lights(lights)
+Scene::Scene(std::vector<Geometry*> objects,  std::vector<PunctualLight*> lights, std::vector<AreaLight*> area_lights, Camera camera)
+    : _objects(objects), _camera(camera), _punctual_lights(lights), _area_lights(area_lights)
 {}
 
 void Scene::add_geometry(Geometry* g)
@@ -9,9 +9,9 @@ void Scene::add_geometry(Geometry* g)
     this->_objects.push_back(g);
 }
 
-void Scene::add_light(Light l)
+void Scene::add_light(PunctualLight* l)
 {
-    this->_lights.push_back(l);
+    this->_punctual_lights.push_back(l);
 }
 
 std::array<int,2> Scene::get_resolution() const
@@ -24,9 +24,14 @@ std::vector<Geometry*> Scene::get_objects() const
     return this->_objects;
 }
 
-std::vector<Light> Scene::get_lights() const
+std::vector<PunctualLight*> Scene::get_punctual_lights() const
 {
-    return this->_lights;
+    return this->_punctual_lights;
+}
+
+std::vector<AreaLight*> Scene::get_area_lights() const
+{
+    return this->_area_lights;
 }
 
 Camera Scene::get_camera() const

@@ -1,16 +1,16 @@
-#include "scene/light.hpp"
+#include "light/light.hpp"
 
-Light::Light(Point center, SpectralColor power)
+PunctualLight::PunctualLight(Point center, SpectralColor power)
     : _center(center), _power(power)
 {}
 
-SpectralColor Light::light_contribution(std::vector<Geometry*> geometries, const Intersection& intersection,
+SpectralColor PunctualLight::light_contribution(std::vector<Geometry*> geometries, const IntersectionObject& intersection,
     SpectralColor indirect_light) const
 {
     Vector ray_dir = (this->_center-intersection.get_point());
     double norm_ray_dir = ray_dir.norm();
     Ray r = Ray(intersection.get_point(),ray_dir);
-    Intersection shadow_intersect;
+    IntersectionObject shadow_intersect;
     bool shadow = false;
     for(Geometry* g: geometries)
     {

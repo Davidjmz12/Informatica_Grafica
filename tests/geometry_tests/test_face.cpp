@@ -12,7 +12,7 @@ int main()
     Ray r3 = Ray(Point(2,2,2),Vector(-1,-1,2));
     Ray r4 = Ray(Point(1.5,1.5,3),Vector(-1,1,0));
 
-    Intersection i1 = Intersection();
+    IntersectionObject i1 = IntersectionObject();
 
     t.addTest("1",Test::EXPECT_EQ(f1.intersect_with_ray(r1,i1),true));
     t.addTest("2",Test::EXPECT_EQ(i1.get_point(),Point(1,2,3)));

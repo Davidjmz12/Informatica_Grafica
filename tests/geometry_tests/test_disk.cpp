@@ -15,7 +15,7 @@ int main()
     Ray r4 = Ray(Point(1,1,-1), Vector(0,0,1));
     Ray r5 = Ray(Point(0,1,-1), Vector(0,0,1));
 
-    Intersection i1;
+    IntersectionObject i1;
 
     t.addTest("1", Test::EXPECT_EQ(d1.intersect_with_ray(r1, i1), false));
     t.addTest("2", Test::EXPECT_EQ(d1.intersect_with_ray(r2, i1), false));

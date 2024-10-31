@@ -19,7 +19,7 @@ Box::Box(Point center, std::array<Vector,3> axis, Property properties)
     _mesh = Mesh(elements);
 }
 
-bool Box::intersect_with_ray(const Ray& r, Intersection& intersection) const
+bool Box::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     return _mesh.intersect_with_ray(r, intersection);
 }
