@@ -10,6 +10,8 @@
 
 #include "geometry/geometry.hpp"
 #include "scene/camera.hpp"
+#include "geometry/area_light/area_light.hpp"
+
 
 /**
  * @brief Class for representing a scene with geometry
@@ -20,6 +22,7 @@ class Scene
 private:
     std::vector<Geometry*> _objects; // Vector of objects
     std::vector<Light> _lights;      // Vector of lights
+    std::vector<AreaLight*> _area_lights;
     Camera _camera;                  // Camera
 
 public:
@@ -29,7 +32,7 @@ public:
      * scene.
      * @param camera Camera on the scene.
      */
-    Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, Camera camera);
+    Scene(std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights, Camera camera);
 
     /**
      * @brief Add a Geometry object to the scene.

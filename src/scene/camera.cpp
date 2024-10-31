@@ -24,7 +24,7 @@ std::array<double,2> Camera::get_random_pixel_coordinates(int x, int y) const
             randomD(y_coordinate_1,y_coordinate_2)};
 }
 
-SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects, std::vector<Light> lights) const
+SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects, std::vector<Light> lights, std::vector<AreaLight*> area_lights) const
 {
     std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
     Ray r = this->trace_ray(pixel_coordinates);
@@ -40,39 +40,57 @@ SpectralColor Camera::compute_random_pixel_color(int x, int y, std::vector<Geome
                 min_int = aux_int;
         }
     }
+
+    IntersectionLight min_int_2;
+    for (auto element: area_lights)
+    {
+        IntersectionLight aux_int;
+        if(element->intersect_with_ray(r, aux_int))
+        {
+            intersects = true;
+            if(aux_int < min_int)
+                min_int_2 = aux_int;
+        }
+    }
+
     if(!intersects)
         return SpectralColor();
     
-    SpectralColor final_color = compute_final_color(min_int, objects, lights);
+    SpectralColor final_color;
+    if (min_int < min_int_2)
+        final_color = compute_final_color(min_int, objects, lights, area_lights);
+    else
+        final_color = min_int_2.get_power();
+
     return final_color;
 }
 
-SpectralColor Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const
+SpectralColor Camera::compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights) const
 {
     size_t num_rays = GlobalConf::get_instance()->get_number_of_rays();
 
     if(num_rays<1)
         throw std::invalid_argument("The number of rays must be greater than 0.");
     
-    SpectralColor sum = this->compute_random_pixel_color(x, y, objects, lights);
+    SpectralColor sum = this->compute_random_pixel_color(x, y, objects, lights, area_lights);
     
     for(size_t i=1; i<num_rays; ++i)
-        sum = sum + this->compute_random_pixel_color(x, y, objects, lights);
+        sum = sum + this->compute_random_pixel_color(x, y, objects, lights, area_lights);
 
     return sum/num_rays;
 }
 
-std::vector<SpectralColor> Camera::paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights,  size_t row) const
+std::vector<SpectralColor> Camera::paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights,  std::vector<AreaLight*> area_lights, size_t row) const
 {
     std::vector<SpectralColor> colors;
     for(size_t i=0;i<this->_resolution[1];i++)
     {
-        colors.push_back(this->compute_pixel_color(i, row, objects, lights));
+        colors.push_back(this->compute_pixel_color(i, row, objects, lights, area_lights));
     }
     return colors;
 }
 
-std::vector<SpectralColor> Camera::paint_k_pixels(std::vector<Geometry*> objects, std::vector<Light> lights, 
+std::vector<SpectralColor> Camera::paint_k_pixels(std::vector<Geometry*> objects, std::vector<Light> lights, std::vector<AreaLight*> area_lights, 
     std::array<size_t,2> start, size_t k) const
 {
     std::vector<SpectralColor> colors;
@@ -80,7 +98,7 @@ std::vector<SpectralColor> Camera::paint_k_pixels(std::vector<Geometry*> objects
     {
         size_t x = (start[1]+i)%this->_resolution[1];
         size_t y = start[0] + (start[1]+i)/this->_resolution[1];
-        colors.push_back(this->compute_pixel_color(x, y, objects, lights));
+        colors.push_back(this->compute_pixel_color(x, y, objects, lights, area_lights));
     }
     return colors;
 }
@@ -98,7 +116,7 @@ MatrixSC createMatrix(std::array<int,2> dim, std::vector<SpectralColor> colors) 
 }
 
 
-ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> lights) const
+ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> lights, std::vector<AreaLight*> area_lights) const
 {   
     GlobalConf *gc = GlobalConf::get_instance();
     if(gc->has_metrics())
@@ -120,8 +138,8 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> 
         std::array<size_t,2> start = {(i*task_size)/this->_resolution[1],(i*task_size)%this->_resolution[1]};
         futures.push_back(
             pool.enqueue(
-                [this,objects,lights,start,task_size](){
-                    return this->paint_k_pixels(objects, lights, start, task_size);
+                [this,objects,lights,area_lights,start,task_size](){
+                    return this->paint_k_pixels(objects, lights, area_lights, start, task_size);
                 }
             )
         );
@@ -133,8 +151,8 @@ ColorMap Camera::paint_scene(std::vector<Geometry*> objects, std::vector<Light> 
         std::array<size_t,2> start = {(num_full_tasks*task_size)/this->_resolution[1],(num_full_tasks*task_size)%this->_resolution[1]};
         futures.push_back(
             pool.enqueue(
-                [this,objects,lights,rest,start](){
-                    return this->paint_k_pixels(objects, lights, start, rest);
+                [this,objects,lights,area_lights,rest,start](){
+                    return this->paint_k_pixels(objects, lights, area_lights, start, rest);
                 }
             )
         );
@@ -172,7 +190,7 @@ std::array<int,2> Camera::get_resolution() const
 
 
 SpectralColor Camera::compute_final_color(IntersectionObject intersec, 
-    std::vector<Geometry*> objects, std::vector<Light> lights) const
+    std::vector<Geometry*> objects, std::vector<Light> lights, std::vector<AreaLight*> area_lights) const
 {
     SpectralColor final_color = lights[0].meets_light(objects, intersec);
     for(size_t i=1; i<lights.size(); ++i)

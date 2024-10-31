@@ -11,5 +11,12 @@ private:
     Vector _origin;
 
 public:
+    IntersectionLight()
+        : Intersection(std::numeric_limits<double>::max()) {};
     IntersectionLight(double distance, SpectralColor power, Vector origin);
+
+    SpectralColor get_power() const
+    {
+        return _power;
+    }
 };

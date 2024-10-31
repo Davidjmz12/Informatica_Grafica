@@ -1,5 +1,7 @@
 #include "files/scene_file.hpp"
 
+#include "geometry/area_light/box_light.hpp"
+
 std::string parse_string(std::string line)
 {
     std::regex re0("#.*#"), re1("#.*$"), re2("^\\s+"), re3("\\s+$"), re4("\\s+");
@@ -353,8 +355,11 @@ void SceneFile::read_scene(std::string file_save) const
     PropertyHash ch = this->read_properties();
     std::vector<Geometry*> g = this->read_geometries(ch);
     std::vector<Light> l = this->read_lights();
+
+    std::vector<AreaLight*> al;
+    al.push_back(new BoxLight(Box(Point(-0.5,1,-0.5),{Vector(0.3,0,0),Vector(0,0,0.3),Vector(0,-0.2,0)},Property(SpectralColor(1))),SpectralColor(10)));
     
-    Scene s = Scene(g, l, c);
+    Scene s = Scene(g, l, al, c);
     PpmFile ppm = PpmFile(s);
 
     ToneMapping* t = this->read_tone_mapping(ppm.get_max_range());

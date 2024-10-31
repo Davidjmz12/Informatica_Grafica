@@ -15,6 +15,7 @@
 #include "scene/ray.hpp"
 #include "geometry/geometry.hpp"
 #include "scene/light.hpp"
+#include "geometry/area_light/area_light.hpp"
 
 #include "threading/thread_pool.hpp"
 #include "global_config/global_config.hpp"
@@ -45,9 +46,9 @@ private:
      * @param k Number of rays to generate inside the pixel
      * @return The color that the pixel (x,y) must have.
      */
-    SpectralColor compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
+    SpectralColor compute_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights) const;
 
-    SpectralColor compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights) const;
+    SpectralColor compute_random_pixel_color(int x, int y, std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights) const;
 
     /**
      * @brief Compute the coordinates of the pixel x,y in the camera
@@ -58,11 +59,11 @@ private:
      */
     std::array<double,2> get_random_pixel_coordinates(int x, int y) const;
 
-    std::vector<SpectralColor> paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights, size_t row) const;
+    std::vector<SpectralColor> paint_one_row(std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights, size_t row) const;
 
-    SpectralColor compute_final_color(IntersectionObject intersec, std::vector<Geometry*> objects, std::vector<Light> lights) const;
+    SpectralColor compute_final_color(IntersectionObject intersec, std::vector<Geometry*> objects, std::vector<Light> lights, std::vector<AreaLight*> area_lights) const;
 
-    std::vector<SpectralColor> paint_k_pixels(std::vector<Geometry*> objects,  std::vector<Light> lights, std::array<size_t,2> start, size_t k) const;
+    std::vector<SpectralColor> paint_k_pixels(std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights, std::array<size_t,2> start, size_t k) const;
 public:
 
     /**
@@ -77,7 +78,7 @@ public:
     Camera(Base base, std::array<int,2> resolution);
 
 
-    ColorMap paint_scene(std::vector<Geometry*> objects,  std::vector<Light> lights) const;
+    ColorMap paint_scene(std::vector<Geometry*> objects,  std::vector<Light> lights, std::vector<AreaLight*> area_lights) const;
 
     SpatialElement* c_cam(const SpatialElement* s) const;
 
