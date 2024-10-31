@@ -29,6 +29,8 @@ public:
     Property get_properties() const;
     Vector get_origin() const;
 
+    SpectralColor apply_BRDF(Vector dir_to_light, SpectralColor light_power) const;
+
     static Intersection min(std::vector<Intersection> intersections);
     bool operator<(const Intersection i) const;
     bool operator>(const Intersection i) const;

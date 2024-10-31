@@ -14,14 +14,24 @@ void Scene::add_light(Light l)
     this->_lights.push_back(l);
 }
 
-ColorMap Scene::paint_scene() const
-{
-    return this->_camera.paint_scene(this->_objects, this->_lights);
-}
-
 std::array<int,2> Scene::get_resolution() const
 {
     return this->_camera.get_resolution();
+}
+
+std::vector<Geometry*> Scene::get_objects() const
+{
+    return this->_objects;
+}
+
+std::vector<Light> Scene::get_lights() const
+{
+    return this->_lights;
+}
+
+Camera Scene::get_camera() const
+{
+    return this->_camera;
 }
 
 std::ostream& operator<<(std::ostream& os, Scene s)

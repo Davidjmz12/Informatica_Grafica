@@ -12,7 +12,7 @@
 
 #include "color/color_map.hpp"
 #include "color/tone_mapping/tone_mapping.hpp"
-#include "scene/scene.hpp"
+#include "scene/render.hpp"
 
 
 
@@ -38,9 +38,8 @@ class PpmFile {
         */
         PpmFile(std::string path);
 
-        PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format);
+        PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string format);
 
-        PpmFile(Scene s);
 
         PpmFile apply_tone_mapping(ToneMapping* t, size_t new_resolution) const;
 

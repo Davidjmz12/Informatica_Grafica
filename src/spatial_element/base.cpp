@@ -22,9 +22,20 @@ Base::Base(Point p, Vector i, Vector j, Vector k)
                         {0   , 0   , 0   , 1   }};
 
     this->_matrix = Matrix4x4(aux);
-    this->_matrix_inverse = Matrix4x4(aux).inverse();
 }
 
+Base Base::complete_base_k(Point c, Vector v)
+{
+    Vector candidate = Vector(1,0,0);
+    if(candidate.linearly_dependent(v))
+        candidate = Vector(0,1,0);
+    
+    Vector k = v.normalize();
+    Vector i = (candidate - k*(candidate.dot(k))).normalize();
+    Vector j = k.cross(i);
+
+    return Base(c, i, j, k);
+}
 
 LinearMap Base::canonical_to_base() const
 {
@@ -33,7 +44,7 @@ LinearMap Base::canonical_to_base() const
 
 SpatialElement* Base::coord_from_canonical(const SpatialElement* s) const
 {
-    return LinearMap(this->_matrix_inverse)*s;
+    return LinearMap(this->_matrix.inverse())*s;
 }
         
 SpatialElement* Base::coord_into_canonical(const SpatialElement* s) const 

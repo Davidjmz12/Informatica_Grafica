@@ -15,7 +15,7 @@ HashMap get_default_conf() {
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();
     conf["task-size"] = int(100);
-    conf["n-bounces"] = int(5);
+    conf["n-bounces"] = int(10);
     return conf;
 }
 
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
     SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
 
-    sf.read_scene(std::string(ASSETS_DIR) + "/out/scene.ppm");
+    sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");
 
     parse_end();
     return 0;

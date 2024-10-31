@@ -26,7 +26,6 @@ class Base {
 private:
 
     Matrix4x4 _matrix;
-    Matrix4x4 _matrix_inverse;
 
 public:
 
@@ -47,6 +46,8 @@ public:
     * @return The canonic_base.
     */     
     static Base canonic_base();
+
+    static Base complete_base_k(Point c, Vector v);
 
     /**
     * @brief Method that gives the point in a basis.

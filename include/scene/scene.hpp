@@ -8,8 +8,8 @@
 */
 #pragma once
 
-#include "geometry/geometry.hpp"
 #include "scene/camera.hpp"
+#include "scene/light.hpp"
 
 /**
  * @brief Class for representing a scene with geometry
@@ -39,13 +39,11 @@ public:
 
     void add_light(Light l);
 
-    /**
-     * @brief Paint the scene.
-     * @return The image of the scene.
-     */
-    ColorMap paint_scene() const;
-
     std::array<int,2> get_resolution() const;
+
+    std::vector<Geometry*> get_objects() const;
+    std::vector<Light> get_lights() const;
+    Camera get_camera() const;
 
     /**
      * @brief Write the information of the scene.

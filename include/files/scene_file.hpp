@@ -4,7 +4,7 @@
 #include <regex>
 
 
-#include "scene/scene.hpp"
+#include "scene/render.hpp"
 #include "geometry/all_geometry.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
@@ -51,5 +51,5 @@ private:
 
 public:
     SceneFile(std::string file, std::string ply_dir);
-    void read_scene(std::string file_save) const;
+    void read_scene(std::string path, std::string file_save) const;
 };

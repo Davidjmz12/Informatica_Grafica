@@ -347,17 +347,22 @@ ToneMapping* SceneFile::read_tone_mapping(double max) const
 }
 
 
-void SceneFile::read_scene(std::string file_save) const
+void SceneFile::read_scene(std::string path, std::string file_save) const
 {
     Camera c = this->read_camera();
     PropertyHash ch = this->read_properties();
     std::vector<Geometry*> g = this->read_geometries(ch);
     std::vector<Light> l = this->read_lights();
     
-    Scene s = Scene(g, l, c);
-    PpmFile ppm = PpmFile(s);
+    Render rend = Render(Scene(g, l, c));
+
+    ColorMap cm = rend.render_scene();
+    double max = cm.max();
+    PpmFile ppm = PpmFile(cm, max, max, rend.get_resolution(), "P3");
+    
+    ppm.save(path + "/" + "no_tm_" + file_save);
 
     ToneMapping* t = this->read_tone_mapping(ppm.get_max_range());
-    ppm = ppm.apply_tone_mapping(t, 255);
-    ppm.save(file_save);
+    PpmFile ppm_tm = ppm.apply_tone_mapping(t, 255);
+    ppm_tm.save(path + "/" + file_save);
 }

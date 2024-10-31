@@ -82,17 +82,9 @@ PpmFile::PpmFile(std::string path)
     this->_map = ColorMap(readPixelMap(file));
 }
 
-PpmFile::PpmFile(ColorMap map, double range, double colorResolution, std::array<int,2> dim, std::string format)
-    : _map(map), _maxRange(range), _colorResolution(colorResolution), _dimension{dim}, _format(format)
+PpmFile::PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string format)
+    : _map(map), _maxRange(maxRange), _colorResolution(colorResolution), _dimension{dimension}, _format(format)
 {}
-
-PpmFile::PpmFile(Scene s)
-    : _map(s.paint_scene()), _dimension(s.get_resolution()), _format("P3")
-{
-    this->_maxRange = this->_map.max();
-    this->_colorResolution = this->_maxRange;
-}
-
 
 PpmFile PpmFile::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
 {
