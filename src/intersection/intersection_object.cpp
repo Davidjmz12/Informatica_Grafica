@@ -1,18 +1,11 @@
 #include "intersection/intersection_object.hpp"
 
 IntersectionObject::IntersectionObject(double distance, Vector normal, Point point, Property properties, Vector origin)
-    : Intersection(distance, origin), _normal(normal), _point(point), _properties(properties)
+    : Intersection(distance, origin, point), _normal(normal), _properties(properties)
 {}
 
 IntersectionObject::IntersectionObject()
-    : Intersection(std::numeric_limits<double>::max(), Vector()),_normal(Vector()),
-    _point(Point()),_properties(Property())
 {}
-
-Point IntersectionObject::get_point() const
-{
-    return this->_point;
-}
 
 Vector IntersectionObject::get_normal() const
 {
@@ -30,6 +23,17 @@ bool IntersectionObject::operator==(const IntersectionObject i) const
             this->_normal == i._normal &&
             this->_point == i._point;
 }
+
+SpectralColor IntersectionObject::evalRenderEquation(SpectralColor power_light, Point point_light) const
+{
+    Vector c1_x = point_light-this->_point;
+    SpectralColor Lwi = power_light/c1_x.dot(c1_x);
+    SpectralColor brdf = this->_properties.get_BRDF()->eval(this->_point,c1_x.normalize(), this->_origin);
+    double cosine = fabs(this->_normal.dot(c1_x.normalize()));
+
+    return Lwi*brdf*cosine;
+}
+
 
 std::ostream& operator<<(std::ostream& os, const IntersectionObject& i)
 {

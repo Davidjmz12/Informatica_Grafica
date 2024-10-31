@@ -4,8 +4,8 @@ IntersectionLight::IntersectionLight()
     : Intersection(), _power(SpectralColor())
 {}
 
-IntersectionLight::IntersectionLight(double distance, SpectralColor power, Vector origin)
-    : Intersection(distance, origin), _power(power)
+IntersectionLight::IntersectionLight(double distance, SpectralColor power, Vector origin, Point point)
+    : Intersection(distance, origin, point), _power(power)
 {}
 
 SpectralColor IntersectionLight::get_power() const

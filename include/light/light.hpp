@@ -13,5 +13,5 @@ public:
 
     PunctualLight(Point center, SpectralColor power);
     
-    SpectralColor light_contribution(std::vector<Geometry*> geometries, const IntersectionObject& intersection, SpectralColor indirect_light) const;
+    SpectralColor light_contribution(std::vector<Geometry*> geometries, const IntersectionObject& intersection) const;
 };

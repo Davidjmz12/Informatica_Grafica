@@ -15,7 +15,6 @@ class IntersectionObject : public Intersection
 {
 private:
     Vector _normal;
-    Point _point;
     Property _properties;
     
 public:
@@ -23,10 +22,10 @@ public:
     IntersectionObject();
     IntersectionObject(double distance, Vector normal, Point point, Property properties, Vector origin);
     
-    Point get_point() const;
     Vector get_normal() const;
     Property get_properties() const;
 
+    SpectralColor evalRenderEquation(SpectralColor power_light, Point point_light) const;
 
     bool operator==(const IntersectionObject i) const;
     friend std::ostream& operator<<(std::ostream& os, const IntersectionObject& i);
