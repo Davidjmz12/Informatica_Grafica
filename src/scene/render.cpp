@@ -159,7 +159,8 @@ IndirectLight Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
         SpectralColor indirect_light_contribution = min_int_obj.evalRenderEquation(indirect_light.light_contribution, indirect_light.origin);
         SpectralColor point_light_contribution = calculate_total_light(min_int_obj);
 
-        return IndirectLight{min_int_obj.get_point(), point_light_contribution + indirect_light_contribution};
+        IndirectLight all_light_contribution = IndirectLight{min_int_obj.get_point(), point_light_contribution + indirect_light_contribution};
+        return all_light_contribution;
     }
 
 }

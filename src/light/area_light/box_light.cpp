@@ -17,7 +17,8 @@ bool BoxLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection)
     // Construct the intersection light object
     intersection = IntersectionLight(   intersectionObject.get_distance(),
                                         this->_power,
-                                        r.get_direction());
+                                        r.get_direction(),
+                                        intersectionObject.get_point());
     return true;            
 }
 

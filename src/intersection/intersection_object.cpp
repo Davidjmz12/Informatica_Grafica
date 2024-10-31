@@ -30,7 +30,6 @@ SpectralColor IntersectionObject::evalRenderEquation(SpectralColor power_light, 
     SpectralColor Lwi = power_light/c1_x.dot(c1_x);
     SpectralColor brdf = this->_properties.get_BRDF()->eval(this->_point,c1_x.normalize(), this->_origin);
     double cosine = fabs(this->_normal.dot(c1_x.normalize()));
-
     return Lwi*brdf*cosine;
 }
 
