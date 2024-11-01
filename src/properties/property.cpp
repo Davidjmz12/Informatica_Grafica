@@ -10,7 +10,7 @@ Property::Property(SpectralColor color)
 
 
 Property::Property()
-    : _color(SpectralColor()), _brdf(new DiffuseBRDF())
+    : _color(SpectralColor()), _brdf(nullptr)
 {}
 
 SpectralColor Property::get_color() const

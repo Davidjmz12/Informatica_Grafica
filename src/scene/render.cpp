@@ -100,7 +100,7 @@ SpectralColor Render::compute_pixel_color(int x, int y) const
     for(size_t i=1; i<num_rays; ++i)
         sum = sum + this->compute_random_pixel_color(x, y);
 
-    return sum/num_rays;
+    return sum;
 }
 
 SpectralColor Render::compute_random_pixel_color(int x, int y) const
