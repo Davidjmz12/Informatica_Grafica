@@ -8,7 +8,7 @@
 
 HashMap get_default_conf() {
     HashMap conf;
-    conf["threads"] = int(1);
+    conf["threads"] = int(16);
     conf["rays"] = int(10);
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();

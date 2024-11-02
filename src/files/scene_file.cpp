@@ -223,7 +223,11 @@ Geometry* SceneFile::read_face(Property p) const
 
 Geometry* SceneFile::read_cone(Property p) const
 {
-    return nullptr;
+    Point vertex = this->read_point();
+    Vector axe = this->read_vector();
+    double h = std::stod(this->read_line());
+    double r = std::stod(this->read_line());
+    return new Cone(vertex, axe, h, r, p);
 }
 
 Geometry* SceneFile::read_disk(Property p) const
