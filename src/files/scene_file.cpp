@@ -140,55 +140,51 @@ BRDF* SceneFile::read_brdf(SpectralColor c) const
         throw std::invalid_argument("The BRDF type must be Diffuse");
 }
 
-PropertyHash SceneFile::read_properties() const
+void SceneFile::read_properties()
 {
     int n_properties = this->read_header("Properties");
-    PropertyHash ch;
     for (int i = 0; i < n_properties; i++)
     {
         std::string name,line;
         name = this->read_line();
         SpectralColor c = this->read_color();
         BRDF* b = this->read_brdf(c);
-        ch[name] = Property(c, b);
+        this->_ch[name] = Property(c, b);
     }
-    return ch;
 }
 
-Property SceneFile::read_property(std::string key, PropertyHash ch) const
+Property SceneFile::read_property(std::string key) const
 {
-    if (ch.find(key) == ch.end())
+    if (this->_ch.find(key) == this->_ch.end())
         throw std::invalid_argument("The property " + key + " does not exist");
-    return ch[key];
+    PropertyHash ph = this->_ch;
+    return ph[key];
 }
 
 
-Geometry* SceneFile::read_plane(PropertyHash ch) const
+Geometry* SceneFile::read_plane(Property p) const
 {
     Vector normal = this->read_vector();
 
     std::string line = this->read_line();
     double d = std::stod(line);
 
-    Property color = this->read_property(this->read_line(), ch);
-    return new Plane(normal, d, color);
+    return new Plane(normal, d, p);
 }
 
-Geometry* SceneFile::read_sphere(PropertyHash ch) const
+Geometry* SceneFile::read_sphere(Property p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
-    Property color = this->read_property(this->read_line(), ch);
-    return new Sphere(center, r, color);
+    return new Sphere(center, r, p);
 }
 
-Geometry* SceneFile::read_cylinder(PropertyHash ch) const
+Geometry* SceneFile::read_cylinder(Property p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     Vector h = this->read_vector();
-    Property color = this->read_property(this->read_line(), ch);
-    return new Cylinder(center, r, h, color);
+    return new Cylinder(center, r, h, p);
 }
 
 std::array<double,6> SceneFile::read_bounding_box() const
@@ -200,96 +196,91 @@ std::array<double,6> SceneFile::read_bounding_box() const
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-Geometry* SceneFile::read_mesh(PropertyHash ch) const
+Geometry* SceneFile::read_mesh(Property p) const
 {
     std::string file =  this->_ply_dir + "/" +  this->read_line();
     std::array<double,6> bb = this->read_bounding_box();
-    Property color = this->read_property(this->read_line(), ch);
-    PlyFile ply = PlyFile(file, color);
+    PlyFile ply = PlyFile(file, p);
     ply = ply.change_bounding_box(bb);
     return ply.to_mesh();
 }
 
-Geometry* SceneFile::read_box(PropertyHash ch) const
+Geometry* SceneFile::read_box(Property p) const
 {
     Point center = this->read_point();
     std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
-    Property color = this->read_property(this->read_line(), ch);
-    return new Box(center, axis, color);
+    return new Box(center, axis, p);
 }
 
-Geometry* SceneFile::read_face(PropertyHash ch) const
+Geometry* SceneFile::read_face(Property p) const
 {
     Vector normal = this->read_vector();
     Vector u = this->read_vector();
     Vector v = this->read_vector();
     Point point = this->read_point();
-    Property color = this->read_property(this->read_line(), ch);
-    return new Face(normal, u, v, point, color);
+    return new Face(normal, u, v, point, p);
 }
 
-Geometry* SceneFile::read_cone(PropertyHash ch) const
+Geometry* SceneFile::read_cone(Property p) const
 {
     return nullptr;
 }
 
-Geometry* SceneFile::read_disk(PropertyHash ch) const
+Geometry* SceneFile::read_disk(Property p) const
 {
     Point center = this->read_point();
     Vector normal = this->read_vector();
     double r = std::stod(this->read_line());
-    Property color = this->read_property(this->read_line(), ch);
-    return new Disk(center, normal, r, color);
+    return new Disk(center, normal, r, p);
 }
 
-Geometry* SceneFile::read_ellipsoid(PropertyHash ch) const
+Geometry* SceneFile::read_ellipsoid(Property p) const
 {
     double a = std::stod(this->read_line());
     double b = std::stod(this->read_line());
     double c = std::stod(this->read_line());
     Point center = this->read_point();
-    Property color = this->read_property(this->read_line(), ch);
-    return new Ellipsoid(a, b, c, center, color);
+    return new Ellipsoid(a, b, c, center, p);
 }
 
-Geometry* SceneFile::read_triangle(PropertyHash ch) const
+Geometry* SceneFile::read_triangle(Property p) const
 {
     Point p1 = this->read_point();
     Point p2 = this->read_point();
     Point p3 = this->read_point();
-    Property color = this->read_property(this->read_line(), ch);
-    return new Triangle(p1, p2, p3, color);
+    return new Triangle(p1, p2, p3, p);
 }
 
 
 
-std::vector<Geometry*> SceneFile::read_geometries(PropertyHash ch) const
+std::vector<Geometry*> SceneFile::read_geometries() const
 {
     int n_geometries = this->read_header("Geometries");
     std::vector<Geometry*> g;
     for (int i = 0; i < n_geometries; i++)
     {
         std::string line = this->read_line();
+        Property p = this->read_property(this->read_line());
         if (line == "plane")
-            g.push_back(this->read_plane(ch));
+            g.push_back(this->read_plane(p));
         else if(line == "sphere")
-            g.push_back(this->read_sphere(ch));
+            g.push_back(this->read_sphere(p));
         else if(line == "cylinder")
-            g.push_back(this->read_cylinder(ch));
+            g.push_back(this->read_cylinder(p));
         else if(line == "mesh")
-            g.push_back(this->read_mesh(ch));
+            g.push_back(this->read_mesh(p));
         else if(line == "box")
-            g.push_back(this->read_box(ch));
+            g.push_back(this->read_box(p));
         else if(line == "face")
-            g.push_back(this->read_face(ch));
+            g.push_back(this->read_face(p));
         else if(line == "cone")
-            g.push_back(this->read_cone(ch));
+            g.push_back(this->read_cone(p));
         else if(line == "disk")
-            g.push_back(this->read_disk(ch));
+            g.push_back(this->read_disk(p));
         else if(line == "ellipsoid")
-            g.push_back(this->read_ellipsoid(ch));
+            g.push_back(this->read_ellipsoid(p));
         else if(line == "triangle")
-            g.push_back(this->read_triangle(ch));
+            g.push_back(this->read_triangle(p));
         else
             throw std::invalid_argument("The geometry type must be Plane, Sphere, Cone or Ply");
     }
@@ -318,35 +309,41 @@ void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLig
             al.push_back(this->read_box_light());
         } else if (name == "sphere")
             al.push_back(this->read_sphere_light());
+        else if (name == "plane")
+            al.push_back(this->read_plane_light());
     }
 }
 
 PunctualLight* SceneFile::read_punctual_light() const
 {
-    Point center = this->read_point();
     SpectralColor power = this->read_color();
+    Point center = this->read_point();
     return new PunctualLight(center, power);
 }
 
 AreaLight* SceneFile::read_box_light() const
 {
+    SpectralColor power = this->read_color();
     Point p = this->read_point();
     Vector v1 = this->read_vector();
     Vector v2 = this->read_vector();
     Vector v3 = this->read_vector();
     Geometry* box = new Box(p, {v1,v2,v3}, Property());
-    SpectralColor power = this->read_color();
     return new AreaLight(box, power);
 }
 
 AreaLight* SceneFile::read_sphere_light() const
 {
-    Point center = this->read_point();
-    double r = std::stod(this->read_line());
     SpectralColor color = this->read_color();
-
-    Geometry* sphere = new Sphere(center, r, Property(color));
+    Geometry* sphere = this->read_sphere(Property(color));
     return new AreaLight(sphere, color);
+}
+
+AreaLight* SceneFile::read_plane_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* plane = this->read_plane(Property(color));
+    return new AreaLight(plane, color);    
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const
@@ -378,11 +375,11 @@ ToneMapping* SceneFile::read_tone_mapping(double max) const
 }
 
 
-void SceneFile::read_scene(std::string path, std::string file_save) const
+void SceneFile::read_scene(std::string path, std::string file_save)
 {
     Camera c = this->read_camera();
-    PropertyHash ch = this->read_properties();
-    std::vector<Geometry*> g = this->read_geometries(ch);
+    this->read_properties();
+    std::vector<Geometry*> g = this->read_geometries();
     std::vector<PunctualLight*> pl;
     std::vector<AreaLight*> al;
     this->read_lights(pl, al);

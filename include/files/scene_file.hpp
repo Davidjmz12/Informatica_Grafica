@@ -19,12 +19,13 @@ private:
 
     std::string _ply_dir;
     mutable std::ifstream _file;
+    PropertyHash _ch;
 
     Point read_point() const;
     Vector read_vector() const;
     Camera read_camera() const;
-    PropertyHash read_properties() const;
-    std::vector<Geometry*> read_geometries(PropertyHash ch) const;
+    void read_properties();
+    std::vector<Geometry*> read_geometries() const;
     void read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const;
     ToneMapping* read_tone_mapping(double max) const;
     std::array<int,2> read_resolution() const;
@@ -33,28 +34,29 @@ private:
     BRDF* read_brdf(SpectralColor c) const;
     std::array<double,6> read_bounding_box() const;
 
-    Property read_property(std::string key, PropertyHash ch) const;
+    Property read_property(std::string key) const;
 
 
     PunctualLight* read_punctual_light() const;
     AreaLight* read_box_light() const;
     AreaLight* read_sphere_light() const;
+    AreaLight* read_plane_light() const;
 
-    Geometry* read_plane(PropertyHash ch) const;
-    Geometry* read_sphere(PropertyHash ch) const;
-    Geometry* read_cylinder(PropertyHash ch) const;
-    Geometry* read_mesh(PropertyHash ch) const;
-    Geometry* read_box(PropertyHash ch) const;
-    Geometry* read_face(PropertyHash ch) const;
-    Geometry* read_cone(PropertyHash ch) const;
-    Geometry* read_disk(PropertyHash ch) const;	
-    Geometry* read_ellipsoid(PropertyHash ch) const;
-    Geometry* read_triangle(PropertyHash ch) const;
+    Geometry* read_plane(Property p) const;
+    Geometry* read_sphere(Property p) const;
+    Geometry* read_cylinder(Property p) const;
+    Geometry* read_mesh(Property p) const;
+    Geometry* read_box(Property p) const;
+    Geometry* read_face(Property p) const;
+    Geometry* read_cone(Property p) const;
+    Geometry* read_disk(Property p) const;	
+    Geometry* read_ellipsoid(Property p) const;
+    Geometry* read_triangle(Property p) const;
 
 
     ToneMapping* read_gamma_tm(double max) const;
 
 public:
     SceneFile(std::string file, std::string ply_dir);
-    void read_scene(std::string path, std::string file_save) const;
+    void read_scene(std::string path, std::string file_save);
 };
