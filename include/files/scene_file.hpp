@@ -25,6 +25,7 @@ private:
     Vector read_vector() const;
     Camera read_camera() const;
     void read_properties();
+    Geometry* read_geometry() const;
     std::vector<Geometry*> read_geometries() const;
     void read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const;
     ToneMapping* read_tone_mapping(double max) const;
@@ -38,17 +39,7 @@ private:
 
 
     PunctualLight* read_punctual_light() const;
-    AreaLight* read_plane_light() const;
-    AreaLight* read_sphere_light() const;
-    AreaLight* read_cylinder_light() const;
-    AreaLight* read_mesh_light() const;
-    AreaLight* read_box_light() const;
-    AreaLight* read_face_light() const;
-    AreaLight* read_cone_light() const;
-    AreaLight* read_disk_light() const;
-    AreaLight* read_ellipsoid_light() const;
-    AreaLight* read_tringle_light() const;
-
+    AreaLight* read_area_light() const;
 
     Geometry* read_plane(Property p) const;
     Geometry* read_sphere(Property p) const;

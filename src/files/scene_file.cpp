@@ -251,39 +251,42 @@ Geometry* SceneFile::read_triangle(Property p) const
     return new Triangle(p1, p2, p3, p);
 }
 
-
+Geometry* SceneFile::read_geometry() const
+{
+    std::string line = this->read_line();
+    Property p = this->read_property(this->read_line());
+    if (line == "plane")
+        return this->read_plane(p);
+    else if(line == "sphere")
+        return this->read_sphere(p);
+    else if(line == "cylinder")
+        return this->read_cylinder(p);
+    else if(line == "mesh")
+        return this->read_mesh(p);
+    else if(line == "box")
+        return this->read_box(p);
+    else if(line == "face")
+        return this->read_face(p);
+    else if(line == "cone")
+        return this->read_cone(p);
+    else if(line == "disk")
+        return this->read_disk(p);
+    else if(line == "ellipsoid")
+        return this->read_ellipsoid(p);
+    else if(line == "triangle")
+        return this->read_triangle(p);
+    else
+        throw std::invalid_argument("The geometry type is unknown");
+}
 
 std::vector<Geometry*> SceneFile::read_geometries() const
 {
     int n_geometries = this->read_header("Geometries");
     std::vector<Geometry*> g;
+
     for (int i = 0; i < n_geometries; i++)
-    {
-        std::string line = this->read_line();
-        Property p = this->read_property(this->read_line());
-        if (line == "plane")
-            g.push_back(this->read_plane(p));
-        else if(line == "sphere")
-            g.push_back(this->read_sphere(p));
-        else if(line == "cylinder")
-            g.push_back(this->read_cylinder(p));
-        else if(line == "mesh")
-            g.push_back(this->read_mesh(p));
-        else if(line == "box")
-            g.push_back(this->read_box(p));
-        else if(line == "face")
-            g.push_back(this->read_face(p));
-        else if(line == "cone")
-            g.push_back(this->read_cone(p));
-        else if(line == "disk")
-            g.push_back(this->read_disk(p));
-        else if(line == "ellipsoid")
-            g.push_back(this->read_ellipsoid(p));
-        else if(line == "triangle")
-            g.push_back(this->read_triangle(p));
-        else
-            throw std::invalid_argument("The geometry type must be Plane, Sphere, Cone or Ply");
-    }
+        g.push_back(this->read_geometry());
+
     return g;   
 }
 
@@ -300,17 +303,13 @@ void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLig
     int n_lights = this->read_header("Lights");
     for (int i = 0; i < n_lights; i++)
     {
-        std::string name = this->read_line(); // Discard the light name
-        if(name == "punctual")
-        {
+        std::string name = this->read_line();
+        if (name == "punctual")
             pl.push_back(this->read_punctual_light());
-        } else if (name == "box")
-        {
-            al.push_back(this->read_box_light());
-        } else if (name == "sphere")
-            al.push_back(this->read_sphere_light());
-        else if (name == "plane")
-            al.push_back(this->read_plane_light());
+        else if (name == "area")
+            al.push_back(this->read_area_light()); 
+        else
+            throw std::invalid_argument("Unknown light type.");
     }
 }
 
@@ -321,78 +320,10 @@ PunctualLight* SceneFile::read_punctual_light() const
     return new PunctualLight(center, power);
 }
 
-AreaLight* SceneFile::read_box_light() const
+AreaLight* SceneFile::read_area_light() const
 {
-    SpectralColor power = this->read_color();
-    Point p = this->read_point();
-    Vector v1 = this->read_vector();
-    Vector v2 = this->read_vector();
-    Vector v3 = this->read_vector();
-    Geometry* box = new Box(p, {v1,v2,v3}, Property());
-    return new AreaLight(box, power);
-}
-
-AreaLight* SceneFile::read_sphere_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* sphere = this->read_sphere(Property(color));
-    return new AreaLight(sphere, color);
-}
-
-AreaLight* SceneFile::read_plane_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* plane = this->read_plane(Property(color));
-    return new AreaLight(plane, color);    
-}
-
-AreaLight* SceneFile::read_cylinder_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_cylinder(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_mesh_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_mesh(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_face_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_face(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_cone_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_cone(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_disk_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_disk(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_ellipsoid_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_ellipsoid(Property(color));
-    return new AreaLight(g, color);
-}
-
-AreaLight* SceneFile::read_tringle_light() const
-{
-    SpectralColor color = this->read_color();
-    Geometry* g = this->read_triangle(Property(color));
-    return new AreaLight(g, color);
+    Geometry* g = this->read_geometry();
+    return new AreaLight(g, g->get_properties().get_color());
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const
