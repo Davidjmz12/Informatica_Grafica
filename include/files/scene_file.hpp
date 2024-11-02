@@ -9,7 +9,7 @@
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
 #include "color/tone_mapping/all_tone_mapping.hpp"
-#include "light/area_light/all_area_light.hpp"
+#include "light/area_light/area_light.hpp"
 
 using PropertyHash = std::unordered_map<std::string, Property>;
 

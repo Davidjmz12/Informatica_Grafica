@@ -74,8 +74,6 @@ int main(int argc, char* argv[])
 {
     parse_init(argc, argv);
 
-    BoxLight(Box(Point(),{Vector(1,0,0),Vector(0,1,0),Vector(0,0,1)},Property()), SpectralColor());
-
     SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
 
     sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");

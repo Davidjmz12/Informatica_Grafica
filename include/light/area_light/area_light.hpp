@@ -3,17 +3,18 @@
 #include "color/spectral_color.hpp"
 #include "intersection/intersection_light.hpp"
 #include "scene/ray.hpp"
+#include "geometry/all_geometry.hpp"
 
 class AreaLight
 {
 protected:
+    Geometry* _shape;
     SpectralColor _power;
 
 public:
-    AreaLight(SpectralColor power)
-        : _power(power) {};
+    AreaLight(Geometry* shape, SpectralColor power);
 
-    virtual bool intersect_with_ray(const Ray& r, IntersectionLight& intersection) const = 0;
+    bool intersect_with_ray(const Ray& r, IntersectionLight& intersection) const;
 
-    virtual std::string to_string() const = 0;
+    std::string to_string() const;
 };

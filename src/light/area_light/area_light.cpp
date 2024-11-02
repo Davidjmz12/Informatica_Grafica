@@ -1,14 +1,14 @@
-#include "light/area_light/box_light.hpp"
+#include "light/area_light/area_light.hpp"
 
-BoxLight::BoxLight(Box box, SpectralColor power)
-    : AreaLight(power), _box(box)
+AreaLight::AreaLight(Geometry* shape, SpectralColor power)
+    : _shape(shape), _power(power)
 {}
 
-bool BoxLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection) const
+bool AreaLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection) const
 {
     // Compute the intersection with the box
     IntersectionObject intersectionObject = IntersectionObject();
-    bool intersects = this->_box.intersect_with_ray(r, intersectionObject);
+    bool intersects = this->_shape->intersect_with_ray(r, intersectionObject);
 
     // Check if do not intersects
     if (!intersects)
@@ -22,8 +22,8 @@ bool BoxLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection)
     return true;            
 }
 
-std::string BoxLight::to_string() const
+std::string AreaLight::to_string() const
 {
-    return  "Box Light:\nPower: " + this->_power.to_string() +
-            "\nBox:\n" + this->_box.to_string() + "\n";
+    return  "Area Light:\nPower: " + this->_power.to_string() +
+            "\nShape:\n" + this->_shape->to_string() + "\n";
 }

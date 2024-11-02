@@ -1,9 +1,3 @@
-add_library(area_light INTERFACE)
-target_link_libraries(area_light INTERFACE spectral_color intersection_light ray)
-
-add_library(box_light box_light.cpp)
-target_link_libraries(box_light PUBLIC area_light box)
-target_include_directories(box_light PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-add_library(area_light_lib INTERFACE)
-target_link_libraries(area_light_lib INTERFACE box_light)
+add_library(area_light area_light.cpp)
+target_link_libraries(area_light PUBLIC spectral_color intersection_light ray)
+target_include_directories(area_light PUBLIC ${CMAKE_SOURCE_DIR}/include)

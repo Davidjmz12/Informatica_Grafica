@@ -333,9 +333,9 @@ AreaLight* SceneFile::read_box_light() const
     Vector v1 = this->read_vector();
     Vector v2 = this->read_vector();
     Vector v3 = this->read_vector();
-    Box box = Box(p, {v1,v2,v3}, Property());
+    Geometry* box = new Box(p, {v1,v2,v3}, Property());
     SpectralColor power = this->read_color();
-    return new BoxLight(box, power);
+    return new AreaLight(box, power);
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const
