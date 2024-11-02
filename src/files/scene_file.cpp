@@ -346,6 +346,55 @@ AreaLight* SceneFile::read_plane_light() const
     return new AreaLight(plane, color);    
 }
 
+AreaLight* SceneFile::read_cylinder_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_cylinder(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_mesh_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_mesh(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_face_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_face(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_cone_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_cone(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_disk_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_disk(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_ellipsoid_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_ellipsoid(Property(color));
+    return new AreaLight(g, color);
+}
+
+AreaLight* SceneFile::read_tringle_light() const
+{
+    SpectralColor color = this->read_color();
+    Geometry* g = this->read_triangle(Property(color));
+    return new AreaLight(g, color);
+}
+
 ToneMapping* SceneFile::read_gamma_tm(double max) const
 {
     std::string line = this->read_line();
