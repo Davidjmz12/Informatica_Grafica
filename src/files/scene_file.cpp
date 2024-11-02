@@ -313,10 +313,11 @@ void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLig
         if(name == "punctual")
         {
             pl.push_back(this->read_punctual_light());
-        } else if (name == "box-light")
+        } else if (name == "box")
         {
             al.push_back(this->read_box_light());
-        }
+        } else if (name == "sphere")
+            al.push_back(this->read_sphere_light());
     }
 }
 
@@ -336,6 +337,16 @@ AreaLight* SceneFile::read_box_light() const
     Geometry* box = new Box(p, {v1,v2,v3}, Property());
     SpectralColor power = this->read_color();
     return new AreaLight(box, power);
+}
+
+AreaLight* SceneFile::read_sphere_light() const
+{
+    Point center = this->read_point();
+    double r = std::stod(this->read_line());
+    SpectralColor color = this->read_color();
+
+    Geometry* sphere = new Sphere(center, r, Property(color));
+    return new AreaLight(sphere, color);
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const

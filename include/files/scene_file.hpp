@@ -38,6 +38,7 @@ private:
 
     PunctualLight* read_punctual_light() const;
     AreaLight* read_box_light() const;
+    AreaLight* read_sphere_light() const;
 
     Geometry* read_plane(PropertyHash ch) const;
     Geometry* read_sphere(PropertyHash ch) const;
