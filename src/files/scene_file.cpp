@@ -14,13 +14,12 @@ std::string parse_string(std::string line)
 std::string SceneFile::read_line() const
 {
     std::string line;
-    std::getline(this->_file, line);
-    line = parse_string(line);
-    while(line == "")
-    {
+
+    do {
         std::getline(this->_file, line);
         line = parse_string(line);
-    }
+    } while(line == "");
+
     return line;
 }
 
@@ -257,8 +256,13 @@ Geometry* SceneFile::read_triangle(Property p) const
 
 Geometry* SceneFile::read_geometry() const
 {
+    // Read the type of geometry
     std::string line = this->read_line();
+
+    // Read the property
     Property p = this->read_property(this->read_line());
+
+    // Create the appropiate object
     if (line == "plane")
         return this->read_plane(p);
     else if(line == "sphere")
@@ -285,9 +289,11 @@ Geometry* SceneFile::read_geometry() const
 
 std::vector<Geometry*> SceneFile::read_geometries() const
 {
+    // Read header and number of geometries
     int n_geometries = this->read_header("Geometries");
     std::vector<Geometry*> g;
 
+    // Read all geometries
     for (int i = 0; i < n_geometries; i++)
         g.push_back(this->read_geometry());
 
@@ -304,10 +310,16 @@ SceneFile::SceneFile(std::string file, std::string ply_dir):
 
 void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const
 {
+    // Read header and number of lights
     int n_lights = this->read_header("Lights");
+
+    // Read all lights
     for (int i = 0; i < n_lights; i++)
     {
+        // Read type of light
         std::string name = this->read_line();
+
+        // Create the appropiate type of light
         if (name == "punctual")
             pl.push_back(this->read_punctual_light());
         else if (name == "area")
@@ -326,7 +338,10 @@ PunctualLight* SceneFile::read_punctual_light() const
 
 AreaLight* SceneFile::read_area_light() const
 {
+    // Read the geometry
     Geometry* g = this->read_geometry();
+
+    // Create the area light
     return new AreaLight(g, g->get_properties().get_color());
 }
 
