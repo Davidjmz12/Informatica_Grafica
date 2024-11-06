@@ -20,7 +20,7 @@ bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     if(!plane.intersect_with_ray(r,intersection))
         return false;
     
-    Vector v = this->_point - intersection.get_point();
+    Vector v = this->_point - intersection.get_origin();
 
     if (geD(fabs(v.dot(this->_u)),this->_sizes[0]) ||  geD(fabs(v.dot(this->_v)),this->_sizes[1]))
         return false;

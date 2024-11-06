@@ -80,7 +80,7 @@ bool Cone::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     intersection_point = Point(this->_centering_inverse*(new Point(intersection_point)));
 
     // Construct the intersection object
-    intersection = IntersectionObject(distance,normal_vector,intersection_point,this->_properties,r.get_direction());
+    intersection = IntersectionObject(distance,normal_vector,intersection_point,this->_properties,r);
 
     return true;
 }

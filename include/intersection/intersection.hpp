@@ -5,21 +5,25 @@
 
 #include "global_config/constants.hpp"
 #include "spatial_element/vector.hpp"
+#include "scene/ray.hpp"
 
 class Intersection
 {
 protected:
     double _distance;
-    Vector _origin;
-    Point _point;
+    Point _intersection_point;
+    Ray _ray;
 public:
-    Intersection(double distance, Vector origin, Point point);
+    Intersection(double distance, Point intersection_point, Ray ray);
 
     Intersection();
     
     double get_distance() const;
-    Vector get_origin() const;
-    Point get_point() const;
+    Vector get_dir_int() const;
+    Point get_int_point() const;
+    Point get_origin() const;
+    double get_refraction_coefficient() const;
+    Ray get_ray() const;
 
     bool operator<(const Intersection& i) const;
     bool operator>(const Intersection& i) const;

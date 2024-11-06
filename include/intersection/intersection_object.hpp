@@ -20,7 +20,7 @@ private:
 public:
 
     IntersectionObject();
-    IntersectionObject(double distance, Vector normal, Point point, Property properties, Vector origin);
+    IntersectionObject(double distance, Vector normal, Point intersection_point, Property properties, Ray ray);
     
     Vector get_normal() const;
     Property get_properties() const;

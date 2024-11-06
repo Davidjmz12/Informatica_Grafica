@@ -8,15 +8,14 @@
  */
 class DiffuseBRDF : public BRDF
 {
-private:
-    SpectralColor _k; // The color of the object
-
 public:
     DiffuseBRDF(SpectralColor k);
 
     DiffuseBRDF();
     
-    SpectralColor eval(Point p, Vector v, Vector w0) const override;
+    SpectralColor eval(Vector v, IntersectionObject& i) const override;
+
+    bool sample_ray(const IntersectionObject& inter, Ray& sampled_ray) const override;
 
     std::string to_string() const override;
 

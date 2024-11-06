@@ -12,7 +12,7 @@ private:
 public:
     IntersectionLight();
         
-    IntersectionLight(double distance, SpectralColor power, Vector origin, Point point);
+    IntersectionLight(double distance, SpectralColor power, Point intersection_point, Ray ray);
 
     SpectralColor get_power() const;
 };

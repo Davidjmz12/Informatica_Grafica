@@ -1,7 +1,11 @@
 #include "scene/ray.hpp"
 
-Ray::Ray(Point point, Vector direction)
-    : _point(point), _direction(direction.normalize())
+Ray::Ray()
+{}
+
+Ray::Ray(Point point, Vector direction, double refraction_coefficient)
+    : _point(point), _direction(direction.normalize()), 
+    _refraction_coefficient(refraction_coefficient)
 {}
 
 Point Ray::evaluate(double t) const
@@ -17,6 +21,11 @@ Point Ray::get_point() const
 Vector Ray::get_direction() const
 {
     return this->_direction;
+}
+
+double Ray::get_refraction_coefficient() const
+{
+    return this->_refraction_coefficient;
 }
 
 std::ostream& operator<<(std::ostream& os, const Ray& r)

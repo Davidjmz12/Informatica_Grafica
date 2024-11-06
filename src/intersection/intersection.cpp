@@ -1,7 +1,7 @@
 #include "intersection/intersection.hpp"
 
-Intersection::Intersection(double distance, Vector origin, Point point)
-    : _distance(distance), _origin(origin), _point(point)
+Intersection::Intersection(double distance, Point intersection_point, Ray ray)
+    : _distance(distance), _intersection_point(intersection_point), _ray(ray)
 {}
 
 Intersection::Intersection()
@@ -13,14 +13,29 @@ double Intersection::get_distance() const
     return this->_distance;
 }
 
-Vector Intersection::get_origin() const
+Point Intersection::get_int_point() const
 {
-    return this->_origin;
+    return this->_intersection_point;
 }
 
-Point Intersection::get_point() const
+Vector Intersection::get_dir_int() const
 {
-    return this->_point;
+    return this->_ray.get_direction();
+}
+
+Point Intersection::get_origin() const
+{
+    return this->_ray.get_point();
+}
+
+double Intersection::get_refraction_coefficient() const
+{
+    return this->_ray.get_refraction_coefficient();
+}
+
+Ray Intersection::get_ray() const
+{
+    return this->_ray;
 }
 
 bool Intersection::operator<(const Intersection& i) const

@@ -3,6 +3,7 @@ target_link_libraries(intersection_object PUBLIC intersection spatial_element po
 target_include_directories(intersection_object PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(intersection intersection.cpp)
+target_link_libraries(intersection_object PUBLIC ray spatial_element)
 target_include_directories(intersection PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(intersection_light intersection_light.cpp)

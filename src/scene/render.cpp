@@ -151,7 +151,7 @@ IndirectLight Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
 
     if(min_int_light < min_int_obj)
     {
-        return IndirectLight{min_int_light.get_point(),min_int_light.get_power()};
+        return IndirectLight{min_int_light.get_origin(),min_int_light.get_power()};
     } else 
     {
         Ray new_ray = sample_new_random_ray(min_int_obj);
@@ -159,7 +159,7 @@ IndirectLight Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
         SpectralColor indirect_light_contribution = min_int_obj.evalRenderEquation(indirect_light.light_contribution, indirect_light.origin);
         SpectralColor point_light_contribution = calculate_total_light(min_int_obj);
 
-        IndirectLight all_light_contribution = IndirectLight{min_int_obj.get_point(), point_light_contribution + indirect_light_contribution};
+        IndirectLight all_light_contribution = IndirectLight{min_int_obj.get_origin(), point_light_contribution + indirect_light_contribution};
         return all_light_contribution;
     }
 
@@ -182,10 +182,10 @@ Ray Render::sample_new_random_ray(IntersectionObject& intersection) const
     double theta = randomD(0,1);
     theta = acos(sqrt(1-theta));
 
-    Base b = Base::complete_base_k(intersection.get_point(),intersection.get_normal());
+    Base b = Base::complete_base_k(intersection.get_origin(),intersection.get_normal());
 
     Vector v = Vector(b.coord_into_canonical(new Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta))));
-    return Ray(intersection.get_point(),v);
+    return Ray(intersection.get_origin(),v);
 }
 
 std::array<double,2> Render::get_random_pixel_coordinates(int x, int y) const

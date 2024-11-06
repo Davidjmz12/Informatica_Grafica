@@ -29,7 +29,7 @@ int main()
     t.addTest("4", Test::EXPECT_EQ(c.intersect_with_ray(r2, i1), true));
     t.addTest("5", Test::EXPECT_EQ(i1.get_distance(), 1.0F));
     t.addTest("6", Test::EXPECT_EQ(i1.get_normal(), Vector(0,0,1)));
-    t.addTest("7", Test::EXPECT_EQ(i1.get_point(), Point(-1,0,1)));
+    t.addTest("7", Test::EXPECT_EQ(i1.get_origin(), Point(-1,0,1)));
 
 
     t.addTest("8",Test::EXPECT_EQ(c.intersect_with_ray(r3, i1), true));
@@ -43,12 +43,12 @@ int main()
     t.addTest("14",Test::EXPECT_EQ(c.intersect_with_ray(r5, i1), true));
     t.addTest("15",Test::EXPECT_EQ(i1.get_distance(), 2.0F));
     t.addTest("16",Test::EXPECT_EQ(i1.get_normal(), Vector(0,0,1)));
-    t.addTest("17",Test::EXPECT_EQ(i1.get_point(), Point(0,0,1)));
+    t.addTest("17",Test::EXPECT_EQ(i1.get_origin(), Point(0,0,1)));
 
     t.addTest("18",Test::EXPECT_EQ(c.intersect_with_ray(r6, i1), true));
     t.addTest("19",Test::EXPECT_EQ(i1.get_distance(), 3.0F));
     t.addTest("20",Test::EXPECT_EQ(i1.get_normal(), Vector(0,0,-1)));
-    t.addTest("21",Test::EXPECT_EQ(i1.get_point(), Point()));
+    t.addTest("21",Test::EXPECT_EQ(i1.get_origin(), Point()));
 
     return t.runAll();
 }
