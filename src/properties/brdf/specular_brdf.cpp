@@ -8,27 +8,31 @@ SpecularBRDF::SpecularBRDF()
     : BRDF(SpectralColor())
 {}
 
-SpectralColor SpecularBRDF::eval(Vector v, IntersectionObject& i) const const
+SpectralColor SpecularBRDF::eval(Vector w_i, IntersectionObject& intersection) const const
 {
-    return this->_k / i.get_normal().dot(i.get_dir_int());
+    return this->_k / intersection.get_normal().dot(intersection.get_dir_int()*(-1));
 }
 
-bool SpecularBRDF::sample_ray(const IntersectionObject& inter, Ray& sampled_ray) const
+bool SpecularBRDF::sample_ray(const IntersectionObject& intersection, Ray& sampled_ray) const
 {
-    Vector projection = inter.get_dir_int() - inter.get_normal()*inter.get_dir_int().dot(inter.get_normal());
+    Vector w_i = intersection.get_dir_int()*(-1);
+    Vector projection = w_i - intersection.get_normal()*w_i.dot(intersection.get_normal());
 
-    Vector final_dir = inter.get_dir_int() - projection * 2;
+    Vector final_dir = w_i - projection * 2;
     
-    sampled_ray = Ray(inter.get_int_point(), final_dir);
+    sampled_ray = Ray(intersection.get_int_point(), final_dir, intersection.get_refraction_coefficient());
     return true;
 }
 
-std::string to_string() const
+std::ostream& operator<<(std::ostream& os, const BRDF& b)
 {
-
+    os << b.to_string();
+    return os;
 }
 
-friend std::ostream& operator<<(std::ostream& os, const BRDF& b)
-{
 
+std::string SpecularBRDF::to_string() const
+{
+    return "SpecularBRDF: " + this->_k.to_string();
 }
+

@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <limits>
@@ -6,8 +5,6 @@
 #include <stdexcept>
 
 #include "intersection/intersection.hpp"
-#include "spatial_element/vector.hpp"
-#include "spatial_element/point.hpp"
 #include "properties/property.hpp"
 
 

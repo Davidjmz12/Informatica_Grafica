@@ -1,6 +1,7 @@
 #pragma once
 
-#include "intersection/intersection_object.hpp"
+#include "spatial_element/point.hpp"
+#include "spatial_element/vector.hpp"
 
 class Ray
 {

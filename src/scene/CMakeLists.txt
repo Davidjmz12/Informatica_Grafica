@@ -1,5 +1,5 @@
 add_library(ray ray.cpp)
-target_link_libraries(ray PUBLIC intersection_object)
+target_link_libraries(ray PUBLIC vector point)
 target_include_directories(ray PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(scene scene.cpp)

@@ -8,7 +8,7 @@ DiffuseBRDF::DiffuseBRDF()
     : BRDF(SpectralColor())
 {}
 
-SpectralColor DiffuseBRDF::eval(Vector v, Intersection& i) const
+SpectralColor DiffuseBRDF::eval(Vector w_i, IntersectionObject& intersection) const
 {
     return this->_k / M_PI;
 }

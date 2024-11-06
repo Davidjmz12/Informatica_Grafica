@@ -3,6 +3,8 @@
 #include "color/spectral_color.hpp"
 #include "properties/brdf/diffuse_brdf.hpp"
 
+class BRDF;
+
 class Property
 {
 private:

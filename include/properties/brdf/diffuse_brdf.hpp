@@ -2,10 +2,6 @@
 
 #include "brdf.hpp"
 
-/**
- * @brief Class that represents the diffuse property of
- * an object
- */
 class DiffuseBRDF : public BRDF
 {
 public:
@@ -13,9 +9,9 @@ public:
 
     DiffuseBRDF();
     
-    SpectralColor eval(Vector v, IntersectionObject& i) const override;
+    SpectralColor eval(Vector w_i, IntersectionObject& intersection) const override;
 
-    bool sample_ray(const IntersectionObject& inter, Ray& sampled_ray) const override;
+    bool sample_ray(const IntersectionObject& intersection, Ray& sampled_ray) const override;
 
     std::string to_string() const override;
 

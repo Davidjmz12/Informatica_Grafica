@@ -4,7 +4,6 @@
 #include <stdexcept>
 
 #include "global_config/constants.hpp"
-#include "spatial_element/vector.hpp"
 #include "scene/ray.hpp"
 
 class Intersection
