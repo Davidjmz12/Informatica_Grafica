@@ -16,5 +16,5 @@ target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_compile_definitions(main PUBLIC ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets")
 
 add_executable(testing testing.cpp)
-target_link_libraries(testing PUBLIC base)
+target_link_libraries(testing PUBLIC brdf_lib)
 target_include_directories(testing PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -1,6 +1,8 @@
+add_library(brdf_lib INTERFACE)
+target_link_libraries(brdf_lib INTERFACE diffuse_brdf refractive_brdf specular_brdf)
 
 add_library(brdf brdf.cpp)
-target_link_libraries(brdf PUBLIC spectral_color intersection_object ray)
+target_link_libraries(brdf PUBLIC spectral_color ray base)
 target_include_directories(brdf PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(diffuse_brdf diffuse_brdf.cpp)
@@ -8,7 +10,7 @@ target_link_libraries(diffuse_brdf PUBLIC brdf)
 target_include_directories(diffuse_brdf PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(refractive_brdf refractive_brdf.cpp)
-target_link_libraries(refractive_brdf PUBLIC brdf base)
+target_link_libraries(refractive_brdf PUBLIC brdf)
 target_include_directories(refractive_brdf PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(specular_brdf specular_brdf.cpp)

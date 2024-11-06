@@ -18,6 +18,7 @@ SpectralColor PunctualLight::light_contribution(std::vector<Geometry*> geometrie
             && ltD(0, shadow_intersect.get_distance()))
             shadow = true;
     }
+    
     if (shadow)
         return SpectralColor();
     

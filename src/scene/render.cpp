@@ -107,15 +107,15 @@ SpectralColor Render::compute_random_pixel_color(int x, int y) const
 {
     std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
     Ray r = this->trace_ray(pixel_coordinates);
-    IndirectLight l = this->compute_ray_intersection_color(r, _gc->get_number_of_bounces()); 
-    return l.light_contribution;
+    SpectralColor l = this->compute_ray_intersection_color(r, _gc->get_number_of_bounces()); 
+    return l;
 }
 
-IndirectLight Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
+SpectralColor Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
 {
     // If the number of bounces is 0, return black.
     if(n_rec == 0)
-        return IndirectLight{Point(), SpectralColor(0.0)};
+        return SpectralColor{};
 
     IntersectionObject min_int_obj;
 
@@ -146,21 +146,23 @@ IndirectLight Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
 
     // If the ray does not intersect with any object, return black.
     if(!intersects)
-        return IndirectLight{Point(), SpectralColor(0.0)};
+        return SpectralColor{};
 
 
     if(min_int_light < min_int_obj)
     {
-        return IndirectLight{min_int_light.get_origin(),min_int_light.get_power()};
+        return min_int_light.get_power();
     } else 
     {
-        Ray new_ray = sample_new_random_ray(min_int_obj);
-        IndirectLight indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-        SpectralColor indirect_light_contribution = min_int_obj.evalRenderEquation(indirect_light.light_contribution, indirect_light.origin);
+        Ray new_ray;
+        if(!min_int_obj.sample_ray(new_ray))
+            return SpectralColor{};
+
+        SpectralColor indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
+        SpectralColor indirect_light_contribution = indirect_light*min_int_obj.eval_brdf(new_ray.get_direction())*fabs(min_int_obj.get_normal().dot(new_ray.get_direction()));
         SpectralColor point_light_contribution = calculate_total_light(min_int_obj);
 
-        IndirectLight all_light_contribution = IndirectLight{min_int_obj.get_origin(), point_light_contribution + indirect_light_contribution};
-        return all_light_contribution;
+        return point_light_contribution + indirect_light_contribution;
     }
 
 }
@@ -174,18 +176,6 @@ SpectralColor Render::calculate_total_light(IntersectionObject& intersection) co
         color_contribution = color_contribution + lights[i]->light_contribution(this->_scene.get_objects(), intersection);
     }
     return color_contribution;
-}
-
-Ray Render::sample_new_random_ray(IntersectionObject& intersection) const
-{
-    double phi = randomD(0,2*M_PI);
-    double theta = randomD(0,1);
-    theta = acos(sqrt(1-theta));
-
-    Base b = Base::complete_base_k(intersection.get_origin(),intersection.get_normal());
-
-    Vector v = Vector(b.coord_into_canonical(new Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta))));
-    return Ray(intersection.get_origin(),v);
 }
 
 std::array<double,2> Render::get_random_pixel_coordinates(int x, int y) const

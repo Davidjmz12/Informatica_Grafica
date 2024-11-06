@@ -17,6 +17,7 @@
 #include "files/ply_file.hpp"
 #include "color/tone_mapping/all_tone_mapping.hpp"
 #include "light/area_light/area_light.hpp"
+#include "properties/brdf/all_brdf.hpp"
 
 using PropertyHash = std::unordered_map<std::string, Property>;
 

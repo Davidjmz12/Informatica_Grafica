@@ -1,8 +1,8 @@
 #pragma once
 
 #include "color/spectral_color.hpp"
-#include "intersection/intersection_object.hpp"
 #include "scene/ray.hpp"
+#include "spatial_element/base.hpp"
 
 
 class BRDF {
@@ -12,9 +12,9 @@ protected:
 public:
     BRDF(SpectralColor k);
 
-    virtual SpectralColor eval(Vector w_i, IntersectionObject& intersection) const = 0;
+    virtual SpectralColor eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const = 0;
 
-    virtual bool sample_ray(const IntersectionObject& intersection, Ray& sampled_ray) const = 0;
+    virtual bool sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray) const = 0;
 
     virtual std::string to_string() const = 0;
 

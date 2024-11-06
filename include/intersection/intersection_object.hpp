@@ -26,5 +26,7 @@ public:
 
     bool operator==(const IntersectionObject i) const;
     friend std::ostream& operator<<(std::ostream& os, const IntersectionObject& i);
-    
+
+    SpectralColor eval_brdf(Vector w_i) const;
+    bool sample_ray(Ray& sampled_ray) const;
 };

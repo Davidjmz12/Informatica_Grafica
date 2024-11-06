@@ -8,19 +8,18 @@ SpecularBRDF::SpecularBRDF()
     : BRDF(SpectralColor())
 {}
 
-SpectralColor SpecularBRDF::eval(Vector w_i, IntersectionObject& intersection) const const
+SpectralColor SpecularBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
-    return this->_k / intersection.get_normal().dot(intersection.get_dir_int()*(-1));
+    return this->_k / n.dot(w_0);
 }
 
-bool SpecularBRDF::sample_ray(const IntersectionObject& intersection, Ray& sampled_ray) const
+bool SpecularBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray) const
 {
-    Vector w_i = intersection.get_dir_int()*(-1);
-    Vector projection = w_i - intersection.get_normal()*w_i.dot(intersection.get_normal());
+    Vector projection = w_0 - n*w_0.dot(n);
 
-    Vector final_dir = w_i - projection * 2;
+    Vector final_dir = w_0 - projection * 2;
     
-    sampled_ray = Ray(intersection.get_int_point(), final_dir, intersection.get_refraction_coefficient());
+    sampled_ray = Ray(x, final_dir, ref_coef_entry);
     return true;
 }
 
