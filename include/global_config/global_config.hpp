@@ -57,7 +57,6 @@ public:
         return std::any_cast<int>(this->get("rays"));
     }
 
-
     size_t get_number_of_bounces(){
         return std::any_cast<int>(this->get("n-bounces"));
     }
