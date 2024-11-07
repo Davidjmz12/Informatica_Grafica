@@ -53,7 +53,8 @@ bool IntersectionObject::sample_ray(Ray& sampled_ray) const
 {
     return this->_properties.get_BRDF()->sample_ray(this->_ray.get_direction()*(-1), 
         this->_intersection_point, this->_normal, 
-        this->get_ray().get_refraction_coefficient(), sampled_ray);
+        this->get_ray().get_refraction_coefficient(), sampled_ray,
+        this->_is_entering);
 }
 
 std::ostream& operator<<(std::ostream& os, const IntersectionObject& i)

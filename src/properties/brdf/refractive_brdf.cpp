@@ -13,12 +13,15 @@ SpectralColor RefractiveBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, do
     return this->_k / n.dot(w_0);
 }
 
-bool RefractiveBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray) const
+bool RefractiveBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry,  Ray& sampled_ray, bool is_entering) const
 {
     
     double theta_entry = acos(n.dot(w_0));
-    
-    double l = sin(theta_entry)*ref_coef_entry/this->_refraction_coefficient;
+
+    double entry_ri = is_entering ? 1 : this->_refraction_coefficient;
+    double exit_ri = is_entering ? this->_refraction_coefficient : 1;
+
+    double l = sin(theta_entry)*entry_ri/exit_ri;
 
     if(l>1 | l<-1)
         return false;

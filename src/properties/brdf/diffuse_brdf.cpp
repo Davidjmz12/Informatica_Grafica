@@ -13,7 +13,7 @@ SpectralColor DiffuseBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, doubl
     return this->_k / M_PI;
 }
 
-bool DiffuseBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray) const
+bool DiffuseBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering) const
 {
     double phi = randomD(0,2*M_PI);
     double theta = randomD(0,1);
