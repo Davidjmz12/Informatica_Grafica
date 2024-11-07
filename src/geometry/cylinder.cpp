@@ -66,7 +66,7 @@ bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObje
     if(!intersect_with_ray_infinite_cylinder(r, intersection))
         return false;
     
-    double int_point_dot_axis = (intersection.get_origin()-this->_center).dot(_axis);
+    double int_point_dot_axis = (intersection.get_int_point()-this->_center).dot(_axis);
 
     if( ltD(int_point_dot_axis, 0) || gtD(int_point_dot_axis, _height))
         return false;

@@ -28,7 +28,7 @@ int main()
     t.addTest("1", Test::EXPECT_EQ(tr.intersect_with_ray(r1,i1),false));
 
     t.addTest("2", Test::EXPECT_EQ(tr.intersect_with_ray(r2,i1),true));
-    t.addTest("3", Test::EXPECT_EQ(i1.get_origin(),Point(60.0/46,60.0/23,60.0/23)));
+    t.addTest("3", Test::EXPECT_EQ(i1.get_int_point(),Point(60.0/46,60.0/23,60.0/23)));
     t.addTest("4", Test::EXPECT_EQ(i1.get_normal(),Vector(3,-6,-7).normalize()));
     t.addTest("5", Test::EXPECT_EQ(i1.get_distance(),Vector(60.0/46,60.0/23,60.0/23).norm()));
 
@@ -36,7 +36,7 @@ int main()
     t.addTest("7", Test::EXPECT_EQ(tr.intersect_with_ray(r4,i1),false));
 
     t.addTest("8", Test::EXPECT_EQ(tr.intersect_with_ray(r5,i1),true));
-    t.addTest("9", Test::EXPECT_EQ(i1.get_origin(),Point(60.0/46,60.0/23,60.0/23)));
+    t.addTest("9", Test::EXPECT_EQ(i1.get_int_point(),Point(60.0/46,60.0/23,60.0/23)));
     t.addTest("10", Test::EXPECT_EQ(i1.get_normal(),Vector(-3,6,7).normalize()));
     t.addTest("11", Test::EXPECT_EQ(i1.get_distance(),(Point(1.5,3,3)-Point(60.0/46,60.0/23,60.0/23)).norm()));
 

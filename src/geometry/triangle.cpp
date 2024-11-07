@@ -47,7 +47,7 @@ bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection
     if(!triangle_plane.intersect_with_ray(r, intersection))
         return false;
     
-    if(this->point_inside_triangle(intersection.get_origin()))
+    if(this->point_inside_triangle(intersection.get_int_point()))
     {
         return true;
     } 

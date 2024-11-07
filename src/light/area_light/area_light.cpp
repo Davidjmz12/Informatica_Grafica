@@ -17,7 +17,7 @@ bool AreaLight::intersect_with_ray(const Ray& r, IntersectionLight& intersection
     // Construct the intersection light object
     intersection = IntersectionLight(   intersectionObject.get_distance(),
                                         this->_power,
-                                        intersectionObject.get_origin(),
+                                        intersectionObject.get_int_point(),
                                         intersectionObject.get_ray());
     return true;            
 }

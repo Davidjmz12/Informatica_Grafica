@@ -137,6 +137,12 @@ BRDF* SceneFile::read_brdf(SpectralColor c) const
         return new DiffuseBRDF(c);
     else if (line == "specular")
         return new SpecularBRDF(c);
+    else if (line == "refractive")
+    {
+        double refractive_index = std::stod(this->read_line());
+        return new RefractiveBRDF(c, refractive_index);
+    }
+        
     else
         throw std::invalid_argument("The BRDF type must be Diffuse");
 }

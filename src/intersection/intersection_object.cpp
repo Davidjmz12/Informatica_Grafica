@@ -28,7 +28,7 @@ SpectralColor IntersectionObject::evalRenderEquation(SpectralColor power_light, 
 {
 
     Vector c1_x = point_light-this->_intersection_point;
-    SpectralColor Lwi = power_light/pow(c1_x.norm()+1,2);
+    SpectralColor Lwi = power_light/pow(c1_x.norm(),2);
     SpectralColor brdf = this->eval_brdf(c1_x.normalize());
     double cosine = fabs(this->_normal.dot(c1_x.normalize()));
 

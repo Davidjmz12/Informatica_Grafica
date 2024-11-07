@@ -9,11 +9,11 @@
 HashMap get_default_conf() {
     HashMap conf;
     conf["threads"] = int(1);
-    conf["rays"] = int(10);
+    conf["rays"] = int(50);
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();
-    conf["task-size"] = int(100);
-    conf["n-bounces"] = int(10);
+    conf["task-size"] = int(10);
+    conf["n-bounces"] = int(5);
     return conf;
 }
 
@@ -72,12 +72,16 @@ void parse_end() {
 
 int main(int argc, char* argv[]) 
 {
-    parse_init(argc, argv);
+    try {
+        parse_init(argc, argv);
 
-    SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
+        SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
 
-    sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");
+        sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");
 
-    parse_end();
+        parse_end();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    }
     return 0;
 }

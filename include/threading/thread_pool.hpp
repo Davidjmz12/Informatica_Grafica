@@ -90,7 +90,12 @@ public:
             }
 
             // Execute the task
-            task();
+            try{
+                task();
+            } catch (std::exception& e) {
+                std::cerr << "Error in thread: " << e.what() << std::endl;
+            }
+            
 
             if (has_metrics)
             {

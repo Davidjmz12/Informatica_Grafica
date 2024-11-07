@@ -15,12 +15,12 @@ int main()
     IntersectionObject i1 = IntersectionObject();
 
     t.addTest("1",Test::EXPECT_EQ(f1.intersect_with_ray(r1,i1),true));
-    t.addTest("2",Test::EXPECT_EQ(i1.get_origin(),Point(1,2,3)));
+    t.addTest("2",Test::EXPECT_EQ(i1.get_int_point(),Point(1,2,3)));
     t.addTest("3",Test::EXPECT_EQ(i1.get_normal(),Vector(-1,-1,-1).normalize()));
     t.addTest("4",Test::EXPECT_EQ(i1.get_distance(),Vector(1,2,3).norm()));
     
     t.addTest("5",Test::EXPECT_EQ(f1.intersect_with_ray(r2,i1),true));
-    t.addTest("6",Test::EXPECT_EQ(i1.get_origin(),Point(1,2,3)));
+    t.addTest("6",Test::EXPECT_EQ(i1.get_int_point(),Point(1,2,3)));
     t.addTest("7",Test::EXPECT_EQ(i1.get_normal(),Vector(1,1,1).normalize()));
     t.addTest("8",Test::EXPECT_EQ(i1.get_distance(),Vector(1,2,3).norm()));
     

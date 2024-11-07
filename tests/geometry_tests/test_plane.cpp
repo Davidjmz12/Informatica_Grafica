@@ -24,7 +24,7 @@ int main()
     t.addTest("4",Test::EXPECT_EQ(p2.intersect_with_ray(r2, i1), true));
     t.addTest("5",Test::EXPECT_EQ(i1.get_distance(), 10.0F));
     t.addTest("6",Test::EXPECT_EQ(i1.get_normal(), (Vector(3,2,1)*(-1)).normalize()));
-    t.addTest("7",Test::EXPECT_EQ(i1.get_origin(), Point(0,0,10)));
+    t.addTest("7",Test::EXPECT_EQ(i1.get_int_point(), Point(0,0,10)));
 
     // All ray does not intersect with the plane
     t.addTest("8",Test::EXPECT_EQ(p2.intersect_with_ray(r3, i1), false));
@@ -33,7 +33,7 @@ int main()
     t.addTest("10",Test::EXPECT_EQ(p2.intersect_with_ray(r5, i1), true));
     t.addTest("11",Test::EXPECT_EQ(i1.get_distance(), 2/3.0F));
     t.addTest("12",Test::EXPECT_EQ(i1.get_normal(), Vector(3,2,1).normalize()));
-    t.addTest("13",Test::EXPECT_EQ(i1.get_origin(), Point(10/3.0F,0,0)));
+    t.addTest("13",Test::EXPECT_EQ(i1.get_int_point(), Point(10/3.0F,0,0)));
 
     return t.runAll();
 

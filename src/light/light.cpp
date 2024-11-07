@@ -6,10 +6,10 @@ PunctualLight::PunctualLight(Point center, SpectralColor power)
 
 SpectralColor PunctualLight::light_contribution(std::vector<Geometry*> geometries, const IntersectionObject& intersection) const
 {
-    Vector ray_dir = (this->_center-intersection.get_origin());
+    Vector ray_dir = (this->_center-intersection.get_int_point());
     double norm_ray_dir = ray_dir.norm();
 
-    Ray r = Ray(intersection.get_origin(),ray_dir);
+    Ray r = Ray(intersection.get_int_point(),ray_dir);
     IntersectionObject shadow_intersect;
     bool shadow = false;
     for(Geometry* g: geometries)
