@@ -47,3 +47,14 @@ bool Intersection::operator>(const Intersection& i) const
 {
     return gtD(this->_distance, i.get_distance());
 }
+
+std::ostream& operator<<(std::ostream& os, const Intersection& i)
+{
+    os << i.to_string();
+    return os;
+}
+
+std::string Intersection::to_string() const
+{
+    return "Intersection: " + this->_intersection_point.to_string() + "\n" + std::to_string(this->_distance);
+}

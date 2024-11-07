@@ -44,7 +44,14 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
 
 
     Point point_int = r.evaluate(distance);
-    intersection = IntersectionObject(distance, this->normal(point_int), point_int, this->_properties, r);
+
+    Vector p_inside = (r.get_point()-this->_center);
+    bool is_entering = true;
+    if (pow(p_inside[0],2)/pow(this->_a,2) + pow(p_inside[1],2)/pow(this->_b,2) + pow(p_inside[2],2)/pow(this->_c,2) <= 1)
+        is_entering = false;
+
+    Vector normal = is_entering ? this->normal(point_int) : this->normal(point_int)*(-1);
+    intersection = IntersectionObject(distance, normal, point_int, this->_properties, r, is_entering);
 
     return existSolution;    
 }

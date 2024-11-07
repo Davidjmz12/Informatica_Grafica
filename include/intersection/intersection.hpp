@@ -26,4 +26,8 @@ public:
 
     bool operator<(const Intersection& i) const;
     bool operator>(const Intersection& i) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Intersection& i);
+
+    std::string to_string() const;
 };
