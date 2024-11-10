@@ -2,6 +2,7 @@
 
 #include "color/spectral_color.hpp"
 #include "geometry/geometry.hpp"
+#include "geometry/kd-trees/kd-tree.hpp"
 
 class PunctualLight
 {
@@ -13,5 +14,5 @@ public:
 
     PunctualLight(Point center, SpectralColor power);
     
-    SpectralColor light_contribution(std::vector<Geometry*> geometries, const IntersectionObject& intersection) const;
+    SpectralColor light_contribution(KDTree& tree, const IntersectionObject& intersection) const;
 };

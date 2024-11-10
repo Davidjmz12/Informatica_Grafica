@@ -1,6 +1,6 @@
 #include "scene/render.hpp"
 
-Render::Render(Scene s)
+Render::Render(Scene& s)
     : _scene(s), _gc(GlobalConf::get_instance()), _pool(_gc->get_number_of_threads())
 {}
 
@@ -121,16 +121,7 @@ SpectralColor Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
 
     bool intersects = false;
 
-    for(auto element: this->_scene.get_objects())
-    {
-        IntersectionObject int_obj_aux;
-        if(element->intersect_with_ray(r, int_obj_aux))
-        {
-            intersects = true;
-            if(int_obj_aux < min_int_obj)
-                min_int_obj = int_obj_aux;
-        }
-    }
+    intersects = this->_scene.intersect_with_ray(r, min_int_obj);
 
     IntersectionLight min_int_light;
     for(auto element: this->_scene.get_area_lights())
@@ -169,7 +160,7 @@ SpectralColor Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
 
 SpectralColor Render::calculate_punctual_light_contribution(IntersectionObject& intersection) const
 {
-    std::vector<PunctualLight*> lights = this->_scene.get_punctual_lights();
+    VectorPunctualLight lights = this->_scene.get_punctual_lights();
     SpectralColor color_contribution;
     for(size_t i=0; i<lights.size(); ++i)
     {

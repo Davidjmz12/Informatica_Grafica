@@ -20,4 +20,8 @@ public:
     BoundingBox(const std::array<double, 6>& bounds);
 
     bool intersect_with_ray(const Ray& ray) const;
+
+    std::string to_string() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const BoundingBox& bb);
 };

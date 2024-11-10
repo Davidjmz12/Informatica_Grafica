@@ -11,7 +11,10 @@
 #include "scene/camera.hpp"
 #include "light/area_light/area_light.hpp"
 #include "light/light.hpp"
+#include "geometry/kd-trees/kd-tree.hpp"
 
+using VectorPunctualLight = std::vector<std::shared_ptr<PunctualLight>>;
+using VectorAreaLight = std::vector<std::shared_ptr<AreaLight>>;
 
 /**
  * @brief Class for representing a scene with geometry
@@ -20,9 +23,9 @@
 class Scene
 {
 private:
-    std::vector<Geometry*> _objects; // Vector of objects
-    std::vector<PunctualLight*> _punctual_lights;      // Vector of lights
-    std::vector<AreaLight*> _area_lights;
+    KDTree _objects; // Vector of objects
+    VectorPunctualLight _punctual_lights;      // Vector of lights
+    VectorAreaLight _area_lights;
     Camera _camera;                  // Camera
 
 public:
@@ -32,21 +35,15 @@ public:
      * scene.
      * @param camera Camera on the scene.
      */
-    Scene(std::vector<Geometry*> objects,  std::vector<PunctualLight*> lights, std::vector<AreaLight*> area_lights, Camera camera);
-
-    /**
-     * @brief Add a Geometry object to the scene.
-     * @param g The geomtry to add.
-     */
-    void add_geometry(Geometry* g);
-
-    void add_light(PunctualLight* l);
+    Scene(VectorGeometries objects,  VectorPunctualLight lights, VectorAreaLight area_lights, Camera camera);
 
     std::array<int,2> get_resolution() const;
 
-    std::vector<Geometry*> get_objects() const;
-    std::vector<PunctualLight*> get_punctual_lights() const;
-    std::vector<AreaLight*> get_area_lights() const;
+    bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
+
+    VectorPunctualLight get_punctual_lights() const;
+    VectorAreaLight get_area_lights() const;
+    KDTree& get_objects();
     Camera get_camera() const;
 
     /**

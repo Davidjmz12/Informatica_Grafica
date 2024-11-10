@@ -10,6 +10,7 @@ KDTree::KDTree(const VectorGeometries& geometries)
     size_t depth = GlobalConf::get_instance()->get_max_depth();
     root = std::make_unique<KDTreeNode>(geometries);
     root->build(depth);
+    std::cout << "Resulting Tree:" << (*this) << std::endl;
 }
 
 bool KDTree::intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const
@@ -20,8 +21,15 @@ bool KDTree::intersect_with_ray(const Ray& ray, IntersectionObject& intersection
 
 std::string KDTree::to_string() const
 {
-    return "NOT IMPLEMENTED YET";
+    return root->to_string(0);
 }
+
+std::ostream& operator<<(std::ostream& os, const KDTree& tree)
+{
+    os << tree.to_string();
+    return os;
+}
+
 
 KDTreeNode::KDTreeNode(const VectorGeometries& geometries)
     : geometries(geometries)
@@ -36,7 +44,7 @@ KDTreeNode::KDTreeNode(const VectorGeometries& geometries)
 
 void KDTreeNode::build(int depth)
 {
-    if (geometries.size() <= 1 || depth > 0) return;
+    if (geometries.size() <= 1 || depth == 0) return;
 
     int axis = depth % 3;
     std::sort(geometries.begin(), geometries.end(), [axis](const auto& a, const auto& b) {
@@ -83,4 +91,19 @@ bool KDTreeNode::intersect_with_ray(const Ray& ray, IntersectionObject& intersec
         return hit;
     }
 
+}
+
+std::string KDTreeNode::to_string(size_t offset) const
+{
+    std::string offset_s(offset, '\t');
+    std::string s = offset_s  + "BoundingBox" + bbox.to_string() + "\n";
+    if (left) s += offset_s + "Left:\n" + left->to_string(offset + 1);
+    if (right) s += offset_s + "Right:\n" + right->to_string(offset + 1);
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& os, const KDTreeNode& node)
+{
+    os << node.to_string(0);
+    return os;
 }

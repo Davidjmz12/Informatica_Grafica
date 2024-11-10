@@ -83,3 +83,18 @@ bool BoundingBox::intersect_with_ray(const Ray& ray) const {
 
     return tmax >= 0;
 }
+
+std::string BoundingBox::to_string() const
+{
+    std::string s;
+    s += "X: [" + std::to_string(_bound_box[0]) + ", " + std::to_string(_bound_box[1]) + "] ";
+    s += "Y: [" + std::to_string(_bound_box[2]) + ", " + std::to_string(_bound_box[3]) + "] ";
+    s += "Z: [" + std::to_string(_bound_box[4]) + ", " + std::to_string(_bound_box[5]) + "] ";
+    return s;
+}
+
+std::ostream& operator<<(std::ostream& os, const BoundingBox& bb)
+{
+    os << bb.to_string();
+    return os;
+}

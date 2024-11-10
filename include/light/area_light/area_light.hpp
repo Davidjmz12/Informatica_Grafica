@@ -18,7 +18,7 @@
 class AreaLight
 {
 private:
-    Geometry* _shape;       // The shape of the light
+    std::shared_ptr<Geometry> _shape;       // The shape of the light
     SpectralColor _power;   // The luminance of the light
 
 public:
@@ -27,7 +27,7 @@ public:
      * @param shape The shape of the light
      * @param power The luminance of the light
      */
-    AreaLight(Geometry* shape, SpectralColor power);
+    AreaLight(std::shared_ptr<Geometry> shape, SpectralColor power);
 
     /**
      * @brief Method for computing if a ray intersects with the AreaLight

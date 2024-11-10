@@ -183,29 +183,29 @@ Property SceneFile::read_property(std::string key) const
 }
 
 
-Geometry* SceneFile::read_plane(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_plane(Property p) const
 {
     Vector normal = this->read_vector();
 
     std::string line = this->read_line();
     double d = std::stod(line);
 
-    return new Plane(normal, d, p);
+    return std::make_shared<Plane>(normal, d, p);
 }
 
-Geometry* SceneFile::read_sphere(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_sphere(Property p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
-    return new Sphere(center, r, p);
+    return std::make_shared<Sphere>(center, r, p);
 }
 
-Geometry* SceneFile::read_cylinder(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_cylinder(Property p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     Vector h = this->read_vector();
-    return new Cylinder(center, r, h, p);
+    return std::make_shared<Cylinder>(center, r, h, p);
 }
 
 std::array<double,6> SceneFile::read_bounding_box() const
@@ -217,7 +217,7 @@ std::array<double,6> SceneFile::read_bounding_box() const
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-Geometry* SceneFile::read_mesh(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_mesh(Property p) const
 {
     std::string file =  this->_ply_dir + "/" +  this->read_line();
     std::array<double,6> bb = this->read_bounding_box();
@@ -226,57 +226,56 @@ Geometry* SceneFile::read_mesh(Property p) const
     return ply.to_mesh();
 }
 
-Geometry* SceneFile::read_box(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_box(Property p) const
 {
     Point center = this->read_point();
     std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
-    return new Box(center, axis, p);
+    return std::make_shared<Box>(center, axis, p);
 }
 
-Geometry* SceneFile::read_face(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_face(Property p) const
 {
     Vector normal = this->read_vector();
     Vector u = this->read_vector();
     Vector v = this->read_vector();
     Point point = this->read_point();
-    return new Face(normal, u, v, point, p);
+    return std::make_shared<Face>(normal, u, v, point, p);
 }
 
-Geometry* SceneFile::read_cone(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_cone(Property p) const
 {
-    Point vertex = this->read_point();
+    Point center = this->read_point();
     Vector axe = this->read_vector();
-    double h = std::stod(this->read_line());
     double r = std::stod(this->read_line());
-    return new Cone(vertex, axe, h, r, p);
+    return std::make_shared<Cone>(center, axe, r, p);
 }
 
-Geometry* SceneFile::read_disk(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_disk(Property p) const
 {
     Point center = this->read_point();
     Vector normal = this->read_vector();
     double r = std::stod(this->read_line());
-    return new Disk(center, normal, r, p);
+    return std::make_shared<Disk>(center, normal, r, p);
 }
 
-Geometry* SceneFile::read_ellipsoid(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_ellipsoid(Property p) const
 {
     double a = std::stod(this->read_line());
     double b = std::stod(this->read_line());
     double c = std::stod(this->read_line());
     Point center = this->read_point();
-    return new Ellipsoid(a, b, c, center, p);
+    return std::make_shared<Ellipsoid>(a, b, c, center, p);
 }
 
-Geometry* SceneFile::read_triangle(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_triangle(Property p) const
 {
     Point p1 = this->read_point();
     Point p2 = this->read_point();
     Point p3 = this->read_point();
-    return new Triangle(p1, p2, p3, p);
+    return std::make_shared<Triangle>(p1, p2, p3, p);
 }
 
-Geometry* SceneFile::read_geometry() const
+std::shared_ptr<Geometry> SceneFile::read_geometry() const
 {
     // Read the type of geometry
     std::string line = this->read_line();
@@ -309,11 +308,11 @@ Geometry* SceneFile::read_geometry() const
         throw std::invalid_argument("The geometry type is unknown");
 }
 
-std::vector<Geometry*> SceneFile::read_geometries() const
+VectorGeometries SceneFile::read_geometries() const
 {
     // Read header and number of geometries
     int n_geometries = this->read_header("Geometries");
-    std::vector<Geometry*> g;
+    VectorGeometries g;
 
     // Read all geometries
     for (int i = 0; i < n_geometries; i++)
@@ -330,7 +329,7 @@ SceneFile::SceneFile(std::string file, std::string ply_dir):
         throw std::invalid_argument("The file " + file + " does not exist");
 }
 
-void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const
+void SceneFile::read_lights(VectorPunctualLight& pl, VectorAreaLight& al) const
 {
     // Read header and number of lights
     int n_lights = this->read_header("Lights");
@@ -351,20 +350,20 @@ void SceneFile::read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLig
     }
 }
 
-PunctualLight* SceneFile::read_punctual_light() const
+std::shared_ptr<PunctualLight> SceneFile::read_punctual_light() const
 {
     SpectralColor power = this->read_color();
     Point center = this->read_point();
-    return new PunctualLight(center, power);
+    return std::make_shared<PunctualLight>(center, power);
 }
 
-AreaLight* SceneFile::read_area_light() const
+std::shared_ptr<AreaLight> SceneFile::read_area_light() const
 {
     // Read the geometry
-    Geometry* g = this->read_geometry();
+    std::shared_ptr<Geometry> g = this->read_geometry();
 
     // Create the area light
-    return new AreaLight(g, g->get_properties().get_color());
+    return std::make_shared<AreaLight>(g, g->get_properties().get_color());
 }
 
 ToneMapping* SceneFile::read_gamma_tm(double max) const
@@ -400,12 +399,12 @@ void SceneFile::read_scene(std::string path, std::string file_save)
 {
     Camera c = this->read_camera();
     this->read_properties();
-    std::vector<Geometry*> g = this->read_geometries();
-    std::vector<PunctualLight*> pl;
-    std::vector<AreaLight*> al;
+    VectorGeometries g = this->read_geometries();
+    VectorPunctualLight pl;
+    VectorAreaLight al;
     this->read_lights(pl, al);
-    
-    Render rend = Render(Scene(g, pl, al, c));
+    Scene s = Scene(g, pl, al, c);
+    Render rend = Render(s);
 
     ColorMap cm = rend.render_scene();
     double max = cm.max();

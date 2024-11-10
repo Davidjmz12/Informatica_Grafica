@@ -1,6 +1,6 @@
 #include "light/area_light/area_light.hpp"
 
-AreaLight::AreaLight(Geometry* shape, SpectralColor power)
+AreaLight::AreaLight(std::shared_ptr<Geometry> shape, SpectralColor power)
     : _shape(shape), _power(power)
 {}
 

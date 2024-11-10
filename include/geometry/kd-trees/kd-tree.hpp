@@ -24,6 +24,10 @@ public:
     KDTreeNode(const VectorGeometries& geometries);
     void build(int depth);
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
+
+    std::string to_string(size_t offset) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const KDTreeNode& node);
 };
 
 class KDTree
@@ -38,4 +42,6 @@ public:
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
 
     std::string to_string() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const KDTree& tree);
 };

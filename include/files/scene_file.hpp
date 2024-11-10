@@ -65,20 +65,20 @@ private:
      * @brief Method for reading a geometry
      * @return A pointer to the geometry
      */
-    Geometry* read_geometry() const;
+    std::shared_ptr<Geometry> read_geometry() const;
 
     /**
      * @brief Method for reading all the geometries
      * @return A vector with pointers to all geometries
      */
-    std::vector<Geometry*> read_geometries() const;
+    VectorGeometries read_geometries() const;
 
     /**
      * @brief Method for reading all the lights
      * @param pl[out] The punctual lights
      * @param al[out] The area lights
      */
-    void read_lights(std::vector<PunctualLight*>& pl, std::vector<AreaLight*>& al) const;
+    void read_lights(VectorPunctualLight& pl, VectorAreaLight& al) const;
 
     /**
      * @brief Method for reading the tone mapping
@@ -133,83 +133,83 @@ private:
      * @brief Method for reading a punctual light
      * @return A pointer to the punctual light
      */
-    PunctualLight* read_punctual_light() const;
+    std::shared_ptr<PunctualLight> read_punctual_light() const;
 
     /**
      * @brief Method for reading an area light
      * @return A pointer to the AreaLight object
      */
-    AreaLight* read_area_light() const;
+    std::shared_ptr<AreaLight> read_area_light() const;
 
     /**
      * @brief Method for reading a plane
      * @param p The property of the plane
      * @brief The plane
      */
-    Geometry* read_plane(Property p) const;
+    std::shared_ptr<Geometry> read_plane(Property p) const;
 
     /**
      * @brief Method for reading a sphere
      * @param p The property of the sphere
      * @brief The sphere
      */
-    Geometry* read_sphere(Property p) const;
+    std::shared_ptr<Geometry> read_sphere(Property p) const;
 
     /**
      * @brief Method for reading a cylinder
      * @param p The property of the cylinder
      * @brief The cylinder
      */
-    Geometry* read_cylinder(Property p) const;
+    std::shared_ptr<Geometry> read_cylinder(Property p) const;
 
     /**
      * @brief Method for reading a mesh
      * @param p The property of the mesh
      * @brief The mesh
      */
-    Geometry* read_mesh(Property p) const;
+    std::shared_ptr<Geometry> read_mesh(Property p) const;
 
     /**
      * @brief Method for reading a box
      * @param p The property of the box
      * @brief The box
      */
-    Geometry* read_box(Property p) const;
+    std::shared_ptr<Geometry> read_box(Property p) const;
 
     /**
      * @brief Method for reading a face
      * @param p The property of the face
      * @brief The face
      */
-    Geometry* read_face(Property p) const;
+    std::shared_ptr<Geometry> read_face(Property p) const;
 
     /**
      * @brief Method for reading a cone
      * @param p The property of the cone
      * @brief The cone
      */
-    Geometry* read_cone(Property p) const;
+    std::shared_ptr<Geometry> read_cone(Property p) const;
 
     /**
      * @brief Method for reading a disk
      * @param p The property of the disk
      * @brief The disk
      */
-    Geometry* read_disk(Property p) const;	
+    std::shared_ptr<Geometry> read_disk(Property p) const;	
 
     /**
      * @brief Method for reading a ellipsoid
      * @param p The property of the ellipsoid
      * @brief The ellipsoid
      */
-    Geometry* read_ellipsoid(Property p) const;
+    std::shared_ptr<Geometry> read_ellipsoid(Property p) const;
 
     /**
      * @brief Method for reading a triangle
      * @param p The property of the triangle
      * @brief The triangle
      */
-    Geometry* read_triangle(Property p) const;
+    std::shared_ptr<Geometry> read_triangle(Property p) const;
 
     /**
      * @brief Method for reading a gamma tone mapping

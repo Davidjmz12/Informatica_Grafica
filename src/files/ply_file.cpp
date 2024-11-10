@@ -1,6 +1,6 @@
 #include "files/ply_file.hpp"
 
-PlyFile::PlyFile(std::vector<Geometry*> elements, std::array<double,6> bounding_box)
+PlyFile::PlyFile(VectorGeometries elements, std::array<double,6> bounding_box)
     : _elements(elements), _bounding_box(bounding_box)
 {}
 
@@ -28,7 +28,7 @@ PlyFile::PlyFile(std::string file_path, Property properties)
         std::getline(file, rest_of_line);
     }
 
-    std::vector<Geometry*> elements;
+    VectorGeometries elements;
 
     for(size_t i=0; i< num_faces; i++)
     {
@@ -40,7 +40,8 @@ PlyFile::PlyFile(std::string file_path, Property properties)
         {
             file >> p0 >> p1 >> p2;
             try{
-                elements.push_back(new Triangle(points[p0],points[p1],points[p2],properties));
+                std::shared_ptr<Geometry> triangle = std::make_shared<Triangle>(points[p0],points[p1],points[p2],properties);
+                elements.push_back(triangle);
             } catch (std::invalid_argument& e){}
         } else
         {
@@ -84,7 +85,7 @@ bool PlyFile::read_header(std::ifstream& file, size_t& num_vertices, size_t& num
     return wanted_headers==0;
 }
 
-std::vector<Geometry*> PlyFile::get_elements() const
+VectorGeometries PlyFile::get_elements() const
 {
     return this->_elements;
 }
@@ -105,12 +106,12 @@ PlyFile PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
     auto y_op = [new_bounding_box,this](double y){return this->standardize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
     auto z_op = [new_bounding_box,this](double z){return this->standardize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
 
-    std::vector<Geometry*> new_elements;
-    for(auto element:this->_elements)
+    VectorGeometries new_elements;
+    for(auto element: this->_elements)
     {
-        Triangle el_trig = (*dynamic_cast<Triangle*>(element));
+        Triangle el_trig = *std::static_pointer_cast<Triangle>(element);
         try{
-            Geometry* new_element = new Triangle(Point(x_op(el_trig[0][0]),y_op(el_trig[0][1]),z_op(el_trig[0][2])),
+           std::shared_ptr<Geometry> new_element = std::make_shared<Triangle>(Point(x_op(el_trig[0][0]),y_op(el_trig[0][1]),z_op(el_trig[0][2])),
                                         Point(x_op(el_trig[1][0]),y_op(el_trig[1][1]),z_op(el_trig[1][2])),
                                         Point(x_op(el_trig[2][0]),y_op(el_trig[2][1]),z_op(el_trig[2][2])),
                                         el_trig.get_properties());
@@ -120,12 +121,11 @@ PlyFile PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
     }
 
     return PlyFile(new_elements, new_bounding_box);
-
 }
 
-Geometry* PlyFile::to_mesh() const
+std::shared_ptr<Geometry> PlyFile::to_mesh() const
 {
-    return new Mesh(this->_elements, BoundingBox(this->_bounding_box));
+    return std::make_shared<Mesh>(this->_elements);
 }
 
 std::ostream& operator<<(std::ostream& os, const PlyFile& ply_file)
