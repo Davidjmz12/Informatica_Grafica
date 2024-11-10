@@ -17,6 +17,11 @@ Plane::Plane(Point p1, Point p2, Point p3, Property properties)
     this->_distance = -Vector(p1).dot(this->_normal);
 }
 
+BoundingBox Plane::get_bounding_box() const
+{
+    return BoundingBox();
+}
+
 
 bool Plane::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {

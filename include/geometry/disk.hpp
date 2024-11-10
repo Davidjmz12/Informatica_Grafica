@@ -63,6 +63,8 @@ public:
      */
     Disk(Point center, Vector normal, double radius, Property properties);
 
+    BoundingBox get_bounding_box() const override;
+
     /**
      * @brief Checks if a given ray intersects with the disk.
      * 

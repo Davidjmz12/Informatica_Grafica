@@ -58,6 +58,7 @@ public:
      */
     Face(Vector normal, Vector u, Vector v, Point point, Property properties);
 
+    BoundingBox get_bounding_box() const override;
 
     /**
      * @brief Computes if the face intersects with a ray and stores

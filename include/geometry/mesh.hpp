@@ -63,6 +63,8 @@ public:
 
     Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box);
 
+    BoundingBox get_bounding_box() const override;
+
     /**
      * @brief Checks if a given ray intersects with the mesh.
      * 

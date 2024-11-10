@@ -11,6 +11,23 @@ Cylinder::Cylinder(Point center, double radius, Vector axis, Property properties
         throw std::invalid_argument("The radius of the cylinder must be positive");
 }
 
+BoundingBox Cylinder::get_bounding_box() const
+{
+    Point center = this->_center;
+    Point last_center = center + _axis*_height;
+    double x_min = std::min(center[0], last_center[0]);
+    double x_max = std::max(center[0], last_center[0]);
+    double y_min = std::min(center[1], last_center[1]);
+    double y_max = std::max(center[1], last_center[1]);
+    double z_min = std::min(center[2], last_center[2]);
+    double z_max = std::max(center[2], last_center[2]);
+    return BoundingBox({
+        x_min-this->_radius, x_max+this->_radius,
+        y_min-this->_radius, y_max+this->_radius,
+        z_min-this->_radius, z_max+this->_radius
+    });
+}
+
 
 IntersectionObject Cylinder::intersection_in_a_point(const Ray& r, double distance) const
 {

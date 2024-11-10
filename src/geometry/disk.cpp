@@ -5,6 +5,17 @@ Disk::Disk(Point center, Vector normal, double radius, Property properties)
 
 
 
+BoundingBox Disk::get_bounding_box() const
+{
+    return BoundingBox(
+        {
+            this->_center[0]-this->_radius, this->_center[0]+this->_radius,
+            this->_center[1]-this->_radius, this->_center[1]+this->_radius,
+            this->_center[2]-this->_radius, this->_center[2]+this->_radius
+        }
+    );
+}
+
 bool Disk::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     if(!_plane.intersect_with_ray(r, intersection))

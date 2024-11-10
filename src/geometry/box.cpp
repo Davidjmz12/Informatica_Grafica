@@ -17,6 +17,19 @@ Box::Box(Point center, std::array<Vector,3> axis, Property properties)
     };
 
     _mesh = Mesh(elements);
+
+    std::vector<Point> corners;
+    for(size_t i:{0,1})
+        for(size_t j:{0,1})
+            for(size_t k:{0,1})
+                corners.push_back(center + axis[0]*i + axis[1]*j + axis[2]*k);
+    
+    _bounding_box = BoundingBox::get_BB_by_corners(corners);
+}
+
+BoundingBox Box::get_bounding_box() const
+{
+    return _bounding_box;
 }
 
 bool Box::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const

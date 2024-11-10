@@ -4,8 +4,8 @@ Mesh::Mesh()
     : _elements(), Geometry()
 {}
 
-Mesh::Mesh(std::vector<Geometry*> elements)
-    : Geometry(), _elements(elements)
+Mesh::Mesh(std::vector<Geometry*> elements):
+    Geometry(), _elements(elements)
 {}
 
 Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
@@ -18,6 +18,15 @@ Mesh::Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box)
         //m.init_time_metric("mesh_intersection", "Time doing intersection with mesh");
         m.add_counter("mesh_intersections_avoided", "Number of intersections avoided with bounding box");
     }
+}
+
+
+BoundingBox Mesh::get_bounding_box() const
+{
+    if(!this->_bounding_box.has_value())
+        throw std::invalid_argument("The bounding box has not been set for this mesh");
+    
+    return _bounding_box.value();
 }
 
 bool Mesh::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
@@ -42,14 +51,12 @@ bool Mesh::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
         IntersectionObject one_intersection;
         if(element->intersect_with_ray(r, one_intersection))
         {
-            if(one_intersection < min_intersection)
-                min_intersection = one_intersection;
+            if(one_intersection < intersection)
+                intersection = one_intersection;
             intersects = true;
         }
 
     }
-
-    intersection = min_intersection;
     return intersects;
 
 }

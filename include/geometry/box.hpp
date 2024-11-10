@@ -49,17 +49,19 @@ class Box : public Geometry
 {
 private:
     Mesh _mesh; ///< The mesh that represents the box
+    BoundingBox _bounding_box; ///< The bounding box of the box
 public:
 
     /**
      * @brief Constructor for the Box class.
      * @param center The center of the box.
-     * @param sides The half sides length of the box.
      * @param axis The axis of the box.
      * @throw std::invalid_argument if the sides are not positive, the axis are not normalized or the axis are not a R^3 basis.
      */
     Box(Point center, std::array<Vector,3> axis, Property properties);
 
+    BoundingBox get_bounding_box() const override;
+    
     /**
      * @brief Method that checks if a ray intersects with the box.
      * @param r The ray that is going to be checked.

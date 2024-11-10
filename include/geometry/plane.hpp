@@ -55,6 +55,8 @@ public:
 
     Plane(Vector normal, double distance, Property properties);
 
+    BoundingBox get_bounding_box() const override;
+
     /**
      * @brief Constructs a plane from three points.
      * @param p1 The first point.
