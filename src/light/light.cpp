@@ -22,5 +22,5 @@ SpectralColor PunctualLight::light_contribution(std::vector<Geometry*> geometrie
     if (shadow)
         return SpectralColor();
     
-    return intersection.evalRenderEquation(this->_power, this->_center);
+    return intersection.eval_brdf((this->_power/pow(ray_dir.norm(),2))*fabs(intersection.get_normal().dot(ray_dir.normalize())), ray_dir.normalize());
 }

@@ -174,11 +174,11 @@ bool SpectralColor::operator==(SpectralColor c) const
     return true;
 }
 
-bool SpectralColor::check_less_1() const
+bool SpectralColor::operator<=(double f) const
 {
     for(size_t i=0;i<SIZE;i++)
     {
-        if (gtD((*this)[i],1.0)) return false; 
+        if (!leD((*this)[i],f)) return false; 
     }
 
     return true;

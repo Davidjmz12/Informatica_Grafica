@@ -8,14 +8,12 @@ class BRDF;
 class Property
 {
 private:
-    SpectralColor _color;
     BRDF* _brdf;
 
 public:
 
     Property();
-    Property(SpectralColor color);
-    Property(SpectralColor color, BRDF* brdf);
+    Property(BRDF* brdf);
 
 
     SpectralColor get_color() const;

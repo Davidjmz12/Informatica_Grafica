@@ -17,7 +17,7 @@ private:
     SpectralColor compute_ray_intersection_color(Ray r, size_t n_rec) const;
     
 
-    SpectralColor calculate_total_light(IntersectionObject& intersection) const;
+    SpectralColor calculate_punctual_light_contribution(IntersectionObject& intersection) const;
     std::array<double,2> get_random_pixel_coordinates(int x, int y) const;
     Ray trace_ray(std::array<double,2> coordinates) const;
     MatrixSC arrange_vector_into_color_matrix(std::vector<SpectralColor> colors) const;

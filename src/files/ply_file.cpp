@@ -24,6 +24,8 @@ PlyFile::PlyFile(std::string file_path, Property properties)
         y_min = std::min(y_min, y); y_max = std::max(y_max, y);
         z_min = std::min(z_min, z); z_max = std::max(z_max, z);
         points.push_back(Point(x,y,z));
+        std::string rest_of_line;
+        std::getline(file, rest_of_line);
     }
 
     std::vector<Geometry*> elements;

@@ -13,7 +13,7 @@ SpectralColor SpecularBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, doub
     return this->_k / n.dot(w_0);
 }
 
-bool SpecularBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering) const
+bool SpecularBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)
 {
     Vector projection = w_0 - n*w_0.dot(n);
 

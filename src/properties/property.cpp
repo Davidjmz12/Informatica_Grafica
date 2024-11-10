@@ -1,21 +1,16 @@
 #include "properties/property.hpp"
 
-Property::Property(SpectralColor color, BRDF* brdf):
-    _color(color), _brdf(brdf)
+Property::Property(BRDF* brdf):
+    _brdf(brdf)
 {}
 
-Property::Property(SpectralColor color)
-    : _color(color), _brdf(new DiffuseBRDF(color))
-{}
-
-
-Property::Property()
-    : _color(SpectralColor()), _brdf(nullptr)
+Property::Property():
+    _brdf(new DiffuseBRDF())
 {}
 
 SpectralColor Property::get_color() const
 {
-    return this->_color;
+    return this->_brdf->get_color();
 }
 
 BRDF* Property::get_BRDF() const
@@ -31,5 +26,5 @@ std::ostream& operator<<(std::ostream& os, const Property& p)
 
 std::string Property::to_string() const
 {
-    return "Color: " + this->_color.to_string() + "\n" + this->_brdf->to_string();
+    return this->_brdf->to_string();
 }

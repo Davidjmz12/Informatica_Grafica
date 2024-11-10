@@ -112,7 +112,7 @@ private:
      * @brief Method for reading a BRDF object
      * @return The color of the object
      */
-    BRDF* read_brdf(SpectralColor c) const;
+    BRDF* read_brdf() const;
 
     /**
      * @brief Method for reading a boundig box

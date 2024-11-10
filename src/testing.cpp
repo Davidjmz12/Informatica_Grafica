@@ -12,11 +12,15 @@ int main()
     Vector w_0 = Vector(-1,0,1).normalize();
     Point point_int = Point(0,0,0);
 
-    SpecularBRDF specular = SpecularBRDF(SpectralColor());
+    DiffuseBRDF diffuse = DiffuseBRDF();
 
-    Ray r;
-    specular.sample_ray(w_0, point_int, normal, ref_cof_entry, r);
+    Ray sampled_ray;
 
-    std::cout << r << std::endl;
+    for(int i=0; i<10; i++)
+    {
+        diffuse.sample_ray(w_0, point_int, normal, ref_cof_entry, sampled_ray, tr ue);
+        std::cout << sampled_ray.get_direction().to_string() << std::endl;
+    }
+
 }
 

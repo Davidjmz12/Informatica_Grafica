@@ -30,26 +30,14 @@ bool IntersectionObject::operator==(const IntersectionObject i) const
             this->_is_entering == i._is_entering;
 }
 
-SpectralColor IntersectionObject::evalRenderEquation(SpectralColor power_light, Point point_light) const
+
+SpectralColor IntersectionObject::eval_brdf(SpectralColor light, Vector w_i) const
 {
-
-    Vector c1_x = point_light-this->_intersection_point;
-    SpectralColor Lwi = power_light/pow(c1_x.norm(),2);
-    SpectralColor brdf = this->eval_brdf(c1_x.normalize());
-    double cosine = fabs(this->_normal.dot(c1_x.normalize()));
-
-    SpectralColor results = Lwi*brdf*cosine;
-
-    return Lwi*brdf*cosine;  
-}
-
-SpectralColor IntersectionObject::eval_brdf(Vector w_i) const
-{
-    return this->_properties.get_BRDF()->eval(w_i, this->get_ray().get_direction()*(-1), 
+    return light*this->_properties.get_BRDF()->eval(w_i, this->get_ray().get_direction()*(-1), 
         this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient());
 }
 
-bool IntersectionObject::sample_ray(Ray& sampled_ray) const
+bool IntersectionObject::sample_ray(Ray& sampled_ray)
 {
     return this->_properties.get_BRDF()->sample_ray(this->_ray.get_direction()*(-1), 
         this->_intersection_point, this->_normal, 

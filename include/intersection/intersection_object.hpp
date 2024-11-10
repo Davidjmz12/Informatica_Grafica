@@ -23,9 +23,8 @@ public:
     Property get_properties() const;
     bool is_entering() const;
 
-    SpectralColor evalRenderEquation(SpectralColor power_light, Point point_light) const;
-    SpectralColor eval_brdf(Vector w_i) const;
-    bool sample_ray(Ray& sampled_ray) const;
+    SpectralColor eval_brdf(SpectralColor light, Vector w_i) const;
+    bool sample_ray(Ray& sampled_ray);
 
     bool operator==(const IntersectionObject i) const;
 

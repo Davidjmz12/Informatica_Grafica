@@ -159,15 +159,15 @@ SpectralColor Render::compute_ray_intersection_color(Ray r, size_t n_rec) const
             return SpectralColor{};
 
         SpectralColor indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-        SpectralColor indirect_light_contribution = indirect_light*min_int_obj.eval_brdf(new_ray.get_direction())*fabs(min_int_obj.get_normal().dot(new_ray.get_direction()));
-        SpectralColor point_light_contribution = calculate_total_light(min_int_obj);
+        SpectralColor indirect_light_contribution = min_int_obj.eval_brdf(indirect_light*M_PI, new_ray.get_direction());
+        SpectralColor point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
 
         return point_light_contribution + indirect_light_contribution;
     }
 
 }
 
-SpectralColor Render::calculate_total_light(IntersectionObject& intersection) const
+SpectralColor Render::calculate_punctual_light_contribution(IntersectionObject& intersection) const
 {
     std::vector<PunctualLight*> lights = this->_scene.get_punctual_lights();
     SpectralColor color_contribution;

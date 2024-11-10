@@ -46,7 +46,6 @@ public:
     
     SpectralColor(double intensity);
 
-
     ColorRGB to_rgb() const;
     
     SpectralColor apply_tone_mapping(ToneMapping* t) const;
@@ -64,7 +63,6 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const SpectralColor& g);
 
     bool operator==(SpectralColor c) const;
-
-    bool check_less_1() const;
+    bool operator<=(double f) const;
 
 };
