@@ -13,6 +13,7 @@
 
 #include "geometry/geometry.hpp"
 #include "geometry/bounding_box.hpp"
+#include "geometry/kd-trees/kd-tree.hpp"
 
 #include "global_config/global_config.hpp"
 
@@ -46,22 +47,16 @@
 class Mesh : public Geometry
 {
 protected:
-    std::vector<Geometry*> _elements; ///< The elements that make up the mesh
-    std::optional<BoundingBox> _bounding_box;
+    KDTree _kd_tree;
 public:
 
-    /**
-     * @brief Default constructor for the Mesh class.
-     */
     Mesh();
 
     /**
      * @brief Constructor for the Mesh class.
      * @param elements The geometries that make up the mesh.
      */
-    Mesh(std::vector<Geometry*> elements);
-
-    Mesh(std::vector<Geometry*> elements, BoundingBox bounding_box);
+    Mesh(VectorGeometries elements);
 
     BoundingBox get_bounding_box() const override;
 

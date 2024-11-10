@@ -14,6 +14,7 @@ HashMap get_default_conf() {
     conf["metrics"] = Metrics();
     conf["task-size"] = int(10);
     conf["n-bounces"] = int(5);
+    conf["max-depth"] = int(10);
     return conf;
 }
 
@@ -51,6 +52,13 @@ void parse_init(int argc, char* argv[]) {
         {
             int n_bounces = int(std::stoi(argv[i+1]));
             conf["n-bounces"] = n_bounces;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--max-depth") == 0)
+        {
+            int max_depth = int(std::stoi(argv[i+1]));
+            conf["max-depth"] = max_depth;
             i++;
         }
     }

@@ -61,6 +61,10 @@ public:
         return std::any_cast<int>(this->get("n-bounces"));
     }
 
+    size_t get_max_depth(){
+        return std::any_cast<int>(this->get("max-depth"));
+    }
+
     auto get(const std::string key)
         -> std::any
     {

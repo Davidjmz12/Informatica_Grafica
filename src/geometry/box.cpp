@@ -6,14 +6,14 @@ Box::Box(Point center, std::array<Vector,3> axis, Property properties)
     if(!axis[0].is_base(axis[1],axis[2]))
         throw std::invalid_argument("The axis of the box must be a R^3 base.");
     
-    std::vector<Geometry*> elements;
+    VectorGeometries elements;
     elements = {
-        new Face(axis[0], axis[1], axis[2], center + axis[0], properties),
-        new Face(axis[0], axis[1], axis[2], center - axis[0], properties),
-        new Face(axis[1], axis[0], axis[2], center + axis[1], properties),
-        new Face(axis[1], axis[0], axis[2], center - axis[1], properties),
-        new Face(axis[2], axis[0], axis[1], center + axis[2], properties),
-        new Face(axis[2], axis[0], axis[1], center - axis[2], properties)
+        std::make_shared<Face>(axis[0], axis[1], axis[2], center + axis[0], properties),
+        std::make_shared<Face>(axis[0], axis[1], axis[2], center - axis[0], properties),
+        std::make_shared<Face>(axis[1], axis[0], axis[2], center + axis[1], properties),
+        std::make_shared<Face>(axis[1], axis[0], axis[2], center - axis[1], properties),
+        std::make_shared<Face>(axis[2], axis[0], axis[1], center + axis[2], properties),
+        std::make_shared<Face>(axis[2], axis[0], axis[1], center - axis[2], properties)
     };
 
     _mesh = Mesh(elements);

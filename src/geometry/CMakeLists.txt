@@ -1,3 +1,5 @@
+add_subdirectory(kd-trees)
+
 # Geometry header
 add_library(geometry INTERFACE)
 target_link_libraries(geometry INTERFACE intersection_object ray ellipsoid sphere triangle mesh cylinder disk box plane face property cone)
@@ -13,7 +15,7 @@ add_library(triangle triangle.cpp)
 target_link_libraries(triangle PUBLIC geometry plane)
 
 add_library(mesh mesh.cpp)
-target_link_libraries(mesh PUBLIC geometry bounding_box)
+target_link_libraries(mesh PUBLIC geometry bounding_box kd-tree)
 
 add_library(cylinder cylinder.cpp)
 target_link_libraries(cylinder PUBLIC geometry)
