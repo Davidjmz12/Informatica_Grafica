@@ -8,9 +8,6 @@
 */
 #pragma once
 
-#include <vector>
-#include <optional>
-
 #include "geometry/geometry.hpp"
 #include "geometry/bounding_box.hpp"
 #include "geometry/kd-trees/kd-tree.hpp"

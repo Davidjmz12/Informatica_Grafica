@@ -14,13 +14,29 @@ SpatialElement::SpatialElement(double x, double y, double z, double type)
     : _coordinates(std::array<double,4>{x,y,z,type})
 {}
 
-double SpatialElement::operator[](int index) const
+double SpatialElement::operator[](const int index) const
 {
     if (index < 0 || index > 3)
         throw std::out_of_range("Index must be between 0-2");
 
     return this->_coordinates[index];
 }
+
+void SpatialElement::set_x(const double x)
+{
+    this->_coordinates[0] = x;
+}
+
+void SpatialElement::set_y(const double y)
+{
+    this->_coordinates[1] = y;
+}
+
+void SpatialElement::set_z(const double z)
+{
+    this->_coordinates[2] = z;
+}
+
 
 std::ostream&  operator<<(std::ostream& os, const SpatialElement& s) 
 {

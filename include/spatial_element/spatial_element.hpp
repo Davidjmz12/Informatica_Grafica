@@ -22,9 +22,14 @@ protected:
     std::array<double,4> _coordinates;
 
 public:
+    virtual ~SpatialElement() = default;
     SpatialElement(double x, double y, double z, double type);
 
     double operator[](int index) const;
+
+    void set_x(double x);
+    void set_y(double y);
+    void set_z(double z);
 
     friend std::ostream& operator<<(std::ostream& os, const SpatialElement& s);
 

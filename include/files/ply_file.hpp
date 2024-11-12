@@ -9,32 +9,36 @@
 #include "geometry/triangle.hpp"
 #include "geometry/mesh.hpp"
 
+using VectorTriangles = std::vector<std::shared_ptr<Triangle>>;
+using PointsVector = std::vector<std::shared_ptr<Point>>;
+
 class PlyFile
 {
 private:
-    VectorGeometries _elements;
-    std::array<double,6> _bounding_box;
+    VectorTriangles _elements;
+    PointsVector _points;
+    std::array<double,6> _bounding_box{};
 
-    bool read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces);
+    static bool read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces);
 
-    double standardize(double value, double min, double max) const;
+    static double standardize(double value, double min, double max) ;
 
-    PlyFile(VectorGeometries elements, std::array<double,6> bounding_box);
+    PlyFile(VectorTriangles elements, const std::array<double,6>& bounding_box);
 
 public:
-    PlyFile(std::string file_path, Property properties);
+    PlyFile(const std::string& file_path, const Property& properties);
 
-    VectorGeometries get_elements() const;
+    [[nodiscard]] VectorTriangles get_elements() const;
 
-    std::array<double,6> get_bounding_box() const;
+    [[nodiscard]] std::array<double,6> get_bounding_box() const;
 
-    PlyFile change_bounding_box(std::array<double,6> new_bounding_box);
+    void change_bounding_box(std::array<double,6> new_bounding_box);
 
-    std::shared_ptr<Geometry> to_mesh() const;
+    [[nodiscard]] std::shared_ptr<Geometry> to_mesh() const;
 
     friend std::ostream& operator<<(std::ostream& os, const PlyFile& ply_file);
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     
 };

@@ -65,7 +65,7 @@ private:
      */
     bool point_inside_triangle(Point p) const;
 
-    BoundingBox compute_bounding_box() const;
+    [[nodiscard]] BoundingBox compute_bounding_box() const;
 public:
 
     /**
@@ -130,6 +130,6 @@ public:
      * @brief Converts the triangle to a string.
      * @return The string representation of the triangle.
      */
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
 };

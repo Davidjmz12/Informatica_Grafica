@@ -222,7 +222,7 @@ std::shared_ptr<Geometry> SceneFile::read_mesh(Property p) const
     std::string file =  this->_ply_dir + "/" +  this->read_line();
     std::array<double,6> bb = this->read_bounding_box();
     PlyFile ply = PlyFile(file, p);
-    ply = ply.change_bounding_box(bb);
+    ply.change_bounding_box(bb);
     return ply.to_mesh();
 }
 
@@ -269,9 +269,9 @@ std::shared_ptr<Geometry> SceneFile::read_ellipsoid(Property p) const
 
 std::shared_ptr<Geometry> SceneFile::read_triangle(Property p) const
 {
-    Point p1 = this->read_point();
-    Point p2 = this->read_point();
-    Point p3 = this->read_point();
+    auto p1 = std::make_shared<Point>(this->read_point());
+    auto p2 = std::make_shared<Point>(this->read_point());
+    auto p3 = std::make_shared<Point>(this->read_point());
     return std::make_shared<Triangle>(p1, p2, p3, p);
 }
 
