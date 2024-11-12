@@ -21,12 +21,12 @@ BoundingBox BoundingBox::combine_all(const std::vector<BoundingBox> geometries)
     double max_x,min_x,max_y,min_y,max_z,min_z;
     for(size_t i=0; i<geometries.size(); i++)
     {
-        max_x = std::max(geometries[i]._bound_box[1],max_x);
         min_x = std::min(geometries[i]._bound_box[0],min_x);
-        max_y = std::max(geometries[i]._bound_box[3],max_y);
+        max_x = std::max(geometries[i]._bound_box[1],max_x);
         min_y = std::min(geometries[i]._bound_box[2],min_y);
-        max_z = std::max(geometries[i]._bound_box[5],max_z);
+        max_y = std::max(geometries[i]._bound_box[3],max_y);
         min_z = std::min(geometries[i]._bound_box[4],min_z);
+        max_z = std::max(geometries[i]._bound_box[5],max_z);
     }
     return BoundingBox({min_x, max_x, min_y, max_y, min_z, max_z});
 }

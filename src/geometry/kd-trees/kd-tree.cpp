@@ -39,6 +39,7 @@ KDTreeNode::KDTreeNode(const VectorGeometries& geometries)
     for (const auto& geometry : geometries) {
         bounding_boxes.push_back(geometry->get_bounding_box());
     }
+
     bbox = BoundingBox::combine_all(bounding_boxes);
 }
 
@@ -64,22 +65,27 @@ void KDTreeNode::build(int depth)
 
 bool KDTreeNode::intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const
 {
-    if (!bbox.intersect_with_ray(ray)) return false;
-
-
+    if (!bbox.intersect_with_ray(ray))
+    {
+        return false;
+    }
     if(!left && !right)
     {
         bool hit = false;
+        IntersectionObject intersection_aux;
         for (const auto& geometry : geometries) {
-            if (geometry->intersect_with_ray(ray, intersection)) {
+            if (geometry->intersect_with_ray(ray, intersection_aux)) {
                 hit = true;
+                if (intersection_aux < intersection) {
+                    intersection = intersection_aux;
+                }
             }
         }
         return hit;
     } else 
     {
         IntersectionObject intersection_left, intersection_right;
-        bool hit;
+        bool hit = false;
         if (left && left->intersect_with_ray(ray, intersection_left)) hit = true;
         if (right && right->intersect_with_ray(ray, intersection_right)) hit = true;
         
@@ -96,7 +102,8 @@ bool KDTreeNode::intersect_with_ray(const Ray& ray, IntersectionObject& intersec
 std::string KDTreeNode::to_string(size_t offset) const
 {
     std::string offset_s(offset, '\t');
-    std::string s = offset_s  + "BoundingBox" + bbox.to_string() + "\n";
+    std::string s = offset_s  + "BoundingBox " + bbox.to_string() + "\n";
+    s += offset_s + "Geometries: " + std::to_string(geometries.size()) +  "\n";
     if (left) s += offset_s + "Left:\n" + left->to_string(offset + 1);
     if (right) s += offset_s + "Right:\n" + right->to_string(offset + 1);
     return s;

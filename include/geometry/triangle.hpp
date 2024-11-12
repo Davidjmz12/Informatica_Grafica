@@ -50,7 +50,7 @@ private:
     Point _v0; ///< The first vertex of the triangle
     Point _v1; ///< The second vertex of the triangle
     Point _v2; ///< The third vertex of the triangle
-
+    BoundingBox _bounding_box; ///< The bounding box of the triangle
 
     /**
      * @brief Checks if a given point is inside the triangle.
@@ -64,6 +64,8 @@ private:
      * @return true if the point is inside the triangle, false otherwise.
      */
     bool point_inside_triangle(Point p) const;
+
+    BoundingBox compute_bounding_box() const;
 public:
 
     /**

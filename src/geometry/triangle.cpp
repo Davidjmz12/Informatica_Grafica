@@ -8,11 +8,17 @@ Triangle::Triangle(Point v0, Point v1, Point v2, Property properties)
         throw std::invalid_argument("The vertices of the triangle must be different");
     if(eqD((_v1-_v0).cross((_v2-_v0)).norm(),0))
         throw std::invalid_argument("All three vertices of the triangle cannot be linearly dependent");
+    this->_bounding_box = this->compute_bounding_box();
+}
+
+BoundingBox Triangle::compute_bounding_box() const
+{
+    return BoundingBox::get_BB_by_corners({_v0,_v1,_v2});
 }
 
 BoundingBox Triangle::get_bounding_box() const
 {
-    return BoundingBox::get_BB_by_corners({_v0,_v1,_v2});
+    return this->_bounding_box;
 }
 
 

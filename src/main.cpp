@@ -14,7 +14,7 @@ HashMap get_default_conf() {
     conf["metrics"] = Metrics();
     conf["task-size"] = int(10);
     conf["n-bounces"] = int(5);
-    conf["max-depth"] = int(10);
+    conf["max-depth"] = int(2);
     return conf;
 }
 
