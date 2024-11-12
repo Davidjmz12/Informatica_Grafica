@@ -1,11 +1,11 @@
 #include "properties/property.hpp"
 
-Property::Property(BRDF* brdf):
+Property::Property(std::shared_ptr<BRDF> brdf):
     _brdf(brdf)
 {}
 
 Property::Property():
-    _brdf(new DiffuseBRDF())
+    _brdf(std::make_shared<DiffuseBRDF>())
 {}
 
 SpectralColor Property::get_color() const
@@ -15,7 +15,7 @@ SpectralColor Property::get_color() const
 
 BRDF* Property::get_BRDF() const
 {
-    return this->_brdf;
+    return this->_brdf.get();
 }
 
 std::ostream& operator<<(std::ostream& os, const Property& p)

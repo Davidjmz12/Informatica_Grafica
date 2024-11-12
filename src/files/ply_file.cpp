@@ -14,7 +14,7 @@ PlyFile::PlyFile(std::string file_path, Property properties)
     if (!read_header(file, num_vertices, num_faces))
         throw std::runtime_error("Invalid header");
 
-    std::vector<Point> points;
+    std::vector<std::shared_ptr<Point>> points;
     double x_min, x_max, y_min, y_max, z_min, z_max;
     for(size_t i = 0; i < num_vertices; i++)
     {
@@ -23,19 +23,21 @@ PlyFile::PlyFile(std::string file_path, Property properties)
         x_min = std::min(x_min, x); x_max = std::max(x_max, x); 
         y_min = std::min(y_min, y); y_max = std::max(y_max, y);
         z_min = std::min(z_min, z); z_max = std::max(z_max, z);
-        points.push_back(Point(x,y,z));
+        points.push_back(std::make_shared<Point>(x,y,z));
         std::string rest_of_line;
         std::getline(file, rest_of_line);
     }
 
-    VectorGeometries elements;
+    
+    
+    std::vector<std::shared_ptr<Geometry>> elements;
 
     for(size_t i=0; i< num_faces; i++)
     {
         size_t n_vertex_face; 
         size_t p0,p1,p2,p3;
+        
         file >> n_vertex_face;
-
         if(n_vertex_face == 3)
         {
             file >> p0 >> p1 >> p2;

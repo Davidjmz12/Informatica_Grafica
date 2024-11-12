@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "color/spectral_color.hpp"
 #include "properties/brdf/diffuse_brdf.hpp"
 
@@ -8,12 +10,12 @@ class BRDF;
 class Property
 {
 private:
-    BRDF* _brdf;
+    std::shared_ptr<BRDF> _brdf;
 
 public:
 
     Property();
-    Property(BRDF* brdf);
+    Property(std::shared_ptr<BRDF> brdf);
 
 
     SpectralColor get_color() const;

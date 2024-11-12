@@ -1,19 +1,20 @@
 
 #include "geometry/triangle.hpp"
 
-Triangle::Triangle(Point v0, Point v1, Point v2, Property properties)
+Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, Property properties)
     : Geometry(properties), _v0(v0), _v1(v1), _v2(v2)
 {
-    if(_v0 == _v1 || _v0 == _v2 || _v1 == _v2)
+
+    if(*_v0 == *_v1 || *_v0 == *_v2 || *_v1 == *_v2)
         throw std::invalid_argument("The vertices of the triangle must be different");
-    if(eqD((_v1-_v0).cross((_v2-_v0)).norm(),0))
+    if(eqD((*_v1-*_v0).cross((*_v2-*_v0)).norm(),0))
         throw std::invalid_argument("All three vertices of the triangle cannot be linearly dependent");
     this->_bounding_box = this->compute_bounding_box();
 }
 
 BoundingBox Triangle::compute_bounding_box() const
 {
-    return BoundingBox::get_BB_by_corners({_v0,_v1,_v2});
+    return BoundingBox::get_BB_by_corners({*_v0,*_v1,*_v2});
 }
 
 BoundingBox Triangle::get_bounding_box() const
@@ -24,19 +25,19 @@ BoundingBox Triangle::get_bounding_box() const
 
 Vector Triangle::get_normal() const
 {
-    return (this->_v1-this->_v0).cross((this->_v2-this->_v0)).normalize();
+    return (*(this->_v1)-*(this->_v0)).cross((*this->_v2)-(*this->_v0)).normalize();
 }
 
 Plane Triangle::plane() const
 {
-    return Plane(this->_v0, this->get_normal(), this->_properties);
+    return Plane(*this->_v0, this->get_normal(), this->_properties);
 }
 
 bool Triangle::point_inside_triangle(Point p) const
 {
-    Vector v0v1 = _v1 - _v0;
-    Vector v0v2 = _v2 - _v0;
-    Vector v0p = p - _v0;
+    Vector v0v1 = *_v1 - *_v0;
+    Vector v0v2 = *_v2 - *_v0;
+    Vector v0p = p - *_v0;
 
     double dot00 = v0v2.dot(v0v2);
     double dot01 = v0v2.dot(v0v1);
@@ -69,11 +70,11 @@ bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection
 Point Triangle::operator[](int i) const
 {
     if(i == 0)
-        return this->_v0;
+        return *this->_v0;
     else if(i == 1)
-        return this->_v1;
+        return *this->_v1;
     else if(i == 2)
-        return this->_v2;
+        return *this->_v2;
     else
         throw std::invalid_argument("Index out of bounds");
 }
@@ -86,5 +87,5 @@ std::ostream& operator<<(std::ostream& os, const Triangle& t)
 
 std::string Triangle::to_string() const
 {
-    return "Triangle: " + this->_v0.to_string() + " " + this->_v1.to_string() + " " + this->_v2.to_string();
+    return "Triangle: " + this->_v0->to_string() + " " + this->_v1->to_string() + " " + this->_v2->to_string();
 }

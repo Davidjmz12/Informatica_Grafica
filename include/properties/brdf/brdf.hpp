@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "color/spectral_color.hpp"
 #include "scene/ray.hpp"
 #include "spatial_element/base.hpp"
+
+
 
 
 class BRDF {

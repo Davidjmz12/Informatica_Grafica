@@ -130,32 +130,32 @@ SpectralColor SceneFile::read_color() const
         throw std::invalid_argument("The color type must be RGB or Spectrum");
 }
 
-BRDF* SceneFile::read_brdf() const
+std::shared_ptr<BRDF> SceneFile::read_brdf() const
 {
     std::string line = this->read_line();
     if (line == "diffuse")
-        return new DiffuseBRDF(this->read_color());
+        return std::make_unique<DiffuseBRDF>(this->read_color());
     else if (line == "specular")
-        return new SpecularBRDF(this->read_color());
+        return std::make_unique<SpecularBRDF>(this->read_color());
     else if (line == "absorption")
-        return new AbsorptionBRDF();
+        return std::make_unique<AbsorptionBRDF>();
     else if (line == "refractive")
     {
         SpectralColor c = this->read_color();
         double refractive_index = std::stod(this->read_line());
-        return new RefractiveBRDF(c, refractive_index);
+        return std::make_unique<RefractiveBRDF>(c, refractive_index);
     }
     else if (line == "roulette")
     {
         int n_brdfs = std::stoi(this->read_line());
-        std::vector<BRDF*> brdfs;
+        std::vector<std::shared_ptr<BRDF>> brdfs;
         std::vector<double> weights;
         for (int i = 0; i < n_brdfs; i++)
         {
             brdfs.push_back(this->read_brdf());
             weights.push_back(std::stod(this->read_line()));
         }
-        return new RouletteBRDF(brdfs, weights);
+        return std::make_unique<RouletteBRDF>(brdfs, weights);
     }
         
     else
@@ -169,7 +169,7 @@ void SceneFile::read_properties()
     {
         std::string name,line;
         name = this->read_line();
-        BRDF* b = this->read_brdf();
+        std::shared_ptr<BRDF> b = this->read_brdf();
         this->_ch[name] = Property(b);
     }
 }

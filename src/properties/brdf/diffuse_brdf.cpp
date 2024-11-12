@@ -21,7 +21,8 @@ bool DiffuseBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entr
 
     Base b = Base::complete_base_k(x, n);
 
-    Vector v = Vector(b.coord_into_canonical(new Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta))));
+    std::unique_ptr<SpatialElement> base_v = std::make_unique<Vector>(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
+    Vector v = Vector(b.coord_into_canonical(base_v.get()));
     sampled_ray = Ray(x, v, ref_coef_entry);
     return true;
 }

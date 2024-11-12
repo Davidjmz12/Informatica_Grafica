@@ -112,7 +112,7 @@ private:
      * @brief Method for reading a BRDF object
      * @return The color of the object
      */
-    BRDF* read_brdf() const;
+    std::shared_ptr<BRDF> read_brdf() const;
 
     /**
      * @brief Method for reading a boundig box

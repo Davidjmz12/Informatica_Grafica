@@ -47,9 +47,9 @@
 class Triangle : public Geometry
 {
 private:
-    Point _v0; ///< The first vertex of the triangle
-    Point _v1; ///< The second vertex of the triangle
-    Point _v2; ///< The third vertex of the triangle
+    std::shared_ptr<Point> _v0; ///< The first vertex of the triangle
+    std::shared_ptr<Point> _v1; ///< The second vertex of the triangle
+    std::shared_ptr<Point> _v2; ///< The third vertex of the triangle
     BoundingBox _bounding_box; ///< The bounding box of the triangle
 
     /**
@@ -75,7 +75,7 @@ public:
      * @param v2 The third vertex of the triangle.
      * @throw std::invalid_argument if the vertices are not different or if they are linearly dependent.
      */
-    Triangle(Point v0, Point v1, Point v2, Property properties);
+    Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, Property properties);
 
     BoundingBox get_bounding_box() const override;
     

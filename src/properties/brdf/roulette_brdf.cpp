@@ -1,7 +1,7 @@
 #include "properties/brdf/roulette_brdf.hpp"
 
 
-RouletteBRDF::RouletteBRDF(std::vector<BRDF*> brdfs, std::vector<double> weights)
+RouletteBRDF::RouletteBRDF(std::vector<std::shared_ptr<BRDF>> brdfs, std::vector<double> weights)
     : _brdfs(brdfs), _weights(weights), _sampled_ray_index(-1)
 {
     SpectralColor sum_colors;

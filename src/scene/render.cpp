@@ -184,9 +184,9 @@ std::array<double,2> Render::get_random_pixel_coordinates(int x, int y) const
 
 Ray Render::trace_ray(std::array<double,2> coordinates) const
 {
-    SpatialElement* p = new Point(coordinates[0],coordinates[1],1);
+    std::unique_ptr<SpatialElement> p = std::make_unique<Point>(coordinates[0],coordinates[1],1);
     Camera c = this->_scene.get_camera();
-    Vector dir = (Point(c.transform_to_canonical(p))-c.get_screen_base().get_center());
+    Vector dir = (Point(c.transform_to_canonical(p.get()))-c.get_screen_base().get_center());
     Ray r = Ray(c.get_screen_base().get_center(),dir);
     return r;
 }

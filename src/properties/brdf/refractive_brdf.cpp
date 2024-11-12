@@ -32,8 +32,8 @@ bool RefractiveBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_e
     Vector orth = ((w_0-n*w_0.dot(n))*(-1)).normalize();
 
     Base base = Base(x, orth, orth.cross(n*(-1)) , n*(-1));
-    
-    Vector final_dir = Vector(base.coord_into_canonical(new Vector(sin(theta_exit),0,cos(theta_exit))));
+    std::unique_ptr<SpatialElement> v = std::make_unique<Vector>(sin(theta_exit),0,cos(theta_exit));
+    Vector final_dir = Vector(base.coord_into_canonical(v.get()));
 
     sampled_ray = Ray(x, final_dir, this->_refraction_coefficient);
     return true;
