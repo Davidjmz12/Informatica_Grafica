@@ -51,6 +51,10 @@ public:
 
     [[nodiscard]] std::string to_string() const;
 
+    [[nodiscard]] double luminance_mean() const;
+
+    [[nodiscard]] double luminance_max() const;
+
 
     double operator[](size_t index) const;
 

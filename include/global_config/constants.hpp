@@ -112,3 +112,14 @@ inline std::vector<double> solve_equation_second_degree(double a, double b, doub
         return solutions;
 
 }
+
+
+inline Vector sample_random_unitary_vector(const Point& p)
+{
+    const double theta = acos(2*randomD(0,1)-1);
+    const double phi = 2*M_PI*randomD(0,1);
+
+    const auto v = Vector(cos(theta)*cos(phi), cos(theta)*sin(phi),sin(theta));
+
+    return p + v; 
+}

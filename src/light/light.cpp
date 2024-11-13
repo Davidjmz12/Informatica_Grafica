@@ -21,3 +21,14 @@ SpectralColor PunctualLight::light_contribution(const KDTree& tree, const Inters
     
     return intersection.eval_brdf((this->_power/pow(ray_dir.norm(),2))*fabs(intersection.get_normal().dot(ray_dir.normalize())), ray_dir.normalize());
 }
+
+
+double Light::luminance_mean() const
+{
+    return this->_power.luminance_mean();
+}
+
+double Light::luminance_max() const
+{
+    return this->_power.luminance_max();
+}
