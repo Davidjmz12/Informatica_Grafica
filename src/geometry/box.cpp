@@ -1,13 +1,12 @@
 #include "geometry/box.hpp"
 
-Box::Box(Point center, std::array<Vector,3> axis, Property properties)
+Box::Box(const Point& center, std::array<Vector,3> axis, const Property& properties)
     : Geometry(properties)
 {
     if(!axis[0].is_base(axis[1],axis[2]))
         throw std::invalid_argument("The axis of the box must be a R^3 base.");
-    
-    VectorGeometries elements;
-    elements = {
+
+    const VectorGeometries elements = {
         std::make_shared<Face>(axis[0], axis[1], axis[2], center + axis[0], properties),
         std::make_shared<Face>(axis[0], axis[1], axis[2], center - axis[0], properties),
         std::make_shared<Face>(axis[1], axis[0], axis[2], center + axis[1], properties),
@@ -19,9 +18,9 @@ Box::Box(Point center, std::array<Vector,3> axis, Property properties)
     _mesh = Mesh(elements);
 
     std::vector<Point> corners;
-    for(size_t i:{0,1})
-        for(size_t j:{0,1})
-            for(size_t k:{0,1})
+    for(const size_t i:{0,1})
+        for(const size_t j:{0,1})
+            for(const size_t k:{0,1})
                 corners.push_back(center + axis[0]*i + axis[1]*j + axis[2]*k);
     
     _bounding_box = BoundingBox::get_BB_by_corners(corners);

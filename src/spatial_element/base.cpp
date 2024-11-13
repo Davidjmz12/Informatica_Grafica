@@ -10,7 +10,7 @@
 
 #include "spatial_element/base.hpp"
 
-Base::Base(Point p, Vector i, Vector j, Vector k)
+Base::Base(const Point& p, const Vector& i, const Vector& j, const Vector& k)
     : _center(p), _i(i), _j(j), _k(k)
 { 
     if (!i.is_base(j, k))
@@ -24,9 +24,9 @@ Base::Base(Point p, Vector i, Vector j, Vector k)
     this->_matrix = Matrix4x4(aux);
 }
 
-Base Base::complete_base_k(Point c, Vector v)
+Base Base::complete_base_k(const Point& c, const Vector& v)
 {
-    Vector candidate = Vector(1,0,0);
+    auto candidate = Vector(1,0,0);
     if(candidate.linearly_dependent(v))
         candidate = Vector(0,1,0);
     
@@ -34,12 +34,12 @@ Base Base::complete_base_k(Point c, Vector v)
     Vector i = (candidate - k*(candidate.dot(k))).normalize();
     Vector j = k.cross(i);
 
-    return Base(c, i, j, k);
+    return {c, i, j, k};
 }
 
 LinearMap Base::canonical_to_base() const
 {
-    return LinearMap(this->_matrix);
+    return {this->_matrix};
 }
 
 SpatialElement* Base::coord_from_canonical(const SpatialElement* s) const
@@ -59,39 +59,47 @@ Point Base::get_center() const
 
 Base Base::canonic_base()
 {
-    return Base(Point(),
+    return {Point(),
                 Vector(1,0,0),
                 Vector(0,1,0),
-                Vector(0,0,1));
+                Vector(0,0,1)};
 }
 
 Base Base::normalize() const
 {
-    return Base(this->_center,
+    return {this->_center,
                 this->_i.normalize(),
                 this->_j.normalize(),
-                this->_k.normalize());
+                this->_k.normalize()};
 }
 
 std::ostream& operator<<(std::ostream& os, const Base& b)
 {
-    os << "Point: " << b._center << "\nBase: " << b._i << " ; " << b._j << " ; " << b._k; 
+    os << b.to_string();
     return os;
 }
 
-Vector Base::operator[](int i) const
+std::string Base::to_string() const
+{
+    std::string s = "Point: " + this->_center.to_string() + " Base: " + this->_i.to_string() + " ; " + this->_j.
+        to_string() + " ; " + this->_k.to_string();
+    return s;
+}
+
+Vector Base::operator[](const int i) const
 {
     if(i < 0 || i > 2)
         throw std::invalid_argument("Index out of bounds.");
+
     if(i == 0)
         return this->_i;
     if(i == 1) 
         return this->_j;
-    else
-        return this->_k;
+
+    return this->_k;
 }
 
-bool Base::operator==(Base b) const
+bool Base::operator==(const Base& b) const
 {
     return (this->_matrix == b._matrix);
 }

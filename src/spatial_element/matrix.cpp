@@ -83,12 +83,12 @@ Matrix4x4 Matrix4x4::identity()
                      {0,1,0,0},
                      {0,0,1,0},
                      {0,0,0,1}};
-    return Matrix4x4(v);
+    return {v};
 }
 
-double Matrix4x4::get(int i, int j) const
+double Matrix4x4::get(const int i,const int j) const
 {
-    if (i < 0 || i > 4 || j < 0 || j > 4)
+    if (i < 0 || i > 3 || j < 0 || j > 3)
         throw std::invalid_argument("Index out of range.");
     return this->matrix[i][j];
 }

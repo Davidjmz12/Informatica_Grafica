@@ -22,6 +22,14 @@ Base Camera::get_screen_base() const
 
 std::ostream& operator<<(std::ostream& os, Camera c)
 {
-    os << "Camera:" << std::endl;
+    os << "Camera:" << c.to_string() << std::endl;
     return os;
+}
+
+std::string Camera::to_string()
+{
+    std::stringstream ss;
+    ss << "\n\tResolution: " << this->_resolution[0] << "x" << this->_resolution[1]
+       << "\n\tScreen Base: " << this->_screen_base.to_string();
+    return ss.str();
 }

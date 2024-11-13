@@ -44,13 +44,12 @@
  * 2024-2025
  * 
  */
-class Triangle : public Geometry
+class Triangle final : public Geometry
 {
 private:
     std::shared_ptr<Point> _v0; ///< The first vertex of the triangle
     std::shared_ptr<Point> _v1; ///< The second vertex of the triangle
     std::shared_ptr<Point> _v2; ///< The third vertex of the triangle
-    BoundingBox _bounding_box; ///< The bounding box of the triangle
 
     /**
      * @brief Checks if a given point is inside the triangle.
@@ -63,9 +62,8 @@ private:
      * @param p The point to be checked that is inside the plane containing the triangle.
      * @return true if the point is inside the triangle, false otherwise.
      */
-    bool point_inside_triangle(Point p) const;
+    [[nodiscard]] bool point_inside_triangle(const Point& p) const;
 
-    [[nodiscard]] BoundingBox compute_bounding_box() const;
 public:
 
     /**
@@ -75,7 +73,7 @@ public:
      * @param v2 The third vertex of the triangle.
      * @throw std::invalid_argument if the vertices are not different or if they are linearly dependent.
      */
-    Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, Property properties);
+    Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, const Property& properties);
 
     BoundingBox get_bounding_box() const override;
     

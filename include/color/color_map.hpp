@@ -25,41 +25,39 @@ class ColorMap {
 
         /**
          * @brief Construct a new ColorMap object.
-         * @param colors 2D vector of colors.
-         * @param encode Encoding type of the colors.
+         * @param spectral_colors 2D vector of spectral colors.
          * @throw invalid_argument If the colors are not equally encoded.
          */
-        ColorMap(MatrixSC spectral_colors);
+        explicit ColorMap(const MatrixSC& spectral_colors);
 
-        ColorMap(MatrixRGB colors);
+        explicit ColorMap(MatrixRGB colors);
 
-
-        double max() const;
-
+        [[nodiscard]] double max() const;
 
         /**
          * @brief Apply a tone mapping to all colors in the map.
          * @param t Tone mapping to apply.
+         * @param new_resolution New resolution of the color map.
          * @return ColorMap with tone-mapped colors.
          */
-        ColorMap apply_tone_mapping(ToneMapping* t, size_t new_resolution) const;
+        ColorMap apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, size_t new_resolution) const;
 
 
         /**
          * @brief Get the colors in the map.
          * @return 2D vector of colors.
          */
-        MatrixRGB colors() const;
+        [[nodiscard]] MatrixRGB colors() const;
 
         /**
          * @brief Compare two color maps for equality.
          * @param l Color map to compare with.
          * @return True if color maps are equal, false otherwise.
          */
-        bool operator==(ColorMap l) const;
+        bool operator==(const ColorMap& l) const;
 
 
-        std::string to_string() const;
+        [[nodiscard]] std::string to_string() const;
 
         /**
          * @brief Output the ColorMap to an output stream.

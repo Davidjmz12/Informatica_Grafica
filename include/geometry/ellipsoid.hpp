@@ -1,13 +1,3 @@
-/**
- * @file ellipsoid.hpp
- * @brief Defines a ellipsoid.
- * @authors Davidjmz12 DavidTizne
- * @date 08/10/2024
- *
- * This file contains the definition of the Ellipsoid class, which represents
- * a ellipsoid in R^3.
-*/
-
 #pragma once
 
 #include <stdexcept>
@@ -22,8 +12,8 @@
 class Ellipsoid : public Geometry
 {
 protected:
-    double _a, _b, _c; // Parameters for defining the ellipsoid
-    Point _center; // Center point
+    double _a, _b, _c; ///> Parameters for defining the ellipsoid
+    Point _center; ///> Center point
 
     /**
      * @brief Computes the normal vector of the ellipsoid in
@@ -32,14 +22,7 @@ protected:
      * @throw std::runtime_error if the point is not in the ellipsoid.
      * @return The normal vector to the surface in the point p
      */
-    Vector normal(Point p) const;
-
-    /**
-     * @brief Check if a point is in the ellipsoid
-     * @param p The point that is going to be checked.
-     * @return True if the point is in the ellipsoid. False otherwise.
-     */
-    bool is_in_ellipsoid(Point p) const;
+    [[nodiscard]] Vector normal(const Point& p) const;
 
 public:
 
@@ -49,11 +32,12 @@ public:
      * @param b The y-factor.
      * @param c The z-factor.
      * @param center The center.
+     * @param properties The properties of the ellipsoid.
      * @throw std::invalid_argument if some factors are zero.
      */
     Ellipsoid(double a, double b, double c, Point center, Property properties);
 
-    BoundingBox get_bounding_box() const;
+    [[nodiscard]] BoundingBox get_bounding_box() const override;
 
     /**
      * @brief Computes if the ellipsoid intersects with a ray and stores
@@ -67,5 +51,5 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Ellipsoid& e);
 
-    std::string to_string() const override;
+    [[nodiscard]] std::string to_string() const override;
 };

@@ -12,6 +12,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <utility>
 
 #include "files/ppm_file.hpp"
 
@@ -25,7 +26,7 @@ std::string readOneLine(std::ifstream& file)
     return line;
 }
 
-MatrixRGB PpmFile::readPixelMap(std::ifstream& file)
+MatrixRGB PpmFile::readPixelMap(std::ifstream& file) const
 {
     MatrixRGB pixels;
     double factor = this->_maxRange/this->_colorResolution;
@@ -49,7 +50,7 @@ MatrixRGB PpmFile::readPixelMap(std::ifstream& file)
     return pixels;
 }
 
-PpmFile::PpmFile(std::string path)
+PpmFile::PpmFile(const std::string& path)
 {
     std::ifstream file(path);
 
@@ -82,17 +83,20 @@ PpmFile::PpmFile(std::string path)
     this->_map = ColorMap(readPixelMap(file));
 }
 
-PpmFile::PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string format)
-    : _map(map), _maxRange(maxRange), _colorResolution(colorResolution), _dimension{dimension}, _format(format)
+PpmFile::PpmFile(ColorMap map, const double maxRange, const double colorResolution, const std::array<int,2> dimension, std::string  format)
+    : _map(std::move(map)), _maxRange(maxRange), _colorResolution(colorResolution), _dimension{dimension}, _format(std::move(format))
 {}
 
-PpmFile PpmFile::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
+PpmFile PpmFile::apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, const size_t new_resolution) const
 {
-    return PpmFile(this->_map.apply_tone_mapping(t, new_resolution), this->_maxRange, new_resolution, this->_dimension, this->_format);
+    return {this->_map.apply_tone_mapping(t, new_resolution),
+        this->_maxRange,static_cast<double>(new_resolution),
+        this->_dimension,
+        this->_format};
 }
 
 
-void PpmFile::save(std::string output_file) const
+void PpmFile::save(const std::string& output_file) const
 {
     std::ofstream file(output_file);
 
@@ -103,8 +107,8 @@ void PpmFile::save(std::string output_file) const
     // Write headers
     file << std::fixed << this->_format << std::endl;
     file << "#MAX=" << this->_maxRange << std::endl;
-    file << (int)this->_dimension[0] << " " << (int)this->_dimension[1] << std::endl;
-    file << (int)this->_colorResolution << std::endl;
+    file << this->_dimension[0] << " " << (int)this->_dimension[1] << std::endl;
+    file << static_cast<int>(this->_colorResolution) << std::endl;
     file << this->_map << std::endl;
 }
 

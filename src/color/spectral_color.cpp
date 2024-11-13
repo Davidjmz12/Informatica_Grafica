@@ -2,66 +2,66 @@
 
 
 SpectralColor::SpectralColor():
-    _chanels({})
+    _channels({})
 {}
 
 
-SpectralColor::SpectralColor(std::array<double,32> chanels_32):
-    _chanels(chanels_32)
+SpectralColor::SpectralColor(const std::array<double,32>& channels_32):
+    _channels(channels_32)
 {}
 
-SpectralColor::SpectralColor(std::array<double,16> chanels_16):
-    _chanels({})
+SpectralColor::SpectralColor(const std::array<double,16>& channels_16):
+    _channels({})
 {
     for(size_t i=0; i<16; ++i)
     {
-        this->_chanels[2*i] = chanels_16[i];
+        this->_channels[2*i] = channels_16[i];
     }
 }
 
-SpectralColor::SpectralColor(std::array<double,8> chanels_8):
-    _chanels({})
+SpectralColor::SpectralColor(const std::array<double,8>& channels_8):
+    _channels({})
 {
     for(size_t i=0; i<8; ++i)
     {
-        this->_chanels[4*i] = chanels_8[i];
+        this->_channels[4*i] = channels_8[i];
     }
 }
 
-SpectralColor::SpectralColor(std::array<double,3> rgb):
-    _chanels({})
+SpectralColor::SpectralColor(const std::array<double,3>& rgb):
+    _channels({})
 {
     for(size_t i=16; i<32; ++i)
     {
-        this->_chanels[i] = rgb[0];
+        this->_channels[i] = rgb[0];
     }
 
     for(size_t i=8; i<16; ++i)
     {
-        this->_chanels[i] = rgb[1];
+        this->_channels[i] = rgb[1];
     }
 
     for(size_t i=0; i<8; ++i)
     {
-        this->_chanels[i] = rgb[2];
+        this->_channels[i] = rgb[2];
     }
 
 }
 
-SpectralColor::SpectralColor(std::function<double(double)> f):
-    _chanels({})
+SpectralColor::SpectralColor(const std::function<double(double)>& f):
+    _channels({})
 {
     for(size_t i=0; i<SIZE; ++i)
     {
-        this->_chanels[i] = f(WAVELENGTHS[i]);
+        this->_channels[i] = f(WAVELENGTHS[i]);
     }
 }
 
-SpectralColor::SpectralColor(double intensity)
+SpectralColor::SpectralColor(const double intensity)
 {
     for(size_t i=0; i<SIZE; ++i)
     {
-        this->_chanels[i] = intensity;
+        this->_channels[i] = intensity;
     }
 }
 
@@ -73,9 +73,9 @@ ColorRGB SpectralColor::to_rgb() const
     for(size_t i=0; i<SIZE; ++i)
     {
         std::array<double,3> cie = CIE_1931_curves(WAVELENGTHS[i]);
-        X += this->_chanels[i]*cie[0]*increment;
-        Y += this->_chanels[i]*cie[1]*increment;
-        Z += this->_chanels[i]*cie[2]*increment;
+        X += this->_channels[i]*cie[0]*increment;
+        Y += this->_channels[i]*cie[1]*increment;
+        Z += this->_channels[i]*cie[2]*increment;
     }
 
     double R = 3.2404542*X - 1.5371385*Y - 0.4985314*Z;
@@ -97,14 +97,14 @@ ColorRGB SpectralColor::to_rgb() const
     return ColorRGB({R,G,B});
 }
 
-SpectralColor SpectralColor::apply_tone_mapping(ToneMapping* t) const
+SpectralColor SpectralColor::apply_tone_mapping(const std::unique_ptr<ToneMapping>& t) const
 {
-    std::array<double,SIZE> new_chanels;
+    std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
     {
-        new_chanels[i] = t->evaluate(this->_chanels[i]);
+        new_channels[i] = t->evaluate(this->_channels[i]);
     }
-    return SpectralColor(new_chanels);
+    return SpectralColor(new_channels);
 }
 
 std::string SpectralColor::to_string() const
@@ -112,49 +112,49 @@ std::string SpectralColor::to_string() const
     std::string s = "SpectralColor(";
     for(size_t i=0; i<SIZE; ++i)
     {
-        s += std::to_string(this->_chanels[i]) + " ";
+        s += std::to_string(this->_channels[i]) + " ";
     }
     return s + ")";
 }
 
-double SpectralColor::operator[](int index) const
+double SpectralColor::operator[](const size_t index) const
 {
-    if(index<0 || index>=SIZE)
+    if(index>=SIZE)
         throw std::out_of_range("Invalid index for color component");
 
-    return this->_chanels[index];
+    return this->_channels[index];
 }
 
-SpectralColor SpectralColor::operator+(SpectralColor c) const
+SpectralColor SpectralColor::operator+(const SpectralColor& c) const
 {
-    std::array<double,SIZE> new_chanels;
+    std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
-        new_chanels[i] = this->_chanels[i] + c[i];
-    return SpectralColor(new_chanels);
+        new_channels[i] = this->_channels[i] + c[i];
+    return SpectralColor(new_channels);
 }
 
-SpectralColor SpectralColor::operator*(SpectralColor c) const
+SpectralColor SpectralColor::operator*(const SpectralColor& c) const
 {
 
-    std::array<double,SIZE> new_chanels;
+    std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
-        new_chanels[i] = this->_chanels[i] * c[i];
-    return SpectralColor(new_chanels);
+        new_channels[i] = this->_channels[i] * c[i];
+    return SpectralColor(new_channels);
 }
 
-SpectralColor SpectralColor::operator*(double f) const
+SpectralColor SpectralColor::operator*(const double f) const
 {
-    std::array<double,SIZE> new_chanels;
+    std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
-        new_chanels[i] = this->_chanels[i] * f;
-    return SpectralColor(new_chanels);
+        new_channels[i] = this->_channels[i] * f;
+    return SpectralColor(new_channels);
 }
-SpectralColor SpectralColor::operator/(double f) const
+SpectralColor SpectralColor::operator/(const double f) const
 {
-    std::array<double,SIZE> new_chanels;
+    std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
-        new_chanels[i] = this->_chanels[i] / f;
-    return SpectralColor(new_chanels);
+        new_channels[i] = this->_channels[i] / f;
+    return SpectralColor(new_channels);
 }
 
 std::ostream& operator<<(std::ostream& os, const SpectralColor& g)
@@ -164,7 +164,7 @@ std::ostream& operator<<(std::ostream& os, const SpectralColor& g)
     return os;
 }
 
-bool SpectralColor::operator==(SpectralColor c) const
+bool SpectralColor::operator==(const SpectralColor& c) const
 {
     for(size_t i=0;i<SIZE;i++)
     {
@@ -174,7 +174,7 @@ bool SpectralColor::operator==(SpectralColor c) const
     return true;
 }
 
-bool SpectralColor::operator<=(double f) const
+bool SpectralColor::operator<=(const double f) const
 {
     for(size_t i=0;i<SIZE;i++)
     {

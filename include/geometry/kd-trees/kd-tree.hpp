@@ -21,11 +21,11 @@ public:
     VectorGeometries geometries; // Geometries in this node
 
 
-    KDTreeNode(const VectorGeometries& geometries);
-    void build(int depth);
+    explicit KDTreeNode(const VectorGeometries& geometries);
+    void build(size_t depth);
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
 
-    std::string to_string(size_t offset) const;
+    [[nodiscard]] std::string to_string(size_t offset) const;
 
     friend std::ostream& operator<<(std::ostream& os, const KDTreeNode& node);
 };
@@ -35,13 +35,13 @@ class KDTree
 public:
     std::unique_ptr<KDTreeNode> root;
 
-    KDTree(const VectorGeometries& geometries);
+    explicit KDTree(const VectorGeometries& geometries);
 
     KDTree();
 
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
     friend std::ostream& operator<<(std::ostream& os, const KDTree& tree);
 };

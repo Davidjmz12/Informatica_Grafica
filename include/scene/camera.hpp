@@ -8,8 +8,6 @@
 */
 #pragma once
 
-#include <future>
-
 #include "spatial_element/base.hpp"
 
 /**
@@ -26,9 +24,7 @@ public:
     /**
      * @brief Constructor for the Camera class.
      * @param base The base that defines a camera.
-     * @param width The width of the screen.
-     * @param height The height of the screen.
-     * @param distance The distance between the camera and the screen.
+     * @param resolution The resolution of the camera.
      * @throw std::invalid_argument if width, height or distance are not
      * positive numbers.
      */
@@ -36,9 +32,9 @@ public:
 
     SpatialElement* transform_to_canonical(const SpatialElement* s) const;
 
-    std::array<int,2> get_resolution() const;
+    [[nodiscard]] std::array<int,2> get_resolution() const;
 
-    Base get_screen_base() const;
+    [[nodiscard]] Base get_screen_base() const;
 
     /**
      * @brief Writes the information of a camera.
@@ -46,5 +42,7 @@ public:
      * @param c The camera.
      */
     friend std::ostream& operator<<(std::ostream& os, Camera c);
+
+    std::string to_string();
 
 };

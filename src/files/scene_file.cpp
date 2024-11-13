@@ -1,8 +1,15 @@
+#include <utility>
+#include "color/tone_mapping/all_tone_mapping.hpp"
+
 #include "files/scene_file.hpp"
 
 std::string parse_string(std::string line)
 {
-    std::regex re0("#.*#"), re1("#.*$"), re2("^\\s+"), re3("\\s+$"), re4("\\s+");
+    const std::regex re0("#.*#");
+    const std::regex re1("#.*$");
+    const std::regex re2("^\\s+");
+    const std::regex re3("\\s+$");
+    const std::regex re4("\\s+");
     line = std::regex_replace(line, re0, "");
     line = std::regex_replace(line, re1, "");
     line = std::regex_replace(line, re2, "");
@@ -18,7 +25,7 @@ std::string SceneFile::read_line() const
     do {
         std::getline(this->_file, line);
         line = parse_string(line);
-    } while(line == "");
+    } while(line.empty());
 
     return line;
 }
@@ -37,8 +44,8 @@ std::vector<std::string> split(const std::string &s, char delimiter)
 
 std::array<int,2> SceneFile::read_resolution() const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
     if (tokens.size() != 2)
         throw std::invalid_argument("The resolution must have 2 parameters");
     return {std::stoi(tokens[0]), std::stoi(tokens[1])};
@@ -46,65 +53,71 @@ std::array<int,2> SceneFile::read_resolution() const
 
 Point SceneFile::read_point() const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
     if (tokens.size() != 3)
         throw std::invalid_argument("The point must have 3 parameters");
-    return Point(std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]));
+    return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2])};
 }
 
 Vector SceneFile::read_vector() const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
     if (tokens.size() != 3)
         throw std::invalid_argument("The vector must have 3 parameters");
-    return Vector(std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]));
+    return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2])};
 }
 
 Camera SceneFile::read_camera() const
 {
-    std::string line = this->read_line();
+    const std::string line = this->read_line();
     if(line != "Camera")
         throw std::invalid_argument("The file must start with the camera section");
 
-    Point center = this->read_point();
-    Vector d1 = this->read_vector();
-    Vector d2 = this->read_vector();
-    Vector d3 = this->read_vector();
+    const Point center = this->read_point();
+    const Vector d1 = this->read_vector();
+    const Vector d2 = this->read_vector();
+    const Vector d3 = this->read_vector();
     std::array<int,2> res = this->read_resolution();
 
-    return Camera(Base(center, d1, d2, d3), res);
+    return {Base(center, d1, d2, d3), res};
     
 }
 
-int SceneFile::read_header(std::string expected) const
+int SceneFile::read_header(const std::string& expected) const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
+
     if (tokens.size() != 2)
         throw std::invalid_argument("The header must have 2 parameters");
     if (tokens[0] != expected)
         throw std::invalid_argument("The header must start with " + expected);
+
     return std::stoi(tokens[1]);
 }
 
 SpectralColor SceneFile::read_color() const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
+
     if (tokens[0] == "RGB")
         return  SpectralColor(SC3{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])});
-    else if (tokens[0] == "SC1")
+
+    if (tokens[0] == "SC1")
         return SpectralColor(std::stod(tokens[1]));
-    else if (tokens[0] == "SC8")
+
+    if (tokens[0] == "SC8")
         return SpectralColor(
             SC8{   
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
                 std::stod(tokens[5]), std::stod(tokens[6]), std::stod(tokens[7]), std::stod(tokens[8])
             }
             );
-    else if (tokens[0] == "SC16")
+
+    if (tokens[0] == "SC16")
         return SpectralColor(
             SC16{   
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
@@ -113,7 +126,8 @@ SpectralColor SceneFile::read_color() const
                 std::stod(tokens[13]), std::stod(tokens[14]), std::stod(tokens[15]), std::stod(tokens[16])
             }
         );
-    else if (tokens[0] == "SC32")
+
+    if (tokens[0] == "SC32")
         return SpectralColor(
             SC32{
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
@@ -126,26 +140,31 @@ SpectralColor SceneFile::read_color() const
                 std::stod(tokens[29]), std::stod(tokens[30]), std::stod(tokens[31]), std::stod(tokens[32])
             }
         );
-    else
-        throw std::invalid_argument("The color type must be RGB or Spectrum");
+
+    throw std::invalid_argument("The color type must be RGB or Spectrum");
 }
 
 std::shared_ptr<BRDF> SceneFile::read_brdf() const
 {
-    std::string line = this->read_line();
+    const std::string line = this->read_line();
+
     if (line == "diffuse")
         return std::make_unique<DiffuseBRDF>(this->read_color());
-    else if (line == "specular")
+
+    if (line == "specular")
         return std::make_unique<SpecularBRDF>(this->read_color());
-    else if (line == "absorption")
+
+    if (line == "absorption")
         return std::make_unique<AbsorptionBRDF>();
-    else if (line == "refractive")
+
+    if (line == "refractive")
     {
         SpectralColor c = this->read_color();
         double refractive_index = std::stod(this->read_line());
         return std::make_unique<RefractiveBRDF>(c, refractive_index);
     }
-    else if (line == "roulette")
+
+    if (line == "roulette")
     {
         int n_brdfs = std::stoi(this->read_line());
         std::vector<std::shared_ptr<BRDF>> brdfs;
@@ -157,9 +176,8 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
         }
         return std::make_unique<RouletteBRDF>(brdfs, weights);
     }
-        
-    else
-        throw std::invalid_argument("The BRDF type must be Diffuse");
+
+    throw std::invalid_argument("The BRDF type must be Diffuse");
 }
 
 void SceneFile::read_properties()
@@ -174,7 +192,7 @@ void SceneFile::read_properties()
     }
 }
 
-Property SceneFile::read_property(std::string key) const
+Property SceneFile::read_property(const std::string& key) const
 {
     if (this->_ch.find(key) == this->_ch.end())
         throw std::invalid_argument("The property " + key + " does not exist");
@@ -183,7 +201,7 @@ Property SceneFile::read_property(std::string key) const
 }
 
 
-std::shared_ptr<Geometry> SceneFile::read_plane(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_plane(const Property& p) const
 {
     Vector normal = this->read_vector();
 
@@ -193,14 +211,14 @@ std::shared_ptr<Geometry> SceneFile::read_plane(Property p) const
     return std::make_shared<Plane>(normal, d, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_sphere(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_sphere(const Property& p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     return std::make_shared<Sphere>(center, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cylinder(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_cylinder(const Property& p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
@@ -210,30 +228,30 @@ std::shared_ptr<Geometry> SceneFile::read_cylinder(Property p) const
 
 std::array<double,6> SceneFile::read_bounding_box() const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
     if (tokens.size() != 6)
         throw std::invalid_argument("The bounding box must have 6 parameters");
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-std::shared_ptr<Geometry> SceneFile::read_mesh(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_mesh(const Property& p) const
 {
-    std::string file =  this->_ply_dir + "/" +  this->read_line();
-    std::array<double,6> bb = this->read_bounding_box();
-    PlyFile ply = PlyFile(file, p);
+    const std::string file =  this->_ply_dir + "/" +  this->read_line();
+    const std::array<double,6> bb = this->read_bounding_box();
+    auto ply = PlyFile(file, p);
     ply.change_bounding_box(bb);
     return ply.to_mesh();
 }
 
-std::shared_ptr<Geometry> SceneFile::read_box(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_box(const Property& p) const
 {
     Point center = this->read_point();
     std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
     return std::make_shared<Box>(center, axis, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_face(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_face(const Property& p) const
 {
     Vector normal = this->read_vector();
     Vector u = this->read_vector();
@@ -242,7 +260,7 @@ std::shared_ptr<Geometry> SceneFile::read_face(Property p) const
     return std::make_shared<Face>(normal, u, v, point, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cone(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_cone(const Property& p) const
 {
     Point center = this->read_point();
     Vector axe = this->read_vector();
@@ -250,7 +268,7 @@ std::shared_ptr<Geometry> SceneFile::read_cone(Property p) const
     return std::make_shared<Cone>(center, axe, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_disk(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_disk(const Property& p) const
 {
     Point center = this->read_point();
     Vector normal = this->read_vector();
@@ -258,7 +276,7 @@ std::shared_ptr<Geometry> SceneFile::read_disk(Property p) const
     return std::make_shared<Disk>(center, normal, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_ellipsoid(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_ellipsoid(const Property& p) const
 {
     double a = std::stod(this->read_line());
     double b = std::stod(this->read_line());
@@ -267,7 +285,7 @@ std::shared_ptr<Geometry> SceneFile::read_ellipsoid(Property p) const
     return std::make_shared<Ellipsoid>(a, b, c, center, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_triangle(Property p) const
+std::shared_ptr<Geometry> SceneFile::read_triangle(const Property& p) const
 {
     auto p1 = std::make_shared<Point>(this->read_point());
     auto p2 = std::make_shared<Point>(this->read_point());
@@ -278,40 +296,40 @@ std::shared_ptr<Geometry> SceneFile::read_triangle(Property p) const
 std::shared_ptr<Geometry> SceneFile::read_geometry() const
 {
     // Read the type of geometry
-    std::string line = this->read_line();
+    const std::string line = this->read_line();
 
     // Read the property
-    Property p = this->read_property(this->read_line());
+    const Property p = this->read_property(this->read_line());
 
-    // Create the appropiate object
+    // Create the appropriate object
     if (line == "plane")
         return this->read_plane(p);
-    else if(line == "sphere")
+    if(line == "sphere")
         return this->read_sphere(p);
-    else if(line == "cylinder")
+    if(line == "cylinder")
         return this->read_cylinder(p);
-    else if(line == "mesh")
+    if(line == "mesh")
         return this->read_mesh(p);
-    else if(line == "box")
+    if(line == "box")
         return this->read_box(p);
-    else if(line == "face")
+    if(line == "face")
         return this->read_face(p);
-    else if(line == "cone")
+    if(line == "cone")
         return this->read_cone(p);
-    else if(line == "disk")
+    if(line == "disk")
         return this->read_disk(p);
-    else if(line == "ellipsoid")
+    if(line == "ellipsoid")
         return this->read_ellipsoid(p);
-    else if(line == "triangle")
+    if(line == "triangle")
         return this->read_triangle(p);
-    else
-        throw std::invalid_argument("The geometry type is unknown");
+
+    throw std::invalid_argument("The geometry type is unknown");
 }
 
 VectorGeometries SceneFile::read_geometries() const
 {
     // Read header and number of geometries
-    int n_geometries = this->read_header("Geometries");
+    const int n_geometries = this->read_header("Geometries");
     VectorGeometries g;
 
     // Read all geometries
@@ -321,8 +339,8 @@ VectorGeometries SceneFile::read_geometries() const
     return g;   
 }
 
-SceneFile::SceneFile(std::string file, std::string ply_dir):
-    _ply_dir(ply_dir)
+SceneFile::SceneFile(const std::string& file, std::string ply_dir):
+    _ply_dir(std::move(ply_dir))
 {
     this->_file.open(file);
     if (!this->_file.is_open())
@@ -332,16 +350,12 @@ SceneFile::SceneFile(std::string file, std::string ply_dir):
 void SceneFile::read_lights(VectorPunctualLight& pl, VectorAreaLight& al) const
 {
     // Read header and number of lights
-    int n_lights = this->read_header("Lights");
+    const int n_lights = this->read_header("Lights");
 
     // Read all lights
     for (int i = 0; i < n_lights; i++)
     {
-        // Read type of light
-        std::string name = this->read_line();
-
-        // Create the appropiate type of light
-        if (name == "punctual")
+        if (std::string name = this->read_line(); name == "punctual")
             pl.push_back(this->read_punctual_light());
         else if (name == "area")
             al.push_back(this->read_area_light()); 
@@ -366,10 +380,10 @@ std::shared_ptr<AreaLight> SceneFile::read_area_light() const
     return std::make_shared<AreaLight>(g, g->get_properties().get_color());
 }
 
-ToneMapping* SceneFile::read_gamma_tm(double max) const
+std::unique_ptr<ToneMapping> SceneFile::read_gamma_tm(double max) const
 {
-    std::string line = this->read_line();
-    std::vector<std::string> tokens = split(line, ' ');
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
     if (tokens.size() != 2)
         throw std::invalid_argument("The gamma tone mapping must have 1 parameter");
     double gamma = std::stod(tokens[0]);
@@ -379,10 +393,10 @@ ToneMapping* SceneFile::read_gamma_tm(double max) const
     else
         L = std::stod(tokens[1]);
     
-    return new Gamma(gamma,L);
+    return std::make_unique<Gamma>(gamma,L);
 }
 
-ToneMapping* SceneFile::read_tone_mapping(double max) const
+std::unique_ptr<ToneMapping> SceneFile::read_tone_mapping(double max) const
 {
     std::string line = this->read_line();
     if(line != "ToneMapping")
@@ -395,7 +409,7 @@ ToneMapping* SceneFile::read_tone_mapping(double max) const
 }
 
 
-void SceneFile::read_scene(std::string path, std::string file_save)
+void SceneFile::read_scene(const std::string& path, const std::string& file_save)
 {
     Camera c = this->read_camera();
     this->read_properties();
@@ -403,16 +417,16 @@ void SceneFile::read_scene(std::string path, std::string file_save)
     VectorPunctualLight pl;
     VectorAreaLight al;
     this->read_lights(pl, al);
-    Scene s = Scene(g, pl, al, c);
-    Render rend = Render(s);
+    auto s = Scene(g, pl, al, c);
+    auto rend = Render(s);
 
     ColorMap cm = rend.render_scene();
     double max = cm.max();
-    PpmFile ppm = PpmFile(cm, max, max, rend.get_resolution(), "P3");
+    auto ppm = PpmFile(cm, max, max, rend.get_resolution(), "P3");
     
     ppm.save(path + "/" + "no_tm_" + file_save);
 
-    ToneMapping* t = this->read_tone_mapping(ppm.get_max_range());
+    std::unique_ptr<ToneMapping> t = this->read_tone_mapping(ppm.get_max_range());
     PpmFile ppm_tm = ppm.apply_tone_mapping(t, 255);
     ppm_tm.save(path + "/" + file_save);
 }

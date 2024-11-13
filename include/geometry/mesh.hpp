@@ -41,7 +41,7 @@
  * 2024-2025
  * 
  */
-class Mesh : public Geometry
+class Mesh final: public Geometry
 {
 protected:
     KDTree _kd_tree;

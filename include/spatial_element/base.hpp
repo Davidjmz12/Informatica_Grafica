@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include <iostream>
-
 #include "spatial_element/linear_map.hpp"
 #include "spatial_element/matrix.hpp"
 
@@ -34,31 +32,31 @@ public:
     
     /**
     * @brief Creates a base with center p and axis i,j,k.
-    * @param p The referrence point of the base.
+    * @param p The reference point of the base.
     * @param i The first vector of the base.
     * @param j The second vector of the base.
     * @param k The third vector of tha base.
     */
-    Base(Point p, Vector i, Vector j, Vector k);
+    Base(const Point& p, const Vector& i, const Vector& j, const Vector& k);
 
     /**
-    * @brief Method that gives the canionic base.
+    * @brief Method that gives the canonic base.
     * @return The canonic_base.
     */     
     static Base canonic_base();
 
-    static Base complete_base_k(Point c, Vector v);
+    static Base complete_base_k(const Point& c, const Vector& v);
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param g Point with coordinates (x,y,z) in cannonical base.
+    * @param s Point with coordinates (x,y,z) in canonical base.
     * @return The coordinates of the point in the base-axis.
     */  
     SpatialElement* coord_from_canonical(const SpatialElement* s) const;
 
     /**
     * @brief Method that gives the point in a basis.
-    * @param g Point with coordinates (x,y,z) in this base.
+    * @param s Point with coordinates (x,y,z) in this base.
     * @return The point with the coordinates (x,y,z).
     */        
     SpatialElement* coord_into_canonical(const SpatialElement* s) const;
@@ -67,12 +65,12 @@ public:
     * @brief Method that gives the matrix of this base.
     * @return the linear transformation of that matrix.
     */       
-    LinearMap canonical_to_base() const;
+    [[nodiscard]] LinearMap canonical_to_base() const;
 
     
-    Point get_center() const;
+    [[nodiscard]] Point get_center() const;
 
-    Base normalize() const;
+    [[nodiscard]] Base normalize() const;
 
     /**
     * @brief An operator to print a base.
@@ -82,6 +80,8 @@ public:
     */
     friend std::ostream& operator<<(std::ostream& os, const Base& b);
 
+    [[nodiscard]] std::string to_string() const;
+
     Vector operator[](int i) const;
 
     /**
@@ -89,7 +89,7 @@ public:
     * @param b the second base.
     * @return True if the bases are equal. False otherwise.
     */
-    bool operator==(Base b) const;
+    bool operator==(const Base& b) const;
 
 
 

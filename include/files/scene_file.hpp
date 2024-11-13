@@ -8,16 +8,12 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <regex>
 
-
+#include "properties/brdf/all_brdf.hpp"
 #include "scene/render.hpp"
-#include "geometry/all_geometry.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
-#include "color/tone_mapping/all_tone_mapping.hpp"
 #include "light/area_light/area_light.hpp"
-#include "properties/brdf/all_brdf.hpp"
 
 using PropertyHash = std::unordered_map<std::string, Property>;
 
@@ -84,7 +80,7 @@ private:
      * @brief Method for reading the tone mapping
      * @return A pointer to the tone mapping
      */
-    ToneMapping* read_tone_mapping(double max) const;
+    std::unique_ptr<ToneMapping> read_tone_mapping(double max) const;
 
     /**
      * @brief Method for reading the resolution of the
@@ -100,7 +96,7 @@ private:
      *  the header
      * @return The number of elements in the section
      */
-    int read_header(std::string expected) const;
+    int read_header(const std::string& expected) const;
 
     /**
      * @brief Method for reading a color
@@ -115,7 +111,7 @@ private:
     std::shared_ptr<BRDF> read_brdf() const;
 
     /**
-     * @brief Method for reading a boundig box
+     * @brief Method for reading a bounding box
      * @return An array of size 6 with all the necessary
      *  parameters for create a bounding box
      */
@@ -127,7 +123,7 @@ private:
      *  defined previously in the properties section
      * @return The property
      */
-    Property read_property(std::string key) const;
+    Property read_property(const std::string& key) const;
 
     /**
      * @brief Method for reading a punctual light
@@ -146,77 +142,77 @@ private:
      * @param p The property of the plane
      * @brief The plane
      */
-    std::shared_ptr<Geometry> read_plane(Property p) const;
+    std::shared_ptr<Geometry> read_plane(const Property& p) const;
 
     /**
      * @brief Method for reading a sphere
      * @param p The property of the sphere
      * @brief The sphere
      */
-    std::shared_ptr<Geometry> read_sphere(Property p) const;
+    std::shared_ptr<Geometry> read_sphere(const Property& p) const;
 
     /**
      * @brief Method for reading a cylinder
      * @param p The property of the cylinder
      * @brief The cylinder
      */
-    std::shared_ptr<Geometry> read_cylinder(Property p) const;
+    std::shared_ptr<Geometry> read_cylinder(const Property& p) const;
 
     /**
      * @brief Method for reading a mesh
      * @param p The property of the mesh
      * @brief The mesh
      */
-    std::shared_ptr<Geometry> read_mesh(Property p) const;
+    std::shared_ptr<Geometry> read_mesh(const Property& p) const;
 
     /**
      * @brief Method for reading a box
      * @param p The property of the box
      * @brief The box
      */
-    std::shared_ptr<Geometry> read_box(Property p) const;
+    std::shared_ptr<Geometry> read_box(const Property& p) const;
 
     /**
      * @brief Method for reading a face
      * @param p The property of the face
      * @brief The face
      */
-    std::shared_ptr<Geometry> read_face(Property p) const;
+    std::shared_ptr<Geometry> read_face(const Property& p) const;
 
     /**
      * @brief Method for reading a cone
      * @param p The property of the cone
      * @brief The cone
      */
-    std::shared_ptr<Geometry> read_cone(Property p) const;
+    std::shared_ptr<Geometry> read_cone(const Property& p) const;
 
     /**
      * @brief Method for reading a disk
      * @param p The property of the disk
      * @brief The disk
      */
-    std::shared_ptr<Geometry> read_disk(Property p) const;	
+    std::shared_ptr<Geometry> read_disk(const Property& p) const;
 
     /**
-     * @brief Method for reading a ellipsoid
+     * @brief Method for reading an ellipsoid
      * @param p The property of the ellipsoid
      * @brief The ellipsoid
      */
-    std::shared_ptr<Geometry> read_ellipsoid(Property p) const;
+    std::shared_ptr<Geometry> read_ellipsoid(const Property& p) const;
 
     /**
      * @brief Method for reading a triangle
      * @param p The property of the triangle
      * @brief The triangle
      */
-    std::shared_ptr<Geometry> read_triangle(Property p) const;
+    std::shared_ptr<Geometry> read_triangle(const Property& p) const;
 
     /**
      * @brief Method for reading a gamma tone mapping
      * @param max The maximum of luminance
      * @brief A pointer to the gamma tone mapping
      */
-    ToneMapping* read_gamma_tm(double max) const;
+    std::unique_ptr<ToneMapping> read_gamma_tm(double max) const;
 
 public:
     /**
@@ -224,7 +220,7 @@ public:
      * @param file The scene file
      * @param ply_dir The path to the dir with the ply files
      */
-    SceneFile(std::string file, std::string ply_dir);
+    SceneFile(const std::string& file, std::string ply_dir);
 
     /**
      * @brief Method for reading the file and create the image
@@ -232,5 +228,5 @@ public:
      *  is going to be stored
      * @param file_save The name for the created file
      */
-    void read_scene(std::string path, std::string file_save);
+    void read_scene(const std::string& path, const std::string& file_save);
 };

@@ -2,8 +2,7 @@
 
 #include <array>
 #include <string>
-#include <iostream>
-#include <fstream>
+#include <memory>
 #include <functional>
 
 #include "color/colorRGB.hpp"
@@ -19,7 +18,7 @@ private:
 
     static constexpr size_t SIZE = 32;
 
-    std::array<double,SIZE> _chanels;
+    std::array<double,SIZE> _channels{};
 
     static constexpr std::array<double, SIZE> WAVELENGTHS = {
         380.00, 392.90, 405.81, 418.71, 431.61, 444.52, 457.42, 470.32, 
@@ -34,35 +33,35 @@ public:
     
     SpectralColor();
 
-    SpectralColor(std::array<double,32> chanels_32);
+    explicit SpectralColor(const std::array<double,32>& channels_32);
 
-    SpectralColor(std::array<double,16> chanels_16);
+    explicit SpectralColor(const std::array<double,16>& channels_16);
 
-    SpectralColor(std::array<double,8> chanels_8);
+    explicit SpectralColor(const std::array<double,8>& channels_8);
 
-    SpectralColor(std::array<double,3> rgb);
+    explicit SpectralColor(const std::array<double,3>& rgb);
 
-    SpectralColor(std::function<double(double)> f);
+    explicit SpectralColor(const std::function<double(double)>& f);
     
-    SpectralColor(double intensity);
+    explicit SpectralColor(double intensity);
 
-    ColorRGB to_rgb() const;
+    [[nodiscard]] ColorRGB to_rgb() const;
     
-    SpectralColor apply_tone_mapping(ToneMapping* t) const;
+    [[nodiscard]] SpectralColor apply_tone_mapping(const std::unique_ptr<ToneMapping>& t) const;
 
-    std::string to_string() const;
+    [[nodiscard]] std::string to_string() const;
 
 
-    double operator[](int index) const;
+    double operator[](size_t index) const;
 
-    SpectralColor operator+(SpectralColor c) const;
-    SpectralColor operator*(SpectralColor c) const;
+    SpectralColor operator+(const SpectralColor& c) const;
+    SpectralColor operator*(const SpectralColor& c) const;
     SpectralColor operator*(double f) const;
     SpectralColor operator/(double f) const;
 
     friend std::ostream& operator<<(std::ostream& os, const SpectralColor& g);
 
-    bool operator==(SpectralColor c) const;
+    bool operator==(const SpectralColor& c) const;
     bool operator<=(double f) const;
 
 };

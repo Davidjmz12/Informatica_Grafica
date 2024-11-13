@@ -18,7 +18,7 @@ HashMap get_default_conf() {
     return conf;
 }
 
-void parse_init(int argc, char* argv[]) {
+void parse_init(const int argc, char* argv[]) {
     HashMap conf = get_default_conf();
     for (int i = 1; i < argc; i++) {
         if(std::strcmp(argv[i], "--threads") == 0)
@@ -57,7 +57,7 @@ void parse_init(int argc, char* argv[]) {
 
         if(std::strcmp(argv[i], "--max-depth") == 0)
         {
-            int max_depth = int(std::stoi(argv[i+1]));
+            int max_depth = int(std::stoi(argv[i + 1]));
             conf["max-depth"] = max_depth;
             i++;
         }
@@ -78,12 +78,12 @@ void parse_end() {
     delete GlobalConf::get_instance();
 }
 
-int main(int argc, char* argv[]) 
+int main(const int argc, char* argv[])
 {
     try {
         parse_init(argc, argv);
 
-        SceneFile sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
+        auto sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
 
         sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");
 

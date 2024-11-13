@@ -4,34 +4,34 @@
 BoundingBox BoundingBox::get_BB_by_corners(const std::vector<Point>& corners)
 {
     double max_x,min_x,max_y,min_y,max_z,min_z;
-    for(size_t i=0; i<corners.size(); i++)
+    for(const auto & corner : corners)
     {
-        max_x = std::max(corners[i][0],max_x);
-        min_x = std::min(corners[i][0],min_x);
-        max_y = std::max(corners[i][1],max_y);
-        min_y = std::min(corners[i][1],min_y);
-        max_z = std::max(corners[i][2],max_z);
-        min_z = std::min(corners[i][2],min_z);
+        max_x = std::max(corner[0],max_x);
+        min_x = std::min(corner[0],min_x);
+        max_y = std::max(corner[1],max_y);
+        min_y = std::min(corner[1],min_y);
+        max_z = std::max(corner[2],max_z);
+        min_z = std::min(corner[2],min_z);
     }
     return BoundingBox({min_x, max_x, min_y, max_y, min_z, max_z});
 }
 
-BoundingBox BoundingBox::combine_all(const std::vector<BoundingBox> geometries)
+BoundingBox BoundingBox::combine_all(const std::vector<BoundingBox>& geometries)
 {
     double max_x,min_x,max_y,min_y,max_z,min_z;
-    for(size_t i=0; i<geometries.size(); i++)
+    for(const auto & geometry : geometries)
     {
-        min_x = std::min(geometries[i]._bound_box[0],min_x);
-        max_x = std::max(geometries[i]._bound_box[1],max_x);
-        min_y = std::min(geometries[i]._bound_box[2],min_y);
-        max_y = std::max(geometries[i]._bound_box[3],max_y);
-        min_z = std::min(geometries[i]._bound_box[4],min_z);
-        max_z = std::max(geometries[i]._bound_box[5],max_z);
+        min_x = std::min(geometry._bound_box[0],min_x);
+        max_x = std::max(geometry._bound_box[1],max_x);
+        min_y = std::min(geometry._bound_box[2],min_y);
+        max_y = std::max(geometry._bound_box[3],max_y);
+        min_z = std::min(geometry._bound_box[4],min_z);
+        max_z = std::max(geometry._bound_box[5],max_z);
     }
     return BoundingBox({min_x, max_x, min_y, max_y, min_z, max_z});
 }
 
-double BoundingBox::center(size_t axis) const
+double BoundingBox::center(const size_t axis) const
 {
     return (_bound_box[2*axis] + _bound_box[2*axis+1])/2;
 }
@@ -49,39 +49,39 @@ BoundingBox::BoundingBox(const std::array<double, 6>& bounds)
 
 // Function to check if a ray intersects the bounding box
 bool BoundingBox::intersect_with_ray(const Ray& ray) const {
-    Point rayOrigin = ray.get_point();
-    Vector rayDir = ray.get_direction();
+    const Point rayOrigin = ray.get_point();
+    const Vector rayDir = ray.get_direction();
 
     // Start with the intersection test along the x-axis
-    double tmin = (_bound_box[0] - rayOrigin[0]) / rayDir[0];
-    double tmax = (_bound_box[1] - rayOrigin[0]) / rayDir[0];
-    if (tmin > tmax) std::swap(tmin, tmax);
+    double t_min = (this->_bound_box[0] - rayOrigin[0]) / rayDir[0];
+    double t_max = (this->_bound_box[1] - rayOrigin[0]) / rayDir[0];
+    if (t_min > t_max) std::swap(t_min, t_max);
 
-    double tymin = (_bound_box[2] - rayOrigin[1]) / rayDir[1];
-    double tymax = (_bound_box[3] - rayOrigin[1]) / rayDir[1];
-    if (tymin > tymax) std::swap(tymin, tymax);
+    double ty_min = (this->_bound_box[2] - rayOrigin[1]) / rayDir[1];
+    double ty_max = (this->_bound_box[3] - rayOrigin[1]) / rayDir[1];
+    if (ty_min > ty_max) std::swap(ty_min, ty_max);
 
-    if ((tmin > tymax) || (tymin > tmax))
+    if ((t_min > ty_max) || (ty_min > t_max))
         return false;
 
-    if (tymin > tmin)
-        tmin = tymin;
-    if (tymax < tmax)
-        tmax = tymax;
+    if (ty_min > t_min)
+        t_min = ty_min;
+    if (ty_max < t_max)
+        t_max = ty_max;
 
-    double tzmin = (_bound_box[4] - rayOrigin[2]) / rayDir[2];
-    double tzmax = (_bound_box[5] - rayOrigin[2]) / rayDir[2];
-    if (tzmin > tzmax) std::swap(tzmin, tzmax);
+    double tz_min = (this->_bound_box[4] - rayOrigin[2]) / rayDir[2];
+    double tz_max = (this->_bound_box[5] - rayOrigin[2]) / rayDir[2];
+    if (tz_min > tz_max) std::swap(tz_min, tz_max);
 
-    if ((tmin > tzmax) || (tzmin > tmax))
+    if ((t_min > tz_max) || (tz_min > t_max))
         return false;
 
-    if (tzmin > tmin)
-        tmin = tzmin;
-    if (tzmax < tmax)
-        tmax = tzmax;
+    if (tz_min > t_min)
+        t_min = tz_min;
+    if (tz_max < t_max)
+        t_max = tz_max;
 
-    return tmax >= 0;
+    return t_max >= 0;
 }
 
 std::string BoundingBox::to_string() const

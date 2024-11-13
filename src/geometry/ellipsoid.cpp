@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "geometry/ellipsoid.hpp"
 
 BoundingBox Ellipsoid::get_bounding_box() const
@@ -11,8 +13,8 @@ BoundingBox Ellipsoid::get_bounding_box() const
     );
 }
 
-Ellipsoid::Ellipsoid(double a, double b, double c, Point center, Property properties)
-    : Geometry(properties), _a(a), _b(b), _c(c), _center(center)
+Ellipsoid::Ellipsoid(const double a, const double b, const double c, Point center, Property properties)
+    : Geometry(std::move(properties)), _a(a), _b(b), _c(c), _center(std::move(center))
 {
     if (eqD(a,0) || eqD(b,0) || eqD(c,0))
         throw std::invalid_argument("Factors cannot be zero.");
@@ -38,14 +40,14 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
 
     //Calculate the solution
     std::vector<double> solution = solve_equation_second_degree(a,b,c);
-    bool existSolution = solution.size() > 0;
+    bool existSolution = !solution.empty();
 
     // If there is no solution, return false
     if(!existSolution)
         return false;
 
     double distance = 0;
-    for(double d : solution)
+    for(const double d : solution)
         if (gtD(d,0))
             distance = d;
 
@@ -54,9 +56,9 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
         return false;
 
 
-    Point point_int = r.evaluate(distance);
+    const Point point_int = r.evaluate(distance);
 
-    Vector p_inside = (r.get_point()-this->_center);
+    const Vector p_inside = (r.get_point()-this->_center);
     bool is_entering = true;
     if (pow(p_inside[0],2)/pow(this->_a,2) + pow(p_inside[1],2)/pow(this->_b,2) + pow(p_inside[2],2)/pow(this->_c,2) <= 1)
         is_entering = false;
@@ -67,7 +69,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
     return existSolution;    
 }
 
-Vector Ellipsoid::normal(Point p) const
+Vector Ellipsoid::normal(const Point& p) const
 {
     //Compute the normal vector
     return Vector(  (p[0]-this->_center[0])/pow(this->_a,2),

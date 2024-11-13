@@ -1,22 +1,13 @@
-/**
- * @file color_map.hpp
- * @brief Implementation of the ColorMap header.
- * @authors Davidjmz12 DavidTizne
- * @date 01/10/2024
- *
- * This file contains the implementation of the ColorMap class, which represents
- * a 2D map of colors.
-*/
 
 #include "color/color_map.hpp"
+#include <utility>
 
+ColorMap::ColorMap()= default;
 
-ColorMap::ColorMap(){}
-
-ColorMap::ColorMap(MatrixSC spectral_colors)
+ColorMap::ColorMap(const MatrixSC& spectral_colors)
 {
     MatrixRGB colors; // Vector to store the new colors
-    for(auto i: spectral_colors)
+    for(const auto& i: spectral_colors)
     {
         std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
         for (SpectralColor color: i)
@@ -29,13 +20,13 @@ ColorMap::ColorMap(MatrixSC spectral_colors)
 }
 
 ColorMap::ColorMap(MatrixRGB colors):
-    _colors(colors)
+    _colors(std::move(colors))
 {}
 
 double ColorMap::max() const
 {
     double max = 0;
-    for(auto i: this->_colors)
+    for(const auto& i: this->_colors)
     {
         for (ColorRGB color: i)
         {
@@ -51,11 +42,11 @@ double ColorMap::max() const
     return max;
 }
 
-ColorMap ColorMap::apply_tone_mapping(ToneMapping* t, size_t new_resolution) const
+ColorMap ColorMap::apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, const size_t new_resolution) const
 {
 
     MatrixRGB colors; // Vector to store the new colors
-    for(auto i: this->_colors)
+    for(const auto& i: this->_colors)
     {
         std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
         for (ColorRGB color: i)
@@ -74,7 +65,7 @@ MatrixRGB ColorMap::colors() const
 
 std::string ColorMap::to_string() const
 {
-    std::string s = "";
+    std::string s;
     for (size_t i = 0; i < this->_colors.size(); ++i) 
     {
         auto v = this->_colors[i];
@@ -92,7 +83,7 @@ std::string ColorMap::to_string() const
     return s;
 }
 
-bool ColorMap::operator==(ColorMap l) const
+bool ColorMap::operator==(const ColorMap& l) const
 {
     return(l.colors()==this->_colors);   // Compare the colors of the two ColorMap objects
 }

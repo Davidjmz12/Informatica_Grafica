@@ -12,7 +12,7 @@ private:
 
 public:
 
-    PunctualLight(Point center, SpectralColor power);
+    PunctualLight(Point center, const SpectralColor& power);
     
-    SpectralColor light_contribution(KDTree& tree, const IntersectionObject& intersection) const;
+    [[nodiscard]] SpectralColor light_contribution(const KDTree& tree, const IntersectionObject& intersection) const;
 };

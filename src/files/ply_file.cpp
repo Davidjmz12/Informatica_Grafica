@@ -44,7 +44,8 @@ PlyFile::PlyFile(const std::string& file_path, const Property& properties)
             try{
                 auto triangle = std::make_shared<Triangle>(points[p0],points[p1],points[p2],properties);
                 elements.push_back(triangle);
-            } catch (std::invalid_argument& e){}
+            } catch (std::invalid_argument&){}
+
         } else
         {
             throw std::runtime_error("Only supported triangles and faces");
@@ -104,9 +105,9 @@ double PlyFile::standardize(const double value, const double min, const double m
 
 void PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
 {
-    auto x_op = [new_bounding_box,this](double x){return this->standardize(x,this->_bounding_box[0], this->_bounding_box[1])*(new_bounding_box[1]-new_bounding_box[0])+new_bounding_box[0];};
-    auto y_op = [new_bounding_box,this](double y){return this->standardize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
-    auto z_op = [new_bounding_box,this](double z){return this->standardize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
+    auto x_op = [new_bounding_box,this](const double x){return PlyFile::standardize(x,this->_bounding_box[0], this->_bounding_box[1])*(new_bounding_box[1]-new_bounding_box[0])+new_bounding_box[0];};
+    auto y_op = [new_bounding_box,this](const double y){return PlyFile::standardize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
+    auto z_op = [new_bounding_box,this](const double z){return PlyFile::standardize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
 
     for(const auto& p: this->_points)
     {

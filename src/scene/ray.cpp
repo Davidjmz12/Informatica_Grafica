@@ -1,14 +1,13 @@
 #include "scene/ray.hpp"
 
-Ray::Ray()
-{}
+Ray::Ray() = default;
 
-Ray::Ray(Point point, Vector direction, double refraction_coefficient)
-    : _point(point), _direction(direction.normalize()), 
+Ray::Ray(const Point& point, const Vector& direction, const double refraction_coefficient)
+    : _point(point), _direction(direction.normalize()),
     _refraction_coefficient(refraction_coefficient)
 {}
 
-Point Ray::evaluate(double t) const
+Point Ray::evaluate(const double t) const
 {
     return _point+_direction*t;
 } 

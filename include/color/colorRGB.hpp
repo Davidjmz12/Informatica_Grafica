@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <memory>
 
 #include "color/tone_mapping/tone_mapping.hpp"
 #include "global_config/constants.hpp"
@@ -14,33 +15,34 @@ private:
 
 public:
 
-    ColorRGB(std::array<double, 3> colors);
+    explicit ColorRGB(const std::array<double, 3>& colors);
     ColorRGB();
 
-    ColorRGB normalize(double max_value) const;
+    [[nodiscard]] ColorRGB normalize(double max_value) const;
 
     /**
      * @brief Standardizes the color values.
      * 
      * @return A standardized ColorRGB object.
      */
-    ColorRGB standardize(double max_value) const;
+    [[nodiscard]] ColorRGB standardize(double max_value) const;
 
     /**
      * @brief Apply tone mapping to the color.
      * @param t Tone mapping type.
+     * @param new_resolution New resolution of the color.
      * @return Tone-mapped color.
      * @throws std::invalid_argument if the color is in RGB encoding.
      * @throws std::invalid_argument if the tone mapping maximum value is greater than the maximum luminance value.
      */
-    ColorRGB apply_tone_mapping(ToneMapping* t, size_t new_resolution) const;
+    [[nodiscard]] ColorRGB apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, size_t new_resolution) const;
 
 
     /**
      * @brief Get string representation of the color.
      * @return String representation of the color.
      */
-    std::string to_string() const;   
+    [[nodiscard]] std::string to_string() const;
 
 
     /* Operators */
@@ -51,7 +53,7 @@ public:
      * @return Value of the color component at the given index.
      * @throws std::out_of_range if the index is out of bounds.
      */
-    double operator[](int index) const;
+    double operator[](size_t index) const;
 
 
     /**
@@ -59,7 +61,7 @@ public:
      * @param l ColorRGB to compare with.
      * @return True if colors are equal, false otherwise.
      */
-    bool operator==(ColorRGB l) const;
+    bool operator==(const ColorRGB& l) const;
 
     /**
      * @brief Output the color to an output stream.
@@ -70,9 +72,9 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const ColorRGB& g);
 
 
-    ColorRGB operator*(ColorRGB c) const;
+    ColorRGB operator*(const ColorRGB& c) const;
     
-    ColorRGB operator+(ColorRGB c) const;
+    ColorRGB operator+(const ColorRGB& c) const;
 
     ColorRGB operator*(double f) const;
 

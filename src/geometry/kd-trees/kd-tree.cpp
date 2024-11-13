@@ -7,7 +7,7 @@ KDTree::KDTree()
 
 KDTree::KDTree(const VectorGeometries& geometries)
 {
-    size_t depth = GlobalConf::get_instance()->get_max_depth();
+    const size_t depth = GlobalConf::get_instance()->get_max_depth();
     root = std::make_unique<KDTreeNode>(geometries);
     root->build(depth);
     std::cout << "Resulting Tree:" << (*this) << std::endl;
@@ -43,16 +43,16 @@ KDTreeNode::KDTreeNode(const VectorGeometries& geometries)
     bbox = BoundingBox::combine_all(bounding_boxes);
 }
 
-void KDTreeNode::build(int depth)
+void KDTreeNode::build(const size_t depth)
 {
     if (geometries.size() <= 1 || depth == 0) return;
 
-    int axis = depth % 3;
+    size_t axis = depth % 3;
     std::sort(geometries.begin(), geometries.end(), [axis](const auto& a, const auto& b) {
         return a->get_bounding_box().center(axis) < b->get_bounding_box().center(axis);
     });
 
-    auto mid = geometries.size() / 2;
+    const auto mid = geometries.size() / 2;
     VectorGeometries leftGeometries(geometries.begin(), geometries.begin() + mid);
     VectorGeometries rightGeometries(geometries.begin() + mid, geometries.end());
 
@@ -82,26 +82,24 @@ bool KDTreeNode::intersect_with_ray(const Ray& ray, IntersectionObject& intersec
             }
         }
         return hit;
-    } else 
-    {
-        IntersectionObject intersection_left, intersection_right;
-        bool hit = false;
-        if (left && left->intersect_with_ray(ray, intersection_left)) hit = true;
-        if (right && right->intersect_with_ray(ray, intersection_right)) hit = true;
-        
-        if (intersection_left < intersection_right) {
-            intersection = intersection_left;
-        } else {
-            intersection = intersection_right;
-        }
-        return hit;
     }
 
+    IntersectionObject intersection_left, intersection_right;
+    bool hit = false;
+    if (left && left->intersect_with_ray(ray, intersection_left)) hit = true;
+    if (right && right->intersect_with_ray(ray, intersection_right)) hit = true;
+        
+    if (intersection_left < intersection_right) {
+        intersection = intersection_left;
+    } else {
+        intersection = intersection_right;
+    }
+    return hit;
 }
 
-std::string KDTreeNode::to_string(size_t offset) const
+std::string KDTreeNode::to_string(const size_t offset) const
 {
-    std::string offset_s(offset, '\t');
+    const std::string offset_s(offset, '\t');
     std::string s = offset_s  + "BoundingBox " + bbox.to_string() + "\n";
     s += offset_s + "Geometries: " + std::to_string(geometries.size()) +  "\n";
     if (left) s += offset_s + "Left:\n" + left->to_string(offset + 1);
