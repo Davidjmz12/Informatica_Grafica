@@ -26,5 +26,10 @@ public:
 
     virtual std::string to_string() const = 0;
 
+    virtual bool is_delta() const = 0;
+    
     friend std::ostream& operator<<(std::ostream& os, const BRDF& b);
+
+
+    virtual ~BRDF() = default;
 };

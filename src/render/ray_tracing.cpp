@@ -1,3 +1,66 @@
-//
-// Created by david on 14/11/2024.
-//
+#include "render/ray_tracing.hpp"
+
+
+RayTracing::RayTracing(Scene& s) : 
+    Render(s) 
+{}
+
+SpectralColor RayTracing::compute_ray_color(const Ray& r) const
+{
+    return compute_ray_intersection_color(r, this->_gc->get_number_of_bounces());
+}
+
+SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_rec) const
+{
+    // If the number of bounces is 0, return black.
+    if(n_rec == 0)
+        return SpectralColor{};
+
+    IntersectionObject min_int_obj;
+
+    bool intersects = false;
+
+    intersects = this->_scene.intersect_with_ray(r, min_int_obj);
+
+    IntersectionLight min_int_light;
+    for(const auto& element: this->_scene.get_area_lights())
+    {
+        if(IntersectionLight int_light_aux; element->intersect_with_ray(r, int_light_aux))
+        {
+            intersects = true;
+            if(int_light_aux < min_int_light)
+                min_int_light = int_light_aux;
+        }
+    }
+
+    // If the ray does not intersect with any object, return black.
+    if(!intersects)
+        return SpectralColor{};
+
+
+    if(min_int_light < min_int_obj)
+    {
+        return min_int_light.get_power();
+    }
+
+    Ray new_ray;
+    if(!min_int_obj.sample_ray(new_ray))
+        return SpectralColor{};
+
+    const SpectralColor indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
+    const SpectralColor indirect_light_contribution = min_int_obj.eval_brdf(indirect_light*M_PI, new_ray.get_direction());
+    const SpectralColor point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
+
+    return point_light_contribution + indirect_light_contribution;
+}
+
+SpectralColor RayTracing::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
+{
+    const VectorPunctualLight lights = this->_scene.get_punctual_lights();
+    SpectralColor color_contribution;
+    for(const auto & light : lights)
+    {
+        color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection);
+    }
+    return color_contribution;
+}

@@ -22,6 +22,11 @@ bool IntersectionObject::is_entering() const
     return this->_is_entering;
 }
 
+bool IntersectionObject::is_delta() const
+{
+    return this->_properties.get_BRDF()->is_delta();
+}
+
 bool IntersectionObject::operator==(const IntersectionObject i) const
 {
     return  eqD(this->_distance,i._distance) &&

@@ -10,10 +10,12 @@
 #include <unordered_map>
 
 #include "properties/brdf/all_brdf.hpp"
-#include "scene/render.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
 #include "light/area_light/area_light.hpp"
+
+#include "render/ray_tracing.hpp"
+#include "render/photon_mapping.hpp"
 
 using PropertyHash = std::unordered_map<std::string, Property>;
 

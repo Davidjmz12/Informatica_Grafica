@@ -11,4 +11,6 @@ public:
     std::string to_string() const override;
     
     friend std::ostream& operator<<(std::ostream& os, const AbsorptionBRDF& b);
+
+    bool is_delta() const override;
 };

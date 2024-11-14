@@ -65,3 +65,8 @@ std::ostream& operator<<(std::ostream& os, const RouletteBRDF& b)
     os << b.to_string();
     return os;
 }
+
+bool RouletteBRDF::is_delta() const
+{
+    return _brdfs[_sampled_ray_index]->is_delta();
+}

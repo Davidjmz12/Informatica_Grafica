@@ -50,3 +50,8 @@ std::string RefractiveBRDF::to_string() const
 {
     return "RefractiveBRDF: " + this->_k.to_string();
 }
+
+bool RefractiveBRDF::is_delta() const
+{
+    return true;
+}

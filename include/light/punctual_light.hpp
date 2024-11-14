@@ -13,11 +13,12 @@ private:
 public:
 
     PunctualLight(Point center, const SpectralColor& power);
+    PunctualLight() = default;
 
+    Ray sample_random_unitary_ray() const;
 
     [[nodiscard]] double luminance_mean() const;
     [[nodiscard]] double luminance_max() const;
     [[nodiscard]] SpectralColor light_contribution(const KDTree& tree, const IntersectionObject& intersection) const;
 
-    
 };

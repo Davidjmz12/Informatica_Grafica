@@ -23,6 +23,8 @@ public:
     Property get_properties() const;
     bool is_entering() const;
 
+    bool is_delta() const;
+
     SpectralColor eval_brdf(SpectralColor light, Vector w_i) const;
     bool sample_ray(Ray& sampled_ray);
 

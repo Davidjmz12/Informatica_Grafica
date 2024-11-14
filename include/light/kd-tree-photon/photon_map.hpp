@@ -1,5 +1,5 @@
 #include <list>
-#include "kdtree.h"
+#include "light/kd-tree-photon/kdtree.h"
 #include "light/photon.hpp"
 
 class PhotonMap

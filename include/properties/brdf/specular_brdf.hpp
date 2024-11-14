@@ -15,4 +15,6 @@ public:
     std::string to_string() const override;
 
     friend std::ostream& operator<<(std::ostream& os, const SpecularBRDF& b);
+
+    bool is_delta() const override;
 };

@@ -22,3 +22,8 @@ std::ostream& operator<<(std::ostream& os, const AbsorptionBRDF& b)
     os << b.to_string();
     return os;
 }
+
+bool AbsorptionBRDF::is_delta() const
+{
+    return false;
+}

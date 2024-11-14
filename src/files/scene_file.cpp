@@ -418,11 +418,25 @@ void SceneFile::read_scene(const std::string& path, const std::string& file_save
     VectorAreaLight al;
     this->read_lights(pl, al);
     auto s = Scene(g, pl, al, c);
-    auto rend = Render(s);
+    
+    GlobalConf* gc = GlobalConf::get_instance();
+    Render* rend;
+    RenderType rt = gc->get_render_type();
+    switch (rt)
+    {
+    case RenderType::RAY_TRACING:
+        rend = new RayTracing(s);
+        break;
+    case RenderType::PHOTON_MAPPING:
+        rend = new PhotonMapping(s, gc->get_number_of_photons());
+        break;
+    default:
+        throw std::invalid_argument("Unknown render type");
+    }
 
-    ColorMap cm = rend.render_scene();
+    ColorMap cm = rend->render_scene();
     double max = cm.max();
-    auto ppm = PpmFile(cm, max, max, rend.get_resolution(), "P3");
+    auto ppm = PpmFile(cm, max, max, rend->get_resolution(), "P3");
     
     ppm.save(path + "/" + "no_tm_" + file_save);
 

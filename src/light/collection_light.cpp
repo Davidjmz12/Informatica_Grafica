@@ -1,8 +1,13 @@
-#include "light/collection_lights.hpp"
+#include "light/collection_light.hpp"
 
-CollectionLight::CollectionLight(const LightVector& lights):
+CollectionLight::CollectionLight(const VectorPunctualLight& lights):
     _lights(lights)
 {
+    if(lights.empty())
+    {
+        throw std::invalid_argument("The collection of lights is empty");
+    }
+
     double total_light = 0;
 
     for(const auto& one_light: lights)
@@ -26,11 +31,13 @@ double CollectionLight::sample_light(PunctualLight& light)
     
     for(size_t i=0;i<this->_lights.size();i++)
     {
-        if(sum_probabilities <= d <= (sum_probabilities + this->_weights[i]))
+        if((sum_probabilities <= d) && (d <= (sum_probabilities + this->_weights[i])))
         {
             light = *this->_lights[i].get();
             return this->_weights[i];
         }
         sum_probabilities += this->_weights[i];
     }
+
+    throw std::runtime_error("Error sampling light");
 }

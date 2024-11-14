@@ -1,12 +1,11 @@
-add_library(intersection intersection.cpp)
-target_link_libraries(intersection PUBLIC ray)
-target_include_directories(intersection PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_library(render render.cpp)
+target_link_libraries(render PUBLIC scene color_map intersection_object)
+target_include_directories(render PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-add_library(intersection_object intersection_object.cpp)
-target_link_libraries(intersection_object PUBLIC intersection property)
-target_include_directories(intersection_object PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_library(photon_mapping photon_mapping.cpp)
+target_link_libraries(photon_mapping PUBLIC render collection_light photon)
+target_include_directories(photon_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-
-add_library(intersection_light intersection_light.cpp)
-target_link_libraries(intersection_light PUBLIC intersection spectral_color)
-target_include_directories(intersection_light PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_library(ray_tracing ray_tracing.cpp)
+target_link_libraries(ray_tracing PUBLIC render)
+target_include_directories(ray_tracing PUBLIC ${CMAKE_SOURCE_DIR}/include)

@@ -6,6 +6,9 @@
 #include "metrics/metrics.hpp"
 #include "files/scene_file.hpp"
 
+const std::string PM_STR = "photon-map";
+const std::string RT_STR = "ray-tracing";
+
 HashMap get_default_conf() {
     HashMap conf;
     conf["threads"] = int(1);
@@ -15,6 +18,8 @@ HashMap get_default_conf() {
     conf["task-size"] = int(10);
     conf["n-bounces"] = int(5);
     conf["max-depth"] = int(2);
+    conf["render-type"] = RenderType::RAY_TRACING;
+    conf["num-photons"] = int(1000);
     return conf;
 }
 
@@ -59,6 +64,31 @@ void parse_init(const int argc, char* argv[]) {
         {
             int max_depth = int(std::stoi(argv[i + 1]));
             conf["max-depth"] = max_depth;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--render-type") == 0)
+        {
+            std::string render_type = argv[i + 1];
+            if(render_type == PM_STR)
+            {
+                conf["render-type"] = RenderType::PHOTON_MAPPING;
+            }
+            else if(render_type == RT_STR)
+            {
+                conf["render-type"] = RenderType::RAY_TRACING;
+            }
+            else
+            {
+                throw std::invalid_argument("Unknown render type");
+            }
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--num-photons") == 0)
+        {
+            int num_photons = int(std::stoi(argv[i + 1]));
+            conf["num-photons"] = num_photons;
             i++;
         }
     }

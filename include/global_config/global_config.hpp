@@ -9,6 +9,12 @@
 
 using HashMap = std::unordered_map<std::string, std::any>;
 
+enum class RenderType
+{
+    RAY_TRACING,
+    PHOTON_MAPPING
+};
+
 /**
  * The GlobalConf class defines the `get_instance` method that serves as an
  * alternative to constructor and lets clients access the same instance of this
@@ -49,6 +55,10 @@ public:
         return std::any_cast<int>(this->get("threads"));
     }
 
+    RenderType get_render_type(){
+        return std::any_cast<RenderType>(this->get("render-type"));
+    }
+
     size_t get_task_size(){
         return std::any_cast<int>(this->get("task-size"));
     }
@@ -64,6 +74,11 @@ public:
     size_t get_max_depth(){
         return std::any_cast<int>(this->get("max-depth"));
     }
+
+    size_t get_number_of_photons(){
+        return std::any_cast<int>(this->get("n-photons"));
+    }
+
 
     auto get(const std::string key)
         -> std::any

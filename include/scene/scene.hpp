@@ -10,7 +10,7 @@
 
 #include "scene/camera.hpp"
 #include "light/area_light/area_light.hpp"
-#include "light/light.hpp"
+#include "light/punctual_light.hpp"
 #include "geometry/kd-trees/kd-tree.hpp"
 
 using VectorPunctualLight = std::vector<std::shared_ptr<PunctualLight>>;
@@ -33,18 +33,20 @@ public:
      * @brief Constructor for the Scene objects.
      * @param objects Vector of Geometry objects in the
      * scene.
+     * @param lights Vector of punctual lights in the scene.
+     * @param area_lights Vector of area lights in the scene.
      * @param camera Camera on the scene.
      */
     Scene(VectorGeometries objects,  VectorPunctualLight lights, VectorAreaLight area_lights, Camera camera);
 
-    std::array<int,2> get_resolution() const;
+    [[nodiscard]] std::array<int,2> get_resolution() const;
 
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
 
-    VectorPunctualLight get_punctual_lights() const;
-    VectorAreaLight get_area_lights() const;
-    KDTree& get_objects();
-    Camera get_camera() const;
+    [[nodiscard]] VectorPunctualLight get_punctual_lights() const;
+    [[nodiscard]] VectorAreaLight get_area_lights() const;
+    [[nodiscard]] KDTree& get_objects();
+    [[nodiscard]] Camera get_camera() const;
 
     /**
      * @brief Write the information of the scene.

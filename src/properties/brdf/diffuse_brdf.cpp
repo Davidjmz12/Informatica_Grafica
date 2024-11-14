@@ -37,3 +37,8 @@ std::string DiffuseBRDF::to_string() const
 {
     return "DiffuseBRDF: " + this->_k.to_string();
 }
+
+bool DiffuseBRDF::is_delta() const
+{
+    return false;
+}

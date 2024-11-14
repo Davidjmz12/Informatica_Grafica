@@ -16,4 +16,6 @@ public:
     std::string to_string() const override;
 
     friend std::ostream& operator<<(std::ostream& os, const DiffuseBRDF& d);
+
+    bool is_delta() const override;
 };

@@ -65,6 +65,27 @@ SpectralColor::SpectralColor(const double intensity)
     }
 }
 
+double SpectralColor::luminance_mean() const
+{
+    double sum = 0;
+    for(size_t i=0; i<SIZE; i++)
+    {
+        sum += this->_channels[i];
+    }
+
+    return sum/static_cast<double>(SIZE);
+}
+
+double SpectralColor::luminance_max() const
+{
+    double max = 0;
+    for(size_t i=0; i<SIZE; i++)
+    {
+        max = max<this->_channels[i]?this->_channels[i]:max;
+    }
+    return max;
+}
+
 ColorRGB SpectralColor::to_rgb() const
 {
     double X = 0, Y = 0, Z = 0;
