@@ -23,12 +23,12 @@ SpectralColor PunctualLight::light_contribution(const KDTree& tree, const Inters
 }
 
 
-double Light::luminance_mean() const
+double PunctualLight::luminance_mean() const
 {
     return this->_power.luminance_mean();
 }
 
-double Light::luminance_max() const
+double PunctualLight::luminance_max() const
 {
     return this->_power.luminance_max();
 }

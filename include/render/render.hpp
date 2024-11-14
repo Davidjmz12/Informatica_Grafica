@@ -17,12 +17,13 @@ private:
     [[nodiscard]] SpectralColor compute_random_pixel_color(size_t x, size_t y) const;
     [[nodiscard]] SpectralColor compute_ray_intersection_color(const Ray& r, size_t n_rec) const;
 
-    SpectralColor calculate_punctual_light_contribution(const IntersectionObject& intersection) const;
+    [[nodiscard]] SpectralColor calculate_punctual_light_contribution(const IntersectionObject& intersection) const;
     [[nodiscard]] std::array<double,2> get_random_pixel_coordinates(size_t x, size_t y) const;
     [[nodiscard]] Ray trace_ray(std::array<double,2> coordinates) const;
     [[nodiscard]] MatrixSC arrange_vector_into_color_matrix(std::vector<SpectralColor> colors) const;
   
 public:
+
     explicit Render(Scene& s);
     ColorMap render_scene();
 
