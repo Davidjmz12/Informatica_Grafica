@@ -8,9 +8,9 @@ DiffuseBRDF::DiffuseBRDF()
     : BRDF(SpectralColor())
 {}
 
-SpectralColor DiffuseBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+SpectralColor DiffuseBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
-    return this->_k / M_PI;
+    return light * this->_k;
 }
 
 bool DiffuseBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)

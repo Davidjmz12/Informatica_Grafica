@@ -12,7 +12,7 @@ public:
 
     RefractiveBRDF();
     
-    [[nodiscard]] SpectralColor eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_co_entry) const override;
+    [[nodiscard]] SpectralColor eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_co_entry) const override;
 
     bool sample_ray(Vector w_0, Point x, Vector n, double ref_co_entry, Ray& sampled_ray, bool is_entering) override;
 

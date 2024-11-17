@@ -48,9 +48,12 @@ SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const siz
         return SpectralColor{};
 
     const SpectralColor indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-    const SpectralColor indirect_light_contribution = min_int_obj.eval_brdf(indirect_light*M_PI, new_ray.get_direction());
-    const SpectralColor point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
-
+    const SpectralColor indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction());
+    SpectralColor point_light_contribution;
+    if(!min_int_obj.is_delta())
+    {
+        point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
+    } 
     return point_light_contribution + indirect_light_contribution;
 }
 

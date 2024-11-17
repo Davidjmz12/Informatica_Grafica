@@ -26,12 +26,12 @@ RouletteBRDF::RouletteBRDF(std::vector<std::shared_ptr<BRDF>> brdfs, std::vector
     
 }
 
-SpectralColor RouletteBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+SpectralColor RouletteBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
     if(_sampled_ray_index == -1)
         throw std::invalid_argument("No ray has been sampled yet");
 
-    return _brdfs[_sampled_ray_index]->eval(w_i, w_0, x, n, ref_coef_entry)*this->_weights[_sampled_ray_index];
+    return _brdfs[_sampled_ray_index]->eval(light, w_i, w_0, x, n, ref_coef_entry)*this->_weights[_sampled_ray_index];
 }
 
 bool RouletteBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)

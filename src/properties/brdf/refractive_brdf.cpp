@@ -9,9 +9,9 @@ RefractiveBRDF::RefractiveBRDF()
 {
 }
 
-SpectralColor RefractiveBRDF::eval(Vector w_i, const Vector w_0, Point x, const Vector n, double ref_co_entry) const
+SpectralColor RefractiveBRDF::eval(SpectralColor light, Vector w_i, const Vector w_0, Point x, const Vector n, double ref_co_entry) const
 {
-    return this->_k / n.dot(w_0);
+    return this->_k*light;//*sqrt(1-pow(n.dot(w_0),2));
 }
 
 bool RefractiveBRDF::sample_ray(const Vector w_0, const Point x, const Vector n, double ref_co_entry,  Ray& sampled_ray, bool is_entering)

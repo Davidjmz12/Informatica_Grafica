@@ -20,7 +20,7 @@ public:
 
     SpectralColor get_color() const;
 
-    virtual SpectralColor eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const = 0;
+    virtual SpectralColor eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const = 0;
 
     virtual bool sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering) = 0;
 

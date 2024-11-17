@@ -2,7 +2,7 @@
 
 AbsorptionBRDF::AbsorptionBRDF() : BRDF(SpectralColor()) {}
 
-SpectralColor AbsorptionBRDF::eval(Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+SpectralColor AbsorptionBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
     return SpectralColor();
 }
