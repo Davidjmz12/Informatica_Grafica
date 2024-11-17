@@ -1,9 +1,40 @@
+#include <cmath>
+
 #include "render/photon_mapping.hpp"
 
 
+SpectralColor PhotonMapping::density_estimate(const IntersectionObject& obj) const
+{
+    SpectralColor color;
+    size_t n_photons = this->_gc->get_max_photon_num();
+    double radius = this->_gc->get_radius();
+    SpectralColor sum;
+    for(const Photon* p : this->_photon_map.nearest_neighbors(obj.get_int_point(), n_photons, radius))
+    {
+        sum = sum + obj.eval_brdf(p->get_flux()/(M_PI*pow(radius,2)), p->get_vector());
+    }
+
+    return sum;
+}
+
 SpectralColor PhotonMapping::compute_ray_color(const Ray& r) const
 {
-    return SpectralColor{};
+    IntersectionObject min_int_obj;
+    bool intersects = this->_scene.intersect_with_ray(r, min_int_obj);
+    if(!intersects)
+        return SpectralColor();
+    
+    if(min_int_obj.is_delta())
+    {
+        Ray new_ray;
+        if(!min_int_obj.sample_ray(new_ray))
+            return SpectralColor();
+        
+        return compute_ray_color(new_ray);
+    } else
+    {
+        return this->density_estimate(min_int_obj);
+    }
 }
 
 void PhotonMapping::create_photon_trace_rec(const Ray& r, SpectralColor flux, size_t num_bounces, std::vector<Photon>& photons)
@@ -21,8 +52,7 @@ void PhotonMapping::create_photon_trace_rec(const Ray& r, SpectralColor flux, si
     if(!min_int_obj.sample_ray(new_ray))
         return;
 
-    // STILL NEED TO IMPLEMENT THIS
-    SpectralColor new_flux = flux * min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
+    SpectralColor new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
     
     if(min_int_obj.is_delta())
     {

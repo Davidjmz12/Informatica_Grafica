@@ -68,7 +68,7 @@ public:
     }
 
     size_t get_number_of_bounces(){
-        return std::any_cast<int>(this->get("n-bounces"));
+        return std::any_cast<int>(this->get("bounces"));
     }
 
     size_t get_max_depth(){
@@ -76,7 +76,15 @@ public:
     }
 
     size_t get_number_of_photons(){
-        return std::any_cast<int>(this->get("n-photons"));
+        return std::any_cast<int>(this->get("num-photons"));
+    }
+
+    double get_radius(){
+        return std::any_cast<double>(this->get("radius"));
+    }
+
+    size_t get_max_photon_num(){
+        return std::any_cast<int>(this->get("max-photon-num"));
     }
 
 
@@ -86,7 +94,7 @@ public:
         try {
             return _values.at(key);
         } catch (const std::out_of_range& e) {
-            throw std::invalid_argument("Key not found");
+            throw std::invalid_argument("Key " + key + " not found");
         }
     }
 
@@ -106,6 +114,15 @@ public:
             throw std::runtime_error("No metrics available");
 
         return std::any_cast<Metrics&>(_values.at("metrics"));
+    }
+
+    void print()
+    {
+        std::cout << "Global configuration:" << std::endl;
+        for (const auto& [key, value] : _values)
+        {
+            std::cout << key << ": " << value << std::endl;
+        }
     }
 
 };

@@ -11,15 +11,17 @@ const std::string RT_STR = "ray-tracing";
 
 HashMap get_default_conf() {
     HashMap conf;
-    conf["threads"] = int(1);
-    conf["rays"] = int(50);
+    conf["threads"] = int(10);
+    conf["rays"] = int(1);
     conf["is-metrics"] = bool(true);
     conf["metrics"] = Metrics();
-    conf["task-size"] = int(10);
-    conf["n-bounces"] = int(5);
-    conf["max-depth"] = int(2);
-    conf["render-type"] = RenderType::RAY_TRACING;
-    conf["num-photons"] = int(1000);
+    conf["task-size"] = int(256);
+    conf["bounces"] = int(3);
+    conf["max-depth"] = int(0);
+    conf["render-type"] = RenderType::PHOTON_MAPPING;
+    conf["num-photons"] = int(1000000);
+    conf["radius"] = double(0.01);
+    conf["max-photon-num"] = int(100);
     return conf;
 }
 
@@ -56,7 +58,7 @@ void parse_init(const int argc, char* argv[]) {
         if(std::strcmp(argv[i], "--bounces") == 0)
         {
             int n_bounces = int(std::stoi(argv[i+1]));
-            conf["n-bounces"] = n_bounces;
+            conf["bounces"] = n_bounces;
             i++;
         }
 
@@ -91,6 +93,21 @@ void parse_init(const int argc, char* argv[]) {
             conf["num-photons"] = num_photons;
             i++;
         }
+
+        if(std::strcmp(argv[i], "--radius") == 0)
+        {
+            double radius = double(std::stod(argv[i + 1]));
+            conf["radius"] = radius;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--max-photon-num") == 0)
+        {
+            int max_photon_num = int(std::stoi(argv[i + 1]));
+            conf["max-photon-num"] = max_photon_num;
+            i++;
+        }
+
     }
 
     GlobalConf::get_instance(conf);

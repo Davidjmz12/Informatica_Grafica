@@ -63,8 +63,13 @@ inline bool geD(double a, double b)
 
 inline double randomD(double a, double b)
 {
-    double r2 = static_cast <double> (rand()) / (static_cast <double> (RAND_MAX));
-    return a + r2*(b-a);
+    std::random_device rd;
+
+    std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<> dis(a, b);
+
+    return dis(gen);
 }
 
 /**
