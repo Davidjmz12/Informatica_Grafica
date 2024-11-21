@@ -12,14 +12,14 @@ protected:
     GlobalConf* _gc;
     ThreadPool _pool;
 
-    [[nodiscard]] std::vector<SpectralColor> paint_k_pixels(std::array<size_t,2> start, size_t n_pixels) const;
-    [[nodiscard]] SpectralColor compute_pixel_color(size_t x, size_t y) const;
-    [[nodiscard]] SpectralColor compute_random_pixel_color(size_t x, size_t y) const;
-    [[nodiscard]] virtual SpectralColor compute_ray_color(const Ray& r) const = 0;
+    [[nodiscard]] std::vector<Color> paint_k_pixels(std::array<size_t,2> start, size_t n_pixels) const;
+    [[nodiscard]] Color compute_pixel_color(size_t x, size_t y) const;
+    [[nodiscard]] Color compute_random_pixel_color(size_t x, size_t y) const;
+    [[nodiscard]] virtual Color compute_ray_color(const Ray& r) const = 0;
 
     [[nodiscard]] std::array<double,2> get_random_pixel_coordinates(size_t x, size_t y) const;
     [[nodiscard]] Ray trace_ray(std::array<double,2> coordinates) const;
-    [[nodiscard]] MatrixSC arrange_vector_into_color_matrix(std::vector<SpectralColor> colors) const;
+    [[nodiscard]] MatrixSC arrange_vector_into_color_matrix(std::vector<Color> colors) const;
   
 public:
     virtual ~Render() = default;

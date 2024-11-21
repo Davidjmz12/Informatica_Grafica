@@ -1,10 +1,10 @@
 #include "properties/brdf/roulette_brdf.hpp"
 
 
-RouletteBRDF::RouletteBRDF(std::vector<std::shared_ptr<BRDF>> brdfs, std::vector<double> weights)
-    : _brdfs(brdfs), _weights(weights), _sampled_ray_index(-1)
+RouletteBRDF::RouletteBRDF(std::vector<std::shared_ptr<BRDF>> brdfs)
+    : _brdfs(brdfs), _sampled_ray_index(-1)
 {
-    SpectralColor sum_colors;
+    Color sum_colors;
     for(size_t i=0; i<brdfs.size(); ++i)
     {
         sum_colors = sum_colors + brdfs[i]->get_color();
@@ -12,21 +12,23 @@ RouletteBRDF::RouletteBRDF(std::vector<std::shared_ptr<BRDF>> brdfs, std::vector
     if(!(sum_colors <= 1))
         throw std::invalid_argument("The sum of the colors of the BRDFs must be less or equal to 1");
 
-    if(brdfs.size() != weights.size())
-        throw std::invalid_argument("The number of BRDFs must be equal to the number of weights");
-
-    double sum_weights = 0;
-    for(size_t i=0; i<weights.size(); ++i)
+    
+    double sum_max = 0;
+    for(size_t i=0; i<brdfs.size(); ++i)
     {
-        sum_weights += weights[i];
+        sum_max += brdfs[i]->get_color().luminance_max();
     }
 
-    if(!eqD(sum_weights,1))
-        throw std::invalid_argument("The sum of the weights must be equal to 1");
-    
+    std::vector<double> weights = {};
+    for(size_t i=0; i<brdfs.size(); i++)
+    {
+        weights.push_back(brdfs[i]->get_color().luminance_max()/sum_max);
+    }
+
+    this->_weights = weights;
 }
 
-SpectralColor RouletteBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+Color RouletteBRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
     if(_sampled_ray_index == -1)
         throw std::invalid_argument("No ray has been sampled yet");

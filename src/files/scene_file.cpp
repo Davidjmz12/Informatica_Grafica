@@ -98,19 +98,19 @@ int SceneFile::read_header(const std::string& expected) const
     return std::stoi(tokens[1]);
 }
 
-SpectralColor SceneFile::read_color() const
+Color SceneFile::read_color() const
 {
     const std::string line = this->read_line();
     const std::vector<std::string> tokens = split(line, ' ');
 
     if (tokens[0] == "RGB")
-        return  SpectralColor(SC3{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])});
+        return  Color(SC3{std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3])});
 
     if (tokens[0] == "SC1")
-        return SpectralColor(std::stod(tokens[1]));
+        return Color(std::stod(tokens[1]));
 
     if (tokens[0] == "SC8")
-        return SpectralColor(
+        return Color(
             SC8{   
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
                 std::stod(tokens[5]), std::stod(tokens[6]), std::stod(tokens[7]), std::stod(tokens[8])
@@ -118,7 +118,7 @@ SpectralColor SceneFile::read_color() const
             );
 
     if (tokens[0] == "SC16")
-        return SpectralColor(
+        return Color(
             SC16{   
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
                 std::stod(tokens[5]), std::stod(tokens[6]), std::stod(tokens[7]), std::stod(tokens[8]),
@@ -128,7 +128,7 @@ SpectralColor SceneFile::read_color() const
         );
 
     if (tokens[0] == "SC32")
-        return SpectralColor(
+        return Color(
             SC32{
                 std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), 
                 std::stod(tokens[5]), std::stod(tokens[6]), std::stod(tokens[7]), std::stod(tokens[8]),
@@ -159,7 +159,7 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
 
     if (line == "refractive")
     {
-        SpectralColor c = this->read_color();
+        Color c = this->read_color();
         double refractive_index = std::stod(this->read_line());
         return std::make_unique<RefractiveBRDF>(c, refractive_index);
     }
@@ -366,7 +366,7 @@ void SceneFile::read_lights(VectorPunctualLight& pl, VectorAreaLight& al) const
 
 std::shared_ptr<PunctualLight> SceneFile::read_punctual_light() const
 {
-    SpectralColor power = this->read_color();
+    Color power = this->read_color();
     Point center = this->read_point();
     return std::make_shared<PunctualLight>(center, power);
 }

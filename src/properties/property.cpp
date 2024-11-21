@@ -8,7 +8,7 @@ Property::Property():
     _brdf(std::make_shared<DiffuseBRDF>())
 {}
 
-SpectralColor Property::get_color() const
+Color Property::get_color() const
 {
     return this->_brdf->get_color();
 }

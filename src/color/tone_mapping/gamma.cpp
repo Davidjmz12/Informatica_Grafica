@@ -15,7 +15,7 @@ Gamma::Gamma(double gamma, double V)
 double Gamma::evaluate(double l_in) const
 {
     if (l_in < this->_V)
-        return pow(l_in / this->_V, this->_gamma);
+        return pow(l_in / this->_V, 1.0/this->_gamma);
     else
         return 1;
 }

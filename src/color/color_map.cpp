@@ -4,13 +4,14 @@
 
 ColorMap::ColorMap()= default;
 
+#ifdef SPECTRAL_COLOR
 ColorMap::ColorMap(const MatrixSC& spectral_colors)
 {
     MatrixRGB colors; // Vector to store the new colors
     for(const auto& i: spectral_colors)
     {
         std::vector<ColorRGB> colors_row; // Vector to store the new colors of the row
-        for (SpectralColor color: i)
+        for (Color color: i)
         {
             colors_row.push_back(color.to_rgb());
         }
@@ -18,6 +19,7 @@ ColorMap::ColorMap(const MatrixSC& spectral_colors)
     }
     this->_colors = colors;
 }
+#endif
 
 ColorMap::ColorMap(MatrixRGB colors):
     _colors(std::move(colors))

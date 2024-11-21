@@ -104,7 +104,7 @@ private:
      * @brief Method for reading a color
      * @return The color
      */
-    SpectralColor read_color() const;
+    Color read_color() const;
 
     /**
      * @brief Method for reading a BRDF object

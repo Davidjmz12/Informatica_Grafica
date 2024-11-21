@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 #include "properties/brdf/diffuse_brdf.hpp"
 
 class BRDF;
@@ -18,7 +18,7 @@ public:
     Property(std::shared_ptr<BRDF> brdf);
 
 
-    SpectralColor get_color() const;
+    Color get_color() const;
     BRDF* get_BRDF() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Property& p);

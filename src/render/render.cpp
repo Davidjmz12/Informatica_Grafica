@@ -20,7 +20,7 @@ ColorMap Render::render_scene()
     size_t rest = (resolution[0]*resolution[1])%task_size;
     const size_t num_real_tasks = rest==0?num_full_tasks:num_full_tasks+1;
 
-    std::vector<std::future<std::vector<SpectralColor>>> futures;
+    std::vector<std::future<std::vector<Color>>> futures;
 
     for(size_t i=0; i<num_full_tasks; ++i)
     {
@@ -46,10 +46,10 @@ ColorMap Render::render_scene()
         );
     }
     
-    std::vector<SpectralColor> all_colors;
+    std::vector<Color> all_colors;
     for(size_t i=0; i<num_real_tasks; ++i)
     {
-        std::vector<SpectralColor> row_colors = futures[i].get();
+        std::vector<Color> row_colors = futures[i].get();
         all_colors.insert(std::end(all_colors), std::begin(row_colors), std::end(row_colors));
     }
 
@@ -76,11 +76,11 @@ std::array<int,2> Render::get_resolution() const
 // Private methods
 // -------------------------------------------------
 
-std::vector<SpectralColor> Render::paint_k_pixels(const std::array<size_t,2> start, const size_t n_pixels) const
+std::vector<Color> Render::paint_k_pixels(const std::array<size_t,2> start, const size_t n_pixels) const
 {
     const std::array<int,2> resolution = this->get_resolution();
 
-    std::vector<SpectralColor> colors;
+    std::vector<Color> colors;
     for(size_t i=0; i<n_pixels; i++)
     {
         const size_t x = (start[1]+i)%resolution[1];
@@ -90,14 +90,14 @@ std::vector<SpectralColor> Render::paint_k_pixels(const std::array<size_t,2> sta
     return colors;
 }
 
-SpectralColor Render::compute_pixel_color(const size_t x, const size_t y) const
+Color Render::compute_pixel_color(const size_t x, const size_t y) const
 {
     const size_t num_rays = this->_gc->get_number_of_rays();
 
     if(num_rays<1)
         throw std::invalid_argument("The number of rays must be greater than 0.");
     
-    SpectralColor sum = this->compute_random_pixel_color(x, y);
+    Color sum = this->compute_random_pixel_color(x, y);
     
     for(size_t i=1; i<num_rays; ++i)
         sum = sum + this->compute_random_pixel_color(x, y);
@@ -105,11 +105,11 @@ SpectralColor Render::compute_pixel_color(const size_t x, const size_t y) const
     return sum/static_cast<double>(num_rays);
 }
 
-SpectralColor Render::compute_random_pixel_color(const size_t x, const size_t y) const
+Color Render::compute_random_pixel_color(const size_t x, const size_t y) const
 {
     const std::array<double,2> pixel_coordinates = this->get_random_pixel_coordinates(x,y);
     const Ray r = this->trace_ray(pixel_coordinates);
-    const SpectralColor l = this->compute_ray_color(r);
+    const Color l = this->compute_ray_color(r);
     return l;
 }
 
@@ -135,7 +135,7 @@ Ray Render::trace_ray(std::array<double,2> coordinates) const
     return r;
 }
 
-MatrixSC Render::arrange_vector_into_color_matrix(std::vector<SpectralColor> colors) const 
+MatrixSC Render::arrange_vector_into_color_matrix(std::vector<Color> colors) const 
 {
     MatrixSC matrix;
     const std::array<int,2> dim = this->get_resolution();

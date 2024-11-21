@@ -42,7 +42,7 @@ MatrixRGB PpmFile::readPixelMap(std::ifstream& file) const
         for (int j = 0; j < this->_dimension[0]; j++)
         {
             s >> red >> green >> blue;
-            row.push_back(ColorRGB({red*factor,green*factor,blue*factor}));
+            row.push_back(ColorRGB(SC3{red*factor,green*factor,blue*factor}));
         }
         pixels.push_back(row);
     }

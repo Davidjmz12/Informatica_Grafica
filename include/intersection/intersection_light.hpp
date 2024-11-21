@@ -1,20 +1,20 @@
 #pragma once
 
 #include "intersection/intersection.hpp"
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 
 
 class IntersectionLight : public Intersection
 {
 private:
-    SpectralColor _power;
+    Color _power;
 
 public:
     IntersectionLight();
         
-    IntersectionLight(double distance, SpectralColor power, Point intersection_point, Ray ray);
+    IntersectionLight(double distance, Color power, Point intersection_point, Ray ray);
 
-    SpectralColor get_power() const;
+    Color get_power() const;
 
     std::string to_string() const;
 

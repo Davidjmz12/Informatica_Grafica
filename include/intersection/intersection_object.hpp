@@ -25,7 +25,7 @@ public:
 
     bool is_delta() const;
 
-    SpectralColor eval_brdf(SpectralColor light, Vector w_i) const;
+    Color eval_brdf(Color light, Vector w_i) const;
     bool sample_ray(Ray& sampled_ray);
 
     bool operator==(const IntersectionObject i) const;

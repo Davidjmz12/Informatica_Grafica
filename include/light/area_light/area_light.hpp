@@ -7,7 +7,7 @@
 */
 #pragma once
 
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 #include "intersection/intersection_light.hpp"
 #include "scene/ray.hpp"
 #include "geometry/all_geometry.hpp"
@@ -19,7 +19,7 @@ class AreaLight
 {
 private:
     std::shared_ptr<Geometry> _shape;       // The shape of the light
-    SpectralColor _power;   // The luminance of the light
+    Color _power;   // The luminance of the light
 
 public:
     /**
@@ -27,7 +27,7 @@ public:
      * @param shape The shape of the light
      * @param power The luminance of the light
      */
-    AreaLight(std::shared_ptr<Geometry> shape, SpectralColor power);
+    AreaLight(std::shared_ptr<Geometry> shape, Color power);
 
     /**
      * @brief Method for computing if a ray intersects with the AreaLight

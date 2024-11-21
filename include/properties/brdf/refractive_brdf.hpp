@@ -8,11 +8,11 @@ class RefractiveBRDF final : public BRDF
 private:
     double _refraction_coefficient;
 public:
-    RefractiveBRDF(const SpectralColor& k, double refraction_coefficient);
+    RefractiveBRDF(const Color& k, double refraction_coefficient);
 
     RefractiveBRDF();
     
-    [[nodiscard]] SpectralColor eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_co_entry) const override;
+    [[nodiscard]] Color eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_co_entry) const override;
 
     bool sample_ray(Vector w_0, Point x, Vector n, double ref_co_entry, Ray& sampled_ray, bool is_entering) override;
 

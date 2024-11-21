@@ -3,10 +3,10 @@
 #include <vector>
 #include <iomanip>
 
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 #include "color/colorRGB.hpp"
 
-using MatrixSC = std::vector<std::vector<SpectralColor>>;
+using MatrixSC = std::vector<std::vector<Color>>;
 using MatrixRGB = std::vector<std::vector<ColorRGB>>;
 
 
@@ -23,13 +23,15 @@ class ColorMap {
 
         ColorMap();
 
+        #ifdef SPECTRAL_COLOR
         /**
          * @brief Construct a new ColorMap object.
          * @param spectral_colors 2D vector of spectral colors.
          * @throw invalid_argument If the colors are not equally encoded.
          */
         explicit ColorMap(const MatrixSC& spectral_colors);
-
+        #endif
+        
         explicit ColorMap(MatrixRGB colors);
 
         [[nodiscard]] double max() const;

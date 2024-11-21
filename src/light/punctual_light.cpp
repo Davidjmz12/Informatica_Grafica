@@ -2,7 +2,7 @@
 
 #include "light/punctual_light.hpp"
 
-PunctualLight::PunctualLight(Point center, const SpectralColor& power)
+PunctualLight::PunctualLight(Point center, const Color& power)
     : _center(std::move(center)), _power(power)
 {}
 
@@ -14,7 +14,7 @@ Ray PunctualLight::sample_random_unitary_ray() const
     const auto v = Vector(cos(theta)*cos(phi), cos(theta)*sin(phi),sin(theta));
     return Ray(this->_center, v); 
 }
-SpectralColor PunctualLight::light_contribution(const KDTree& tree, const IntersectionObject& intersection) const
+Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionObject& intersection) const
 {
     const Vector ray_dir = (this->_center-intersection.get_int_point());
     const double norm_ray_dir = ray_dir.norm();

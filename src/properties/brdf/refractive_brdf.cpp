@@ -1,15 +1,15 @@
 #include "properties/brdf/refractive_brdf.hpp"
 
-RefractiveBRDF::RefractiveBRDF(const SpectralColor& k, const double refraction_coefficient)
+RefractiveBRDF::RefractiveBRDF(const Color& k, const double refraction_coefficient)
     : BRDF(k), _refraction_coefficient(refraction_coefficient)
 {}
 
 RefractiveBRDF::RefractiveBRDF()
-    : BRDF(SpectralColor()), _refraction_coefficient(0)
+    : BRDF(Color()), _refraction_coefficient(0)
 {
 }
 
-SpectralColor RefractiveBRDF::eval(SpectralColor light, Vector w_i, const Vector w_0, Point x, const Vector n, double ref_co_entry) const
+Color RefractiveBRDF::eval(Color light, Vector w_i, const Vector w_0, Point x, const Vector n, double ref_co_entry) const
 {
     return this->_k*light;//*sqrt(1-pow(n.dot(w_0),2));
 }

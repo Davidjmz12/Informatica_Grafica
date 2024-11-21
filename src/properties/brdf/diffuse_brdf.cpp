@@ -1,14 +1,14 @@
 #include "properties/brdf/diffuse_brdf.hpp"
 
-DiffuseBRDF::DiffuseBRDF(SpectralColor k)
+DiffuseBRDF::DiffuseBRDF(Color k)
     : BRDF(k)
 {}
     
 DiffuseBRDF::DiffuseBRDF()
-    : BRDF(SpectralColor())
+    : BRDF(Color())
 {}
 
-SpectralColor DiffuseBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+Color DiffuseBRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
     return light * this->_k;
 }

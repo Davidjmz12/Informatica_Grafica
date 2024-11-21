@@ -3,12 +3,12 @@
 #include "render/photon_mapping.hpp"
 
 
-SpectralColor PhotonMapping::density_estimate(const IntersectionObject& obj) const
+Color PhotonMapping::density_estimate(const IntersectionObject& obj) const
 {
-    SpectralColor color;
+    Color color;
     size_t n_photons = this->_gc->get_max_photon_num();
     double radius = this->_gc->get_radius();
-    SpectralColor sum;
+    Color sum;
     for(const Photon* p : this->_photon_map.nearest_neighbors(obj.get_int_point(), n_photons, radius))
     {
         sum = sum + obj.eval_brdf(p->get_flux()/(M_PI*pow(radius,2)), p->get_vector());
@@ -17,18 +17,18 @@ SpectralColor PhotonMapping::density_estimate(const IntersectionObject& obj) con
     return sum;
 }
 
-SpectralColor PhotonMapping::compute_ray_color(const Ray& r) const
+Color PhotonMapping::compute_ray_color(const Ray& r) const
 {
     IntersectionObject min_int_obj;
     bool intersects = this->_scene.intersect_with_ray(r, min_int_obj);
     if(!intersects)
-        return SpectralColor();
+        return Color();
     
     if(min_int_obj.is_delta())
     {
         Ray new_ray;
         if(!min_int_obj.sample_ray(new_ray))
-            return SpectralColor();
+            return Color();
         
         return compute_ray_color(new_ray);
     } else
@@ -37,7 +37,7 @@ SpectralColor PhotonMapping::compute_ray_color(const Ray& r) const
     }
 }
 
-void PhotonMapping::create_photon_trace_rec(const Ray& r, SpectralColor flux, size_t num_bounces, std::vector<Photon>& photons)
+void PhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, size_t num_bounces, std::vector<Photon>& photons)
 {
     if(num_bounces == 0)
         return;
@@ -52,7 +52,7 @@ void PhotonMapping::create_photon_trace_rec(const Ray& r, SpectralColor flux, si
     if(!min_int_obj.sample_ray(new_ray))
         return;
 
-    SpectralColor new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
+    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
     
     if(min_int_obj.is_delta())
     {
@@ -60,7 +60,7 @@ void PhotonMapping::create_photon_trace_rec(const Ray& r, SpectralColor flux, si
         return;
     }
 
-    Photon p = Photon(min_int_obj.get_int_point(), r.get_direction(), SpectralColor(new_flux));
+    Photon p = Photon(min_int_obj.get_int_point(), r.get_direction(), Color(new_flux));
     photons.push_back(p);
 
     create_photon_trace_rec(new_ray, new_flux, num_bounces-1, photons);
@@ -74,7 +74,7 @@ void PhotonMapping::create_photon_trace(const PunctualLight& light, double weigh
 
     size_t num_bounces = this->_gc->get_number_of_bounces();
 
-    create_photon_trace_rec(r, SpectralColor(4*M_PI*light.luminance_max()/weight), num_bounces, photons);
+    create_photon_trace_rec(r, Color(4*M_PI*light.luminance_max()/weight), num_bounces, photons);
 }
 
 PhotonMap PhotonMapping::create_photon_map()

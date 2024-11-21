@@ -7,7 +7,7 @@
 */
 
 #include "test/test.hpp"
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 
 #include"color/tone_mapping/all_tone_mapping.hpp"
 

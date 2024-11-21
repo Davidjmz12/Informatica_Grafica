@@ -1,10 +1,10 @@
 #include "properties/brdf/absorption_brdf.hpp"
 
-AbsorptionBRDF::AbsorptionBRDF() : BRDF(SpectralColor()) {}
+AbsorptionBRDF::AbsorptionBRDF() : BRDF(Color()) {}
 
-SpectralColor AbsorptionBRDF::eval(SpectralColor light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
+Color AbsorptionBRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
-    return SpectralColor();
+    return Color();
 }
 
 bool AbsorptionBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)

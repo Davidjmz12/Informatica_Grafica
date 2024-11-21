@@ -12,6 +12,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(DCMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(PROJECT_ROOT_DIR ${CMAKE_SOURCE_DIR})
 add_definitions(-DPROJECT_ROOT_DIR="${PROJECT_ROOT_DIR}")
+#add_definitions(-DSPECTRAL_COLOR)
 
 add_subdirectory(src)
 add_subdirectory(tests)

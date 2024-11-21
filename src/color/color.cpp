@@ -1,16 +1,15 @@
-#include "color/spectral_color.hpp"
+#include "color/color.hpp"
 
-
-SpectralColor::SpectralColor():
+#ifdef SPECTRAL_COLOR
+Color::Color():
     _channels({})
 {}
 
-
-SpectralColor::SpectralColor(const std::array<double,32>& channels_32):
+Color::Color(const std::array<double,32>& channels_32):
     _channels(channels_32)
 {}
 
-SpectralColor::SpectralColor(const std::array<double,16>& channels_16):
+Color::Color(const std::array<double,16>& channels_16):
     _channels({})
 {
     for(size_t i=0; i<16; ++i)
@@ -19,7 +18,7 @@ SpectralColor::SpectralColor(const std::array<double,16>& channels_16):
     }
 }
 
-SpectralColor::SpectralColor(const std::array<double,8>& channels_8):
+Color::Color(const std::array<double,8>& channels_8):
     _channels({})
 {
     for(size_t i=0; i<8; ++i)
@@ -28,7 +27,7 @@ SpectralColor::SpectralColor(const std::array<double,8>& channels_8):
     }
 }
 
-SpectralColor::SpectralColor(const std::array<double,3>& rgb):
+Color::Color(const std::array<double,3>& rgb):
     _channels({})
 {
     for(size_t i=16; i<32; ++i)
@@ -48,7 +47,7 @@ SpectralColor::SpectralColor(const std::array<double,3>& rgb):
 
 }
 
-SpectralColor::SpectralColor(const std::function<double(double)>& f):
+Color::Color(const std::function<double(double)>& f):
     _channels({})
 {
     for(size_t i=0; i<SIZE; ++i)
@@ -57,7 +56,7 @@ SpectralColor::SpectralColor(const std::function<double(double)>& f):
     }
 }
 
-SpectralColor::SpectralColor(const double intensity)
+Color::Color(const double intensity)
 {
     for(size_t i=0; i<SIZE; ++i)
     {
@@ -65,7 +64,7 @@ SpectralColor::SpectralColor(const double intensity)
     }
 }
 
-double SpectralColor::luminance_mean() const
+double Color::luminance_mean() const
 {
     double sum = 0;
     for(size_t i=0; i<SIZE; i++)
@@ -76,7 +75,7 @@ double SpectralColor::luminance_mean() const
     return sum/static_cast<double>(SIZE);
 }
 
-double SpectralColor::luminance_max() const
+double Color::luminance_max() const
 {
     double max = 0;
     for(size_t i=0; i<SIZE; i++)
@@ -86,7 +85,7 @@ double SpectralColor::luminance_max() const
     return max;
 }
 
-ColorRGB SpectralColor::to_rgb() const
+ColorRGB Color::to_rgb() const
 {
     double X = 0, Y = 0, Z = 0;
 
@@ -115,22 +114,22 @@ ColorRGB SpectralColor::to_rgb() const
     G = std::max(0.0,G);
     B = std::max(0.0,B);
 
-    return ColorRGB({R,G,B});
+    return ColorRGB(SC3{R,G,B});
 }
 
-SpectralColor SpectralColor::apply_tone_mapping(const std::unique_ptr<ToneMapping>& t) const
+Color Color::apply_tone_mapping(const std::unique_ptr<ToneMapping>& t) const
 {
     std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
     {
         new_channels[i] = t->evaluate(this->_channels[i]);
     }
-    return SpectralColor(new_channels);
+    return Color(new_channels);
 }
 
-std::string SpectralColor::to_string() const
+std::string Color::to_string() const
 {
-    std::string s = "SpectralColor(";
+    std::string s = "Color(";
     for(size_t i=0; i<SIZE; ++i)
     {
         s += std::to_string(this->_channels[i]) + " ";
@@ -138,7 +137,7 @@ std::string SpectralColor::to_string() const
     return s + ")";
 }
 
-double SpectralColor::operator[](const size_t index) const
+double Color::operator[](const size_t index) const
 {
     if(index>=SIZE)
         throw std::out_of_range("Invalid index for color component");
@@ -146,46 +145,46 @@ double SpectralColor::operator[](const size_t index) const
     return this->_channels[index];
 }
 
-SpectralColor SpectralColor::operator+(const SpectralColor& c) const
+Color Color::operator+(const Color& c) const
 {
     std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
         new_channels[i] = this->_channels[i] + c[i];
-    return SpectralColor(new_channels);
+    return Color(new_channels);
 }
 
-SpectralColor SpectralColor::operator*(const SpectralColor& c) const
+Color Color::operator*(const Color& c) const
 {
 
     std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
         new_channels[i] = this->_channels[i] * c[i];
-    return SpectralColor(new_channels);
+    return Color(new_channels);
 }
 
-SpectralColor SpectralColor::operator*(const double f) const
+Color Color::operator*(const double f) const
 {
     std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
         new_channels[i] = this->_channels[i] * f;
-    return SpectralColor(new_channels);
+    return Color(new_channels);
 }
-SpectralColor SpectralColor::operator/(const double f) const
+Color Color::operator/(const double f) const
 {
     std::array<double,SIZE> new_channels{};
     for(size_t i=0; i<SIZE; ++i)
         new_channels[i] = this->_channels[i] / f;
-    return SpectralColor(new_channels);
+    return Color(new_channels);
 }
 
-std::ostream& operator<<(std::ostream& os, const SpectralColor& g)
+std::ostream& operator<<(std::ostream& os, const Color& g)
 {
     os << g.to_string();
 
     return os;
 }
 
-bool SpectralColor::operator==(const SpectralColor& c) const
+bool Color::operator==(const Color& c) const
 {
     for(size_t i=0;i<SIZE;i++)
     {
@@ -195,7 +194,7 @@ bool SpectralColor::operator==(const SpectralColor& c) const
     return true;
 }
 
-bool SpectralColor::operator<=(const double f) const
+bool Color::operator<=(const double f) const
 {
     for(size_t i=0;i<SIZE;i++)
     {
@@ -204,3 +203,5 @@ bool SpectralColor::operator<=(const double f) const
 
     return true;
 }
+
+#endif

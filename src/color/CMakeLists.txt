@@ -3,7 +3,7 @@ add_subdirectory(tone_mapping)
 add_library(colorRGB colorRGB.cpp)
 target_include_directories(colorRGB PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-add_library(spectral_color spectral_color.cpp)
+add_library(spectral_color color.cpp)
 target_link_libraries(spectral_color PUBLIC colorRGB)
 target_include_directories(spectral_color PUBLIC ${CMAKE_SOURCE_DIR}/include)
 

@@ -5,16 +5,16 @@ RayTracing::RayTracing(Scene& s) :
     Render(s) 
 {}
 
-SpectralColor RayTracing::compute_ray_color(const Ray& r) const
+Color RayTracing::compute_ray_color(const Ray& r) const
 {
     return compute_ray_intersection_color(r, this->_gc->get_number_of_bounces());
 }
 
-SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_rec) const
+Color RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_rec) const
 {
     // If the number of bounces is 0, return black.
     if(n_rec == 0)
-        return SpectralColor{};
+        return Color{};
 
     IntersectionObject min_int_obj;
 
@@ -35,7 +35,7 @@ SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const siz
 
     // If the ray does not intersect with any object, return black.
     if(!intersects)
-        return SpectralColor{};
+        return Color{};
 
 
     if(min_int_light < min_int_obj)
@@ -45,11 +45,11 @@ SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const siz
 
     Ray new_ray;
     if(!min_int_obj.sample_ray(new_ray))
-        return SpectralColor{};
+        return Color{};
 
-    const SpectralColor indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-    const SpectralColor indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction());
-    SpectralColor point_light_contribution;
+    const Color indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
+    const Color indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction());
+    Color point_light_contribution;
     if(!min_int_obj.is_delta())
     {
         point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
@@ -57,10 +57,10 @@ SpectralColor RayTracing::compute_ray_intersection_color(const Ray& r, const siz
     return point_light_contribution + indirect_light_contribution;
 }
 
-SpectralColor RayTracing::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
+Color RayTracing::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
 {
     const VectorPunctualLight lights = this->_scene.get_punctual_lights();
-    SpectralColor color_contribution;
+    Color color_contribution;
     for(const auto & light : lights)
     {
         color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection);

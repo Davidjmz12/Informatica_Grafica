@@ -1,6 +1,6 @@
 #include "light/photon.hpp"
 
-Photon::Photon(const Point& position, const Vector& incident_direction, const SpectralColor& flux)
+Photon::Photon(const Point& position, const Vector& incident_direction, const Color& flux)
     : _position(position), _incident_direction(incident_direction), _flux(flux)
 {}
 
@@ -14,7 +14,7 @@ Vector Photon::get_vector() const
     return this->_incident_direction;
 }
 
-SpectralColor Photon::get_flux() const
+Color Photon::get_flux() const
 {
     return this->_flux;
 }

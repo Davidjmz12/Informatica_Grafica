@@ -2,9 +2,16 @@
 
 #include <array>
 #include <memory>
+#include <functional>
 
 #include "color/tone_mapping/tone_mapping.hpp"
 #include "global_config/constants.hpp"
+
+
+using SC3 = std::array<double,3>;
+using SC8 = std::array<double,8>;
+using SC16 = std::array<double,16>;
+using SC32 = std::array<double,32>;
 
 
 class ColorRGB
@@ -15,17 +22,21 @@ private:
 
 public:
 
-    explicit ColorRGB(const std::array<double, 3>& colors);
     ColorRGB();
 
-    [[nodiscard]] ColorRGB normalize(double max_value) const;
+    explicit ColorRGB(const std::array<double,32>& channels_32);
 
-    /**
-     * @brief Standardizes the color values.
-     * 
-     * @return A standardized ColorRGB object.
-     */
-    [[nodiscard]] ColorRGB standardize(double max_value) const;
+    explicit ColorRGB(const std::array<double,16>& channels_16);
+
+    explicit ColorRGB(const std::array<double,8>& channels_8);
+
+    explicit ColorRGB(const std::array<double,3>& rgb);
+
+    explicit ColorRGB(const std::function<double(double)>& f);
+
+    explicit ColorRGB(double intensity);
+
+    [[nodiscard]]  ColorRGB to_rgb() const;
 
     /**
      * @brief Apply tone mapping to the color.
@@ -45,6 +56,10 @@ public:
     [[nodiscard]] std::string to_string() const;
 
 
+    [[nodiscard]] double luminance_mean() const;
+
+    [[nodiscard]] double luminance_max() const;
+
     /* Operators */
 
     /**
@@ -55,13 +70,13 @@ public:
      */
     double operator[](size_t index) const;
 
+    ColorRGB operator*(const ColorRGB& c) const;
+    
+    ColorRGB operator+(const ColorRGB& c) const;
 
-    /**
-     * @brief Compare two colors for equality.
-     * @param l ColorRGB to compare with.
-     * @return True if colors are equal, false otherwise.
-     */
-    bool operator==(const ColorRGB& l) const;
+    ColorRGB operator*(double f) const;
+
+    ColorRGB operator/(double f) const;
 
     /**
      * @brief Output the color to an output stream.
@@ -72,12 +87,15 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const ColorRGB& g);
 
 
-    ColorRGB operator*(const ColorRGB& c) const;
-    
-    ColorRGB operator+(const ColorRGB& c) const;
+    bool operator<=(const ColorRGB& c) const;
 
-    ColorRGB operator*(double f) const;
+    /**
+     * @brief Compare two colors for equality.
+     * @param l ColorRGB to compare with.
+     * @return True if colors are equal, false otherwise.
+     */
+    bool operator==(const ColorRGB& l) const;
 
-    ColorRGB operator/(double f) const;
+    bool operator<=(double f) const;
 
 };

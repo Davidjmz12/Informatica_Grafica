@@ -1,14 +1,14 @@
 #include "properties/brdf/brdf.hpp"
 
-BRDF::BRDF(SpectralColor k)
+BRDF::BRDF(Color k)
     : _k(k)
 {}
 
 BRDF::BRDF()
-    : _k(SpectralColor())
+    : _k(Color())
 {}
 
-SpectralColor BRDF::get_color() const
+Color BRDF::get_color() const
 {
     return this->_k;
 }

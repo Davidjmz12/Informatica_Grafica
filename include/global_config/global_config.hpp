@@ -121,7 +121,7 @@ public:
         std::cout << "Global configuration:" << std::endl;
         for (const auto& [key, value] : _values)
         {
-            std::cout << key << ": " << value << std::endl;
+            std::cout << key << std::endl;
         }
     }
 
