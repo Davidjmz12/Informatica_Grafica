@@ -16,6 +16,8 @@ Color RefractiveBRDF::eval(Color light, Vector w_i, const Vector w_0, Point x, c
 
 bool RefractiveBRDF::sample_ray(const Vector w_0, const Point x, const Vector n, double ref_co_entry,  Ray& sampled_ray, bool is_entering)
 {
+    if(neqD(w_0.norm(), 1) || neqD(n.norm(), 1))
+        throw std::invalid_argument("The vectors must be normalized");
     
     const double theta_entry = acos(n.dot(w_0));
 

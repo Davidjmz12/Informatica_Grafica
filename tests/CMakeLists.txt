@@ -1,5 +1,6 @@
 
 add_subdirectory(geometry_tests)
+add_subdirectory(test_brdf)
 
 # TEST SPATIAL ELEMENT
 add_executable(test_spatial_element test_spatial_element.cpp)
