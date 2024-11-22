@@ -70,5 +70,8 @@ std::ostream& operator<<(std::ostream& os, const RouletteBRDF& b)
 
 bool RouletteBRDF::is_delta() const
 {
+    if(_sampled_ray_index == -1)
+        throw std::invalid_argument("No ray has been sampled yet");
+        
     return _brdfs[_sampled_ray_index]->is_delta();
 }

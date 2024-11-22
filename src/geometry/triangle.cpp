@@ -3,7 +3,7 @@
 
 #include "geometry/triangle.hpp"
 
-Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, const Property& properties)
+Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<Property> properties)
     : Geometry(properties), _v0(std::move(v0)), _v1(std::move(v1)), _v2(std::move(v2))
 {
 

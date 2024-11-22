@@ -13,7 +13,7 @@ BoundingBox Ellipsoid::get_bounding_box() const
     );
 }
 
-Ellipsoid::Ellipsoid(const double a, const double b, const double c, Point center, Property properties)
+Ellipsoid::Ellipsoid(const double a, const double b, const double c, Point center, std::shared_ptr<Property> properties)
     : Geometry(std::move(properties)), _a(a), _b(b), _c(c), _center(std::move(center))
 {
     if (eqD(a,0) || eqD(b,0) || eqD(c,0))

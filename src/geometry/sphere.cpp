@@ -1,6 +1,6 @@
 #include "geometry/sphere.hpp"
 
-Sphere::Sphere(Point center, double radius, Property properties)
+Sphere::Sphere(Point center, double radius, std::shared_ptr<Property> properties)
     : Ellipsoid(radius, radius, radius, center, properties)
 {}
 

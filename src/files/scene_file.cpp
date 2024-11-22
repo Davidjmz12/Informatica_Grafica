@@ -168,13 +168,11 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
     {
         int n_brdfs = std::stoi(this->read_line());
         std::vector<std::shared_ptr<BRDF>> brdfs;
-        std::vector<double> weights;
         for (int i = 0; i < n_brdfs; i++)
         {
             brdfs.push_back(this->read_brdf());
-            weights.push_back(std::stod(this->read_line()));
         }
-        return std::make_unique<RouletteBRDF>(brdfs, weights);
+        return std::make_unique<RouletteBRDF>(brdfs);
     }
 
     throw std::invalid_argument("The BRDF type must be Diffuse");
@@ -188,20 +186,19 @@ void SceneFile::read_properties()
         std::string name,line;
         name = this->read_line();
         std::shared_ptr<BRDF> b = this->read_brdf();
-        this->_ch[name] = Property(b);
+        this->_ch[name] = std::make_shared<Property>(b);
     }
 }
 
-Property SceneFile::read_property(const std::string& key) const
+std::shared_ptr<Property> SceneFile::read_property(const std::string& key) const
 {
     if (this->_ch.find(key) == this->_ch.end())
         throw std::invalid_argument("The property " + key + " does not exist");
-    PropertyHash ph = this->_ch;
-    return ph[key];
+    return this->_ch[key];
 }
 
 
-std::shared_ptr<Geometry> SceneFile::read_plane(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_plane(std::shared_ptr<Property> p) const
 {
     Vector normal = this->read_vector();
 
@@ -211,14 +208,14 @@ std::shared_ptr<Geometry> SceneFile::read_plane(const Property& p) const
     return std::make_shared<Plane>(normal, d, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_sphere(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_sphere(std::shared_ptr<Property>p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     return std::make_shared<Sphere>(center, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cylinder(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_cylinder(std::shared_ptr<Property> p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
@@ -235,7 +232,7 @@ std::array<double,6> SceneFile::read_bounding_box() const
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-std::shared_ptr<Geometry> SceneFile::read_mesh(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_mesh(std::shared_ptr<Property> p) const
 {
     const std::string file =  this->_ply_dir + "/" +  this->read_line();
     const std::array<double,6> bb = this->read_bounding_box();
@@ -244,14 +241,14 @@ std::shared_ptr<Geometry> SceneFile::read_mesh(const Property& p) const
     return ply.to_mesh();
 }
 
-std::shared_ptr<Geometry> SceneFile::read_box(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_box(std::shared_ptr<Property> p) const
 {
     Point center = this->read_point();
     std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
     return std::make_shared<Box>(center, axis, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_face(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<Property> p) const
 {
     Vector normal = this->read_vector();
     Vector u = this->read_vector();
@@ -260,7 +257,7 @@ std::shared_ptr<Geometry> SceneFile::read_face(const Property& p) const
     return std::make_shared<Face>(normal, u, v, point, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cone(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<Property> p) const
 {
     Point center = this->read_point();
     Vector axe = this->read_vector();
@@ -268,7 +265,7 @@ std::shared_ptr<Geometry> SceneFile::read_cone(const Property& p) const
     return std::make_shared<Cone>(center, axe, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_disk(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_disk(std::shared_ptr<Property> p) const
 {
     Point center = this->read_point();
     Vector normal = this->read_vector();
@@ -276,7 +273,7 @@ std::shared_ptr<Geometry> SceneFile::read_disk(const Property& p) const
     return std::make_shared<Disk>(center, normal, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_ellipsoid(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_ellipsoid(std::shared_ptr<Property> p) const
 {
     double a = std::stod(this->read_line());
     double b = std::stod(this->read_line());
@@ -285,7 +282,7 @@ std::shared_ptr<Geometry> SceneFile::read_ellipsoid(const Property& p) const
     return std::make_shared<Ellipsoid>(a, b, c, center, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_triangle(const Property& p) const
+std::shared_ptr<Geometry> SceneFile::read_triangle(std::shared_ptr<Property> p) const
 {
     auto p1 = std::make_shared<Point>(this->read_point());
     auto p2 = std::make_shared<Point>(this->read_point());
@@ -299,7 +296,7 @@ std::shared_ptr<Geometry> SceneFile::read_geometry() const
     const std::string line = this->read_line();
 
     // Read the property
-    const Property p = this->read_property(this->read_line());
+    const std::shared_ptr<Property> p = this->read_property(this->read_line());
 
     // Create the appropriate object
     if (line == "plane")

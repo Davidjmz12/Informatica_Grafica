@@ -35,7 +35,7 @@ class KDTree
 public:
     std::unique_ptr<KDTreeNode> root;
 
-    explicit KDTree(const VectorGeometries& geometries);
+    explicit KDTree(const VectorGeometries& geometries, size_t depth = 0);
 
     KDTree();
 

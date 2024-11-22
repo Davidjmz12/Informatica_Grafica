@@ -61,7 +61,7 @@ public:
      * @param normal The normal vector to the plane of the disk.
      * @param radius The radius of the disk.
      */
-    Disk(Point center, Vector normal, double radius, Property properties);
+    Disk(Point center, Vector normal, double radius, std::shared_ptr<Property> properties);
 
     BoundingBox get_bounding_box() const override;
 

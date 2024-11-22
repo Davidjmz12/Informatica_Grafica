@@ -124,7 +124,7 @@ public:
      * @throw std::invalid_argument if the radius is not positive or the axis is the zero vector.
      * 
      */
-    Cylinder(Point center, double radius, Vector axis, Property properties);
+    Cylinder(Point center, double radius, Vector axis, std::shared_ptr<Property> properties);
     
     /**
      * @brief Checks if a given ray intersects with the cylinder.

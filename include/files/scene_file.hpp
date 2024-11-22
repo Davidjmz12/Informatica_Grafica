@@ -17,7 +17,7 @@
 #include "render/ray_tracing.hpp"
 #include "render/photon_mapping.hpp"
 
-using PropertyHash = std::unordered_map<std::string, Property>;
+using PropertyHash = std::unordered_map<std::string, std::shared_ptr<Property>>;
 
 /**
  * Class for represent a scene

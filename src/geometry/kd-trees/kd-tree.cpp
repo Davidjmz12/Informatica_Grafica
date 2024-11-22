@@ -5,9 +5,8 @@ KDTree::KDTree()
     root = std::make_unique<KDTreeNode>(VectorGeometries());
 }
 
-KDTree::KDTree(const VectorGeometries& geometries)
+KDTree::KDTree(const VectorGeometries& geometries, const size_t depth)
 {
-    const size_t depth = GlobalConf::get_instance()->get_max_depth();
     root = std::make_unique<KDTreeNode>(geometries);
     root->build(depth);
     std::cout << "Resulting Tree:" << (*this) << std::endl;

@@ -1,6 +1,6 @@
 #include "geometry/disk.hpp"
 
-Disk::Disk(Point center, Vector normal, double radius, Property properties)
+Disk::Disk(Point center, Vector normal, double radius, std::shared_ptr<Property> properties)
     : Geometry(properties), _plane(Plane(center, normal, properties)), _center(center), _normal(normal), _radius(radius){}
 
 

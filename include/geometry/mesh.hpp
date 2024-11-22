@@ -53,7 +53,7 @@ public:
      * @brief Constructor for the Mesh class.
      * @param elements The geometries that make up the mesh.
      */
-    Mesh(VectorGeometries elements);
+    Mesh(VectorGeometries elements, size_t depth = 0);
 
     BoundingBox get_bounding_box() const override;
 

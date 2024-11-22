@@ -1,7 +1,7 @@
 
 #include "geometry/cylinder.hpp"
 
-Cylinder::Cylinder(Point center, double radius, Vector axis, Property properties)
+Cylinder::Cylinder(Point center, double radius, Vector axis, std::shared_ptr<Property> properties)
     : Geometry(properties), _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
       _top(Disk(center+axis,axis,radius,properties)), _bottom(Disk(center,axis,radius,properties))
 {
@@ -37,7 +37,7 @@ IntersectionObject Cylinder::intersection_in_a_point(const Ray& r, double distan
     Vector normal;
     projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    return IntersectionObject(distance, normal, point_int, this->_properties, r);
+    return IntersectionObject(distance, normal, point_int, this->_properties.value(), r);
 }
 
 bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const

@@ -40,7 +40,7 @@ public:
      * @param properties The properties of the box.
      * @throw std::invalid_argument if the sides are not positive, the axis are not normalized or the axis are not a R^3 basis.
      */
-    Box(const Point& center, std::array<Vector,3> axis, const Property& properties);
+    Box(const Point& center, std::array<Vector,3> axis, std::shared_ptr<Property> properties);
 
     /**
      * @brief Method that returns the bounding box of the box.

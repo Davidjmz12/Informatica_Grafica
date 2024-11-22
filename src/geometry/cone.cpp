@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Cone::Cone(Point center, Vector axe, double radius, Property properties)
+Cone::Cone(Point center, Vector axe, double radius, std::shared_ptr<Property> properties)
     : Geometry(properties),
     _center(center),
     _axe(axe.normalize()),
@@ -36,7 +36,7 @@ bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionOb
 
     // Normalize the normal vector
     normal = normal.normalize();
-    intersection = IntersectionObject(distance, normal, point_int, this->_properties, r);
+    intersection = IntersectionObject(distance, normal, point_int, this->_properties.value(), r);
     return true;
 }
 

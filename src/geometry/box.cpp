@@ -1,6 +1,6 @@
 #include "geometry/box.hpp"
 
-Box::Box(const Point& center, std::array<Vector,3> axis, const Property& properties)
+Box::Box(const Point& center, std::array<Vector,3> axis, std::shared_ptr<Property> properties)
     : Geometry(properties)
 {
     if(!axis[0].is_base(axis[1],axis[2]))

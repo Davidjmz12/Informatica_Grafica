@@ -4,8 +4,8 @@ Mesh::Mesh():
     Geometry(), _kd_tree()
 {}
 
-Mesh::Mesh(VectorGeometries elements):
-    Geometry(), _kd_tree(KDTree(elements))
+Mesh::Mesh(VectorGeometries elements, const size_t depth):
+    Geometry(), _kd_tree(KDTree(elements, depth))
 {}
 
 

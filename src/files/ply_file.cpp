@@ -6,7 +6,7 @@ PlyFile::PlyFile(VectorTriangles elements, const std::array<double,6>& bounding_
     : _elements(std::move(elements)), _bounding_box(bounding_box)
 {}
 
-PlyFile::PlyFile(const std::string& file_path, const Property& properties)
+PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<Property> properties)
 {
     std::ifstream file(file_path);
     if(!file.is_open())
@@ -127,7 +127,9 @@ std::shared_ptr<Geometry> PlyFile::to_mesh() const
         geometries.push_back(triangle);  // Implicitly converts std::shared_ptr<Triangle> to std::shared_ptr<Geometry>
     }
 
-    return std::make_shared<Mesh>(geometries);
+    const size_t depth = GlobalConf::get_instance()->get_max_depth();
+
+    return std::make_shared<Mesh>(geometries, depth);
 }
 
 std::ostream& operator<<(std::ostream& os, const PlyFile& ply_file)

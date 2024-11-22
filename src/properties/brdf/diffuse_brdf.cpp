@@ -10,7 +10,7 @@ DiffuseBRDF::DiffuseBRDF()
 
 Color DiffuseBRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
-    return light * this->_k;
+    return light * this->_k / M_PI;
 }
 
 bool DiffuseBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)

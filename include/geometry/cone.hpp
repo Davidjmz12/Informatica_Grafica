@@ -33,7 +33,7 @@ public:
      * @param radius Radius of the base
      * @param properties Properties
      */
-    Cone(Point center, Vector axe, double radius, Property properties);
+    Cone(Point center, Vector axe, double radius, std::shared_ptr<Property> properties);
 
     /**
      * @brief Method that computes if a ray intersects with the cone

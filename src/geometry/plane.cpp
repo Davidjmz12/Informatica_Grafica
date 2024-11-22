@@ -2,15 +2,15 @@
 #include "geometry/plane.hpp"
 
 
-Plane::Plane(Point point, Vector normal, Property properties)
+Plane::Plane(Point point, Vector normal, std::shared_ptr<Property> properties)
     : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(_normal))
 {}
 
-Plane::Plane(Vector normal, double distance, Property properties)
+Plane::Plane(Vector normal, double distance, std::shared_ptr<Property> properties)
     : Geometry(properties), _normal(normal.normalize()), _distance(distance)
 {}
 
-Plane::Plane(Point p1, Point p2, Point p3, Property properties) 
+Plane::Plane(Point p1, Point p2, Point p3, std::shared_ptr<Property> properties) 
     : Geometry(properties)
 {
     this->_normal = (p1-p2).cross((p3-p1)).normalize();

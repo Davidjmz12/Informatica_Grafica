@@ -46,14 +46,13 @@
 class Geometry
 {
 protected:
-    Property _properties;
-    
+    std::shared_ptr<Property> _properties;
 public:
 
     Geometry()
     {}
 
-    Geometry(Property properties)
+    Geometry(std::shared_ptr<Property> properties)
         : _properties(properties)
     {}
     
@@ -96,6 +95,6 @@ public:
 
     Property get_properties() const
     {
-        return this->_properties;
+        return *this->_properties;
     }
 };

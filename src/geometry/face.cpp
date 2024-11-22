@@ -1,6 +1,6 @@
 #include "geometry/face.hpp"
 
-Face::Face(Vector normal, Vector u, Vector v, Point point, Property properties)
+Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties)
     :  Geometry(properties), _normal(normal), _point(point)
 {
     if (neqD(normal.dot(u),0) || neqD(normal.dot(v),0))

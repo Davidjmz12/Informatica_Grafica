@@ -23,7 +23,7 @@ public:
      * @param radius The radius of the sphere.
      * @throw std::invalid_argument if radius is zero.
      */
-    Sphere(Point center, double radius, Property properties);
+    Sphere(Point center, double radius, std::shared_ptr<Property> properties);
 
     friend std::ostream& operator<<(std::ostream& os, const Sphere& s);
 

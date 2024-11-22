@@ -56,7 +56,7 @@ public:
      * @param u The first vector that defines the boundary of the face.
      * @param v The second vector that defines the boundary of the face.
      */
-    Face(Vector normal, Vector u, Vector v, Point point, Property properties);
+    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties);
 
     BoundingBox get_bounding_box() const override;
 

@@ -51,9 +51,9 @@ public:
      * @param point A point on the plane.
      * @param normal The normal vector of the plane.
      */
-    Plane(Point point, Vector normal, Property properties);
+    Plane(Point point, Vector normal, std::shared_ptr<Property> properties);
 
-    Plane(Vector normal, double distance, Property properties);
+    Plane(Vector normal, double distance, std::shared_ptr<Property> properties);
 
     BoundingBox get_bounding_box() const override;
 
@@ -63,7 +63,7 @@ public:
      * @param p2 The second point.
      * @param p3 The third point.
      */
-    Plane(Point p1, Point p2, Point p3, Property properties);
+    Plane(Point p1, Point p2, Point p3, std::shared_ptr<Property> properties);
 
 
     double get_distance() const;
