@@ -194,7 +194,8 @@ std::shared_ptr<Property> SceneFile::read_property(const std::string& key) const
 {
     if (this->_ch.find(key) == this->_ch.end())
         throw std::invalid_argument("The property " + key + " does not exist");
-    return this->_ch[key];
+    PropertyHash ph = this->_ch;
+    return ph[key];
 }
 
 

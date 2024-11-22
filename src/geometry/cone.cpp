@@ -36,7 +36,7 @@ bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionOb
 
     // Normalize the normal vector
     normal = normal.normalize();
-    intersection = IntersectionObject(distance, normal, point_int, this->_properties.value(), r);
+    intersection = IntersectionObject(distance, normal, point_int, *this->_properties, r);
     return true;
 }
 

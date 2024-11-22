@@ -64,7 +64,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
         is_entering = false;
 
     Vector normal = is_entering ? this->normal(point_int) : this->normal(point_int)*(-1);
-    intersection = IntersectionObject(distance, normal, point_int, this->_properties, r, is_entering);
+    intersection = IntersectionObject(distance, normal, point_int, *this->_properties, r, is_entering);
 
     return existSolution;    
 }

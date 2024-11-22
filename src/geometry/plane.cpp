@@ -40,7 +40,7 @@ bool Plane::intersect_with_ray(const Ray& r, IntersectionObject& intersection) c
     Vector normal = (r.get_direction()).dot(this->_normal)>0 ? this->_normal*(-1):this->_normal;
 
     
-    intersection = IntersectionObject(distance, normal, point,this->_properties, r);
+    intersection = IntersectionObject(distance, normal, point, *this->_properties, r);
 
     return true;
     

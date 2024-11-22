@@ -37,7 +37,7 @@ IntersectionObject Cylinder::intersection_in_a_point(const Ray& r, double distan
     Vector normal;
     projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    return IntersectionObject(distance, normal, point_int, this->_properties.value(), r);
+    return IntersectionObject(distance, normal, point_int, *this->_properties, r);
 }
 
 bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const
