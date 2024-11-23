@@ -8,6 +8,7 @@ add_subdirectory(scene)
 add_subdirectory(intersection)
 add_subdirectory(light)
 add_subdirectory(render)
+add_subdirectory(kernel_density)
 
 # ------------------------------------------------------------------------------
 # Main executable
