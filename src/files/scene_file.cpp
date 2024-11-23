@@ -431,7 +431,14 @@ Render* SceneFile::read_photon_mapping(Scene& s) const
     int max_photon_num_per_query = std::stoi(this->read_line());
     double radius = std::stod(this->read_line());
     std::unique_ptr<Kernel> kernel = this->read_kernel();
-    return new PhotonMapping(s, n_photons, max_photon_num_per_query, radius, std::move(kernel));
+    std::string line = this->read_line();
+    
+    if (line == "explicit")
+        return new ExplicitPhotonMapping(s, n_photons, max_photon_num_per_query, radius, std::move(kernel));
+    else if (line == "direct")
+        return new DirectPhotonMapping(s, n_photons, max_photon_num_per_query, radius, std::move(kernel));
+
+    throw std::invalid_argument("Photon mapping not recognized");
 }
 
 std::unique_ptr<Kernel> SceneFile::read_kernel() const

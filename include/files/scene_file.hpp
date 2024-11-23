@@ -16,7 +16,8 @@
 #include "kernel_density/all_kernel_densities.hpp"
 
 #include "render/ray_tracing.hpp"
-#include "render/photon_mapping.hpp"
+#include "render/photon_mapping/direct_photon_mapping.hpp"
+#include "render/photon_mapping/explicit_photon_mapping.hpp"
 
 using PropertyHash = std::unordered_map<std::string, std::shared_ptr<Property>>;
 

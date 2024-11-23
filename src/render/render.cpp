@@ -1,11 +1,17 @@
 #include "render/render.hpp"
 
 Render::Render(Scene& s)
-    : _scene(s), _gc(GlobalConf::get_instance()), _pool(_gc->get_number_of_threads())
+    : _scene(s), _gc(GlobalConf::get_instance()), _pool(_gc->get_number_of_threads()), _initialized(false)
 {}
 
 ColorMap Render::render_scene()
 {
+    if(!_initialized)
+    {
+        this->init_render();
+        _initialized = true;
+    }
+
     if(_gc->has_metrics())
     {
         Metrics& m = _gc->get_metrics();
@@ -142,4 +148,15 @@ MatrixSC Render::arrange_vector_into_color_matrix(std::vector<Color> colors) con
     }
 
     return matrix;
+}
+
+Color Render::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
+{
+    const VectorPunctualLight lights = this->_scene.get_punctual_lights();
+    Color color_contribution;
+    for(const auto & light : lights)
+    {
+        color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection);
+    }
+    return color_contribution;
 }

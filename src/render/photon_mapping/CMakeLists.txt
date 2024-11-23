@@ -1,0 +1,13 @@
+add_library(photon_mapping photon_mapping.cpp)
+target_link_libraries(photon_mapping PUBLIC render collection_light photon)
+target_include_directories(photon_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+add_library(direct_photon_mapping direct_photon_mapping.cpp)
+target_link_libraries(direct_photon_mapping PUBLIC photon_mapping)
+target_include_directories(direct_photon_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+add_library(explicit_photon_mapping explicit_photon_mapping.cpp)
+target_link_libraries(explicit_photon_mapping PUBLIC photon_mapping)
+target_include_directories(explicit_photon_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+

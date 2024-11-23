@@ -1,10 +1,8 @@
+add_subdirectory(photon_mapping)
+
 add_library(render render.cpp)
 target_link_libraries(render PUBLIC scene color_map intersection_object)
 target_include_directories(render PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-add_library(photon_mapping photon_mapping.cpp)
-target_link_libraries(photon_mapping PUBLIC render collection_light photon)
-target_include_directories(photon_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_library(ray_tracing ray_tracing.cpp)
 target_link_libraries(ray_tracing PUBLIC render)

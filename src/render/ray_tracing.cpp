@@ -57,13 +57,7 @@ Color RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_re
     return point_light_contribution + indirect_light_contribution;
 }
 
-Color RayTracing::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
+void RayTracing::init_render()
 {
-    const VectorPunctualLight lights = this->_scene.get_punctual_lights();
-    Color color_contribution;
-    for(const auto & light : lights)
-    {
-        color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection);
-    }
-    return color_contribution;
+    this->_initialized = true;
 }
