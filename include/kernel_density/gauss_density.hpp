@@ -9,5 +9,5 @@ private:
 public:
     GaussKernel(double alpha);
     virtual ~GaussKernel();
-    virtual double operator()(double distance, double radius) const;
+    virtual double eval(double distance, double radius) const;
 };

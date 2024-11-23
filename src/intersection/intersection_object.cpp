@@ -38,7 +38,8 @@ bool IntersectionObject::operator==(const IntersectionObject i) const
 
 Color IntersectionObject::eval_brdf(Color light, Vector w_i) const
 {
-    return this->_properties.get_BRDF()->eval(light, w_i, this->get_ray().get_direction()*(-1), 
+    double const_ = (this->is_delta() ? 1.0 : M_PI);
+    return this->_properties.get_BRDF()->eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
         this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient());
 }
 

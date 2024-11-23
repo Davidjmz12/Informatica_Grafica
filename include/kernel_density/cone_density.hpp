@@ -7,5 +7,5 @@ class ConeKernel : public Kernel
 public:
     ConeKernel();
     virtual ~ConeKernel();
-    virtual double operator()(double distance, double radius) const;
+    virtual double eval(double distance, double radius) const;
 };

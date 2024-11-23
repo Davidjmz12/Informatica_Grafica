@@ -12,7 +12,7 @@ GaussKernel::GaussKernel(double alpha):
 GaussKernel::~GaussKernel()
 {}
 
-double GaussKernel::operator()(double distance, double radius) const
+double GaussKernel::eval(double distance, double radius) const
 {
     return _alpha/(M_PI*pow(radius, 2)*(1-exp(-_alpha))) * exp(-_alpha*pow(distance/radius,2));
 }

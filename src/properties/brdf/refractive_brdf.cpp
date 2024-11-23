@@ -11,7 +11,7 @@ RefractiveBRDF::RefractiveBRDF()
 
 Color RefractiveBRDF::eval(Color light, Vector w_i, const Vector w_0, Point x, const Vector n, double ref_co_entry) const
 {
-    return this->_k*light;//*sqrt(1-pow(n.dot(w_0),2));
+    return this->_k*light;
 }
 
 bool RefractiveBRDF::sample_ray(const Vector w_0, const Point x, const Vector n, double ref_co_entry,  Ray& sampled_ray, bool is_entering)

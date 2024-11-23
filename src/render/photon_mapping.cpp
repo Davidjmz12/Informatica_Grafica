@@ -5,13 +5,11 @@
 
 Color PhotonMapping::density_estimate(const IntersectionObject& obj) const
 {
-    Color color;
-    size_t n_photons = this->_gc->get_max_photon_num();
-    double radius = this->_gc->get_radius();
     Color sum;
-    for(const Photon* p : this->_photon_map.nearest_neighbors(obj.get_int_point(), n_photons, radius))
+    for(const Photon* p : this->_photon_map.nearest_neighbors(obj.get_int_point(), this->_max_photon_num_per_query, this->_radius))
     {
-        sum = sum + obj.eval_brdf(p->get_flux()/(M_PI*pow(radius,2)), p->get_vector());
+        double distance = (p->get_position() - obj.get_int_point()).norm();
+        sum = sum + obj.eval_brdf(p->get_flux()*this->_kernel->eval(distance, this->_radius), p->get_vector());
     }
 
     return sum;
@@ -92,10 +90,9 @@ PhotonMap PhotonMapping::create_photon_map()
     return PhotonMap(photons);
 }
 
-PhotonMapping::PhotonMapping(Scene& s, size_t n_photons): 
-    Render(s), _n_photons(n_photons), _photon_map(create_photon_map())
+PhotonMapping::PhotonMapping(Scene& s, size_t n_photons, size_t max_photon_num_per_query, double radius, std::unique_ptr<Kernel> kernel): 
+    Render(s), _n_photons(n_photons), _radius(radius), _max_photon_num_per_query(max_photon_num_per_query), _photon_map(create_photon_map()), _kernel(std::move(kernel))
 {
     if(n_photons == 0)
         throw std::invalid_argument("The number of photons must be greater than 0.");
-
 }

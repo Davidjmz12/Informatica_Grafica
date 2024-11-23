@@ -23,8 +23,7 @@ protected:
   
 public:
     virtual ~Render() = default;
-
     explicit Render(Scene& s);
-    ColorMap render_scene() ;
+    [[nodiscard]] ColorMap render_scene();
     [[nodiscard]] std::array<int,2> get_resolution() const;
 };

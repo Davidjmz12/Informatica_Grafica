@@ -406,9 +406,55 @@ std::unique_ptr<ToneMapping> SceneFile::read_tone_mapping(double max) const
         throw std::invalid_argument("Tone mapping not recognized");
 }
 
+Render* SceneFile::read_render_type(Scene& s) const
+{
+    std::string line = this->read_line();
+    if(line != "Render")
+        throw std::invalid_argument("The file must have a render section");
+    
+    line = this->read_line();
+    if (line == "ray-tracing")
+        return this->read_ray_tracing(s);
+    if (line == "photon-mapping")
+        return this->read_photon_mapping(s);
+    throw std::invalid_argument("Render type not recognized");
+}
+
+Render* SceneFile::read_ray_tracing(Scene& s) const
+{
+    return new RayTracing(s);
+}
+
+Render* SceneFile::read_photon_mapping(Scene& s) const
+{
+    int n_photons = std::stoi(this->read_line());
+    int max_photon_num_per_query = std::stoi(this->read_line());
+    double radius = std::stod(this->read_line());
+    std::unique_ptr<Kernel> kernel = this->read_kernel();
+    return new PhotonMapping(s, n_photons, max_photon_num_per_query, radius, std::move(kernel));
+}
+
+std::unique_ptr<Kernel> SceneFile::read_kernel() const
+{
+    std::string line = this->read_line();
+    if (line == "gauss")
+    {
+        double alpha = std::stod(this->read_line());
+        return std::make_unique<GaussKernel>(alpha);
+    } else if (line == "cone")
+    {
+        return std::make_unique<ConeKernel>();
+    } else if (line == "constant")
+    {
+        return std::make_unique<ConstantKernel>();
+    }
+    throw std::invalid_argument("Kernel not recognized");
+}
+
 
 void SceneFile::read_scene(const std::string& path, const std::string& file_save)
 {
+    
     Camera c = this->read_camera();
     this->read_properties();
     VectorGeometries g = this->read_geometries();
@@ -417,20 +463,7 @@ void SceneFile::read_scene(const std::string& path, const std::string& file_save
     this->read_lights(pl, al);
     auto s = Scene(g, pl, al, c);
     
-    GlobalConf* gc = GlobalConf::get_instance();
-    Render* rend;
-    RenderType rt = gc->get_render_type();
-    switch (rt)
-    {
-    case RenderType::RAY_TRACING:
-        rend = new RayTracing(s);
-        break;
-    case RenderType::PHOTON_MAPPING:
-        rend = new PhotonMapping(s, gc->get_number_of_photons());
-        break;
-    default:
-        throw std::invalid_argument("Unknown render type");
-    }
+    Render* rend = this->read_render_type(s);
 
     ColorMap cm = rend->render_scene();
     double max = cm.max();

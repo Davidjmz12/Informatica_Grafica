@@ -1,7 +1,5 @@
 #include "render/render.hpp"
 
-#include "render/render.hpp"
-
 Render::Render(Scene& s)
     : _scene(s), _gc(GlobalConf::get_instance()), _pool(_gc->get_number_of_threads())
 {}

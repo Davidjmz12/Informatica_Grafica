@@ -7,5 +7,5 @@ class ConstantKernel : public Kernel
 public:
     ConstantKernel();
     virtual ~ConstantKernel();
-    virtual double operator()(double distance, double radius) const;
+    virtual double eval(double distance, double radius) const;
 };

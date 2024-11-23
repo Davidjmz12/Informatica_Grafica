@@ -10,7 +10,7 @@ SpecularBRDF::SpecularBRDF()
 
 Color SpecularBRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const
 {
-    return this->_k*light;//*sqrt(1-pow(n.dot(w_0),2));
+    return this->_k*light;
 }
 
 bool SpecularBRDF::sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering)

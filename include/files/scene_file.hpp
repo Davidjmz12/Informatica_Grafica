@@ -13,6 +13,7 @@
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
 #include "light/area_light/area_light.hpp"
+#include "kernel_density/all_kernel_densities.hpp"
 
 #include "render/ray_tracing.hpp"
 #include "render/photon_mapping.hpp"
@@ -105,6 +106,33 @@ private:
      * @return The color
      */
     Color read_color() const;
+
+    /**
+     * @brief Method for reading a render type
+     * @param s The scene
+     * @return A pointer to the render type
+     */
+    Render* read_render_type(Scene& s) const;
+
+    /**
+     * @brief Method for reading a ray tracing
+     * @param s The scene
+     * @return A pointer to the ray tracing
+     */
+    Render* read_ray_tracing(Scene& s) const;
+
+    /**
+     * @brief Method for reading a photon mapping
+     * @param s The scene
+     * @return A pointer to the photon mapping
+     */
+    Render* read_photon_mapping(Scene& s) const;
+
+    /**
+     * @brief Method for reading a kernel
+     * @return A pointer to the kernel
+     */
+    std::unique_ptr<Kernel> read_kernel() const;
 
     /**
      * @brief Method for reading a BRDF object

@@ -10,7 +10,6 @@ private:
     [[nodiscard]] Color calculate_punctual_light_contribution(const IntersectionObject& intersection) const;
     [[nodiscard]] Color compute_ray_color(const Ray& r) const override;
 public:
-
 	explicit RayTracing(Scene& s);
 };
 
