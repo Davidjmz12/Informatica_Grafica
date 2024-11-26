@@ -30,7 +30,7 @@ class ColorMap {
          * @throw invalid_argument If the colors are not equally encoded.
          */
         explicit ColorMap(const MatrixSC& spectral_colors);
-        #endif
+        #endif // SPECTRAL_COLOR
         
         explicit ColorMap(MatrixRGB colors);
 
