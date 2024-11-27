@@ -1,5 +1,7 @@
 #include "kernel_density/cone_density.hpp"
 
+#include "global_config/constants.hpp"
+
 ConeKernel::ConeKernel():
     Kernel()
 {}
@@ -9,8 +11,8 @@ ConeKernel::~ConeKernel()
 
 double ConeKernel::eval(double distance, double radius) const
 {
-    if(geqD(distance,radius))
+    if(geD(distance,radius))
         return 0;
     
-    return 3/(M_PI*pow(radius,2)) * (1 - distance/radius);
+    return 3.0/(M_PI*pow(radius,2)) * (1 - distance/radius);
 }

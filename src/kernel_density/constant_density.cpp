@@ -8,5 +8,5 @@ ConstantKernel::~ConstantKernel()
 
 double ConstantKernel::eval(double distance, double radius) const
 {
-    return 1/(M_PI*radius*radius);
+    return 1.0/(M_PI*radius*radius);
 }
