@@ -257,7 +257,6 @@ public:
      * @brief Method for reading the file and create the image
      * @param path The path to the directory in which the image
      *  is going to be stored
-     * @param file_save The name for the created file
      */
-    void read_scene(const std::string& path, const std::string& file_save);
+    void read_scene(const std::string& path);
 };

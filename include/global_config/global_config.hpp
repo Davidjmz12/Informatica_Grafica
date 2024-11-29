@@ -76,6 +76,16 @@ public:
         }
     }
 
+    std::string get_file_in()
+    {
+        return std::any_cast<std::string>(this->get("file-in"));
+    }
+
+    std::string get_file_out()
+    {
+        return std::any_cast<std::string>(this->get("file-out"));
+    }
+
     bool has(const std::string key)
     {
         return _values.find(key) != _values.end();

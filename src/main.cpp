@@ -15,6 +15,8 @@ HashMap get_default_conf() {
     conf["task-size"] = int(256);
     conf["bounces"] = int(3);
     conf["max-depth"] = int(0);
+    conf["file-in"] = std::string("in/scene.txt");
+    conf["file-out"] = std::string("out/scene.ppm");
     return conf;
 }
 
@@ -61,6 +63,21 @@ void parse_init(const int argc, char* argv[]) {
             conf["max-depth"] = max_depth;
             i++;
         }
+
+        if(std::strcmp(argv[i], "--file-in") == 0)
+        {
+            std::string file_in = std::string(argv[i + 1]);
+            conf["file-in"] = file_in;
+            i++;
+        }
+
+        if(std::strcmp(argv[i], "--file-out") == 0)
+        {
+            std::string file_out = std::string(argv[i + 1]);
+            conf["file-out"] = file_out;
+            i++;
+        }
+
     }
 
     GlobalConf::get_instance(conf);
@@ -83,9 +100,9 @@ int main(const int argc, char* argv[])
     try {
         parse_init(argc, argv);
 
-        auto sf = SceneFile(std::string(ASSETS_DIR) + "/in/scene.txt", std::string(ASSETS_DIR));
+        auto sf = SceneFile(std::string(ASSETS_DIR) + "/" + GlobalConf::get_instance()->get_file_in()  , std::string(ASSETS_DIR));
 
-        sf.read_scene(std::string(ASSETS_DIR) + "/out","scene.ppm");
+        sf.read_scene(std::string(ASSETS_DIR) + "/" + GlobalConf::get_instance()->get_file_out());
 
         parse_end();
     } catch (const std::exception& e) {

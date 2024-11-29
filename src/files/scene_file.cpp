@@ -1,4 +1,5 @@
 #include <utility>
+#include <regex>
 #include "color/tone_mapping/all_tone_mapping.hpp"
 
 #include "files/scene_file.hpp"
@@ -459,7 +460,7 @@ std::unique_ptr<Kernel> SceneFile::read_kernel() const
 }
 
 
-void SceneFile::read_scene(const std::string& path, const std::string& file_save)
+void SceneFile::read_scene(const std::string& path)
 {
     
     Camera c = this->read_camera();
@@ -476,9 +477,11 @@ void SceneFile::read_scene(const std::string& path, const std::string& file_save
     double max = cm.max();
     auto ppm = PpmFile(cm, max, max, rend->get_resolution(), "P3");
     
-    ppm.save(path + "/" + "no_tm_" + file_save);
+    std::regex re(".ppm");
+    std::string file_save = std::regex_replace(path, re, "_no_tm.ppm");
+    ppm.save(file_save);
 
     std::unique_ptr<ToneMapping> t = this->read_tone_mapping(ppm.get_max_range());
     PpmFile ppm_tm = ppm.apply_tone_mapping(t, 255);
-    ppm_tm.save(path + "/" + file_save);
+    ppm_tm.save(path);
 }
