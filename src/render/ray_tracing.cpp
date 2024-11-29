@@ -48,7 +48,7 @@ Color RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_re
         return Color{};
 
     const Color indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-    const Color indirect_light_contribution = min_int_obj.eval_brdf(indirect_light*M_PI, new_ray.get_direction());
+    const Color indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction());
     Color point_light_contribution;
     if(!min_int_obj.is_delta())
     {
