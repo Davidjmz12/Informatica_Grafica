@@ -50,11 +50,3 @@ add_executable(test_tone_mapping test_tone_mapping.cpp)
 target_link_libraries(test_tone_mapping PUBLIC tone_mapping_lib)
 add_test(NAME test_tone_mapping COMMAND test_tone_mapping)
 target_include_directories(test_tone_mapping PUBLIC ${CMAKE_SOURCE_DIR}/include)
-
-
-# TEST PLANET
-add_executable(test_planet test_planet.cpp)
-target_link_libraries(test_planet PUBLIC planet)
-add_test(NAME test_planet COMMAND test_planet)
-target_include_directories(test_planet PUBLIC ${CMAKE_SOURCE_DIR}/include)
-

@@ -33,21 +33,18 @@ public:
     void thread_work(size_t id)
     {
         GlobalConf *gc = GlobalConf::get_instance();
-        bool has_metrics = gc->has_metrics();
 
+        #ifdef METRICS
         std::string name_working = "thread_" + std::to_string(id) + "_working";
         std::string name_waiting = "thread_" + std::to_string(id) + "_waiting";
-
         {
             // Critical section for queue access
             std::unique_lock<std::mutex> lock(this->_queueMutex);
-            if (has_metrics)
-            {
                 Metrics& m = gc->get_metrics();
                 m.init_time_metric(name_working, "Thread " + std::to_string(id) + " working time");
                 m.init_time_metric(name_waiting, "Thread " + std::to_string(id) + " waiting time");
-            }
         }
+        #endif
 
 
         while (true) {
@@ -57,11 +54,10 @@ public:
                 // Critical section for queue access
                 std::unique_lock<std::mutex> lock(this->_queueMutex);
 
-                if (has_metrics)
-                {
+                #ifdef METRICS
                     Metrics& m = gc->get_metrics();
                     m.start_duration_time_metric(name_waiting);
-                }
+                #endif
                 
 
                 // Wait until we are signaled for a task or to stop
@@ -69,11 +65,9 @@ public:
                     return this->_stopFlag || !this->_tasks.empty();
                 });
 
-                if (has_metrics)
-                {
-                    Metrics& m = gc->get_metrics();
+                #ifdef METRICS
                     m.add_duration_to_time_metric(name_waiting);
-                }
+                #endif
 
                 if (this->_stopFlag && this->_tasks.empty()) {
                     return; // Break out of the loop and end the thread
@@ -83,12 +77,10 @@ public:
                 this->_tasks.pop();
             }
 
-            if (has_metrics)
-            {
-                Metrics& m = gc->get_metrics();
-                m.start_duration_time_metric(name_working);
-            }
-
+            #ifdef METRICS
+            Metrics& m = gc->get_metrics();
+            m.start_duration_time_metric(name_working);
+            #endif
             // Execute the task
             try{
                 task();
@@ -96,13 +88,9 @@ public:
                 std::cerr << "Error in thread: " << e.what() << std::endl;
             }
             
-
-            if (has_metrics)
-            {
-                Metrics& m = gc->get_metrics();
-                m.add_duration_to_time_metric(name_working);
-            }
-
+            #ifdef METRICS
+            m.add_duration_to_time_metric(name_working);
+            #endif
         }
     }
 

@@ -237,9 +237,15 @@ std::array<double,6> SceneFile::read_bounding_box() const
 std::shared_ptr<Geometry> SceneFile::read_mesh(std::shared_ptr<Property> p) const
 {
     const std::string file =  this->_ply_dir + "/" +  this->read_line();
-    const std::array<double,6> bb = this->read_bounding_box();
     auto ply = PlyFile(file, p);
-    ply.change_bounding_box(bb);
+
+    try {
+        const std::array<double,6> bb = this->read_bounding_box();
+         ply.change_bounding_box(bb);
+    } catch (std::invalid_argument& e) {
+
+    }
+    
     return ply.to_mesh();
 }
 

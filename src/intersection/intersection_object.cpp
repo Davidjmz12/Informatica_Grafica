@@ -22,6 +22,16 @@ bool IntersectionObject::is_entering() const
     return this->_is_entering;
 }
 
+void IntersectionObject::set_is_entering(const bool is_entering)
+{
+    this->_is_entering = is_entering;
+}
+
+void IntersectionObject::inverse_normal()
+{
+    this->_normal = this->_normal*(-1);
+}
+
 bool IntersectionObject::is_delta() const
 {
     return this->_properties.get_BRDF()->is_delta();

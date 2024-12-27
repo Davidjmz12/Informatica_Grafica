@@ -10,8 +10,9 @@ HashMap get_default_conf() {
     HashMap conf;
     conf["threads"] = int(1);
     conf["rays"] = int(1);
-    conf["is-metrics"] = bool(true);
+    #ifdef METRICS
     conf["metrics"] = Metrics();
+    #endif
     conf["task-size"] = int(256);
     conf["bounces"] = int(3);
     conf["max-depth"] = int(0);
@@ -35,12 +36,6 @@ void parse_init(const int argc, char* argv[]) {
             int rays = int(std::stoi(argv[i+1]));
             conf["rays"] = rays;
             i++;
-        }
-
-        if(std::strcmp(argv[i], "-metrics") == 0)
-        {
-            conf["is-metrics"] = bool(true);
-            conf["metrics"] = Metrics();
         }
 
         if(std::strcmp(argv[i], "--task-size") == 0)
@@ -84,13 +79,11 @@ void parse_init(const int argc, char* argv[]) {
 }
 
 void parse_end() {
-    GlobalConf* gc = GlobalConf::get_instance(); 
-
-    if(gc->has_metrics())
-    {
-        Metrics m = gc->get_metrics();
-        m.print_metrics();
-    }
+    
+    #ifdef METRICS
+    Metrics m = GlobalConf::get_instance()->get_metrics();
+    m.print_metrics();
+    #endif
 
     delete GlobalConf::get_instance();
 }

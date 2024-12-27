@@ -84,7 +84,17 @@ private:
      */
     bool intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const;
 
-
+    /**
+     * @brief Checks if a given ray intersects with the base of the cylinder.
+     * 
+     * This function determines whether a ray intersects with the base of the cylinder
+     * and, if so, provides details about the intersection.
+     * 
+     * @param r The ray to test for intersection with the base.
+     * @param intersection An output parameter that will contain details about the intersection if one occurs.
+     * @return true if the ray intersects with the base, false otherwise.
+     */
+    bool intersect_with_base(const Ray& r, IntersectionObject& intersection) const;
 
     /**
      * @brief Checks if a given ray intersects with a finite cylinder.

@@ -39,16 +39,32 @@ double BoundingBox::center(const size_t axis) const
 BoundingBox::BoundingBox() 
     : _bound_box({-std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
                   -std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity(),
-                  -std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()})
+                  -std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()}),
+                  _covers_all_space(true)
 {}
 
 // Constructor that accepts a std::array<double, 6>
 BoundingBox::BoundingBox(const std::array<double, 6>& bounds) 
     : _bound_box(bounds)
-{}
+{
+    _covers_all_space = false;
+    for(auto bound : bounds)
+    {
+        if(bound == std::numeric_limits<double>::infinity() || 
+            bound == -std::numeric_limits<double>::infinity())
+        {
+            _covers_all_space = true;
+            break;
+        }
+    }
+}
 
 // Function to check if a ray intersects the bounding box
 bool BoundingBox::intersect_with_ray(const Ray& ray) const {
+    
+    if(_covers_all_space)
+        return true;
+    
     const Point rayOrigin = ray.get_point();
     const Vector rayDir = ray.get_direction();
 

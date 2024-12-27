@@ -14,6 +14,7 @@
 class BoundingBox {
 private:
     std::array<double, 6> _bound_box;
+    bool _covers_all_space;
 public:
 
     /**

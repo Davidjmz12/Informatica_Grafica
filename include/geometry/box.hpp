@@ -31,6 +31,9 @@ class Box final : public Geometry
 private:
     Mesh _mesh; ///< The mesh that represents the box
     BoundingBox _bounding_box; ///< The bounding box of the box
+    std::array<Vector,3> _axis; ///< The axis of the box
+    std::array<double,3> _sizes; ///< The sizes of the box
+    Point _center; ///< The center of the box
 public:
 
     /**
@@ -48,6 +51,8 @@ public:
      */
     [[nodiscard]] BoundingBox get_bounding_box() const override;
     
+    bool inside_box(const Point& p) const;
+
     /**
      * @brief Method that checks if a ray intersects with the box.
      * @param r The ray that is going to be checked.

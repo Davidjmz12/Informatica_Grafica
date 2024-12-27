@@ -50,7 +50,8 @@ private:
     std::shared_ptr<Point> _v0; ///< The first vertex of the triangle
     std::shared_ptr<Point> _v1; ///< The second vertex of the triangle
     std::shared_ptr<Point> _v2; ///< The third vertex of the triangle
-
+    BoundingBox __bb; ///< The bounding box of the triangle
+    
     /**
      * @brief Checks if a given point is inside the triangle.
      * 
@@ -76,18 +77,6 @@ public:
     Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<Property> properties);
 
     BoundingBox get_bounding_box() const override;
-    
-    /**
-     * @brief Gets the normal vector of the triangle.
-     * @return The normal vector of the triangle.
-     */
-    Vector get_normal() const;
-
-    /**
-     * @brief Gets the plane that contains the triangle.
-     * @return The plane that contains the triangle.
-     */
-    Plane plane() const ;
 
     /**
      * @brief Computes the intersection of a ray with the triangle.

@@ -1,5 +1,5 @@
 from PIL import Image
-
-image = Image.open("assets/out/scene.ppm")
+import sys
+image = Image.open("assets/out/example.ppm")
 
 image.show()

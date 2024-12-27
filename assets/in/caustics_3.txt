@@ -1,0 +1,97 @@
+# Scene 1
+Camera
+    0 0 -3.5
+    -1 0 0
+    0 1 0
+    0 0 3
+    256 256
+Properties 13
+    red
+        diffuse
+        RGB 1 0 0
+    green
+        diffuse
+        RGB 0 1 0
+    blue
+        diffuse
+        RGB 0 0 1
+    yellow
+        diffuse
+        RGB 1 1 0
+    cyan
+        diffuse
+        RGB 0 0.5 0.5
+    magenta
+        diffuse
+        RGB 0.5 0 0.5
+    magenta_plastic
+        roulette
+        2
+        diffuse
+        RGB 0.5 0 0.5
+        specular
+        SC1 0.5
+    cyan_plastic
+        roulette
+        2
+        diffuse
+        RGB 0 0.5 0.5
+        specular
+        SC1 0.5
+    cyan_refractive
+        refractive
+        RGB 0 1 1
+        1.5
+    espejo
+        specular
+        SC1 1
+    white
+        diffuse
+        SC1 1
+    refractive1
+        refractive
+        SC1 1
+        1.5
+    grey
+        diffuse
+        RGB 1 1 1
+Geometries 7
+    plane
+        red
+        1 0 0
+        1
+    plane
+        green
+        -1 0 0
+        1
+    plane
+        grey
+        0 1 0
+        1
+    plane
+        grey
+        0 -1 0
+        1
+    plane
+        grey
+        0 0 -1
+        1
+    sphere
+        refractive1
+        -0.5 -0.7 0.25
+        0.3
+    sphere
+        refractive1
+        0.5 -0.7 -0.25
+        0.3
+Lights 1
+    area
+    sphere
+        white
+        0 0.7 0
+        0.2
+Render
+    ray-tracing
+ToneMapping
+    gamma
+    2.2 max

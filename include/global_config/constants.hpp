@@ -20,6 +20,8 @@ const std::string GREEN = "\033[32m"; // Green color
 const std::string RED = "\033[31m"; // Red color
 
 
+inline std::mt19937 gen(std::random_device{}());
+
 /**
  * @brief Compares two doubleing-point numbers for equality within a specified threshold.
  * 
@@ -63,10 +65,6 @@ inline bool geD(double a, double b)
 
 inline double randomD(double a, double b)
 {
-    std::random_device rd;
-
-    std::mt19937 gen(rd());
-
     std::uniform_real_distribution<> dis(a, b);
 
     return dis(gen);

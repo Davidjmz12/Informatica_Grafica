@@ -63,7 +63,6 @@ bool Cone::intersect_with_cone(const Ray& r, IntersectionObject& intersection) c
         if(eqD(a,0) || eqD(b,0))
             return false;
         
-        ;
         return intersection_in_a_point(r,-b/(2*a),intersection);
     } else
     {

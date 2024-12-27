@@ -6,7 +6,7 @@
 Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<Property> properties)
     : Geometry(properties), _v0(std::move(v0)), _v1(std::move(v1)), _v2(std::move(v2))
 {
-
+    this->__bb = BoundingBox::get_BB_by_corners({*_v0,*_v1,*_v2});
     if(*_v0 == *_v1 || *_v0 == *_v2 || *_v1 == *_v2)
         throw std::invalid_argument("The vertices of the triangle must be different");
     if(eqD((*_v1-*_v0).cross((*_v2-*_v0)).norm(),0))
@@ -16,51 +16,44 @@ Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::sh
 
 BoundingBox Triangle::get_bounding_box() const
 {
-    return BoundingBox::get_BB_by_corners({*_v0,*_v1,*_v2});
-}
-
-
-Vector Triangle::get_normal() const
-{
-    return (*(this->_v1)-*(this->_v0)).cross((*this->_v2)-(*this->_v0)).normalize();
-}
-
-Plane Triangle::plane() const
-{
-    return {*this->_v0, this->get_normal(), this->_properties};
-}
-
-bool Triangle::point_inside_triangle(const Point& p) const
-{
-    const Vector v0v1 = *_v1 - *_v0;
-    const Vector v0v2 = *_v2 - *_v0;
-    const Vector v0p = p - *_v0;
-
-    const double dot00 = v0v2.dot(v0v2);
-    const double dot01 = v0v2.dot(v0v1);
-    const double dot02 = v0v2.dot(v0p);
-    const double dot11 = v0v1.dot(v0v1);
-    const double dot12 = v0v1.dot(v0p);
-
-    const double inv_den = 1.0 / (dot00 * dot11 - dot01 * dot01);
-    const double u = (dot11 * dot02 - dot01 * dot12) * inv_den;
-    const double v = (dot00 * dot12 - dot01 * dot02) * inv_den;
-
-    return (u >= 0) && (v >= 0) && (u + v < 1);
+    return this->__bb;
 }
 
 
 bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
-    if(const Plane triangle_plane = this->plane(); !triangle_plane.intersect_with_ray(r, intersection))
+    const Vector v0v1 = *_v1 - *_v0;
+    const Vector v0v2 = *_v2 - *_v0;
+    const Vector pvec = r.get_direction().cross(v0v2);
+
+    const double det = v0v1.dot(pvec);
+
+    // If the determinant is close to 0, the ray is parallel to the triangle plane
+    if (eqD(det, 0))
         return false;
-    
-    if(this->point_inside_triangle(intersection.get_int_point()))
-    {
-        return true;
-    } 
-    
-    return false;
+
+    const double inv_det = 1.0 / det;
+    const Vector tvec = r.get_point() - *_v0;
+
+    // Calculate barycentric coordinate u
+    const double u = tvec.dot(pvec) * inv_det;
+    if (u < 0 || u > 1)
+        return false;
+
+    const Vector qvec = tvec.cross(v0v1);
+
+    // Calculate barycentric coordinate v
+    const double v = r.get_direction().dot(qvec) * inv_det;
+    if (v < 0 || u + v > 1)
+        return false;
+
+    // Calculate distance along the ray
+    const double t = v0v2.dot(qvec) * inv_det;
+    if (t < 0) // Intersection is behind the ray origin
+        return false;
+
+    intersection = IntersectionObject(t, v0v1.cross(v0v2).normalize(), r.get_point() + r.get_direction() * t, *this->_properties, r);
+    return true;
 }
 
 Point Triangle::operator[](const int i) const

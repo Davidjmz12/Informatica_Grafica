@@ -1,0 +1,2 @@
+.\build\src\main.exe --threads 8 --rays 512  --task-size 32 --bounces 5 --max-depth 7 --file-in in/scene_geometries_2.txt --file-out out/geometries/rat.ppm
+.\build\src\main.exe --threads 8 --rays 1024  --task-size 32 --bounces 5 --max-depth 7 --file-in in/scene_geometries_2.txt --file-out out/geometries/other.ppm

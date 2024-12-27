@@ -9,7 +9,6 @@ KDTree::KDTree(const VectorGeometries& geometries, const size_t depth)
 {
     root = std::make_unique<KDTreeNode>(geometries);
     root->build(depth);
-    std::cout << "Resulting Tree:" << (*this) << std::endl;
 }
 
 bool KDTree::intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const
@@ -66,6 +65,10 @@ bool KDTreeNode::intersect_with_ray(const Ray& ray, IntersectionObject& intersec
 {
     if (!bbox.intersect_with_ray(ray))
     {
+        #ifdef METRICS
+        Metrics& metrics = GlobalConf::get_instance()->get_metrics();
+        metrics.increment_counter("num_bb_intersections_avoided");
+        #endif
         return false;
     }
     if(!left && !right)

@@ -91,27 +91,45 @@ bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObje
     return true;
 }
 
+bool Cylinder::intersect_with_base(const Ray& r, IntersectionObject& intersection) const
+{
+    bool int_min_exists = false;
+    IntersectionObject aux_int;
+    for (auto i: { _top, _bottom })
+    {
+        if(i.intersect_with_ray(r, aux_int))
+        {
+            int_min_exists = true;
+            if(intersection>aux_int)
+                intersection = aux_int;
+        }
+    }
+    return int_min_exists;
+}
+
 bool Cylinder::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
-    
-    if(!intersect_with_ray_finite_cylinder(r, intersection)){
-        IntersectionObject int_min;
-        bool int_min_exists = false;
-        for(auto i: { _top, _bottom })
-        {
-            IntersectionObject intersection_aux;
-            if(i.intersect_with_ray(r, intersection_aux))
-            {   
-                int_min_exists=true;
-                if(int_min>intersection_aux)
-                    int_min = intersection_aux;
-            }
-        }
-        intersection = int_min;
-        return int_min_exists;
+    IntersectionObject intersection_base, intersection_cylinder;
+    bool intersection_with_base = false, intersection_with_cylinder = false;
+
+    intersection_with_base = intersect_with_base(r, intersection_base);
+    intersection_with_cylinder = intersect_with_ray_finite_cylinder(r, intersection_cylinder);
+
+    intersection = (intersection_base<intersection_cylinder)?intersection_base:intersection_cylinder;
+
+    Vector a = r.get_point()-_center;
+    Vector b = a - _axis*a.dot(_axis);
+    bool inside_bases_cylinder = geD(a.dot(_axis), 0) && leD(a.dot(_axis), _height);
+    bool inside_center = leD(b.norm(), _radius);
+    bool is_entering = !(inside_bases_cylinder && inside_center);
+    if(!is_entering)
+    {
+        intersection.inverse_normal();
+        intersection.set_is_entering(false);
     }
 
-    return true;
+
+    return intersection_with_base || intersection_with_cylinder;
 }
 
 std::string Cylinder::to_string() const

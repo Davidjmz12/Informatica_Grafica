@@ -12,11 +12,11 @@ ColorMap Render::render_scene()
         _initialized = true;
     }
 
-    if(_gc->has_metrics())
-    {
+    #ifdef METRICS
         Metrics& m = _gc->get_metrics();
         m.start_timer_metric("paint_scene");
-    }
+        m.add_counter("num_bb_intersections_avoided");
+    #endif 
 
     const std::array<int,2> resolution = this->get_resolution();
     size_t task_size = _gc->get_task_size();
@@ -62,11 +62,9 @@ ColorMap Render::render_scene()
 
     const MatrixSC colors = this->arrange_vector_into_color_matrix(all_colors);
 
-    if(_gc->has_metrics())
-    {
-        Metrics& m = _gc->get_metrics();
+    #ifdef METRICS
         m.finish_timer_metric("paint_scene");
-    }
+    #endif
 
     return ColorMap(colors);
 }

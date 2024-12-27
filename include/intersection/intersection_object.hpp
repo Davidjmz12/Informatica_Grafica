@@ -23,6 +23,9 @@ public:
     Property get_properties() const;
     bool is_entering() const;
 
+    void set_is_entering(const bool is_entering);
+    void inverse_normal();
+
     bool is_delta() const;
 
     Color eval_brdf(Color light, Vector w_i) const;
