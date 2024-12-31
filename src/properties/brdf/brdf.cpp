@@ -12,8 +12,3 @@ Color BRDF::get_color() const
 {
     return this->_k;
 }
-
-void BRDF::set_color(Color k)
-{
-    this->_k = k;
-}

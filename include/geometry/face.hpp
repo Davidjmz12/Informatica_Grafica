@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <optional>
 
 #include "geometry/geometry.hpp"
 #include "geometry/plane.hpp"
@@ -57,6 +58,8 @@ public:
      * @param v The second vector that defines the boundary of the face.
      */
     Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties);
+
+    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties, TextureFacePPM texture);
 
     /**
      * @brief Gets the base of the face.

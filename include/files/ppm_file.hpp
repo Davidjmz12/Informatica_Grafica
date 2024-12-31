@@ -12,9 +12,6 @@
 
 #include "color/color_map.hpp"
 #include "color/tone_mapping/tone_mapping.hpp"
-#include "render/render.hpp"
-
-
 
 /**
  * @brief A class for represents a PPM file.
@@ -40,7 +37,7 @@ public:
 
     PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string  format);
 
-    ColorRGB get_color(size_t x, size_t y) const;
+    ColorRGB get_color(double x, double y) const;
 
     [[nodiscard]] PpmFile apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, size_t new_resolution) const;
 

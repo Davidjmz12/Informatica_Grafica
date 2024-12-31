@@ -54,7 +54,7 @@ public:
     Plane(Point point, Vector normal, std::shared_ptr<Property> properties);
 
     Plane(Vector normal, double distance, std::shared_ptr<Property> properties);
-
+    
     BoundingBox get_bounding_box() const override;
 
     /**

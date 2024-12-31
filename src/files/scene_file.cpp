@@ -1,6 +1,7 @@
 #include <utility>
 #include <regex>
 #include "color/tone_mapping/all_tone_mapping.hpp"
+#include "geometry/textures/texture_face/texture_face_ppm.hpp"
 
 #include "files/scene_file.hpp"
 
@@ -262,7 +263,13 @@ std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<Property> p) cons
     Vector u = this->read_vector();
     Vector v = this->read_vector();
     Point point = this->read_point();
-    return std::make_shared<Face>(normal, u, v, point, p);
+    std::string line = this->read_line();
+    if(line == "no_texture")
+        return std::make_shared<Face>(normal, u, v, point, p);
+
+    const std::string path = this->_ply_dir + "/" +  line;
+    TextureFacePPM t = TextureFacePPM(path);
+    return std::make_shared<Face>(normal, u, v, point, p, t);
 }
 
 std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<Property> p) const

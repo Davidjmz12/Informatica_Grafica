@@ -1,5 +1,4 @@
 add_subdirectory(kd-trees)
-
 # Geometry header
 add_library(geometry INTERFACE)
 target_link_libraries(geometry INTERFACE intersection_object ray ellipsoid sphere triangle mesh cylinder disk box plane face property cone)
@@ -30,7 +29,7 @@ add_library(plane plane.cpp)
 target_link_libraries(plane PUBLIC geometry)
 
 add_library(face face.cpp)
-target_link_libraries(face PUBLIC geometry texture_face_ppm)
+target_link_libraries(face PUBLIC geometry)
 
 add_library(bounding_box bounding_box.cpp)
 target_link_libraries(bounding_box PUBLIC spectral_color ray)

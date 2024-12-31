@@ -13,6 +13,11 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Prope
     this->_v = v.normalize();
 }
 
+Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties, TextureFacePPM texture)
+    : Face(normal, u, v, point, properties)
+{
+    this->_texture = texture;
+}
 
 Base Face::get_base() const
 {

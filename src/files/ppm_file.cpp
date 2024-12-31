@@ -26,9 +26,12 @@ std::string readOneLine(std::ifstream& file)
     return line;
 }
 
-ColorRGB PpmFile::get_color(size_t x, size_t y) const
+ColorRGB PpmFile::get_color(double x, double y) const
 {
-    return this->_map.get_color(x,y);
+    int _x = static_cast<int>(x*(this->_dimension[0]));
+    int _y = static_cast<int>(y*(this->_dimension[1]));
+    ColorRGB a = this->_map.get_color(_x,_y);
+    return a;
 }
 
 MatrixRGB PpmFile::readPixelMap(std::ifstream& file) const

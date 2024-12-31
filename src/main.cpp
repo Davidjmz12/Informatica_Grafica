@@ -13,11 +13,11 @@ HashMap get_default_conf() {
     #ifdef METRICS
     conf["metrics"] = Metrics();
     #endif
-    conf["task-size"] = int(256);
-    conf["bounces"] = int(3);
-    conf["max-depth"] = int(0);
-    conf["file-in"] = std::string("in/scene.txt");
-    conf["file-out"] = std::string("out/scene.ppm");
+    conf["task-size"] = int(32);
+    conf["bounces"] = int(5);
+    conf["max-depth"] = int(7);
+    conf["file-in"] = std::string("in/test.txt");
+    conf["file-out"] = std::string("out/example.ppm");
     return conf;
 }
 

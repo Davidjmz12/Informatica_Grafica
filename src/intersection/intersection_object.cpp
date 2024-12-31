@@ -32,11 +32,6 @@ void IntersectionObject::inverse_normal()
     this->_normal = this->_normal*(-1);
 }
 
-void IntersectionObject::change_color(Color color)
-{
-    this->_properties.get_BRDF()->set_color(color);
-}
-
 bool IntersectionObject::is_delta() const
 {
     return this->_properties.get_BRDF()->is_delta();

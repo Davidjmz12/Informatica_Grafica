@@ -11,7 +11,6 @@ class Property
 {
 private:
     std::shared_ptr<BRDF> _brdf;
-
 public:
 
     Property();
