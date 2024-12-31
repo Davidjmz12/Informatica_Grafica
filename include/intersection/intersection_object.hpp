@@ -35,6 +35,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const IntersectionObject& i);
 
+    static IntersectionObject min(const std::vector<IntersectionObject>& intersections);
+
     std::string to_string() const;
 
 };

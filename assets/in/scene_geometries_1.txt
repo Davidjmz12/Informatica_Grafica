@@ -77,15 +77,15 @@ Geometries 8
         0 0 -1
         1
     cylinder
-        magenta_plastic
+        green
         -0.5 -1 0.25
         0.3
-        0 0.5 0
+        0 .5 0
     cone
-        magenta_plastic
+        red
         -0.5 -0.5 0.25
-        0 1 0
         0.3
+        0 .5 0
     ellipsoid
         espejo
         0.2
@@ -93,13 +93,9 @@ Geometries 8
         0.4
         0.5 -0.7 -0.25
 Lights 1
-    area
-        face
-        white
-        0 -1 0
-        0.1 0 0.1
-        -0.1 0 0.1
-        0 0.99 0
+    punctual
+        SC1 1
+        0 0.7 0
 Render
     ray-tracing
 ToneMapping

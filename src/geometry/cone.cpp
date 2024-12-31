@@ -14,11 +14,11 @@ Cone::Cone(Point center, Vector axe, double radius, std::shared_ptr<Property> pr
 bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionObject& intersection) const
 {
 
+    if(leD(distance,0))
+        return false;
+
     // Calculate the intersection point on the cone surface
     Point point_int = r.evaluate(distance);
-
-    if(eqD(distance,0))
-        return false;
 
     double h = (point_int-this->_center).dot(this->_axe);
     if(ltD(h,0) || gtD(h,this->_height))
@@ -56,35 +56,42 @@ bool Cone::intersect_with_cone(const Ray& r, IntersectionObject& intersection) c
 
     double delta = pow(b,2) - 4*a*c;
 
-    if(delta<0)
+    if(leD(delta,0))
         return false;
     else if(eqD(delta,0))
     {
-        if(eqD(a,0) || eqD(b,0))
+        if(eqD(a,0))
             return false;
         
         return intersection_in_a_point(r,-b/(2*a),intersection);
     } else
     {
-        IntersectionObject min_int;
-        bool min_int_set = false;
-        if(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a),intersection))
+        double s1 = (-b+sqrt(delta))/(2*a);
+        double s2 = (-b-sqrt(delta))/(2*a);
+
+        IntersectionObject i1, i2;
+        if(intersection_in_a_point(r,s1,i1))
         {
-            min_int_set = true;
-            if(intersection < min_int)
-                min_int = intersection;
-        }
-
-        if(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a),intersection))
+            if(intersection_in_a_point(r,s2,i2))
+            {
+                intersection = i1 < i2 ? i1 : i2;
+                return true;
+            } else
+            {
+                intersection = i1;
+                return true;
+            }
+        } else
         {
-            min_int_set = true;
-            if(intersection < min_int)
-                min_int = intersection;
+            if(intersection_in_a_point(r,s2,i2))
+            {
+                intersection = i2;
+                return true;
+            } else
+            {
+                return false;
+            }
         }
-
-        intersection = min_int;
-
-        return min_int_set;
     }
 }
 

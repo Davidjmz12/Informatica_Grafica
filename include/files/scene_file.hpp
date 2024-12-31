@@ -244,6 +244,34 @@ private:
      * @brief A pointer to the gamma tone mapping
      */
     std::unique_ptr<ToneMapping> read_gamma_tm(double max) const;
+    
+    /**
+     * @brief Method for reading a clamping tone mapping
+     * @param max The maximum of luminance
+     * @brief A pointer to the clamping tone mapping
+     */
+    std::unique_ptr<ToneMapping> read_clamping_tm(double max) const;
+
+    /**
+     * @brief Method for reading an equalization tone mapping
+     * @param max The maximum of luminance
+     * @brief A pointer to the equalization tone mapping
+     */
+    std::unique_ptr<ToneMapping> read_equalization_tm(double max) const;
+
+    /**
+     * @brief Method for reading a logarithmic tone mapping
+     * @param max The maximum of luminance
+     * @brief A pointer to the logarithmic tone mapping
+     */
+    std::unique_ptr<ToneMapping> read_logarithmic_tm(double max) const;
+
+    /**
+     * @brief Method for reading a drago tone mapping
+     * @param max The maximum of luminance
+     * @brief A pointer to the drago tone mapping
+     */
+    std::unique_ptr<ToneMapping> read_drago_tm(double max) const;
 
 public:
     /**

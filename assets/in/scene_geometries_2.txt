@@ -87,12 +87,9 @@ Geometries 7
         0 0.3 0
         0.15 0 0.15  
 Lights 1
-    area
-        disk
-        white
-        0 0.99 0
-        0 -1 0
-        0.4
+    punctual
+        SC1 1
+        0 0.7 0
 Render
     ray-tracing
 ToneMapping

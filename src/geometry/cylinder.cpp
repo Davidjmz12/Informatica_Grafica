@@ -29,18 +29,26 @@ BoundingBox Cylinder::get_bounding_box() const
 }
 
 
-IntersectionObject Cylinder::intersection_in_a_point(const Ray& r, double distance) const
+bool Cylinder::intersection_in_a_point(const Ray& r, double distance, bool is_entering, IntersectionObject& intersection) const
 {
-    if(eqD(distance,0))
-        return IntersectionObject();
+    if(leD(distance,0))
+        return false;
+
     Point point_int = r.evaluate(distance), projection;
+
+    double h = (point_int-this->_center).dot(this->_axis);
+    
+    if(ltD(h,0) || gtD(h,this->_height))
+        return false;
+
     Vector normal;
-    projection= _center + _axis*(_center-Point()).dot((point_int-_center)); 
+    projection= _center + _axis*(_axis).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    return IntersectionObject(distance, normal, point_int, *this->_properties, r);
+    intersection = IntersectionObject(distance, is_entering?normal:normal*(-1), point_int, *this->_properties, r, is_entering);
+    return true;
 }
 
-bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionObject& intersection) const
+bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObject& intersection) const
 {
     
     Vector aux_1,aux_2 ;
@@ -54,82 +62,79 @@ bool Cylinder::intersect_with_ray_infinite_cylinder(const Ray& r, IntersectionOb
 
     double delta = pow(b,2)-4*a*c;
 
-    if(delta<0)
+    if(leD(delta,0))
         return false;
-    else if (delta==0)
+    else if (eqD(delta,0))
     {
-        if(eqD(a,0) || eqD(b,0)) // no solution
+        if(eqD(a,0)) // no solution
             return false;
-        
-        intersection = intersection_in_a_point(r,-b/(2*a));
-        return true;
+
+        return intersection_in_a_point(r,-b/(2*a),true,intersection);
     } else 
     {
-        std::vector<IntersectionObject> int_points;
-        int_points.push_back(intersection_in_a_point(r,(-b+sqrt(delta))/(2*a)));
-        int_points.push_back(intersection_in_a_point(r,(-b-sqrt(delta))/(2*a)));
+        double s1 = (-b+sqrt(delta))/(2*a);
+        double s2 = (-b-sqrt(delta))/(2*a);
 
-        if (int_points[0] < int_points[1])
-            intersection = int_points[0];
-        else
-            intersection = int_points[1];
+        bool is_entering = s1*s2 > 0;
+        
+        IntersectionObject i1, i2;
 
-        return true;
-    }
-}
-
-bool Cylinder::intersect_with_ray_finite_cylinder(const Ray& r, IntersectionObject& intersection) const
-{
-    if(!intersect_with_ray_infinite_cylinder(r, intersection))
-        return false;
-    
-    double int_point_dot_axis = (intersection.get_int_point()-this->_center).dot(_axis);
-
-    if( ltD(int_point_dot_axis, 0) || gtD(int_point_dot_axis, _height))
-        return false;
-    
-    return true;
-}
-
-bool Cylinder::intersect_with_base(const Ray& r, IntersectionObject& intersection) const
-{
-    bool int_min_exists = false;
-    IntersectionObject aux_int;
-    for (auto i: { _top, _bottom })
-    {
-        if(i.intersect_with_ray(r, aux_int))
+        if(intersection_in_a_point(r,s1,is_entering,i1))
         {
-            int_min_exists = true;
-            if(intersection>aux_int)
-                intersection = aux_int;
+            if(intersection_in_a_point(r,s2,is_entering,i2))
+            {
+                intersection = i1 < i2 ? i1 : i2;
+                return true;
+            } else
+            {
+                intersection = i1;
+                return true;
+            }
+        } else
+        {
+            if(intersection_in_a_point(r,s2,is_entering,i2))
+            {
+                intersection = i2;
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
-    return int_min_exists;
 }
 
 bool Cylinder::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
-    IntersectionObject intersection_base, intersection_cylinder;
-    bool intersection_with_base = false, intersection_with_cylinder = false;
 
-    intersection_with_base = intersect_with_base(r, intersection_base);
-    intersection_with_cylinder = intersect_with_ray_finite_cylinder(r, intersection_cylinder);
-
-    intersection = (intersection_base<intersection_cylinder)?intersection_base:intersection_cylinder;
-
-    Vector a = r.get_point()-_center;
-    Vector b = a - _axis*a.dot(_axis);
-    bool inside_bases_cylinder = geD(a.dot(_axis), 0) && leD(a.dot(_axis), _height);
-    bool inside_center = leD(b.norm(), _radius);
-    bool is_entering = !(inside_bases_cylinder && inside_center);
-    if(!is_entering)
+    // Check intersections with the infinite cylinder
+    if(intersect_with_ray_finite_cylinder(r, intersection))
     {
-        intersection.inverse_normal();
-        intersection.set_is_entering(false);
+        // Check intersections with the bases
+        IntersectionObject aux_int;
+        for (auto i: { _top, _bottom })
+        {
+            if(i.intersect_with_ray(r, aux_int))
+            {
+                intersection = aux_int < intersection ? aux_int : intersection;
+            }
+        }
+        return true;
+    } else
+    {
+        IntersectionObject aux_int;
+        bool has_intersection = false;
+        for (auto i: { _top, _bottom })
+        {
+            if(i.intersect_with_ray(r, aux_int))
+            {
+                intersection = aux_int < intersection ? aux_int : intersection;
+                has_intersection = true;
+            }
+        }
+        return has_intersection;
     }
 
-
-    return intersection_with_base || intersection_with_cylinder;
 }
 
 std::string Cylinder::to_string() const

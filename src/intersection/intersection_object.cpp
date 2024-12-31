@@ -67,6 +67,21 @@ std::ostream& operator<<(std::ostream& os, const IntersectionObject& i)
     return os;
 }
 
+IntersectionObject IntersectionObject::min(const std::vector<IntersectionObject>& intersections)
+{
+    if(intersections.empty())
+        throw std::invalid_argument("The vector of intersections is empty.");
+
+    IntersectionObject min;
+    for(const auto& i : intersections)
+    {
+        if(i < min)
+            min = i;
+    }
+
+    return min;
+}
+
 std::string IntersectionObject::to_string() const
 {
     return "IntersectionObject: " + this->_intersection_point.to_string() + "\n" + std::to_string(this->_distance) + "\n" + this->_normal.to_string();

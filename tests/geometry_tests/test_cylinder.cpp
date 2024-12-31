@@ -7,7 +7,7 @@
 int main()
 {
     Tests t = Tests("TESTS cylinder");
-    Property property = Property();
+    std::shared_ptr<Property> property = std::make_shared<Property>();
 
     Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1), property);
 
@@ -19,6 +19,19 @@ int main()
     Ray r5 = Ray(Point(0,0,3), Vector(0,0,-1));
 
     Ray r6 = Ray(Point(0,0,-3), Vector(0,0,1));
+
+    Cylinder c2 = Cylinder(Point(2, 2, 0), 2.0F, Vector(0,0,2), property);
+
+    Ray r7 = Ray(Point(2,2,3), Vector(0,0,1));
+    Ray r8 = Ray(Point(2,2,3), Vector(0,0,-1));
+    Ray r9 = Ray(Point(-2,2,1), Vector(1,0,0));
+    Ray r10 = Ray(Point(2,2,-3), Vector(0,0,1));
+    Ray r11 = Ray(Point(2,2,-3), Vector(0,0,-1));
+    Ray r12 = Ray(Point(2,2,0), Vector(0,0,1));
+    Ray r13 = Ray(Point(2,2,0), Vector(0,0,-1));
+    Ray r14 = Ray(Point(2,2,2), Vector(0,-2,-1));
+    Ray r15 = Ray(Point(2,4,3), Vector(0,-2,-1));
+
 
     IntersectionObject i1;
 
@@ -49,6 +62,39 @@ int main()
     t.addTest("19",Test::EXPECT_EQ(i1.get_distance(), 3.0F));
     t.addTest("20",Test::EXPECT_EQ(i1.get_normal(), Vector(0,0,-1)));
     t.addTest("21",Test::EXPECT_EQ(i1.get_int_point(), Point()));
+
+
+    IntersectionObject i2;
+    t.addTest("22",Test::EXPECT_EQ(c2.intersect_with_ray(r7, i2), false));
+
+    t.addTest("23",Test::EXPECT_EQ(c2.intersect_with_ray(r8, i2), true));
+    t.addTest("24",Test::EXPECT_EQ(i2.get_distance(), 1.0F));
+    t.addTest("25",Test::EXPECT_EQ(i2.get_normal(), Vector(0,0,1)));
+
+    t.addTest("26",Test::EXPECT_EQ(c2.intersect_with_ray(r9, i2), true));
+    t.addTest("27",Test::EXPECT_EQ(i2.get_distance(), 2.0F));
+    t.addTest("28",Test::EXPECT_EQ(i2.get_normal(), Vector(-1,0,0)));
+
+
+    t.addTest("29",Test::EXPECT_EQ(c2.intersect_with_ray(r10, i2), true));
+    t.addTest("30",Test::EXPECT_EQ(i2.get_distance(), 3.0F));
+    t.addTest("31",Test::EXPECT_EQ(i2.get_normal(), Vector(0,0,-1)));
+
+    t.addTest("32",Test::EXPECT_EQ(c2.intersect_with_ray(r11, i2), false));
+
+    t.addTest("33",Test::EXPECT_EQ(c2.intersect_with_ray(r12, i2), true));
+    t.addTest("34",Test::EXPECT_EQ(i2.get_distance(), 2.0F));
+    t.addTest("35",Test::EXPECT_EQ(i2.get_normal(), Vector(0,0,-1)));
+
+    t.addTest("36",Test::EXPECT_EQ(c2.intersect_with_ray(r13, i2), false));
+
+    t.addTest("37",Test::EXPECT_EQ(c2.intersect_with_ray(r14, i2), true));
+    t.addTest("38",Test::EXPECT_EQ(i2.get_distance(), Vector(0,-2,-1).norm()));
+    t.addTest("39",Test::EXPECT_EQ(i2.get_normal(), Vector(0,-1,0)));
+
+    t.addTest("40",Test::EXPECT_EQ(c2.intersect_with_ray(r15, i2), true));
+    t.addTest("41",Test::EXPECT_EQ(i2.get_distance(), Vector(0,-2,-1).norm()));
+    t.addTest("42",Test::EXPECT_EQ(i2.get_normal(), Vector(0,0,1)));
 
     return t.runAll();
 }

@@ -268,8 +268,8 @@ std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<Property> p) cons
 std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<Property> p) const
 {
     Point center = this->read_point();
-    Vector axe = this->read_vector();
     double r = std::stod(this->read_line());
+    Vector axe = this->read_vector();
     return std::make_shared<Cone>(center, axe, r, p);
 }
 
@@ -401,6 +401,61 @@ std::unique_ptr<ToneMapping> SceneFile::read_gamma_tm(double max) const
     return std::make_unique<Gamma>(gamma,L);
 }
 
+std::unique_ptr<ToneMapping> SceneFile::read_equalization_tm(double max) const
+{
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
+    if (tokens.size() != 1)
+        throw std::invalid_argument("The equalization tone mapping must have 1 parameter");
+    double L;
+    if(tokens[0] == "max")
+        L = max;
+    else
+        L = std::stod(tokens[0]);
+    
+    return std::make_unique<Equalization>(L);
+}
+
+std::unique_ptr<ToneMapping> SceneFile::read_drago_tm(double max) const
+{
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
+    if (tokens.size() != 1)
+        throw std::invalid_argument("The drago tone mapping must have 1 parameter");
+    double L;
+    if(tokens[0] == "max")
+        L = max;
+    else
+        L = std::stod(tokens[0]);
+    
+    return std::make_unique<Drago>(L);
+}
+
+
+std::unique_ptr<ToneMapping> SceneFile::read_logarithmic_tm(double max) const
+{
+    const std::string line = this->read_line();
+    const std::vector<std::string> tokens = split(line, ' ');
+    if (tokens.size() != 2)
+        throw std::invalid_argument("The logarithmic tone mapping must have 2 parameter");
+    double alpha = std::stod(tokens[0]);
+    double V;
+    if(tokens[1] == "max")
+        V = max;
+    else
+        V = std::stod(tokens[1]);
+    
+    return std::make_unique<Logarithmic>(V, alpha);
+}
+
+
+std::unique_ptr<ToneMapping> SceneFile::read_clamping_tm(double max) const
+{
+    return std::make_unique<Clamping>();
+}
+
+
+
 std::unique_ptr<ToneMapping> SceneFile::read_tone_mapping(double max) const
 {
     std::string line = this->read_line();
@@ -409,6 +464,14 @@ std::unique_ptr<ToneMapping> SceneFile::read_tone_mapping(double max) const
     line = this->read_line();
     if (line == "gamma")
         return this->read_gamma_tm(max);
+    else if (line == "clamping")
+        return this->read_clamping_tm(max);
+    else if (line == "equalization")
+        return this->read_equalization_tm(max);
+    else if (line == "logarithmic")
+        return this->read_logarithmic_tm(max);
+    else if (line == "drago")
+        return this->read_drago_tm(max);
     else
         throw std::invalid_argument("Tone mapping not recognized");
 }

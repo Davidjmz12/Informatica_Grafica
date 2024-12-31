@@ -14,6 +14,12 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Prope
 }
 
 
+Base Face::get_base() const
+{
+    return Base(this->_point, this->_normal, this->_u, this->_v);
+}
+
+
 BoundingBox Face::get_bounding_box() const
 {
     std::vector<Point> corners;
