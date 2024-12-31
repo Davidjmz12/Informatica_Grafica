@@ -25,6 +25,7 @@ public:
 
     void set_is_entering(const bool is_entering);
     void inverse_normal();
+    void change_color(Color color);
 
     bool is_delta() const;
 

@@ -16,7 +16,7 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Prope
 
 Base Face::get_base() const
 {
-    return Base(this->_point, this->_normal, this->_u, this->_v);
+    return Base(this->_point, this->_normal, this->_u*this->_sizes[0], this->_v*this->_sizes[1]);
 }
 
 
@@ -30,6 +30,11 @@ BoundingBox Face::get_bounding_box() const
     return BoundingBox::get_BB_by_corners(corners);
 }
 
+void Face::set_texture(const TextureFacePPM& texture)
+{
+    this->_texture = texture;
+}
+
 bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     Plane plane = Plane(this->_point,this->_normal, this->_properties);
@@ -41,8 +46,11 @@ bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
 
     if (geD(fabs(v.dot(this->_u)),this->_sizes[0]) ||  geD(fabs(v.dot(this->_v)),this->_sizes[1]))
         return false;
-    else
-        return true;
+    
+    if(this->_texture.has_value())
+        intersection.change_color(this->_texture.value().get_color(this->get_base(), intersection.get_int_point()));
+    
+    return true;
 }
 
 std::ostream& operator<<(std::ostream& os, const Face& f)

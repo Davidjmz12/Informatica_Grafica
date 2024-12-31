@@ -25,6 +25,11 @@ ColorMap::ColorMap(MatrixRGB colors):
     _colors(std::move(colors))
 {}
 
+ColorRGB ColorMap::get_color(size_t x, size_t y) const
+{
+    return this->_colors[x][y];
+}
+
 double ColorMap::max() const
 {
     double max = 0;

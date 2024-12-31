@@ -21,7 +21,7 @@
  */
 class PpmFile {
 private:
-    ColorMap _map;          // Matrix of colors.
+    ColorMap _map;           // Matrix of colors.
     double _maxRange;        // Max value in the file
     double _colorResolution; // Max number of different tones
     std::array<int,2> _dimension{};      // Width and height of the matrix
@@ -40,6 +40,7 @@ public:
 
     PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string  format);
 
+    ColorRGB get_color(size_t x, size_t y) const;
 
     [[nodiscard]] PpmFile apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, size_t new_resolution) const;
 

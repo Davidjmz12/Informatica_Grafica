@@ -17,7 +17,6 @@ public:
     Property();
     Property(std::shared_ptr<BRDF> brdf);
 
-
     Color get_color() const;
     BRDF* get_BRDF() const;
 

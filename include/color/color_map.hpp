@@ -36,6 +36,8 @@ class ColorMap {
 
         [[nodiscard]] double max() const;
 
+        [[nodiscard]] ColorRGB get_color(size_t x, size_t y) const;
+
         /**
          * @brief Apply a tone mapping to all colors in the map.
          * @param t Tone mapping to apply.

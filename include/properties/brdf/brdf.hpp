@@ -19,6 +19,7 @@ public:
     BRDF();
 
     Color get_color() const;
+    void set_color(Color k);
 
     virtual Color eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry) const = 0;
 
