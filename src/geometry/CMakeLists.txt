@@ -30,7 +30,7 @@ add_library(plane plane.cpp)
 target_link_libraries(plane PUBLIC geometry)
 
 add_library(face face.cpp)
-target_link_libraries(face PUBLIC geometry)
+target_link_libraries(face PUBLIC geometry texture_face_ppm)
 
 add_library(bounding_box bounding_box.cpp)
 target_link_libraries(bounding_box PUBLIC spectral_color ray)
