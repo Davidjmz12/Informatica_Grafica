@@ -3,6 +3,7 @@
 #include <limits>
 #include <vector>
 #include <stdexcept>
+#include <optional>
 
 #include "intersection/intersection.hpp"
 #include "properties/property.hpp"
@@ -14,6 +15,7 @@ private:
     Vector _normal;
     Property _properties;
     bool _is_entering;
+    std::optional<ColorRGB> _color_texture;
 public:
 
     IntersectionObject();
@@ -25,7 +27,7 @@ public:
 
     void set_is_entering(const bool is_entering);
     void inverse_normal();
-    void change_color(Color color);
+    void change_color(ColorRGB color);
 
     bool is_delta() const;
 

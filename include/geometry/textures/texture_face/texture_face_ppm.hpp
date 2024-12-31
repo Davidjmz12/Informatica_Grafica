@@ -16,7 +16,7 @@ public:
     {
         Point point_base = Point(base.coord_from_canonical(&point));
         double u = (point_base[1]+1)/2;
-        double v = (point_base[2]+1)/2;
+        double v = (1-point_base[2])/2;
         return _file.get_color(u, v);
     }
 

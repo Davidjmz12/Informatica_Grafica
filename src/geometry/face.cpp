@@ -40,6 +40,8 @@ void Face::set_texture(const TextureFacePPM& texture)
     this->_texture = texture;
 }
 
+
+
 bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
     Plane plane = Plane(this->_point,this->_normal, this->_properties);

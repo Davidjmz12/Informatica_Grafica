@@ -32,6 +32,11 @@ void IntersectionObject::inverse_normal()
     this->_normal = this->_normal*(-1);
 }
 
+void IntersectionObject::change_color(ColorRGB color)
+{
+    this->_color_texture = color;
+}
+
 bool IntersectionObject::is_delta() const
 {
     return this->_properties.get_BRDF()->is_delta();
@@ -49,8 +54,12 @@ bool IntersectionObject::operator==(const IntersectionObject i) const
 Color IntersectionObject::eval_brdf(Color light, Vector w_i) const
 {
     double const_ = (this->is_delta() ? 1.0 : M_PI);
-    return this->_properties.get_BRDF()->eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
+    if(this->_color_texture.has_value())
+        return DiffuseBRDF(this->_color_texture.value()).eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
         this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient());
+    else
+        return this->_properties.get_BRDF()->eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
+            this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient());
 }
 
 bool IntersectionObject::sample_ray(Ray& sampled_ray)
