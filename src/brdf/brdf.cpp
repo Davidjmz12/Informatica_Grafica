@@ -57,15 +57,15 @@ Color BRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double 
 {
     if(sampled == BRDFType::DIFFUSE)
     {
-        return light * this->_kd / M_PI;
+        return light * this->_kd / M_PI/ _weights[0];
     }
     else if(sampled == BRDFType::SPECULAR)
     {
-        return this->_ks*light;
+        return this->_ks*light / _weights[1];
     }
     else if(sampled == BRDFType::TRANSMISSIVE)
     {
-        return this->_kt*light;
+        return this->_kt*light / _weights[2];
     }
     else
     {
