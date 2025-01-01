@@ -18,13 +18,13 @@ PhotonMap PhotonMapping::create_photon_map()
     return PhotonMap(photons);
 }
 
-Color PhotonMapping::density_estimate(const IntersectionObject& obj) const
+Color PhotonMapping::density_estimate(const IntersectionObject& obj, const BRDFType type) const
 {
     Color sum;
     for(const Photon* p : this->_photon_map->nearest_neighbors(obj.get_int_point(), this->_max_photon_num_per_query, this->_radius))
     {
         double distance = (p->get_position() - obj.get_int_point()).norm();
-        sum = sum + obj.eval_brdf(p->get_flux()*this->_kernel->eval(distance, this->_radius), p->get_vector());
+        sum = sum + obj.eval_brdf(p->get_flux()*this->_kernel->eval(distance, this->_radius), p->get_vector(), type);
     }
 
     return sum;

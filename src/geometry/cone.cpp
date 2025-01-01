@@ -2,13 +2,13 @@
 
 #include <cmath>
 
-Cone::Cone(Point center, Vector axe, double radius, std::shared_ptr<Property> properties)
-    : Geometry(properties),
+Cone::Cone(Point center, Vector axe, double radius, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf),
     _center(center),
     _axe(axe.normalize()),
     _height(axe.norm()),
     _radius(radius),
-    _base(Disk(center, axe, radius, properties))
+    _base(Disk(center, axe, radius, brdf))
 {}
 
 bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionObject& intersection) const
@@ -36,7 +36,7 @@ bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionOb
 
     // Normalize the normal vector
     normal = normal.normalize();
-    intersection = IntersectionObject(distance, normal, point_int, *this->_properties, r);
+    intersection = IntersectionObject(distance, normal, point_int, *this->_brdf, r);
     return true;
 }
 

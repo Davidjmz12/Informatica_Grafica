@@ -16,7 +16,7 @@
  * @brief Represents a geometric plane in 3D space.
  * 
  * The Plane class defines a plane using a point on the plane and a normal vector.
- * It provides methods for constructing a plane, retrieving its properties, and checking for ray intersections.
+ * It provides methods for constructing a plane, retrieving its brdf, and checking for ray intersections.
  * 
  * @details
  * This class inherits from the Geometry class and implements its pure virtual functions.
@@ -51,9 +51,9 @@ public:
      * @param point A point on the plane.
      * @param normal The normal vector of the plane.
      */
-    Plane(Point point, Vector normal, std::shared_ptr<Property> properties);
+    Plane(Point point, Vector normal, std::shared_ptr<BRDF> brdf);
 
-    Plane(Vector normal, double distance, std::shared_ptr<Property> properties);
+    Plane(Vector normal, double distance, std::shared_ptr<BRDF> brdf);
     
     BoundingBox get_bounding_box() const override;
 
@@ -63,7 +63,7 @@ public:
      * @param p2 The second point.
      * @param p3 The third point.
      */
-    Plane(Point p1, Point p2, Point p3, std::shared_ptr<Property> properties);
+    Plane(Point p1, Point p2, Point p3, std::shared_ptr<BRDF> brdf);
 
 
     double get_distance() const;

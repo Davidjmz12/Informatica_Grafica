@@ -7,9 +7,9 @@
 int main()
 {
     Tests t = Tests("TESTS cylinder");
-    std::shared_ptr<Property> property = std::make_shared<Property>();
+    std::shared_ptr<BRDF> brdf = std::make_shared<BRDF>();
 
-    Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1), property);
+    Cylinder c = Cylinder(Point(), 1.0F, Vector(0,0,1), brdf);
 
     Ray r1 = Ray(Point(-2,0,0), Vector(1,0,0));
     Ray r2 = Ray(Point(-1,0,2), Vector(0,0,-1));
@@ -20,7 +20,7 @@ int main()
 
     Ray r6 = Ray(Point(0,0,-3), Vector(0,0,1));
 
-    Cylinder c2 = Cylinder(Point(2, 2, 0), 2.0F, Vector(0,0,2), property);
+    Cylinder c2 = Cylinder(Point(2, 2, 0), 2.0F, Vector(0,0,2), brdf);
 
     Ray r7 = Ray(Point(2,2,3), Vector(0,0,1));
     Ray r8 = Ray(Point(2,2,3), Vector(0,0,-1));

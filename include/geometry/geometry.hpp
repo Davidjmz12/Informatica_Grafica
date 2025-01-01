@@ -11,7 +11,7 @@
 #pragma once
 
 #include "intersection/intersection_object.hpp"
-#include "properties/property.hpp"
+#include "brdf/brdf.hpp"
 #include "scene/ray.hpp"
 #include "global_config/constants.hpp"
 #include "geometry/bounding_box.hpp"
@@ -46,17 +46,16 @@
 class Geometry
 {
 protected:
-    std::shared_ptr<Property> _properties;
+    std::shared_ptr<BRDF> _brdf; ///< The BRDF of the geometry.
 public:
 
     Geometry()
     {}
 
-    Geometry(std::shared_ptr<Property> properties)
-        : _properties(properties)
+    Geometry(std::shared_ptr<BRDF> brdf)
+        : _brdf(brdf)
     {}
     
-
     virtual BoundingBox get_bounding_box() const = 0;
 
     /**
@@ -93,8 +92,8 @@ public:
      */
     virtual std::string to_string() const = 0;
 
-    Property get_properties() const
+    BRDF get_brdf() const
     {
-        return *this->_properties;
+        return *this->_brdf;
     }
 };

@@ -13,10 +13,10 @@
 int main()
 {
 
-    Property property = Property();
+    std::shared_ptr<BRDF> brdf = std::make_shared<BRDF>();
     Tests t = Tests("SPHERE TEST");
 
-    Sphere s = Sphere(Point(), 1,property);
+    Sphere s = Sphere(Point(), 1, brdf);
     Ray r = Ray(Point(-2,0,0),Vector(1,0,0));
     IntersectionObject res = IntersectionObject();
     t.addTest("1", Test::EXPECT_EQ(s.intersect_with_ray(r,res),true));
@@ -26,7 +26,7 @@ int main()
     t.addTest("5", Test::EXPECT_EQ(res.is_entering(), true));
 
 
-    Sphere s2 = Sphere(Point(2,3,5), 2,property);
+    Sphere s2 = Sphere(Point(2,3,5), 2, brdf);
     Ray r2 = Ray(Point(6,0,0),Vector(-2,3,5));
     t.addTest("6", Test::EXPECT_EQ(s2.intersect_with_ray(r2,res),true));
     t.addTest("7", Test::EXPECT_EQ(res.get_distance(),sqrt(38)));
@@ -47,7 +47,7 @@ int main()
     t.addTest("16", Test::EXPECT_EQ(res.is_entering(), true));
 
 
-    Sphere s3 = Sphere(Point(0,0,0), 1, property);
+    Sphere s3 = Sphere(Point(0,0,0), 1, brdf);
     Ray r5 = Ray(Point(0,0,-1),Vector(0,0,1));
     t.addTest("17", Test::EXPECT_EQ(s3.intersect_with_ray(r5,res),true));
     t.addTest("18", Test::EXPECT_EQ(res.get_distance(),2));

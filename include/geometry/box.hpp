@@ -40,10 +40,10 @@ public:
      * @brief Constructor for the Box class.
      * @param center The center of the box.
      * @param axis The axis of the box.
-     * @param properties The properties of the box.
+     * @param brdf The brdf of the box.
      * @throw std::invalid_argument if the sides are not positive, the axis are not normalized or the axis are not a R^3 basis.
      */
-    Box(const Point& center, std::array<Vector,3> axis, std::shared_ptr<Property> properties);
+    Box(const Point& center, std::array<Vector,3> axis, std::shared_ptr<BRDF> brdf);
 
     /**
      * @brief Method that returns the bounding box of the box.

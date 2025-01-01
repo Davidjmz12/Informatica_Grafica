@@ -35,7 +35,7 @@ Color RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_re
 
     // If the ray does not intersect with any object, return black.
     if(!intersects)
-        return Color{};
+        return Color();
 
 
     if(min_int_light < min_int_obj)
@@ -44,15 +44,16 @@ Color RayTracing::compute_ray_intersection_color(const Ray& r, const size_t n_re
     }
 
     Ray new_ray;
-    if(!min_int_obj.sample_ray(new_ray))
+    BRDFType sampled = min_int_obj.sample_ray(new_ray);
+    if(sampled == BRDFType::ABSORPTION)
         return Color{};
 
     const Color indirect_light = compute_ray_intersection_color(new_ray, n_rec-1);
-    const Color indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction());
+    const Color indirect_light_contribution = min_int_obj.eval_brdf(indirect_light, new_ray.get_direction(), sampled);
     Color point_light_contribution;
-    if(!min_int_obj.is_delta())
+    if(!BRDF::is_delta(sampled))
     {
-        point_light_contribution = calculate_punctual_light_contribution(min_int_obj);
+        point_light_contribution = calculate_punctual_light_contribution(min_int_obj, sampled);
     } 
     return point_light_contribution + indirect_light_contribution;
 }

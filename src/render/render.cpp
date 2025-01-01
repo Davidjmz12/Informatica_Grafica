@@ -148,13 +148,13 @@ MatrixSC Render::arrange_vector_into_color_matrix(std::vector<Color> colors) con
     return matrix;
 }
 
-Color Render::calculate_punctual_light_contribution(const IntersectionObject& intersection) const
+Color Render::calculate_punctual_light_contribution(const IntersectionObject& intersection, BRDFType type) const
 {
     const VectorPunctualLight lights = this->_scene.get_punctual_lights();
     Color color_contribution;
     for(const auto & light : lights)
     {
-        color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection);
+        color_contribution = color_contribution + light->light_contribution(this->_scene.get_objects(), intersection, type);
     }
     return color_contribution;
 }

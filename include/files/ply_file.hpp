@@ -26,7 +26,7 @@ private:
     PlyFile(VectorTriangles elements, const std::array<double,6>& bounding_box);
 
 public:
-    PlyFile(const std::string& file_path, std::shared_ptr<Property> properties);
+    PlyFile(const std::string& file_path, std::shared_ptr<BRDF> brdf);
 
     [[nodiscard]] VectorTriangles get_elements() const;
 

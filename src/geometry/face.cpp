@@ -1,7 +1,7 @@
 #include "geometry/face.hpp"
 
-Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties)
-    :  Geometry(properties), _normal(normal), _point(point)
+Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf)
+    :  Geometry(brdf), _normal(normal), _point(point)
 {
     if (neqD(normal.dot(u),0) || neqD(normal.dot(v),0))
         throw std::invalid_argument("The vectors u and v must be perpendicular to the normal vector.");
@@ -13,8 +13,8 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Prope
     this->_v = v.normalize();
 }
 
-Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties, TextureFacePPM texture)
-    : Face(normal, u, v, point, properties)
+Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf, TextureFacePPM texture)
+    : Face(normal, u, v, point, brdf)
 {
     this->_texture = texture;
 }
@@ -44,7 +44,7 @@ void Face::set_texture(const TextureFacePPM& texture)
 
 bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
-    Plane plane = Plane(this->_point,this->_normal, this->_properties);
+    Plane plane = Plane(this->_point,this->_normal, this->_brdf);
 
     if(!plane.intersect_with_ray(r,intersection))
         return false;

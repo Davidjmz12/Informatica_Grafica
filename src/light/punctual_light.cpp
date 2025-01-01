@@ -14,7 +14,7 @@ Ray PunctualLight::sample_random_unitary_ray() const
     const auto v = Vector(cos(theta)*cos(phi), cos(theta)*sin(phi),sin(theta));
     return Ray(this->_center, v); 
 }
-Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionObject& intersection) const
+Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionObject& intersection,  BRDFType type) const
 {
     const Vector ray_dir = (this->_center-intersection.get_int_point());
     const double norm_ray_dir = ray_dir.norm();
@@ -27,7 +27,8 @@ Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionOb
     if (shadow)
         return {};
     
-    return intersection.eval_brdf((this->_power/pow(ray_dir.norm(),2))*fabs(intersection.get_normal().dot(ray_dir.normalize())), ray_dir.normalize());
+    return intersection.eval_brdf((this->_power/pow(ray_dir.norm(),2))*fabs(intersection.get_normal().dot(ray_dir.normalize())), 
+        ray_dir.normalize(), type);
 }
 
 

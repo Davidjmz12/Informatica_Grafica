@@ -151,30 +151,30 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
     const std::string line = this->read_line();
 
     if (line == "diffuse")
-        return std::make_unique<DiffuseBRDF>(this->read_color());
+        return std::make_unique<BRDF>(BRDF::create_diffuse_BRDF(this->read_color()));
 
     if (line == "specular")
-        return std::make_unique<SpecularBRDF>(this->read_color());
-
-    if (line == "absorption")
-        return std::make_unique<AbsorptionBRDF>();
-
+        return std::make_unique<BRDF>(BRDF::create_specular_BRDF(this->read_color()));
+        
     if (line == "refractive")
     {
         Color c = this->read_color();
         double refractive_index = std::stod(this->read_line());
-        return std::make_unique<RefractiveBRDF>(c, refractive_index);
+        return std::make_unique<BRDF>(BRDF::create_transmissive_BRDF(c, refractive_index));
     }
+
+    if(line == "emissive")
+        return std::make_unique<BRDF>(BRDF::create_emisive_BRDF(this->read_color()));
 
     if (line == "roulette")
     {
-        int n_brdfs = std::stoi(this->read_line());
-        std::vector<std::shared_ptr<BRDF>> brdfs;
-        for (int i = 0; i < n_brdfs; i++)
-        {
-            brdfs.push_back(this->read_brdf());
-        }
-        return std::make_unique<RouletteBRDF>(brdfs);
+        Color kd = this->read_color();
+        Color ks = this->read_color();
+        Color kt = this->read_color();
+        double refraction_index = std::stod(this->read_line());
+        std::string line = this->read_line();
+
+        return std::make_unique<BRDF>(kd,ks,kt,refraction_index,Color(0));
     }
 
     throw std::invalid_argument("The BRDF type must be Diffuse");
@@ -188,20 +188,20 @@ void SceneFile::read_properties()
         std::string name,line;
         name = this->read_line();
         std::shared_ptr<BRDF> b = this->read_brdf();
-        this->_ch[name] = std::make_shared<Property>(b);
+        this->_ch[name] = b;
     }
 }
 
-std::shared_ptr<Property> SceneFile::read_property(const std::string& key) const
+std::shared_ptr<BRDF> SceneFile::read_brdf(const std::string& key) const
 {
     if (this->_ch.find(key) == this->_ch.end())
-        throw std::invalid_argument("The property " + key + " does not exist");
-    PropertyHash ph = this->_ch;
+        throw std::invalid_argument("The brdf " + key + " does not exist");
+    BRDFHash ph = this->_ch;
     return ph[key];
 }
 
 
-std::shared_ptr<Geometry> SceneFile::read_plane(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_plane(std::shared_ptr<BRDF> p) const
 {
     Vector normal = this->read_vector();
 
@@ -211,14 +211,14 @@ std::shared_ptr<Geometry> SceneFile::read_plane(std::shared_ptr<Property> p) con
     return std::make_shared<Plane>(normal, d, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_sphere(std::shared_ptr<Property>p) const
+std::shared_ptr<Geometry> SceneFile::read_sphere(std::shared_ptr<BRDF> p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
     return std::make_shared<Sphere>(center, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cylinder(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_cylinder(std::shared_ptr<BRDF> p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
@@ -235,7 +235,7 @@ std::array<double,6> SceneFile::read_bounding_box() const
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-std::shared_ptr<Geometry> SceneFile::read_mesh(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_mesh(std::shared_ptr<BRDF> p) const
 {
     const std::string file =  this->_ply_dir + "/" +  this->read_line();
     auto ply = PlyFile(file, p);
@@ -250,14 +250,14 @@ std::shared_ptr<Geometry> SceneFile::read_mesh(std::shared_ptr<Property> p) cons
     return ply.to_mesh();
 }
 
-std::shared_ptr<Geometry> SceneFile::read_box(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_box(std::shared_ptr<BRDF> p) const
 {
     Point center = this->read_point();
     std::array<Vector,3> axis = {this->read_vector(), this->read_vector(), this->read_vector()};
     return std::make_shared<Box>(center, axis, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<BRDF> p) const
 {
     Vector normal = this->read_vector();
     Vector u = this->read_vector();
@@ -272,7 +272,7 @@ std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<Property> p) cons
     return std::make_shared<Face>(normal, u, v, point, p, t);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<BRDF> p) const
 {
     Point center = this->read_point();
     double r = std::stod(this->read_line());
@@ -280,7 +280,7 @@ std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<Property> p) cons
     return std::make_shared<Cone>(center, axe, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_disk(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_disk(std::shared_ptr<BRDF> p) const
 {
     Point center = this->read_point();
     Vector normal = this->read_vector();
@@ -288,7 +288,7 @@ std::shared_ptr<Geometry> SceneFile::read_disk(std::shared_ptr<Property> p) cons
     return std::make_shared<Disk>(center, normal, r, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_ellipsoid(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_ellipsoid(std::shared_ptr<BRDF> p) const
 {
     double a = std::stod(this->read_line());
     double b = std::stod(this->read_line());
@@ -297,7 +297,7 @@ std::shared_ptr<Geometry> SceneFile::read_ellipsoid(std::shared_ptr<Property> p)
     return std::make_shared<Ellipsoid>(a, b, c, center, p);
 }
 
-std::shared_ptr<Geometry> SceneFile::read_triangle(std::shared_ptr<Property> p) const
+std::shared_ptr<Geometry> SceneFile::read_triangle(std::shared_ptr<BRDF> p) const
 {
     auto p1 = std::make_shared<Point>(this->read_point());
     auto p2 = std::make_shared<Point>(this->read_point());
@@ -310,8 +310,8 @@ std::shared_ptr<Geometry> SceneFile::read_geometry() const
     // Read the type of geometry
     const std::string line = this->read_line();
 
-    // Read the property
-    const std::shared_ptr<Property> p = this->read_property(this->read_line());
+    // Read the brdf
+    const std::shared_ptr<BRDF> p = this->read_brdf(this->read_line());
 
     // Create the appropriate object
     if (line == "plane")
@@ -389,7 +389,7 @@ std::shared_ptr<AreaLight> SceneFile::read_area_light() const
     std::shared_ptr<Geometry> g = this->read_geometry();
 
     // Create the area light
-    return std::make_shared<AreaLight>(g, g->get_properties().get_color());
+    return std::make_shared<AreaLight>(g, g->get_brdf().get_emission());
 }
 
 std::unique_ptr<ToneMapping> SceneFile::read_gamma_tm(double max) const

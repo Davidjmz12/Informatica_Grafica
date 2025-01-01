@@ -17,7 +17,7 @@ protected:
     [[nodiscard]] Color compute_pixel_color(size_t x, size_t y) const;
     [[nodiscard]] Color compute_random_pixel_color(size_t x, size_t y) const;
     [[nodiscard]] virtual Color compute_ray_color(const Ray& r) const = 0;
-    [[nodiscard]] Color calculate_punctual_light_contribution(const IntersectionObject& intersection) const;
+    [[nodiscard]] Color calculate_punctual_light_contribution(const IntersectionObject& intersection,  BRDFType type) const;
 
     [[nodiscard]] std::array<double,2> get_random_pixel_coordinates(size_t x, size_t y) const;
     [[nodiscard]] Ray trace_ray(std::array<double,2> coordinates) const;

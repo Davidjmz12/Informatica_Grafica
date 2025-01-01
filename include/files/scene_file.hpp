@@ -9,7 +9,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "properties/brdf/all_brdf.hpp"
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
 #include "light/area_light/area_light.hpp"
@@ -19,7 +18,7 @@
 #include "render/photon_mapping/direct_photon_mapping.hpp"
 #include "render/photon_mapping/explicit_photon_mapping.hpp"
 
-using PropertyHash = std::unordered_map<std::string, std::shared_ptr<Property>>;
+using BRDFHash = std::unordered_map<std::string, std::shared_ptr<BRDF>>;
 
 /**
  * Class for represent a scene
@@ -29,7 +28,7 @@ class SceneFile {
 private:
     std::string _ply_dir;
     mutable std::ifstream _file;
-    PropertyHash _ch;
+    BRDFHash _ch;
 
     /**
      * @brief Method for reading a not-commented line of the file
@@ -149,12 +148,12 @@ private:
     std::array<double,6> read_bounding_box() const;
 
     /**
-     * @brief Method for reading a property
-     * @param key The name of one property that has been
+     * @brief Method for reading a brdf
+     * @param key The name of one brdf that has been
      *  defined previously in the properties section
-     * @return The property
+     * @return The brdf
      */
-    std::shared_ptr<Property> read_property(const std::string& key) const;
+    std::shared_ptr<BRDF> read_brdf(const std::string& key) const;
 
     /**
      * @brief Method for reading a punctual light
@@ -170,73 +169,73 @@ private:
 
     /**
      * @brief Method for reading a plane
-     * @param p The property of the plane
+     * @param p The brdf of the plane
      * @brief The plane
      */
-    std::shared_ptr<Geometry> read_plane(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_plane(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a sphere
-     * @param p The property of the sphere
+     * @param p The brdf of the sphere
      * @brief The sphere
      */
-    std::shared_ptr<Geometry> read_sphere(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_sphere(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a cylinder
-     * @param p The property of the cylinder
+     * @param p The brdf of the cylinder
      * @brief The cylinder
      */
-    std::shared_ptr<Geometry> read_cylinder(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_cylinder(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a mesh
-     * @param p The property of the mesh
+     * @param p The brdf of the mesh
      * @brief The mesh
      */
-    std::shared_ptr<Geometry> read_mesh(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_mesh(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a box
-     * @param p The property of the box
+     * @param p The brdf of the box
      * @brief The box
      */
-    std::shared_ptr<Geometry> read_box(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_box(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a face
-     * @param p The property of the face
+     * @param p The brdf of the face
      * @brief The face
      */
-    std::shared_ptr<Geometry> read_face(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_face(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a cone
-     * @param p The property of the cone
+     * @param p The brdf of the cone
      * @brief The cone
      */
-    std::shared_ptr<Geometry> read_cone(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_cone(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a disk
-     * @param p The property of the disk
+     * @param p The brdf of the disk
      * @brief The disk
      */
-    std::shared_ptr<Geometry> read_disk(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_disk(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading an ellipsoid
-     * @param p The property of the ellipsoid
+     * @param p The brdf of the ellipsoid
      * @brief The ellipsoid
      */
-    std::shared_ptr<Geometry> read_ellipsoid(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_ellipsoid(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a triangle
-     * @param p The property of the triangle
+     * @param p The brdf of the triangle
      * @brief The triangle
      */
-    std::shared_ptr<Geometry> read_triangle(std::shared_ptr<Property> p) const;
+    std::shared_ptr<Geometry> read_triangle(std::shared_ptr<BRDF> p) const;
 
     /**
      * @brief Method for reading a gamma tone mapping

@@ -31,9 +31,9 @@ public:
      * @param center The center of the cone
      * @param axe Direction of the cone. From vertex to base
      * @param radius Radius of the base
-     * @param properties Properties
+     * @param brdf brdf
      */
-    Cone(Point center, Vector axe, double radius, std::shared_ptr<Property> properties);
+    Cone(Point center, Vector axe, double radius, std::shared_ptr<BRDF> brdf);
 
     /**
      * @brief Method that computes if a ray intersects with the cone

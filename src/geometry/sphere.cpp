@@ -1,7 +1,7 @@
 #include "geometry/sphere.hpp"
 
-Sphere::Sphere(Point center, double radius, std::shared_ptr<Property> properties)
-    : Ellipsoid(radius, radius, radius, center, properties)
+Sphere::Sphere(Point center, double radius, std::shared_ptr<BRDF> brdf)
+    : Ellipsoid(radius, radius, radius, center, brdf)
 {}
 
 std::ostream& operator<<(std::ostream& os, const Sphere& s)

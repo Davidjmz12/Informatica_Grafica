@@ -32,10 +32,10 @@ public:
      * @param b The y-factor.
      * @param c The z-factor.
      * @param center The center.
-     * @param properties The properties of the ellipsoid.
+     * @param brdf The brdf of the ellipsoid.
      * @throw std::invalid_argument if some factors are zero.
      */
-    Ellipsoid(double a, double b, double c, Point center, std::shared_ptr<Property> properties);
+    Ellipsoid(double a, double b, double c, Point center, std::shared_ptr<BRDF> brdf);
 
     [[nodiscard]] BoundingBox get_bounding_box() const override;
 

@@ -13,8 +13,8 @@ BoundingBox Ellipsoid::get_bounding_box() const
     );
 }
 
-Ellipsoid::Ellipsoid(const double a, const double b, const double c, Point center, std::shared_ptr<Property> properties)
-    : Geometry(std::move(properties)), _a(a), _b(b), _c(c), _center(std::move(center))
+Ellipsoid::Ellipsoid(const double a, const double b, const double c, Point center, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf), _a(a), _b(b), _c(c), _center(std::move(center))
 {
     if (eqD(a,0) || eqD(b,0) || eqD(c,0))
         throw std::invalid_argument("Factors cannot be zero.");
@@ -64,7 +64,7 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
         is_entering = false;
 
     Vector normal = is_entering ? this->normal(point_int) : this->normal(point_int)*(-1);
-    intersection = IntersectionObject(distance, normal, point_int, *this->_properties, r, is_entering);
+    intersection = IntersectionObject(distance, normal, point_int, *this->_brdf, r, is_entering);
 
     return existSolution;    
 }

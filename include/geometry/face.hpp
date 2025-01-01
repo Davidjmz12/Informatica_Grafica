@@ -57,9 +57,9 @@ public:
      * @param u The first vector that defines the boundary of the face.
      * @param v The second vector that defines the boundary of the face.
      */
-    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties);
+    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf);
 
-    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<Property> properties, TextureFacePPM texture);
+    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf, TextureFacePPM texture);
 
     /**
      * @brief Gets the base of the face.

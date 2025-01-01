@@ -19,6 +19,6 @@ public:
 
     [[nodiscard]] double luminance_mean() const;
     [[nodiscard]] double luminance_max() const;
-    [[nodiscard]] Color light_contribution(const KDTree& tree, const IntersectionObject& intersection) const;
+    [[nodiscard]] Color light_contribution(const KDTree& tree, const IntersectionObject& intersection, BRDFType type) const;
 
 };

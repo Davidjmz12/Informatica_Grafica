@@ -4,9 +4,9 @@
 int main()
 {
     Tests t = Tests("TESTS plane");
-    Property property = Property();
-    Plane p = Plane(Point(), Vector(0,0,1),property);
-    Plane p2 = Plane(Point(1,2,3), Vector(3,2,1),property);
+    std::shared_ptr<BRDF> brdf = std::make_shared<BRDF>();
+    Plane p = Plane(Point(), Vector(0,0,1), brdf);
+    Plane p2 = Plane(Point(1,2,3), Vector(3,2,1), brdf);
 
     Ray r1 = Ray(Point(-2,0,0), Vector(1,0,0));
     Ray r2 = Ray(Point(), Vector(0,0,1));

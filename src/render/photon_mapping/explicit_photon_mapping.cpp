@@ -11,17 +11,19 @@ Color ExplicitPhotonMapping::compute_ray_color(const Ray& r) const
     if(!intersects)
         return Color();
     
-    if(min_int_obj.is_delta())
+    Ray new_ray;
+    BRDFType sampled = min_int_obj.sample_ray(new_ray);
+
+    if(sampled == BRDFType::ABSORPTION)
+        return Color();
+
+    if(BRDF::is_delta(sampled))
     {
-        Ray new_ray;
-        if(!min_int_obj.sample_ray(new_ray))
-            return Color();
-        
         return compute_ray_color(new_ray);
     } else
     {
-        Color density_estimate = this->density_estimate(min_int_obj);
-        Color direct_light = this->calculate_punctual_light_contribution(min_int_obj);
+        Color density_estimate = this->density_estimate(min_int_obj, sampled);
+        Color direct_light = this->calculate_punctual_light_contribution(min_int_obj, sampled);
         return density_estimate + direct_light;
     }
 }
@@ -38,14 +40,15 @@ void ExplicitPhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, si
         return;
 
     Ray new_ray;
-    if(!min_int_obj.sample_ray(new_ray))
+    BRDFType sampled = min_int_obj.sample_ray(new_ray);
+    if(sampled == BRDFType::ABSORPTION)
         return;
 
-    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
+    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction(), sampled);
     
 
     // If it is not direct light and it is not a delta, store the photon
-    if(num_bounces > 0 && !min_int_obj.is_delta())
+    if(num_bounces > 0 && !BRDF::is_delta(sampled))
     {
         Photon p = Photon(min_int_obj.get_int_point(), r.get_direction(), Color(new_flux));
         photons.push_back(p);

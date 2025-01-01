@@ -26,18 +26,18 @@ Properties 15
         RGB 0.5 0 0.5
     magenta_plastic
         roulette
-        2
-        diffuse
-        RGB 0.5 0 0.5
-        specular
-        SC1 0.5
+        RGB 0.5 0 0.5 #diffuse
+        SC1 0.5 #specular
+        SC1 0 #refractive
+        0
+        no-texture
     cyan_plastic
         roulette
-        2
-        diffuse
         RGB 0 0.5 0.5
-        specular
         SC1 0.5
+        SC1 0
+        0
+        no-texture
     cyan_refractive
         refractive
         RGB 0 1 1

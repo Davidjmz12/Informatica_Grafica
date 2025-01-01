@@ -21,9 +21,10 @@ public:
      * @brief Constructor for the class Sphere.
      * @param center The center of the sphere.
      * @param radius The radius of the sphere.
+     * @param brdf The brdf of the sphere.
      * @throw std::invalid_argument if radius is zero.
      */
-    Sphere(Point center, double radius, std::shared_ptr<Property> properties);
+    Sphere(Point center, double radius, std::shared_ptr<BRDF> brdf);
 
     friend std::ostream& operator<<(std::ostream& os, const Sphere& s);
 

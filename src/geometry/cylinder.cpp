@@ -1,9 +1,9 @@
 
 #include "geometry/cylinder.hpp"
 
-Cylinder::Cylinder(Point center, double radius, Vector axis, std::shared_ptr<Property> properties)
-    : Geometry(properties), _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
-      _top(Disk(center+axis,axis,radius,properties)), _bottom(Disk(center,axis,radius,properties))
+Cylinder::Cylinder(Point center, double radius, Vector axis, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf), _center(center), _radius(radius), _axis(axis.normalize()), _height(axis.norm()),
+      _top(Disk(center+axis,axis,radius,brdf)), _bottom(Disk(center,axis,radius, brdf))
 {
     if(axis.norm() == 0)
         throw std::invalid_argument("The axis of the cylinder must be different from the zero vector");
@@ -44,7 +44,7 @@ bool Cylinder::intersection_in_a_point(const Ray& r, double distance, bool is_en
     Vector normal;
     projection= _center + _axis*(_axis).dot((point_int-_center)); 
     normal = (point_int-projection).normalize();
-    intersection = IntersectionObject(distance, is_entering?normal:normal*(-1), point_int, *this->_properties, r, is_entering);
+    intersection = IntersectionObject(distance, is_entering?normal:normal*(-1), point_int, *this->_brdf, r, is_entering);
     return true;
 }
 

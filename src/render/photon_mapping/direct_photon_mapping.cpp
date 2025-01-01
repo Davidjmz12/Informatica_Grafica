@@ -11,16 +11,18 @@ Color DirectPhotonMapping::compute_ray_color(const Ray& r) const
     if(!intersects)
         return Color();
     
-    if(min_int_obj.is_delta())
+    Ray new_ray;
+    BRDFType sampled = min_int_obj.sample_ray(new_ray);
+
+    if(sampled == BRDFType::ABSORPTION)
+        return Color();
+
+    if(BRDF::is_delta(sampled))
     {
-        Ray new_ray;
-        if(!min_int_obj.sample_ray(new_ray))
-            return Color();
-        
         return compute_ray_color(new_ray);
     } else
     {
-        return this->density_estimate(min_int_obj);
+        return this->density_estimate(min_int_obj, sampled);
     }
 }
 
@@ -36,12 +38,13 @@ void DirectPhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, size
         return;
 
     Ray new_ray;
-    if(!min_int_obj.sample_ray(new_ray))
+    BRDFType sampled = min_int_obj.sample_ray(new_ray);
+    if(sampled == BRDFType::ABSORPTION)
         return;
 
-    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction());
+    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction(), sampled);
     
-    if(!min_int_obj.is_delta())
+    if(!BRDF::is_delta(sampled))
     {
         Photon p = Photon(min_int_obj.get_int_point(), r.get_direction(), Color(new_flux));
         photons.push_back(p);

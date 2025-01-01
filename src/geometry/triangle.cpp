@@ -3,8 +3,8 @@
 
 #include "geometry/triangle.hpp"
 
-Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<Property> properties)
-    : Geometry(properties), _v0(std::move(v0)), _v1(std::move(v1)), _v2(std::move(v2))
+Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf), _v0(std::move(v0)), _v1(std::move(v1)), _v2(std::move(v2))
 {
     this->__bb = BoundingBox::get_BB_by_corners({*_v0,*_v1,*_v2});
     if(*_v0 == *_v1 || *_v0 == *_v2 || *_v1 == *_v2)
@@ -52,7 +52,7 @@ bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection
     if (t < 0) // Intersection is behind the ray origin
         return false;
 
-    intersection = IntersectionObject(t, v0v1.cross(v0v2).normalize(), r.get_point() + r.get_direction() * t, *this->_properties, r);
+    intersection = IntersectionObject(t, v0v1.cross(v0v2).normalize(), r.get_point() + r.get_direction() * t, *this->_brdf, r);
     return true;
 }
 

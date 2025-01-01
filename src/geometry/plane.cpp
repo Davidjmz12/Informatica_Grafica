@@ -2,16 +2,16 @@
 #include "geometry/plane.hpp"
 
 
-Plane::Plane(Point point, Vector normal, std::shared_ptr<Property> properties)
-    : Geometry(properties), _normal(normal.normalize()), _distance(-Vector(point).dot(_normal))
+Plane::Plane(Point point, Vector normal, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf), _normal(normal.normalize()), _distance(-Vector(point).dot(_normal))
 {}
 
-Plane::Plane(Vector normal, double distance, std::shared_ptr<Property> properties)
-    : Geometry(properties), _normal(normal.normalize()), _distance(distance)
+Plane::Plane(Vector normal, double distance, std::shared_ptr<BRDF> brdf)
+    : Geometry(brdf), _normal(normal.normalize()), _distance(distance)
 {}
 
-Plane::Plane(Point p1, Point p2, Point p3, std::shared_ptr<Property> properties) 
-    : Geometry(properties)
+Plane::Plane(Point p1, Point p2, Point p3, std::shared_ptr<BRDF> brdf) 
+    : Geometry(brdf)
 {
     this->_normal = (p1-p2).cross((p3-p1)).normalize();
     this->_distance = -Vector(p1).dot(this->_normal);
@@ -40,7 +40,7 @@ bool Plane::intersect_with_ray(const Ray& r, IntersectionObject& intersection) c
     Vector normal = (r.get_direction()).dot(this->_normal)>0 ? this->_normal*(-1):this->_normal;
 
     
-    intersection = IntersectionObject(distance, normal, point, *this->_properties, r);
+    intersection = IntersectionObject(distance, normal, point, *this->_brdf, r);
 
     return true;
     

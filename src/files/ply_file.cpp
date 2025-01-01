@@ -6,7 +6,7 @@ PlyFile::PlyFile(VectorTriangles elements, const std::array<double,6>& bounding_
     : _elements(std::move(elements)), _bounding_box(bounding_box)
 {}
 
-PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<Property> properties)
+PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<BRDF> properties)
 {
     std::ifstream file(file_path);
     if(!file.is_open())

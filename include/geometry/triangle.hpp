@@ -74,7 +74,7 @@ public:
      * @param v2 The third vertex of the triangle.
      * @throw std::invalid_argument if the vertices are not different or if they are linearly dependent.
      */
-    Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<Property> properties);
+    Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<BRDF> brdf);
 
     BoundingBox get_bounding_box() const override;
 

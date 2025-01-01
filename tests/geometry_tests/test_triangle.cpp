@@ -5,10 +5,10 @@
 
 int main()
 {
-    Property property = Property();
+    std::shared_ptr<BRDF> brdf = std::make_shared<BRDF>();
     Tests t = Tests("TEST TRIANGLE");
 
-    Triangle tr= Triangle(Point(1,2,3),Point(0,5,0),Point(3,3,3),property);
+    Triangle tr= Triangle(std::make_shared<Point>(1,2,3),std::make_shared<Point>(0,5,0),std::make_shared<Point>(3,3,3), brdf);
 
     Ray r1 = Ray(Point(),Vector(0,1,0));
     Ray r2 = Ray(Point(),Vector(0.5,1,1));
@@ -19,7 +19,7 @@ int main()
 
     Ray r6 = Ray(Point(),Vector(0,0,1));
 
-    Triangle tr2 = Triangle(Point(-1,0,0),Point(1,0,0),Point(0,1,0),property);
+    Triangle tr2 = Triangle(std::make_shared<Point>(-1,0,0),std::make_shared<Point>(1,0,0),std::make_shared<Point>(0,1,0), brdf);
     Ray r7 = Ray(Point(1,0,0),Vector(0,0,1));
     Ray r8 = Ray(Point(0,0,0),Vector(0,0,-1));
     Ray r9 = Ray(Point(0,0.5,0),Vector(0,0,1));

@@ -5,7 +5,7 @@ Camera
     0 1 0
     0 0 3
     256 256
-Properties 13
+Properties 14
     red
         diffuse
         RGB 1 0 0
@@ -26,22 +26,29 @@ Properties 13
         RGB 0.5 0 0.5
     magenta_plastic
         roulette
-        2
-        diffuse
-        RGB 0.5 0 0.5
-        specular
-        SC1 0.5
+        RGB 0.5 0 0.5 #diffuse
+        SC1 0.5 #specular
+        SC1 0 #refractive
+        0
+        no-texture
     cyan_plastic
         roulette
-        2
-        diffuse
         RGB 0 0.5 0.5
-        specular
         SC1 0.5
+        SC1 0
+        0
+        no-texture
     cyan_refractive
         refractive
         RGB 0 1 1
         1.5
+    refractive_specular
+        roulette
+        SC1 0
+        SC1 0.3
+        SC1 0.7
+        1.5
+        no-texture
     espejo
         specular
         SC1 1
@@ -55,7 +62,7 @@ Properties 13
     grey
         diffuse
         RGB 1 1 1
-Geometries 5
+Geometries 7
     plane
         red
         1 0 0
@@ -72,13 +79,18 @@ Geometries 5
         grey
         0 -1 0
         1
-    face
-        blue
+    plane
+        grey
         0 0 -1
-        1 0 0
-        0 1 0
-        0 0 0.99
-        in/LUNA.ppm
+        1
+    sphere
+        magenta_plastic
+        -0.5 -0.7 0.25
+        0.3
+    sphere
+        refractive_specular
+        0.5 -0.7 -0.25
+        0.3
 Lights 1
     punctual
     SC1 1
