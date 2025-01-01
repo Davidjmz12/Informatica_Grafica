@@ -26,10 +26,10 @@ std::string readOneLine(std::ifstream& file)
     return line;
 }
 
-ColorRGB PpmFile::get_color(double x, double y) const
+ColorRGB PpmFile::get_color(const double u,const double v) const
 {
-    int _x = static_cast<int>(x*(this->_dimension[0]));
-    int _y = static_cast<int>(y*(this->_dimension[1]));
+    int _x = static_cast<int>((u + 1)/2*(this->_dimension[0]));
+    int _y = static_cast<int>((1 - v)/2*(this->_dimension[1]));
     ColorRGB a = this->_map.get_color(_x,_y);
     return a;
 }

@@ -9,35 +9,39 @@ Properties 13
     red
         diffuse
         RGB 1 0 0
+        no-texture
     green
         diffuse
         RGB 0 1 0
+        no-texture
     blue
         diffuse
         RGB 0 0 1
+        no-texture
     yellow
         diffuse
         RGB 1 1 0
+        no-texture
     cyan
         diffuse
         RGB 0 0.5 0.5
+        no-texture
     magenta
         diffuse
         RGB 0.5 0 0.5
+        no-texture
     magenta_plastic
         roulette
         RGB 0.5 0 0.5 #diffuse
         SC1 0.5 #specular
         SC1 0 #refractive
         0
-        no-texture
     cyan_plastic
         roulette
         RGB 0 0.5 0.5
         SC1 0.5
         SC1 0
         0
-        no-texture
     cyan_refractive
         refractive
         RGB 0 1 1
@@ -48,6 +52,7 @@ Properties 13
     white
         diffuse
         SC1 1
+        no-texture
     refractive1
         refractive
         SC1 1
@@ -55,6 +60,7 @@ Properties 13
     grey
         diffuse
         RGB 1 1 1
+        no-texture
 Geometries 8
     plane
         red

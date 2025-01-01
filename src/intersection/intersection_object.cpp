@@ -1,6 +1,6 @@
 #include "intersection/intersection_object.hpp"
 
-IntersectionObject::IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, bool is_entering)
+IntersectionObject::IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, double u, double v, bool is_entering)
     : Intersection(distance, intersection_point, ray), _normal(normal), _brdf(brdf), _is_entering(is_entering)
 {}
 
@@ -27,16 +27,17 @@ void IntersectionObject::inverse_normal()
     this->_normal = this->_normal*(-1);
 }
 
-void IntersectionObject::change_color(ColorRGB color)
+void IntersectionObject::set_u_v(const double u, const double v)
 {
-    this->_color_texture = color;
+    this->_u = u;
+    this->_v = v;
 }
 
 Color IntersectionObject::eval_brdf(Color light, Vector w_i, BRDFType type) const
 {
     double const_ = (BRDF::is_delta(type) ? 1.0 : M_PI);
     return this->_brdf.eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
-        this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient(), type);
+        this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient(), this->_u, this->_v,  type);
 }
 
 BRDFType IntersectionObject::sample_ray(Ray& sampled_ray)

@@ -5,6 +5,11 @@ BRDF BRDF::create_diffuse_BRDF(Color k)
     return BRDF(k, Color(), Color(), 0, Color());
 }
 
+BRDF BRDF::create_diffuse_BRDF(Color k, std::shared_ptr<Texture> kd_texture)
+{
+    return BRDF(k, Color(), Color(), 0, Color(), kd_texture);
+}
+
 BRDF BRDF::create_specular_BRDF(Color k)
 {
     return BRDF(Color(), k, Color(), 0, Color());
@@ -53,10 +58,14 @@ Color BRDF::get_emission() const
     return _ke;
 }
 
-Color BRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry, BRDFType sampled) const
+Color BRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry,  double u, double v, BRDFType sampled) const
 {
     if(sampled == BRDFType::DIFFUSE)
     {
+        if(_kd_texture.has_value())
+        {
+            return _kd_texture.value()->get_color(u,v) * this->_kd * light  / M_PI / _weights[0];
+        }
         return light * this->_kd / M_PI/ _weights[0];
     }
     else if(sampled == BRDFType::SPECULAR)
@@ -81,9 +90,8 @@ bool BRDF::sample_diffuse(Vector w_0, Point x, Vector n, double ref_coef_entry, 
 
     Base b = Base::complete_base_k(x, n);
 
-    SpatialElement* base_v = new Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
-    Vector v = Vector(b.coord_into_canonical(base_v));
-    delete base_v;
+    Vector base_v = Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
+    Vector v = Vector(b.coord_into_canonical(&base_v));
     sampled_ray = Ray(x, v, ref_coef_entry);
     return true;
 }

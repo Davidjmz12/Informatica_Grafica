@@ -25,17 +25,18 @@ bool Cone::intersection_in_a_point(const Ray& r, double distance, IntersectionOb
         return false;
 
     // Vector from the apex of the cone to the intersection point
-    Vector v = (point_int - (this->_center + this->_axe * this->_height)).normalize(); 
+    Vector vec = (point_int - (this->_center + this->_axe * this->_height)).normalize(); 
 
     // Project v onto the cone axis
-    Vector v_parallel = this->_axe*v.dot(this->_axe);
-    Vector v_perpendicular = (v - v_parallel).normalize();
+    Vector v_parallel = this->_axe*vec.dot(this->_axe);
+    Vector v_perpendicular = (vec - v_parallel).normalize();
 
-    Vector normal = v_perpendicular-v*v_perpendicular.dot(v);
+    Vector normal = v_perpendicular-vec*v_perpendicular.dot(vec);
     
 
     // Normalize the normal vector
     normal = normal.normalize();
+
     intersection = IntersectionObject(distance, normal, point_int, *this->_brdf, r);
     return true;
 }

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <optional>
+#include <variant>
 
 #include "color/color.hpp"
 #include "scene/ray.hpp"
@@ -36,6 +37,7 @@ private:
 public:
 
     static BRDF create_diffuse_BRDF(Color k);
+    static BRDF create_diffuse_BRDF(Color k, std::shared_ptr<Texture> kd_texture);
     static BRDF create_specular_BRDF(Color k);
     static BRDF create_transmissive_BRDF(Color k, double refraction_index);
     static BRDF create_emisive_BRDF(Color k);
@@ -46,7 +48,7 @@ public:
 
     Color get_emission() const;
 
-    Color eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry, BRDFType sampled) const;
+    Color eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double ref_coef_entry, double u, double v, BRDFType sampled) const;
 
     BRDFType sample_ray(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering) const;
 

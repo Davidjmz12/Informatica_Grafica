@@ -1,7 +1,9 @@
 #include <utility>
 #include <regex>
 #include "color/tone_mapping/all_tone_mapping.hpp"
-#include "geometry/textures/texture_face/texture_face_ppm.hpp"
+#include "geometry/textures/texture.hpp"
+#include "geometry/textures/texture_ppm.hpp"
+
 
 #include "files/scene_file.hpp"
 
@@ -151,8 +153,18 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
     const std::string line = this->read_line();
 
     if (line == "diffuse")
-        return std::make_unique<BRDF>(BRDF::create_diffuse_BRDF(this->read_color()));
-
+    {
+        Color col = this->read_color();
+        std::string line = this->read_line();
+        if(line == "no-texture")
+            return std::make_unique<BRDF>(BRDF::create_diffuse_BRDF(col));
+        else if (line == "texture-ppm")
+        {
+            std::string path = this->_ply_dir + "/" + this->read_line();
+            auto t = std::make_shared<TexturePPM>(path);
+            return std::make_unique<BRDF>(BRDF::create_diffuse_BRDF(col, t));
+        }
+    }
     if (line == "specular")
         return std::make_unique<BRDF>(BRDF::create_specular_BRDF(this->read_color()));
         
@@ -172,12 +184,10 @@ std::shared_ptr<BRDF> SceneFile::read_brdf() const
         Color ks = this->read_color();
         Color kt = this->read_color();
         double refraction_index = std::stod(this->read_line());
-        std::string line = this->read_line();
-
         return std::make_unique<BRDF>(kd,ks,kt,refraction_index,Color(0));
     }
 
-    throw std::invalid_argument("The BRDF type must be Diffuse");
+    throw std::invalid_argument("Unrecognized brdf type");
 }
 
 void SceneFile::read_properties()
@@ -263,13 +273,7 @@ std::shared_ptr<Geometry> SceneFile::read_face(std::shared_ptr<BRDF> p) const
     Vector u = this->read_vector();
     Vector v = this->read_vector();
     Point point = this->read_point();
-    std::string line = this->read_line();
-    if(line == "no_texture")
-        return std::make_shared<Face>(normal, u, v, point, p);
-
-    const std::string path = this->_ply_dir + "/" +  line;
-    TextureFacePPM t = TextureFacePPM(path);
-    return std::make_shared<Face>(normal, u, v, point, p, t);
+    return std::make_shared<Face>(normal, u, v, point, p);
 }
 
 std::shared_ptr<Geometry> SceneFile::read_cone(std::shared_ptr<BRDF> p) const

@@ -13,17 +13,6 @@ Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF>
     this->_v = v.normalize();
 }
 
-Face::Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf, TextureFacePPM texture)
-    : Face(normal, u, v, point, brdf)
-{
-    this->_texture = texture;
-}
-
-Base Face::get_base() const
-{
-    return Base(this->_point, this->_normal, this->_u*this->_sizes[0], this->_v*this->_sizes[1]);
-}
-
 
 BoundingBox Face::get_bounding_box() const
 {
@@ -35,12 +24,14 @@ BoundingBox Face::get_bounding_box() const
     return BoundingBox::get_BB_by_corners(corners);
 }
 
-void Face::set_texture(const TextureFacePPM& texture)
+bool Face::get_u_v_coordinates(const Point& p, double& u, double& v) const
 {
-    this->_texture = texture;
+    Base b = Base(this->_point, this->_normal, this->_u*this->_sizes[0], this->_v*this->_sizes[1]);
+    Vector vec = Vector(b.coord_from_canonical(&p));
+    u = vec[1];
+    v = vec[2];
+    return true;
 }
-
-
 
 bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
 {
@@ -49,14 +40,15 @@ bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     if(!plane.intersect_with_ray(r,intersection))
         return false;
     
-    Vector v = this->_point - intersection.get_int_point();
+    Vector vec = this->_point - intersection.get_int_point();
 
-    if (geD(fabs(v.dot(this->_u)),this->_sizes[0]) ||  geD(fabs(v.dot(this->_v)),this->_sizes[1]))
+    if (geD(fabs(vec.dot(this->_u)),this->_sizes[0]) ||  geD(fabs(vec.dot(this->_v)),this->_sizes[1]))
         return false;
     
-    if(this->_texture.has_value())
-        intersection.change_color(this->_texture.value().get_color(this->get_base(), intersection.get_int_point()));
-    
+    double u,v;
+    this->get_u_v_coordinates(intersection.get_int_point(), u, v);
+    intersection.set_u_v(u,v);
+
     return true;
 }
 
@@ -72,3 +64,4 @@ std::string Face::to_string() const
     std::string str = "Face: " + _normal.to_string() + " " + _u.to_string() + " " + _v.to_string() + " " + sizes_str + " " + _point.to_string();
     return str;
 }
+
