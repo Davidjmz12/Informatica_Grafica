@@ -5,39 +5,48 @@ Camera
     0 1 0
     0 0 3
     256 256
-Properties 14
+Properties 15
     red
         diffuse
         RGB 1 0 0
+        no-texture
+    mario
+        diffuse
+        SC1 1
+        texture-ppm
+        in/mario_a.ppm
     green
         diffuse
         RGB 0 1 0
+        no-texture
     blue
         diffuse
         RGB 0 0 1
+        no-texture
     yellow
         diffuse
         RGB 1 1 0
+        no-texture
     cyan
         diffuse
         RGB 0 0.5 0.5
+        no-texture
     magenta
         diffuse
         RGB 0.5 0 0.5
+        no-texture
     magenta_plastic
         roulette
         RGB 0.5 0 0.5 #diffuse
         SC1 0.5 #specular
         SC1 0 #refractive
         0
-        no-texture
     cyan_plastic
         roulette
         RGB 0 0.5 0.5
         SC1 0.5
         SC1 0
         0
-        no-texture
     cyan_refractive
         refractive
         RGB 0 1 1
@@ -45,15 +54,14 @@ Properties 14
     refractive_specular
         roulette
         SC1 0
-        SC1 0.3
-        SC1 0.7
+        SC1 0.2
+        SC1 0.8
         1.5
-        no-texture
     espejo
         specular
         SC1 1
     white
-        diffuse
+        emissive
         SC1 1
     refractive1
         refractive
@@ -62,7 +70,8 @@ Properties 14
     grey
         diffuse
         RGB 1 1 1
-Geometries 7
+        no-texture
+Geometries 8
     plane
         red
         1 0 0
@@ -84,13 +93,19 @@ Geometries 7
         0 0 -1
         1
     sphere
-        magenta_plastic
+        magenta
         -0.5 -0.7 0.25
         0.3
     sphere
-        refractive_specular
+        cyan
         0.5 -0.7 -0.25
         0.3
+    face
+        mario
+        0 0 -1
+        1 0 0
+        0 1 0
+        0 0 0.99
 Lights 1
     punctual
     SC1 1

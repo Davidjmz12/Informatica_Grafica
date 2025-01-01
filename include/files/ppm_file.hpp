@@ -37,7 +37,7 @@ public:
 
     PpmFile(ColorMap map, double maxRange, double colorResolution, std::array<int,2> dimension, std::string  format);
 
-    ColorRGB get_color(double x, double y) const;
+    ColorRGB get_color(const double u, const double v) const;
 
     [[nodiscard]] PpmFile apply_tone_mapping(const std::unique_ptr<ToneMapping>& t, size_t new_resolution) const;
 

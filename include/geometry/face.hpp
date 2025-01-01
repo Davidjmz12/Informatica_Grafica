@@ -4,8 +4,6 @@
 
 #include "geometry/geometry.hpp"
 #include "geometry/plane.hpp"
-#include "geometry/textures/texture_face/texture_face_ppm.hpp"
-
 /**
  * @class Face
  * @brief Represents a face geometry in 3D space.
@@ -48,7 +46,6 @@ private:
     Vector _u,_v; ///> Two vectors that define the plane
     Point _point; ///> Point in the plane
     std::array<double,2> _sizes; ///> Sizes of the face
-    std::optional<TextureFacePPM> _texture; ///> Texture of the face
 public:
 
     /**
@@ -59,21 +56,13 @@ public:
      */
     Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf);
 
-    Face(Vector normal, Vector u, Vector v, Point point, std::shared_ptr<BRDF> brdf, TextureFacePPM texture);
-
-    /**
-     * @brief Gets the base of the face.
-     * @return The base of the face.
-     */
-    Base get_base() const;
-
     /**
      * @brief Gets the bounding box of the face.
      * @return The bounding box of the face.
      */
     BoundingBox get_bounding_box() const override;
 
-    void set_texture(const TextureFacePPM& texture);
+    bool get_u_v_coordinates(const Point& p, double& u, double& v) const override;
 
     /**
      * @brief Computes if the face intersects with a ray and stores
