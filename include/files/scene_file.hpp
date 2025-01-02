@@ -13,10 +13,14 @@
 #include "files/ply_file.hpp"
 #include "light/area_light/area_light.hpp"
 #include "kernel_density/all_kernel_densities.hpp"
+#include "color/tone_mapping/all_tone_mapping.hpp"
+#include "files/parse_xml.hpp"
 
 #include "render/ray_tracing.hpp"
 #include "render/photon_mapping/direct_photon_mapping.hpp"
 #include "render/photon_mapping/explicit_photon_mapping.hpp"
+
+#include "files/parse_xml.hpp"
 
 using BRDFHash = std::unordered_map<std::string, std::shared_ptr<BRDF>>;
 
@@ -24,253 +28,6 @@ using BRDFHash = std::unordered_map<std::string, std::shared_ptr<BRDF>>;
  * Class for represent a scene
  */
 class SceneFile {
-
-private:
-    std::string _ply_dir;
-    mutable std::ifstream _file;
-    BRDFHash _ch;
-
-    /**
-     * @brief Method for reading a not-commented line of the file
-     * @return The next line of the file that is not commented
-     */
-    std::string read_line() const;
-
-    /**
-     * @brief Method for reading a point
-     * @return The point
-     */
-    Point read_point() const;
-
-    /**
-     * @brief Method for reading a vector
-     * @return The vector
-     */
-    Vector read_vector() const;
-
-    /**
-     * @brief Method for reading a camera
-     * @return The camera
-     */
-    Camera read_camera() const;
-
-    /**
-     * @brief Method for reading the properties
-     *  and store them in the object
-     */
-    void read_properties();
-
-    /**
-     * @brief Method for reading a geometry
-     * @return A pointer to the geometry
-     */
-    std::shared_ptr<Geometry> read_geometry() const;
-
-    /**
-     * @brief Method for reading all the geometries
-     * @return A vector with pointers to all geometries
-     */
-    VectorGeometries read_geometries() const;
-
-    /**
-     * @brief Method for reading all the lights
-     * @param pl[out] The punctual lights
-     * @param al[out] The area lights
-     */
-    void read_lights(VectorPunctualLight& pl, VectorAreaLight& al) const;
-
-    /**
-     * @brief Method for reading the tone mapping
-     * @return A pointer to the tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_tone_mapping(double max) const;
-
-    /**
-     * @brief Method for reading the resolution of the
-     *  image
-     * @return An array of size 2 with the dimensions of
-     *  the image
-     */
-    std::array<int,2> read_resolution() const;
-
-    /**
-     * @brief Method for reading the headers
-     * @param expected The expected string to have in
-     *  the header
-     * @return The number of elements in the section
-     */
-    int read_header(const std::string& expected) const;
-
-    /**
-     * @brief Method for reading a color
-     * @return The color
-     */
-    Color read_color() const;
-
-    /**
-     * @brief Method for reading a render type
-     * @param s The scene
-     * @return A pointer to the render type
-     */
-    Render* read_render_type(Scene& s) const;
-
-    /**
-     * @brief Method for reading a ray tracing
-     * @param s The scene
-     * @return A pointer to the ray tracing
-     */
-    Render* read_ray_tracing(Scene& s) const;
-
-    /**
-     * @brief Method for reading a photon mapping
-     * @param s The scene
-     * @return A pointer to the photon mapping
-     */
-    Render* read_photon_mapping(Scene& s) const;
-
-    /**
-     * @brief Method for reading a kernel
-     * @return A pointer to the kernel
-     */
-    std::unique_ptr<Kernel> read_kernel() const;
-
-    /**
-     * @brief Method for reading a BRDF object
-     * @return The color of the object
-     */
-    std::shared_ptr<BRDF> read_brdf() const;
-
-    /**
-     * @brief Method for reading a bounding box
-     * @return An array of size 6 with all the necessary
-     *  parameters for create a bounding box
-     */
-    std::array<double,6> read_bounding_box() const;
-
-    /**
-     * @brief Method for reading a brdf
-     * @param key The name of one brdf that has been
-     *  defined previously in the properties section
-     * @return The brdf
-     */
-    std::shared_ptr<BRDF> read_brdf(const std::string& key) const;
-
-    /**
-     * @brief Method for reading a punctual light
-     * @return A pointer to the punctual light
-     */
-    std::shared_ptr<PunctualLight> read_punctual_light() const;
-
-    /**
-     * @brief Method for reading an area light
-     * @return A pointer to the AreaLight object
-     */
-    std::shared_ptr<AreaLight> read_area_light() const;
-
-    /**
-     * @brief Method for reading a plane
-     * @param p The brdf of the plane
-     * @brief The plane
-     */
-    std::shared_ptr<Geometry> read_plane(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a sphere
-     * @param p The brdf of the sphere
-     * @brief The sphere
-     */
-    std::shared_ptr<Geometry> read_sphere(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a cylinder
-     * @param p The brdf of the cylinder
-     * @brief The cylinder
-     */
-    std::shared_ptr<Geometry> read_cylinder(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a mesh
-     * @param p The brdf of the mesh
-     * @brief The mesh
-     */
-    std::shared_ptr<Geometry> read_mesh(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a box
-     * @param p The brdf of the box
-     * @brief The box
-     */
-    std::shared_ptr<Geometry> read_box(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a face
-     * @param p The brdf of the face
-     * @brief The face
-     */
-    std::shared_ptr<Geometry> read_face(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a cone
-     * @param p The brdf of the cone
-     * @brief The cone
-     */
-    std::shared_ptr<Geometry> read_cone(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a disk
-     * @param p The brdf of the disk
-     * @brief The disk
-     */
-    std::shared_ptr<Geometry> read_disk(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading an ellipsoid
-     * @param p The brdf of the ellipsoid
-     * @brief The ellipsoid
-     */
-    std::shared_ptr<Geometry> read_ellipsoid(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a triangle
-     * @param p The brdf of the triangle
-     * @brief The triangle
-     */
-    std::shared_ptr<Geometry> read_triangle(std::shared_ptr<BRDF> p) const;
-
-    /**
-     * @brief Method for reading a gamma tone mapping
-     * @param max The maximum of luminance
-     * @brief A pointer to the gamma tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_gamma_tm(double max) const;
-    
-    /**
-     * @brief Method for reading a clamping tone mapping
-     * @param max The maximum of luminance
-     * @brief A pointer to the clamping tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_clamping_tm(double max) const;
-
-    /**
-     * @brief Method for reading an equalization tone mapping
-     * @param max The maximum of luminance
-     * @brief A pointer to the equalization tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_equalization_tm(double max) const;
-
-    /**
-     * @brief Method for reading a logarithmic tone mapping
-     * @param max The maximum of luminance
-     * @brief A pointer to the logarithmic tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_logarithmic_tm(double max) const;
-
-    /**
-     * @brief Method for reading a drago tone mapping
-     * @param max The maximum of luminance
-     * @brief A pointer to the drago tone mapping
-     */
-    std::unique_ptr<ToneMapping> read_drago_tm(double max) const;
 
 public:
     /**
@@ -286,4 +43,19 @@ public:
      *  is going to be stored
      */
     void read_scene(const std::string& path);
+
+private:
+
+    std::string _ply_dir;
+    XmlNode _root;
+    BRDFHash _ch;
+
+    Camera read_camera() const;
+    BRDFHash read_properties() const;
+    VectorGeometries read_geometries() const;
+    VectorPunctualLight read_punctual_lights() const;
+    VectorAreaLight read_area_lights() const;
+    Render* read_render_type(Scene& s) const;
+    std::unique_ptr<ToneMapping> read_tone_mapping(double max) const;
+
 };
