@@ -20,6 +20,9 @@
 #include "render/photon_mapping/direct_photon_mapping.hpp"
 #include "render/photon_mapping/explicit_photon_mapping.hpp"
 
+#include "geometry/textures/texture.hpp"
+#include "geometry/textures/texture_ppm.hpp"
+
 #include "files/parse_xml.hpp"
 
 using BRDFHash = std::unordered_map<std::string, std::shared_ptr<BRDF>>;

@@ -1,6 +1,6 @@
 #include "intersection/intersection_object.hpp"
 
-IntersectionObject::IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, double u, double v, bool is_entering)
+IntersectionObject::IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, bool is_entering)
     : Intersection(distance, intersection_point, ray), _normal(normal), _brdf(brdf), _is_entering(is_entering)
 {}
 

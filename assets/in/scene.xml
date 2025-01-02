@@ -12,13 +12,19 @@
     </Property>
 
     <Property name="dielectric">
-        <kt>1 1 1</kt>
+        <kt>0.8 0.8 0.8</kt>
+        <ks>0.2 0.2 0.2</ks>
         <refraction_index>1.5</refraction_index>
     </Property>
 
+    <Property name="mario">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/mario_a.ppm</texture>
+    </Property>
+
     <Property name="plastic magenta">
-        <kd>0.6 0 0.6</kd>
-        <ks>0.4 0.4 0.4</ks>
+        <kd>0.5 0 0.5</kd>
+        <ks>0.5 0.0 0.5</ks>
     </Property>
     <Property name="green">
         <kd>0 1 0</kd>
@@ -80,16 +86,23 @@
         <radius>0.3</radius>
     </Geometry>
 
-    <PunctualLight>
-        <position>0 0.5 0</position>
-        <power>1 1 1</power>
-    </PunctualLight>
-
     <Render type="ray-tracing"></Render>
 
     <ToneMapping type="gamma">
         <gamma>2.2</gamma>
         <V>max</V>
     </ToneMapping>
+
+    <Geometry type="Face" brdf="white">
+        <normal>0 0 -1</normal>
+        <u>1 0 0</u>
+        <v>0 1 0</v>
+        <center>0 0 0.99</center>
+    </Geometry>
+
+    <Geometry type="Plane" emission="1">
+        <normal>0 -1 0</normal>
+        <distance>0.99</distance>
+    </Geometry>
 
 </Scene>

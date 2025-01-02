@@ -5,7 +5,6 @@ SceneFile::SceneFile(const std::string& file, std::string ply_dir):
 {
     XmlReader reader;
     this->_root = reader.parse(file);
-    std::cout << "Scene file readed" << std::endl;
 }
 
 void SceneFile::read_scene(const std::string& path)
@@ -21,6 +20,8 @@ void SceneFile::read_scene(const std::string& path)
     auto s = Scene(g, pl, al, c);
     
     Render* rend = this->read_render_type(s);
+
+    std::cout << "Scene file read" << std::endl;
 
     ColorMap cm = rend->render_scene();
     double max = cm.max();
@@ -105,6 +106,28 @@ Color read_color(XmlNode node, std::string id, bool required = true, Color defau
     return Color(SC3{std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2])});
 }
 
+std::shared_ptr<Texture> read_texture(XmlNode node, std::string id, std::string ply_name, bool required = true, std::shared_ptr<Texture> default_value = nullptr)
+{
+    if(!node.hasChild(id) && !required)
+        return default_value;
+    
+    if(!node.hasChild(id) && required)
+        throw std::invalid_argument("The texture " + id + " must be defined");
+
+    XmlNode texture = node.getChild(id);
+    std::string type = texture.getAttribute("type");
+
+    if(type=="ppm-texture")
+    {
+        std::string file = ply_name + "/" + texture.content;
+        return std::make_shared<TexturePPM>(file);
+    }
+    else
+    {
+        throw std::invalid_argument("Unknown texture type named " + type);
+    }
+}
+
 double read_double(XmlNode node, std::string id, bool required = true, double default_value = 0)
 {
     if(!node.hasChild(id) && !required)
@@ -138,14 +161,19 @@ std::array<double,6> read_bounding_box(std::string line)
     return {std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2]), std::stod(tokens[3]), std::stod(tokens[4]), std::stod(tokens[5])};
 }
 
-std::shared_ptr<BRDF> read_BRDF(XmlNode node)
+std::shared_ptr<BRDF> read_BRDF(XmlNode node, std::string ply_name)
 {
     Color kd = read_color(node, "kd", false, Color());
     Color ks = read_color(node, "ks", false, Color());
     Color kt = read_color(node, "kt", false, Color());
     Color ke = read_color(node, "ke", false, Color());
+    std::shared_ptr<Texture> t = read_texture(node, "texture", ply_name, false, nullptr);
     double refraction_index = read_double(node, "refraction_index", false, 1);
-    return std::make_shared<BRDF>(kd, ks, kt, refraction_index, ke);
+
+    if(t != nullptr)
+        return std::make_shared<BRDF>(kd, ks, kt, refraction_index, ke, t);
+    else
+        return std::make_shared<BRDF>(kd, ks, kt, refraction_index, ke);
 }
 
 
@@ -306,7 +334,7 @@ BRDFHash SceneFile::read_properties() const
     for (auto property : properties_children)
     {
         std::string name = property.getAttribute("name");
-        std::shared_ptr<BRDF> b = read_BRDF(property);
+        std::shared_ptr<BRDF> b = read_BRDF(property, this->_ply_dir);
 
         ch[name] = b;
     }
@@ -349,11 +377,12 @@ VectorAreaLight SceneFile::read_area_lights() const
     std::vector<XmlNode> area_lights_children = this->_root.getChildren("Geometry");
     for (auto area_light : area_lights_children)
     {
-        if(!area_light.hasChild("emission"))
+        if(!area_light.hasAttribute("emission"))
             continue;
         
         std::string type = area_light.getAttribute("type");
-        Color emission = read_color(area_light, "emission");
+        double color = std::stod(area_light.getAttribute("emission"));
+        Color emission = Color(color);
 
         std::shared_ptr<Geometry> g = read_geometry(type, std::make_shared<BRDF>(), area_light, this->_ply_dir);
         al.push_back(std::make_shared<AreaLight>(g, emission));

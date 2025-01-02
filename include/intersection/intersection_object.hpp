@@ -20,7 +20,7 @@ private:
 public:
 
     IntersectionObject();
-    IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, double _u=0, double _v=0, bool is_entering = true);
+    IntersectionObject(double distance, Vector normal, Point intersection_point, BRDF brdf, Ray ray, bool is_entering = true);
     
     Vector get_normal() const;
     bool is_entering() const;
