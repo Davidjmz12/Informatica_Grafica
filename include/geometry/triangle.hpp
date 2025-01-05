@@ -13,6 +13,12 @@
 #include "geometry/plane.hpp"
 
 
+struct PointWithTexture
+{
+    std::shared_ptr<Point> point;
+    std::shared_ptr<std::array<double, 2>> texture;
+};
+
 /**
  * @class Triangle
  * @brief Represents a single triangle in 3D space.
@@ -50,6 +56,8 @@ private:
     std::shared_ptr<Point> _v0; ///< The first vertex of the triangle
     std::shared_ptr<Point> _v1; ///< The second vertex of the triangle
     std::shared_ptr<Point> _v2; ///< The third vertex of the triangle
+    std::array<std::shared_ptr<std::array<double, 2>>, 3> _texture_uv; ///< The texture u,v coordinates of the triangle vertices
+
     BoundingBox __bb; ///< The bounding box of the triangle
     
     /**
@@ -75,6 +83,11 @@ public:
      * @throw std::invalid_argument if the vertices are not different or if they are linearly dependent.
      */
     Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::shared_ptr<Point> v2, std::shared_ptr<BRDF> brdf);
+
+    Triangle(PointWithTexture v0, PointWithTexture v1, PointWithTexture v2, std::shared_ptr<BRDF> brdf);
+    
+    
+    std::pair<double, double> get_u_v_coordinates(const Point& p) const override;
 
     BoundingBox get_bounding_box() const override;
 

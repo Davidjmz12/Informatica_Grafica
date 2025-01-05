@@ -28,7 +28,7 @@ ColorMap Render::render_scene()
 
     for(size_t i=0; i<num_full_tasks; ++i)
     {
-        std::array<size_t,2> start = {(i*task_size)/resolution[1],(i*task_size)%resolution[1]};
+        std::array<size_t,2> start = {(i*task_size)/resolution[0],(i*task_size)%resolution[0]};
         futures.push_back(
             this->_pool.enqueue(
                 [this, start,task_size](){
@@ -85,8 +85,8 @@ std::vector<Color> Render::paint_k_pixels(const std::array<size_t,2> start, cons
     std::vector<Color> colors;
     for(size_t i=0; i<n_pixels; i++)
     {
-        const size_t x = (start[1]+i)%resolution[1];
-        const size_t y = start[0] + (start[1]+i)/resolution[1];
+        const size_t x = (start[1]+i)%resolution[0];
+        const size_t y = start[0] + (start[1]+i)/resolution[0];
         colors.push_back(this->compute_pixel_color(x, y));
     }
     return colors;
@@ -130,9 +130,9 @@ std::array<double,2> Render::get_random_pixel_coordinates(const size_t x, const 
 
 Ray Render::trace_ray(std::array<double,2> coordinates) const
 {
-    const std::unique_ptr<SpatialElement> p = std::make_unique<Point>(coordinates[0],coordinates[1],1);
+    const Point p = Point(coordinates[0],coordinates[1],1);
     const Camera c = this->_scene.get_camera();
-    const Vector dir = (Point(c.transform_to_canonical(p.get()))-c.get_screen_base().get_center());
+    const Vector dir = (Point(c.transform_to_canonical(&p))-c.get_screen_base().get_center());
     const Ray r = Ray(c.get_screen_base().get_center(),dir);
     return r;
 }

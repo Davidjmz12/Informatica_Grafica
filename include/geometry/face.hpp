@@ -62,7 +62,7 @@ public:
      */
     BoundingBox get_bounding_box() const override;
 
-    bool get_u_v_coordinates(const Point& p, double& u, double& v) const override;
+    std::pair<double, double> get_u_v_coordinates(const Point& p) const override;
 
     /**
      * @brief Computes if the face intersects with a ray and stores

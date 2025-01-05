@@ -1,0 +1,123 @@
+<Scene name="Complete scene">
+    <Camera>
+        <center>0 8 -18</center>
+        <left>-1 0 0</left>
+        <up>0 1 0</up>
+        <front>0 0 1.9</front>
+        <resolution>540 540</resolution>
+    </Camera>
+
+    <Property name="green plastic">
+        <kd>0 0.9 0</kd>
+        <ks>0.1 0.1 0.1</ks>
+    </Property>
+
+    <Property name="refractive">
+        <kt>1 1 1</kt>
+        <refraction_index>1.5</refraction_index>
+    </Property>
+
+    <Property name="brown">
+        <kd>0.87 0.72 0.52</kd>
+    </Property>
+
+    <Property name="yellow">
+        <kd>1 1 0</kd>
+    </Property>
+
+    <Property name="mirror">
+        <ks>1 1 1</ks>
+    </Property>
+
+    <Property name="texture_floor">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/cesped_b.ppm</texture>
+    </Property>
+
+    <Property name="texture_grass">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/stones.ppm</texture>
+    </Property>
+
+    <Property name="texture_sky">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/cielo_b.ppm</texture>
+    </Property>
+
+    <Property name="texture_walls">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/arbol_b.ppm</texture>
+    </Property>
+
+    <Property name="texture_wall">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/arbol_b.ppm</texture>
+    </Property>
+
+
+    <Geometry name="Floor" type="Face" brdf="texture_floor">
+        <normal>0 1 0</normal>
+        <u>9 0 0</u>
+        <v>0 0 10</v>
+        <center>0 0 0</center>
+    </Geometry>
+
+    <Geometry name="Grass" type="Face" brdf="texture_grass">
+        <normal>0 1 0</normal>
+        <u>2 0 0</u>
+        <v>0 0 10</v>
+        <center>0 0.01 0</center>
+    </Geometry>
+
+    <Geometry name="wall-left" type="Face" brdf="texture_walls">
+        <normal>1 0 0</normal>
+        <v>0 10 0</v>
+        <u>0 0 10</u>
+        <center>-9 10 0</center>
+    </Geometry>
+
+    <Geometry name="wall-right" type="Face" brdf="texture_walls">
+        <normal>-1 0 0</normal>
+        <v>0 10 0</v>
+        <u>0 0 10</u>
+        <center>9 10 0</center>
+    </Geometry>
+
+
+    <Geometry name="front-wall" type="Face" brdf="texture_wall">
+        <normal>0 0 -1</normal>
+        <u>9 0 0</u>
+        <v>0 10 0</v>
+        <center>0 10 10</center>
+    </Geometry>
+
+
+    <Geometry name="up-wall" type="Face" brdf="texture_sky">
+        <normal>0 -1 0</normal>
+        <u>9 0 0</u>
+        <v>0 0 10</v>
+        <center>0 20 0</center>
+    </Geometry>
+
+    <Geometry type="Sphere" brdf="green plastic">
+        <center>-3 1 -2</center>
+        <radius>1</radius>
+    </Geometry>
+
+    <Geometry type="Sphere" brdf="green plastic">
+        <center>-4 1 6</center>
+        <radius>1</radius>
+    </Geometry>
+
+    <Render type="ray-tracing"></Render>
+
+    <ToneMapping type="gamma">
+        <gamma>2.2</gamma>
+        <V>max</V>
+    </ToneMapping>
+
+    <PunctualLight>
+        <power>5 5 5</power>
+        <position>0 15 0</position>
+    </PunctualLight>
+</Scene>

@@ -12,27 +12,60 @@ PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<BRDF> properties)
     if(!file.is_open())
         throw std::runtime_error("Could not open file: " + file_path);
     
-    size_t num_vertices, num_faces;
-    if (!read_header(file, num_vertices, num_faces))
+    if (!read_header(file))
         throw std::runtime_error("Invalid header");
 
-    std::vector<std::shared_ptr<Point>> points;
+    if(!read_points(file))
+        throw std::runtime_error("Invalid points");
+
+    if(!read_faces(file, properties))
+        throw std::runtime_error("Invalid faces");
+
+}
+
+
+bool PlyFile::read_points(std::ifstream& file)
+{
+    PointsVector points;
+
     double x_min, x_max, y_min, y_max, z_min, z_max;
-    for(size_t i = 0; i < num_vertices; i++)
+
+    size_t pos_x = this->_properties_vertices_map["x"];
+    size_t pos_y = this->_properties_vertices_map["y"];
+    size_t pos_z = this->_properties_vertices_map["z"];
+
+    for(size_t i = 0; i < this->_num_vertices; i++)
     {
-        double x, y, z;
-        file >> x >> y >> z;
-        x_min = std::min(x_min, x); x_max = std::max(x_max, x); 
+        std::vector<double> properties(this->_properties_vertices_map.size());
+        for(size_t j=0; j<this->_properties_vertices_map.size(); j++)
+        {
+            file >> properties[j];
+        }
+        double x = properties[pos_x];
+        double y = properties[pos_y];
+        double z = properties[pos_z];
+        x_min = std::min(x_min, x); x_max = std::max(x_max, x);
         y_min = std::min(y_min, y); y_max = std::max(y_max, y);
         z_min = std::min(z_min, z); z_max = std::max(z_max, z);
-        points.push_back(std::make_shared<Point>(x,y,z));
-        std::string rest_of_line;
-        std::getline(file, rest_of_line);
+
+        double u = 0, v = 0;
+        if(this->_has_texture)
+        {
+            u = properties[this->_properties_vertices_map["s"]];
+            v = properties[this->_properties_vertices_map["t"]];
+        }
+        std::shared_ptr<Point> point = std::make_shared<Point>(x, y, z);
+        PointWithTexture point_with_texture = {point, std::make_shared<std::array<double, 2>>(std::array<double, 2>{u, v})};
+        points.push_back(point_with_texture);
     }
+    this->_points = points;
+    this->_bounding_box = {x_min, x_max, y_min, y_max, z_min, z_max};
+    return true;
+}
 
-    VectorTriangles elements;
-
-    for(size_t i=0; i< num_faces; i++)
+bool PlyFile::read_faces(std::ifstream& file, std::shared_ptr<BRDF> properties)
+{
+    for(size_t i=0; i< this->_num_faces; i++)
     {
         size_t n_vertex_face; 
 
@@ -42,8 +75,8 @@ PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<BRDF> properties)
             size_t p0,p1,p2;
             file >> p0 >> p1 >> p2;
             try{
-                auto triangle = std::make_shared<Triangle>(points[p0],points[p1],points[p2],properties);
-                elements.push_back(triangle);
+                auto triangle = std::make_shared<Triangle>(_points[p0],_points[p1],_points[p2],properties);
+                this->_elements.push_back(triangle);
             } catch (std::invalid_argument&){}
 
         } else
@@ -52,40 +85,48 @@ PlyFile::PlyFile(const std::string& file_path, std::shared_ptr<BRDF> properties)
         }
     }
 
-    this->_elements = elements;
-    this->_bounding_box = {x_min, x_max, y_min, y_max, z_min, z_max};
-    this->_points = points;
+    return true;
 }
 
-
-bool PlyFile::read_header(std::ifstream& file, size_t& num_vertices, size_t& num_faces)
+bool PlyFile::read_header(std::ifstream& file)
 {
     std::string line;
-    size_t wanted_headers = 3;
+    int pos_properties = 0;
+    bool is_vertex_properties = false;
     while(std::getline(file, line))
     {
-        if(std::regex_match(line,std::regex(" *element vertex +[0-9]+")))
+        std::smatch match;
+
+        if(std::regex_search(line, match, std::regex(" *element vertex +([0-9]+)")))
         {
-            std::smatch match;
-            std::regex_search(line, match, std::regex("[0-9]+"));
-            num_vertices = std::stoi(match.str());
-            wanted_headers--;
+            this->_num_vertices = std::stoi(match[1]);
+            is_vertex_properties = true;
         }
-        else if(std::regex_match(line,std::regex(" *element face +[0-9]+")))
+        else if(std::regex_search(line, match, std::regex(" *element face +([0-9]+)")))
         {
-            std::smatch match;
-            std::regex_search(line, match, std::regex("[0-9]+"));
-            num_faces = std::stoi(match.str());
-            wanted_headers--;
+            this->_num_faces = std::stoi(match[1]);
+            is_vertex_properties = false;
         }
-        else if(std::regex_match(line,std::regex(" *end_header *")))
+        else if(std::regex_search(line, match, std::regex(" *property +([a-zA-Z_]+) +([a-zA-Z_]+)")))
         {
-            wanted_headers--;
-            break;
+            if(is_vertex_properties)
+            {
+                this->_properties_vertices_map[match[2]] = pos_properties++;
+                if(match[2] == "s" || match[2] == "t")
+                    this->_has_texture = true;
+                
+                if(match[2] == "nx" || match[2] == "ny" || match[2] == "nz")
+                    this->_has_normals = true;
+            }
+                
+        }
+        else if(line == "end_header")
+        {
+            return true;
         }
     }
 
-    return wanted_headers==0;
+    return false;
 }
 
 VectorTriangles PlyFile::get_elements() const
@@ -96,26 +137,6 @@ VectorTriangles PlyFile::get_elements() const
 std::array<double,6> PlyFile::get_bounding_box() const
 {
     return this->_bounding_box;
-}
-
-double PlyFile::standardize(const double value, const double min, const double max)
-{
-    return max!=min?(value-min)/(max-min):0;
-}
-
-void PlyFile::change_bounding_box(std::array<double,6> new_bounding_box)
-{
-    auto x_op = [new_bounding_box,this](const double x){return PlyFile::standardize(x,this->_bounding_box[0], this->_bounding_box[1])*(new_bounding_box[1]-new_bounding_box[0])+new_bounding_box[0];};
-    auto y_op = [new_bounding_box,this](const double y){return PlyFile::standardize(y,this->_bounding_box[2], this->_bounding_box[3])*(new_bounding_box[3]-new_bounding_box[2])+new_bounding_box[2];};
-    auto z_op = [new_bounding_box,this](const double z){return PlyFile::standardize(z,this->_bounding_box[4], this->_bounding_box[5])*(new_bounding_box[5]-new_bounding_box[4])+new_bounding_box[4];};
-
-    for(const auto& p: this->_points)
-    {
-        p->set_x(x_op((*p)[0]));
-        p->set_y(y_op((*p)[1]));
-        p->set_z(z_op((*p)[2]));
-    }
-
 }
 
 std::shared_ptr<Geometry> PlyFile::to_mesh() const

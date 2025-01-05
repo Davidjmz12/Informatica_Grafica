@@ -24,13 +24,11 @@ BoundingBox Face::get_bounding_box() const
     return BoundingBox::get_BB_by_corners(corners);
 }
 
-bool Face::get_u_v_coordinates(const Point& p, double& u, double& v) const
+std::pair<double, double> Face::get_u_v_coordinates(const Point& p) const
 {
     Base b = Base(this->_point, this->_normal, this->_u*this->_sizes[0], this->_v*this->_sizes[1]);
     Vector vec = Vector(b.coord_from_canonical(&p));
-    u = vec[1];
-    v = vec[2];
-    return true;
+    return {vec[1],vec[2]};
 }
 
 bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) const
@@ -45,9 +43,7 @@ bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     if (geD(fabs(vec.dot(this->_u)),this->_sizes[0]) ||  geD(fabs(vec.dot(this->_v)),this->_sizes[1]))
         return false;
     
-    double u,v;
-    this->get_u_v_coordinates(intersection.get_int_point(), u, v);
-    intersection.set_u_v(u,v);
+    intersection.set_u_v(this->get_u_v_coordinates(intersection.get_int_point()));
 
     return true;
 }

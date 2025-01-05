@@ -4,12 +4,25 @@
         <left>-1 0 0</left>
         <up>0 1 0</up>
         <front>0 0 3</front>
-        <resolution>256 256</resolution>
+        <resolution>1024 1024</resolution>
     </Camera>
 
     <Property name="red">
         <kd>1 0 0</kd>
     </Property>
+
+    <Property name="green">
+        <kd>0.1 0.9 0.1</kd>
+    </Property>
+
+    <Property name="brown">
+        <kd>0.5 0.2 0</kd>
+    </Property>
+
+    <Property name="mirror">
+        <ks>1 1 1</ks>
+    </Property>
+
 
     <Property name="dielectric">
         <kt>0.8 0.8 0.8</kt>
@@ -17,17 +30,28 @@
         <refraction_index>1.5</refraction_index>
     </Property>
 
-    <Property name="mario">
-        <kd>1 1 1</kd>
-        <texture type="ppm-texture">in/mario_a.ppm</texture>
+    <Property name="plastic_magenta">
+        <kd>0.5 0 0.5</kd>
+        <ks>0.5 0.5 0.5</ks>
     </Property>
 
-    <Property name="plastic magenta">
-        <kd>0.5 0 0.5</kd>
-        <ks>0.5 0.0 0.5</ks>
+    <Property name="refractive">
+        <kt>1 1 1</kt>
+        <refraction_index>1.8</refraction_index>
     </Property>
+
+    <Property name="plastic_yellow">
+        <kd>0.7 0.7 0</kd>
+        <ks>0.3 0.3 0.3</ks>
+    </Property>
+    
+    <Property name="plastic_cyan">
+        <kd>0 0.3 0.3</kd>
+        <ks>0.7 0.7 0.7</ks>
+    </Property>
+
     <Property name="green">
-        <kd>0 1 0</kd>
+        <kd>0.3 0.6 0.1</kd>
     </Property>
 
     <Property name="blue">
@@ -36,6 +60,21 @@
 
     <Property name="white">
         <kd>1 1 1</kd>
+    </Property>
+    
+
+    <Geometry type="Sphere" brdf="dielectric">
+        <center>-0.5 -0.8 -0.25</center>
+        <radius>0.2</radius>
+    </Geometry>
+
+    <Geometry type="Sphere" brdf="refractive">
+        <center>0.5 -0.80 -0.2</center>
+        <radius>0.20</radius>
+    </Geometry>
+    
+    <Property name="black">
+        <kd>0.05 0.05 0.05</kd>
     </Property>
 
     <Property name="yellow">
@@ -70,20 +109,179 @@
         <distance>1</distance>
     </Geometry>
 
-    <Geometry type="Plane" brdf="green">
+    <Geometry type="Plane" brdf="cyan">
         <normal>-1 0 0</normal>
         <distance>1</distance>
     </Geometry>
 
 
-    <Geometry type="Sphere" brdf="plastic magenta">
-        <center>-0.5 -0.7 0.25</center>
-        <radius>0.3</radius>
+    <Property name="cuadro">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/arbol_b.ppm</texture>
+    </Property>
+
+
+    <Geometry name="cuadro" type="Face" brdf="cuadro">
+        <normal>0 0 -1</normal>
+        <u>0.3 0 0</u>
+        <v>0 0.3 0</v>
+        <center>0.3 0.4 0.99</center>
     </Geometry>
 
-    <Geometry type="Sphere" brdf="dielectric">
-        <center>0.5 -0.7 -0.25</center>
+    <Geometry name="marco-cuadro" type="Face" brdf="black">
+        <normal>0 0 -1</normal>
+        <u>0.32 0 0</u>
+        <v>0 0.32 0</v>
+        <center>0.3 0.4 0.99</center>
+    </Geometry>
+
+    <Property name="rq">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/rq.ppm</texture>
+    </Property>
+
+    <Geometry name="cuadro2" type="Face" brdf="rq">
+        <normal>-1 0 0</normal>
+        <u>0 0 -0.5</u>
+        <v>0 0.3 0</v>
+        <center>0.999 0.2 0.2</center>
+    </Geometry>
+    <Geometry name="marco-cuadro2" type="Face" brdf="black">
+        <normal>-1 0 0</normal>
+        <u>0 0 -0.53</u>
+        <v>0 0.33 0</v>
+        <center>0.999 0.2 0.2</center>
+    </Geometry>
+
+    <Geometry name="espejo" type="Disk" brdf="mirror">
+        <normal>1 0 0</normal>
         <radius>0.3</radius>
+        <center>-0.99 0.2 0.1</center>
+    </Geometry>
+
+    <Geometry name="espejo" type="Disk" brdf="black">
+        <normal>1 0 0</normal>
+        <radius>0.33</radius>
+        <center>-0.99 0.2 0.1</center>
+    </Geometry>
+
+    <Property name="marble">
+        <kd>0.99 0.99 0.99</kd>
+        <ks>0.01 0.01 0.01</ks>
+        <texture type="ppm-texture">in/tiles.ppm</texture>
+    </Property>
+
+    <Geometry name="trophy" type="Cylinder" brdf="green">
+        <center>0.8 -0.6 0.4</center>
+        <radius>0.16</radius>
+        <height>0 0.3 0</height>
+    </Geometry>
+
+    <Property name="carpet">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/fabric.ppm</texture>
+    </Property>
+
+    <Geometry name="carpet" type="Face" brdf="carpet">
+        <normal>0 -1 0</normal>
+        <u>0.6 0 0</u>
+        <v>0 0 0.6</v>
+        <center>0.4 -0.99 0.4</center>
+    </Geometry>
+
+    <Geometry name="trophy2" type="Ellipsoid" brdf="mirror">
+        <center>0.8 0 0.8</center>
+        <a>0.1</a>
+        <b>0.2</b>
+        <c>0.2</c>
+    </Geometry>
+    
+
+    <Property name="pen">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/penguin_tex.ppm</texture>
+    </Property>
+
+    <Geometry name="pen" type="Mesh" brdf="pen">
+        <file>in/pen.ply</file>
+    </Geometry>
+    
+    <Property name="cat">
+        <kd>1 1 1</kd>
+        <texture type="ppm-texture">in/cat.ppm</texture>
+    </Property>
+
+    <Geometry name="pen" type="Mesh" brdf="cat">
+        <file>in/cat.ply</file>
+    </Geometry>
+
+    <Geometry name="Box" type="Box" brdf="marble">
+        <center>0.4 -0.8 0.8</center>
+        <x>0.2 0 0</x>
+        <y>0 0.2 0</y>
+        <z>0 0 0.2</z>
+    </Geometry>
+
+    <Geometry name="Box2" type="Box" brdf="marble">
+        <center>0.8 -0.4 0.8</center>
+        <x>0.2 0 0</x>
+        <y>0 0.2 0</y>
+        <z>0 0 0.2</z>
+    </Geometry>
+
+    <Geometry name="Box3" type="Box" brdf="marble">
+        <center>0.8 -0.8 0.4</center>
+        <x>0.2 0 0</x>
+        <y>0 0.2 0</y>
+        <z>0 0 0.2</z>
+    </Geometry>
+
+    <Geometry name="esfera magenta" type="Sphere" brdf="plastic_magenta">
+        <center>-0.8 0.3 0.8</center>
+        <radius>0.2</radius>
+    </Geometry>
+
+    <Geometry name="soporte esfera magenta" type="Cylinder" brdf="black">
+        <center>-0.8 0.3 0.8</center>
+        <radius>0.02</radius>
+        <height>0 0.7 0</height>
+    </Geometry>
+
+    <Geometry name="esfera amarilla" type="Sphere" brdf="plastic_yellow">
+        <center>-0.3 0.3 0.65</center>
+        <radius>0.16</radius>
+    </Geometry>
+
+    <Geometry name="soporte esfera amarilla" type="Cylinder" brdf="black">
+        <center>-0.3 0.3 0.8</center>
+        <radius>0.02</radius>
+        <height>0 0.7 0</height>
+    </Geometry>
+
+    <Geometry>
+    
+    </Geometry>
+
+    <Geometry name="esfera azul" type="Sphere" brdf="plastic_cyan">
+        <center>-0.45 0.6 0.5</center>
+        <radius>0.13</radius>
+    </Geometry>
+
+    <Geometry name="soporte esfera azul" type="Cylinder" brdf="black">
+        <center>-0.45 0.6 0.5</center>
+        <radius>0.02</radius>
+        <height>0 0.4 0</height>
+    </Geometry>
+
+    <Property name="black_white">
+        <kd>0.5 0.5 0.5</kd>
+        <kt>0.5 0.5 0.5</kt>
+        <texture type="ppm-texture">in/black_white.ppm</texture>
+    </Property>
+
+    <Geometry type="Sphere" brdf="black_white">
+        <center>0.4 -0.4 0.8</center>
+        <radius>0.2</radius>
     </Geometry>
 
     <Render type="ray-tracing"></Render>
@@ -93,16 +291,8 @@
         <V>max</V>
     </ToneMapping>
 
-    <Geometry type="Face" brdf="white">
-        <normal>0 0 -1</normal>
-        <u>1 0 0</u>
-        <v>0 1 0</v>
-        <center>0 0 0.99</center>
-    </Geometry>
-
-    <Geometry type="Plane" emission="1">
-        <normal>0 -1 0</normal>
-        <distance>0.99</distance>
-    </Geometry>
-
+    <PunctualLight>
+        <power>1 1 1</power>
+        <position>0 0.5 0</position>
+    </PunctualLight>
 </Scene>

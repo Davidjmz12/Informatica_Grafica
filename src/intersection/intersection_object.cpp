@@ -27,10 +27,10 @@ void IntersectionObject::inverse_normal()
     this->_normal = this->_normal*(-1);
 }
 
-void IntersectionObject::set_u_v(const double u, const double v)
+void IntersectionObject::set_u_v(const std::pair<double, double> u_v)
 {
-    this->_u = u;
-    this->_v = v;
+    this->_u = u_v.first;
+    this->_v = u_v.second;
 }
 
 Color IntersectionObject::eval_brdf(Color light, Vector w_i, BRDFType type) const

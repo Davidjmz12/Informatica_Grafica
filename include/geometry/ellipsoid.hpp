@@ -37,6 +37,8 @@ public:
      */
     Ellipsoid(double a, double b, double c, Point center, std::shared_ptr<BRDF> brdf);
 
+    std::pair<double, double> get_u_v_coordinates(const Point& p) const override;
+    
     [[nodiscard]] BoundingBox get_bounding_box() const override;
 
     /**

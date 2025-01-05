@@ -66,7 +66,15 @@ bool Ellipsoid::intersect_with_ray(const Ray& r, IntersectionObject& intersectio
     Vector normal = is_entering ? this->normal(point_int) : this->normal(point_int)*(-1);
     intersection = IntersectionObject(distance, normal, point_int, *this->_brdf, r, is_entering);
 
+    intersection.set_u_v(get_u_v_coordinates(intersection.get_int_point()));
+
     return existSolution;    
+}
+
+std::pair<double, double> Ellipsoid::get_u_v_coordinates(const Point& p) const
+{
+    Point c = Point(p-this->_center);
+    return {c[0]/_a,c[1]/_b};
 }
 
 Vector Ellipsoid::normal(const Point& p) const

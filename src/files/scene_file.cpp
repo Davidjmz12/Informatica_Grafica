@@ -200,13 +200,8 @@ std::shared_ptr<Geometry> read_geometry(std::string type, std::shared_ptr<BRDF> 
     }
     else if(type == "Mesh")
     {
-        const std::string ply_file = ply_dir + "/" + node.getContentChild("ply_file");
+        const std::string ply_file = ply_dir + "/" + node.getContentChild("file");
         auto ply = PlyFile(ply_file, p);
-        if(node.hasChild("bounding_box"))
-        {
-            std::array<double,6> bb = read_bounding_box(node.getContentChild("bounding_box"));
-            ply.change_bounding_box(bb);
-        }
         return ply.to_mesh();
     }
     else if(type == "Box")
@@ -381,8 +376,9 @@ VectorAreaLight SceneFile::read_area_lights() const
             continue;
         
         std::string type = area_light.getAttribute("type");
-        double color = std::stod(area_light.getAttribute("emission"));
-        Color emission = Color(color);
+        std::string color = area_light.getAttribute("emission");
+        std::vector<std::string> tokens = split(color, ' ');
+        Color emission = Color(SC3{std::stod(tokens[0]), std::stod(tokens[1]), std::stod(tokens[2])});
 
         std::shared_ptr<Geometry> g = read_geometry(type, std::make_shared<BRDF>(), area_light, this->_ply_dir);
         al.push_back(std::make_shared<AreaLight>(g, emission));

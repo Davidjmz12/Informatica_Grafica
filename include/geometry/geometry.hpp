@@ -97,10 +97,8 @@ public:
         return *this->_brdf;
     }
 
-    virtual bool get_u_v_coordinates(const Point& p, double& u, double& v) const
+    virtual std::pair<double, double> get_u_v_coordinates(const Point& p) const
     {
-        u = 0;
-        v = 0;
-        return true;
+        throw std::invalid_argument("This geometry does not have texture coordinates");
     }
 };

@@ -27,7 +27,7 @@ public:
 
     void set_is_entering(const bool is_entering);
     void inverse_normal();
-    void set_u_v(const double u, const double v);
+    void set_u_v(const std::pair<double, double> u_v);
 
     Color eval_brdf(Color light, Vector w_i, BRDFType type) const;
     BRDFType sample_ray(Ray& sampled_ray);
