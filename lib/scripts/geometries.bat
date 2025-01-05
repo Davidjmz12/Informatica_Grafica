@@ -1,2 +1,0 @@
-.\build\src\main.exe --threads 20 --rays 1024  --task-size 32 --bounces 5 --max-depth 7 --file-in in/scene_geometries_1.txt --file-out out/geometries/other_geometries.ppm
-.\build\src\main.exe --threads 20 --rays 1024  --task-size 32 --bounces 5 --max-depth 7 --file-in in/scene_geometries_2.txt --file-out out/geometries/penguin.ppm
