@@ -3,7 +3,7 @@
 GaussKernel::GaussKernel(double alpha):
     Kernel(), _alpha(alpha)
 {
-    if (alpha <= 1)
+    if (alpha <= 0)
     {
         throw std::invalid_argument("GaussKernel: alpha must be positive");
     }
