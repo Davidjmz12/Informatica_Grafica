@@ -36,7 +36,7 @@ void IntersectionObject::set_u_v(const double u, const double v)
 Color IntersectionObject::eval_brdf(Color light, Vector w_i, BRDFType type) const
 {
     double const_ = (BRDF::is_delta(type) ? 1.0 : M_PI);
-    return this->_brdf.eval(light*const_, w_i, this->get_ray().get_direction()*(-1), 
+    return this->_brdf.eval(light/const_, w_i, this->get_ray().get_direction()*(-1), 
         this->_intersection_point, this->_normal, this->get_ray().get_refraction_coefficient(), this->_u, this->_v,  type);
 }
 
