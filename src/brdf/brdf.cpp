@@ -84,14 +84,7 @@ Color BRDF::eval(Color light, Vector w_i, Vector w_0, Point x, Vector n, double 
 
 bool BRDF::sample_diffuse(Vector w_0, Point x, Vector n, double ref_coef_entry, Ray& sampled_ray, bool is_entering) const
 {
-    double phi = randomD(0,2*M_PI);
-    double theta = randomD(0,1);
-    theta = asin(theta);
-
-    Base b = Base::complete_base_k(x, n);
-
-    Vector base_v = Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
-    Vector v = Vector(b.coord_into_canonical(&base_v));
+    Vector v = Base::sample_hemisphere(n, x);
     sampled_ray = Ray(x, v, ref_coef_entry);
     return true;
 }

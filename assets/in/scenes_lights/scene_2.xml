@@ -55,20 +55,22 @@
     </Geometry>
 
     <Render type="photon-mapping">
-        <n_photons>100000</n_photons>
+        <n_photons>1000000</n_photons>
         <n_neighbours>1000</n_neighbours>
-        <radius>0.05</radius>
+        <radius>0.01</radius>
         <Kernel type="constant"></Kernel>
         <type>explicit</type>
     </Render>
 
     <ToneMapping type="gamma">
         <gamma>2.2</gamma>
-        <V>max</V>
+        <V>0.005</V>
     </ToneMapping>
 
-    <Geometry type="Sphere" emission="1 1 1">
-        <radius>0.15</radius>
-        <center>0 0.6 0</center>
+    <Geometry type="Face" emission="1 1 1">
+        <center>0 0.99 0</center>
+        <normal>0 -1 0</normal>
+        <u>0.3 0 0.3</u>
+        <v>-0.3 0 0.3</v>
     </Geometry>
 </Scene>

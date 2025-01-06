@@ -63,7 +63,7 @@ void ExplicitPhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, si
     if(sampled == BRDFType::ABSORPTION)
         return;
 
-    Color new_flux = min_int_obj.eval_brdf(flux*M_PI, r.get_direction(), sampled);
+    Color new_flux = min_int_obj.eval_brdf(flux, r.get_direction(), sampled);
     
 
     // If it is not direct light and it is not a delta, store the photon

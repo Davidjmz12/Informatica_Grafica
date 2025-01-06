@@ -70,6 +70,7 @@ inline double randomD(double a, double b)
     return dis(gen);
 }
 
+
 /**
  * @brief Function that solves a equation of second degree
  * @param a The coefficient of x**2

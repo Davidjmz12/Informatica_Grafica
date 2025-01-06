@@ -48,6 +48,18 @@ bool Face::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     return true;
 }
 
+Ray Face::sample_ray() const
+{
+    double u = randomD(0,1);
+    double v = randomD(0,1);
+
+    Point point = this->_point + this->_u*u*this->_sizes[0] + this->_v*v*this->_sizes[1];
+
+    Vector vec = Base::sample_hemisphere(this->_normal, point);
+
+    return Ray(point,vec);
+}
+
 std::ostream& operator<<(std::ostream& os, const Face& f)
 {
     os << f.to_string();

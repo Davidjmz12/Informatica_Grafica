@@ -47,6 +47,8 @@ public:
 
     static Base complete_base_k(const Point& c, const Vector& v);
 
+    static Vector sample_hemisphere(const Vector& normal, const Point& p);
+
     /**
     * @brief Method that gives the point in a basis.
     * @param s Point with coordinates (x,y,z) in canonical base.

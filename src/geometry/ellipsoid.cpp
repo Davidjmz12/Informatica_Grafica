@@ -96,16 +96,8 @@ Ray Ellipsoid::sample_ray() const
     Vector normal = (sphere_point_sampled - this->_center).normalize();
 
     // Sampled ray in this point sampled
-    phi = randomD(0,2*M_PI);
-    theta = randomD(0,1);
-
-    theta = asin(theta);
-
-    Base b = Base::complete_base_k(sphere_point_sampled, normal);
-
-    Vector base_v = Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
-    Vector v = Vector(b.coord_into_canonical(&base_v));
-    return Ray(sphere_point_sampled, v, 1); 
+    Vector v = Base::sample_hemisphere(normal, sphere_point_sampled);
+    return Ray(sphere_point_sampled, v); 
 }
 
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& e)

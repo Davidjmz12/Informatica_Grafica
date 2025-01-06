@@ -74,6 +74,7 @@ public:
      */
     bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const override;
 
+    Ray sample_ray() const override;
 
     /**
      * @brief Writes the information of a face.

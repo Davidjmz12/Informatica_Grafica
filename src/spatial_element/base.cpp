@@ -37,6 +37,20 @@ Base Base::complete_base_k(const Point& c, const Vector& v)
     return {c, i, j, k};
 }
 
+Vector Base::sample_hemisphere(const Vector& normal, const Point& p)
+{
+    double theta = randomD(0,1);
+    double phi = randomD(0,2*M_PI);
+
+    theta = asin(theta);
+
+    Base b = Base::complete_base_k(p, normal);
+    Vector base_v = Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
+    Vector v = Vector(b.coord_into_canonical(&base_v));
+
+    return v;
+}
+
 LinearMap Base::canonical_to_base() const
 {
     return {this->_matrix};

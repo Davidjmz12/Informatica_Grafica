@@ -11,7 +11,7 @@ Ray PunctualLight::sample_ray() const
     const double theta = acos(2*randomD(0,1)-1);
     const double phi = 2*M_PI*randomD(0,1);
 
-    const auto v = Vector(cos(theta)*cos(phi), cos(theta)*sin(phi),sin(theta));
+    const auto v = Vector(sin(theta)*cos(phi), sin(theta)*sin(phi),cos(theta));
     return Ray(this->_center, v); 
 }
 
@@ -31,7 +31,6 @@ Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionOb
     return intersection.eval_brdf((this->_power/pow(ray_dir.norm(),2))*fabs(intersection.get_normal().dot(ray_dir.normalize())), 
         ray_dir.normalize(), type);
 }
-
 
 double PunctualLight::luminance_mean() const
 {

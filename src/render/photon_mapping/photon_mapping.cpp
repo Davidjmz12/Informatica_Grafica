@@ -36,7 +36,7 @@ void PhotonMapping::create_photon_trace(const std::shared_ptr<AbstractLight>& li
 
     size_t num_bounces = this->_gc->get_number_of_bounces();
 
-    create_photon_trace_rec(r, Color(4*M_PI*light->luminance_max()/weight), 0, num_bounces, photons);
+    create_photon_trace_rec(r, Color(4*M_PI*weight/this->_n_photons), 0, num_bounces, photons);
 }
 
 PhotonMapping::PhotonMapping(Scene& s, size_t n_photons, size_t max_photon_num_per_query, double radius, std::unique_ptr<Kernel> kernel): 
