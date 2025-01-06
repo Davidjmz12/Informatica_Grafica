@@ -1,15 +1,30 @@
 <Scene name="Scene Light comparision">
+    
     <Camera>
         <center>0 0 -3.5</center>
         <left>-1 0 0</left>
         <up>0 1 0</up>
         <front>0 0 3</front>
-        <resolution>512 512</resolution>
+        <resolution>256 256</resolution>
     </Camera>
 
     <Property name="specular"> 
         <ks>1 1 1</ks>
     </Property>
+
+    <Property name="brown">
+        <kd>0.5 0.2 0</kd>
+    </Property>
+
+
+    <Property name="plastic-mag">
+        <kd>1 0 1</kd>
+    </Property>
+
+    <Property name="plastic-cyan">
+        <kd>0 1 1</kd>
+    </Property>
+
 
     <Property name="white">
         <kd>1 1 1</kd>
@@ -20,7 +35,11 @@
     </Property>
 
     <Property name="cyan">
-        <kd>0 1 1</kd>
+        <kd>1 1 0</kd>
+    </Property>
+
+    <Property name="black">
+        <kd>0.1 0.1 0.1</kd>
     </Property>
     
     <Geometry type="Plane" brdf="white">
@@ -48,10 +67,15 @@
         <distance>1</distance>
     </Geometry>
 
+    <Geometry type="Mesh" brdf="plastic-mag">
+        <file>in/peng.ply</file>
+    </Geometry>
 
-    <Geometry type="Sphere" brdf="specular">
-        <center>0 0 0</center>
-        <radius>0.3</radius>
+    <Geometry type="Box" brdf="plastic-cyan">
+        <center>0.4 -0.7 -0.25</center>
+        <x>-0.15 0 0.15</x>
+        <y>0 0.3 0</y>
+        <z>0.15 0 0.15</z>
     </Geometry>
 
     <Render type="ray-tracing"></Render>
@@ -61,8 +85,8 @@
         <V>max</V>
     </ToneMapping>
 
-    <Geometry type="Sphere" emission="1 1 1">
-        <radius>0.1</radius>
-        <center>0 0.6 0</center>
-    </Geometry>
+    <PunctualLight>
+        <power>1 1 1</power>
+        <position>0 0.6 0</position>
+    </PunctualLight>
 </Scene>

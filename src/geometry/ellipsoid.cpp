@@ -85,6 +85,29 @@ Vector Ellipsoid::normal(const Point& p) const
                     (p[2]-this->_center[2])/pow(this->_c,2)).normalize();
 }
 
+Ray Ellipsoid::sample_ray() const
+{
+    // Point in the sphere
+    double theta = acos(2*randomD(0,1)-1);
+    double phi = 2*M_PI*randomD(0,1);
+
+    Point sphere_point_sampled = this->_center + Vector(this->_a*sin(theta)*cos(phi), this->_b*sin(theta)*sin(phi), this->_c*cos(theta));
+
+    Vector normal = (sphere_point_sampled - this->_center).normalize();
+
+    // Sampled ray in this point sampled
+    phi = randomD(0,2*M_PI);
+    theta = randomD(0,1);
+
+    theta = asin(theta);
+
+    Base b = Base::complete_base_k(sphere_point_sampled, normal);
+
+    Vector base_v = Vector(sin(theta)*cos(phi),sin(theta)*sin(phi),cos(theta));
+    Vector v = Vector(b.coord_into_canonical(&base_v));
+    return Ray(sphere_point_sampled, v, 1); 
+}
+
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& e)
 {
     os << e.to_string();

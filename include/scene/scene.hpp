@@ -8,9 +8,9 @@
 */
 #pragma once
 
-#include "light/area_light/area_light.hpp"
+#include "light/area_light.hpp"
 #include "scene/camera.hpp"
-#include "light/area_light/area_light.hpp"
+#include "light/area_light.hpp"
 #include "light/punctual_light.hpp"
 #include "geometry/kd-trees/kd-tree.hpp"
 

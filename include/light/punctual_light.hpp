@@ -3,8 +3,9 @@
 #include "color/color.hpp"
 #include "geometry/geometry.hpp"
 #include "geometry/kd-trees/kd-tree.hpp"
+#include "light/abstract_light.hpp"
 
-class PunctualLight
+class PunctualLight : public AbstractLight
 {
 private:
     Point _center;
@@ -15,7 +16,7 @@ public:
     PunctualLight(Point center, const Color& power);
     PunctualLight() = default;
 
-    Ray sample_random_unitary_ray() const;
+    Ray sample_ray() const override;
 
     [[nodiscard]] double luminance_mean() const;
     [[nodiscard]] double luminance_max() const;

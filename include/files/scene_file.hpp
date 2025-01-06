@@ -11,7 +11,7 @@
 
 #include "files/ppm_file.hpp"
 #include "files/ply_file.hpp"
-#include "light/area_light/area_light.hpp"
+#include "light/area_light.hpp"
 #include "kernel_density/all_kernel_densities.hpp"
 #include "color/tone_mapping/all_tone_mapping.hpp"
 #include "files/parse_xml.hpp"
@@ -22,6 +22,8 @@
 
 #include "geometry/textures/texture.hpp"
 #include "geometry/textures/texture_ppm.hpp"
+
+#include "geometry/all_geometry.hpp"
 
 #include "files/parse_xml.hpp"
 

@@ -101,4 +101,10 @@ public:
     {
         throw std::invalid_argument("This geometry does not have texture coordinates");
     }
+
+
+    virtual Ray sample_ray() const
+    {
+        throw std::invalid_argument("This geometry does not have a sample ray");
+    }
 };

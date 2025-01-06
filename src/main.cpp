@@ -16,7 +16,7 @@ HashMap get_default_conf() {
     conf["task-size"] = int(32);
     conf["bounces"] = int(5);
     conf["max-depth"] = int(7);
-    conf["file-in"] = std::string("in/scene.xml");
+    conf["file-in"] = std::string("in/scenes_lights/scene_2.xml");
     conf["file-out"] = std::string("out/example.ppm");
     return conf;
 }

@@ -4,7 +4,7 @@
         <left>-1 0 0</left>
         <up>0 1 0</up>
         <front>0 0 3</front>
-        <resolution>512 512</resolution>
+        <resolution>256 256</resolution>
     </Camera>
 
     <Property name="specular"> 
@@ -23,6 +23,28 @@
         <kd>0 1 1</kd>
     </Property>
     
+    <Property name="black">
+        <kd>0.1 0.1 0.1</kd>
+    </Property>
+    
+    <Property name="texture-face">
+        <texture type="ppm-texture">in/arbol_b.ppm</texture>
+        <kd>1 1 1</kd>
+    </Property>
+
+    <Property name="texture-sphere">
+        <texture type="ppm-texture">in/black_white.ppm</texture>
+        <kd>0.7 0.7 0.7</kd>
+        <kt>0.3 0.3 0.3</kt>
+    </Property>
+
+    <Property name="texture-box">
+        <texture type="ppm-texture">in/tiles.ppm</texture>
+        <kd>0.7 0.7 0.7</kd>
+        <ks>0.3 0.3 0.3</ks>
+    </Property>
+
+
     <Geometry type="Plane" brdf="white">
         <normal>0 1 0</normal>
         <distance>1</distance>
@@ -47,11 +69,31 @@
         <normal>-1 0 0</normal>
         <distance>1</distance>
     </Geometry>
+    
+    <Geometry type="Face" brdf="texture-face">
+        <center>0 0 0.98</center>
+        <normal>0 0 -1</normal>
+        <v>0 0.5 0</v>
+        <u>0.5 0 0</u>
+    </Geometry>
 
+    <Geometry type="Face" brdf="black">
+        <center>0 0 0.99</center>
+        <normal>0 0 -1</normal>
+        <v>0 0.54 0</v>
+        <u>0.54 0 0</u>
+    </Geometry>
 
-    <Geometry type="Sphere" brdf="specular">
-        <center>0 0 0</center>
-        <radius>0.3</radius>
+    <Geometry type="Sphere" brdf="texture-sphere">
+        <center>-0.5 -0.6 -0.25</center>
+        <radius>0.4</radius>
+    </Geometry>
+    
+    <Geometry type="Box" brdf="texture-box">
+        <center>0.5 -0.5 0.5</center>
+        <x>-0.2 0 0.2</x>
+        <y>0 0.5 0</y>
+        <z>0.2 0 0.2</z>
     </Geometry>
 
     <Render type="ray-tracing"></Render>
@@ -63,6 +105,6 @@
 
     <PunctualLight>
         <power>1 1 1</power>
-        <position>0 0.6 0</position>
+        <position>0 0.7 0</position>
     </PunctualLight>
 </Scene>

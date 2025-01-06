@@ -1,9 +1,9 @@
 #include "light/collection_light.hpp"
 
-CollectionLight::CollectionLight(const VectorPunctualLight& lights):
-    _lights(lights)
+CollectionLight::CollectionLight(const VectorPunctualLight& lights, const VectorAreaLight& area_lights):
+    _lights(lights), _area_lights(area_lights)
 {
-    if(lights.empty())
+    if(lights.empty() && area_lights.empty())
     {
         throw std::invalid_argument("The collection of lights is empty");
     }
@@ -15,14 +15,23 @@ CollectionLight::CollectionLight(const VectorPunctualLight& lights):
         total_light += one_light->luminance_max();
     }
 
+    for(const auto& one_light: area_lights)
+    {
+        total_light += one_light->luminance_max();
+    }
+
     for(const auto& one_light: lights)
     {
         this->_weights.push_back(one_light->luminance_max()/total_light);
     }
 
+    for(const auto& one_light: area_lights)
+    {
+        this->_weights.push_back(one_light->luminance_max()/total_light);
+    }
 }
 
-double CollectionLight::sample_light(PunctualLight& light)
+double CollectionLight::sample_light(std::shared_ptr<AbstractLight>& light)
 {
     double d = randomD(0,1);
 
@@ -33,10 +42,20 @@ double CollectionLight::sample_light(PunctualLight& light)
     {
         if((sum_probabilities <= d) && (d <= (sum_probabilities + this->_weights[i])))
         {
-            light = *this->_lights[i].get();
+            light = this->_lights[i];
             return this->_weights[i];
         }
         sum_probabilities += this->_weights[i];
+    }
+
+    for(size_t i=0;i<this->_area_lights.size();i++)
+    {
+        if((sum_probabilities <= d) && (d <= (sum_probabilities + this->_weights[i+this->_lights.size()])))
+        {
+            light = this->_area_lights[i];
+            return this->_weights[i+this->_lights.size()];
+        }
+        sum_probabilities += this->_weights[i+this->_lights.size()];
     }
 
     throw std::runtime_error("Error sampling light");

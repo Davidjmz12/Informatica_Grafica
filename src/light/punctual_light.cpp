@@ -6,7 +6,7 @@ PunctualLight::PunctualLight(Point center, const Color& power)
     : _center(std::move(center)), _power(power)
 {}
 
-Ray PunctualLight::sample_random_unitary_ray() const
+Ray PunctualLight::sample_ray() const
 {
     const double theta = acos(2*randomD(0,1)-1);
     const double phi = 2*M_PI*randomD(0,1);
@@ -14,6 +14,7 @@ Ray PunctualLight::sample_random_unitary_ray() const
     const auto v = Vector(cos(theta)*cos(phi), cos(theta)*sin(phi),sin(theta));
     return Ray(this->_center, v); 
 }
+
 Color PunctualLight::light_contribution(const KDTree& tree, const IntersectionObject& intersection,  BRDFType type) const
 {
     const Vector ray_dir = (this->_center-intersection.get_int_point());

@@ -5,7 +5,7 @@
         <left>-1 0 0</left>
         <up>0 1 0</up>
         <front>0 0 3</front>
-        <resolution>512 512</resolution>
+        <resolution>256 256</resolution>
     </Camera>
 
     <Property name="specular"> 
@@ -99,15 +99,15 @@
     </Geometry>
 
     <Geometry type="Face" brdf="black">
-        <normal>1 0 0</normal>
-        <center>-0.99 0 0</center>
+        <normal>0 0 -1</normal>
+        <center>0 0 0.99</center>
         <u>0 0.5 0</u>
-        <v>0 0 0.5</v>
+        <v>0.5 0 0</v>
     </Geometry>
 
     <Geometry type="Disk" brdf="white">
-        <center>-0.98 0 0</center>
-        <normal>1 0 0</normal>
+        <center>0 0 0.98</center>
+        <normal>0 0 -1</normal>
         <radius>0.4</radius>
     </Geometry>
 

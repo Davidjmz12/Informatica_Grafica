@@ -5,11 +5,11 @@
 
 PhotonMap PhotonMapping::create_photon_map()
 {
-    CollectionLight lights(this->_scene.get_punctual_lights());
+    CollectionLight lights(this->_scene.get_punctual_lights(), this->_scene.get_area_lights());
     std::vector<Photon> photons;
     for(size_t i = 0; i < this->_n_photons; i++)
     {
-        PunctualLight light;
+        std::shared_ptr<AbstractLight> light;
         double weight = lights.sample_light(light);
 
         create_photon_trace(light,weight, photons);
@@ -30,13 +30,13 @@ Color PhotonMapping::density_estimate(const IntersectionObject& obj, const BRDFT
     return sum;
 }
 
-void PhotonMapping::create_photon_trace(const PunctualLight& light, double weight, std::vector<Photon>& photons)
+void PhotonMapping::create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons)
 {
-    Ray r = light.sample_random_unitary_ray();
+    Ray r = light->sample_ray();
 
     size_t num_bounces = this->_gc->get_number_of_bounces();
 
-    create_photon_trace_rec(r, Color(4*M_PI*light.luminance_max()/weight), 0, num_bounces, photons);
+    create_photon_trace_rec(r, Color(4*M_PI*light->luminance_max()/weight), 0, num_bounces, photons);
 }
 
 PhotonMapping::PhotonMapping(Scene& s, size_t n_photons, size_t max_photon_num_per_query, double radius, std::unique_ptr<Kernel> kernel): 

@@ -8,8 +8,27 @@ Color ExplicitPhotonMapping::compute_ray_color(const Ray& r) const
 {
     IntersectionObject min_int_obj;
     bool intersects = this->_scene.intersect_with_ray(r, min_int_obj);
+
+    IntersectionLight min_int_light;
+    for(const auto& element: this->_scene.get_area_lights())
+    {
+        if(IntersectionLight int_light_aux; element->intersect_with_ray(r, int_light_aux))
+        {
+            intersects = true;
+            if(int_light_aux < min_int_light)
+                min_int_light = int_light_aux;
+        }
+    }
+
     if(!intersects)
         return Color();
+    
+
+    if(min_int_light < min_int_obj)
+    {
+        return min_int_light.get_power();
+    }
+
     
     Ray new_ray;
     BRDFType sampled = min_int_obj.sample_ray(new_ray);

@@ -10,12 +10,13 @@
 #include "color/color.hpp"
 #include "intersection/intersection_light.hpp"
 #include "scene/ray.hpp"
-#include "geometry/all_geometry.hpp"
+#include "light/abstract_light.hpp"
+#include "geometry/geometry.hpp"
 
 /**
  * @brief Class for define a geometry that can produce light
  */
-class AreaLight
+class AreaLight : public AbstractLight
 {
 private:
     std::shared_ptr<Geometry> _shape;       // The shape of the light
@@ -28,6 +29,8 @@ public:
      * @param power The luminance of the light
      */
     AreaLight(std::shared_ptr<Geometry> shape, Color power);
+    
+    double luminance_max() const;
 
     /**
      * @brief Method for computing if a ray intersects with the AreaLight
@@ -42,4 +45,6 @@ public:
      * @return A string with the information of the object.
      */
     std::string to_string() const;
+
+    virtual Ray sample_ray() const override;
 };

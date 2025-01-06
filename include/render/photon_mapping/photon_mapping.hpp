@@ -21,7 +21,7 @@ protected:
 
 
     PhotonMap create_photon_map();
-    void create_photon_trace(const PunctualLight& light, double weight, std::vector<Photon>& photons);
+    void create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons);
     [[nodiscard]] Color density_estimate(const IntersectionObject& obj, const BRDFType type) const;
 
     void init_render() override;
