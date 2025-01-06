@@ -31,7 +31,7 @@ CollectionLight::CollectionLight(const VectorPunctualLight& lights, const Vector
     }
 }
 
-double CollectionLight::sample_light(std::shared_ptr<AbstractLight>& light)
+double CollectionLight::sample_light(std::shared_ptr<AbstractLight>& light) const
 {
     double d = randomD(0,1);
 

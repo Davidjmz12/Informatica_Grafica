@@ -16,5 +16,5 @@ public:
 
     CollectionLight(const VectorPunctualLight& lights, const VectorAreaLight& area_lights);
 
-    [[nodiscard]] double sample_light(std::shared_ptr<AbstractLight>& light);
+    [[nodiscard]] double sample_light(std::shared_ptr<AbstractLight>& light) const;
 };

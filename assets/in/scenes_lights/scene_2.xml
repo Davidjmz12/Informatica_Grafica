@@ -7,8 +7,9 @@
         <resolution>256 256</resolution>
     </Camera>
 
-    <Property name="specular"> 
-        <ks>1 1 1</ks>
+    <Property name="refractive"> 
+        <kt>1 1 1</kt>
+        <refraction_index>1.5</refraction_index>
     </Property>
 
     <Property name="white">
@@ -49,28 +50,33 @@
     </Geometry>
 
 
-    <Geometry type="Sphere" brdf="specular">
-        <center>0 0 0</center>
+    <Geometry type="Sphere" brdf="refractive">
+        <center>0.25 -0.7 -0.15</center>
         <radius>0.3</radius>
+    </Geometry>
+
+    <Geometry type="Sphere" brdf="refractive">
+        <center>-0.4 -0.6 0.25</center>
+        <radius>0.4</radius>
     </Geometry>
 
     <Render type="photon-mapping">
         <n_photons>1000000</n_photons>
         <n_neighbours>1000</n_neighbours>
-        <radius>0.01</radius>
+        <radius>0.1</radius>
         <Kernel type="constant"></Kernel>
-        <type>explicit</type>
+        <type>direct</type>
     </Render>
 
     <ToneMapping type="gamma">
-        <gamma>2.2</gamma>
-        <V>0.005</V>
+        <gamma>1.7</gamma>
+        <V>max</V>
     </ToneMapping>
 
     <Geometry type="Face" emission="1 1 1">
         <center>0 0.99 0</center>
         <normal>0 -1 0</normal>
-        <u>0.3 0 0.3</u>
-        <v>-0.3 0 0.3</v>
+        <u>0.2 0 0.2</u>
+        <v>-0.2 0 0.2</v>
     </Geometry>
 </Scene>

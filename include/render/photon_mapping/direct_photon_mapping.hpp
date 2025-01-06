@@ -8,5 +8,5 @@ public:
 private:
 
     Color compute_ray_color(const Ray& r) const override;
-    void create_photon_trace_rec(const Ray& r, Color flux, size_t num_bounces, size_t total_bounces, std::vector<Photon>& photons) override;
+    void create_photon_trace_rec(const Ray& r, Color flux, size_t num_bounces, size_t total_bounces, std::vector<Photon>& photons) const override;
 };

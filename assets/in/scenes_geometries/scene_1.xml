@@ -111,7 +111,14 @@
         <radius>0.4</radius>
     </Geometry>
 
-    <Render type="ray-tracing"></Render>
+    <Render type="photon-mapping">
+        <n_photons>2000000</n_photons>
+        <n_neighbours>1000</n_neighbours>
+        <radius>0.005</radius>
+        <Kernel type="constant"></Kernel>
+        <type>explicit</type>
+    </Render>
+
 
     <ToneMapping type="gamma">
         <gamma>2.2</gamma>

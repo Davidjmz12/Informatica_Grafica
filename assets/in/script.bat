@@ -1,0 +1,1 @@
+.\build\src\main.exe --threads 16 --rays 256  --task-size 32 --bounces 5 --max-depth 1 --file-in in/scenes_geometries/scene_1.xml --file-out out/g1.ppm

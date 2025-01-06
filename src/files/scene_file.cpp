@@ -263,7 +263,7 @@ std::unique_ptr<Kernel> read_kernel(XmlNode& node)
     std::string type = kernel.getAttribute("type");
     if (type == "gaussian")
     {
-        double sigma = read_double(node, "sigma", false, 0.1);
+        double sigma = read_double(kernel, "sigma", false, 0.1);
         return std::make_unique<GaussKernel>(sigma);
     }
     else if (type == "cone")

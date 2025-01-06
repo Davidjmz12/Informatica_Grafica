@@ -14,5 +14,11 @@ GaussKernel::~GaussKernel()
 
 double GaussKernel::eval(double distance, double radius) const
 {
-    return _alpha/(M_PI*pow(radius, 2)*(1-exp(-_alpha))) * exp(-_alpha*pow(distance/radius,2));
+    if (distance > radius)
+    {
+        return 0;
+    }
+    double sigma = radius / _alpha;
+    return 1.0/sqrt(2*M_PI)/sigma * exp(-pow(distance,2)/(2*pow(sigma,2)));
+
 }

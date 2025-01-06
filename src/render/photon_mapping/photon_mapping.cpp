@@ -5,17 +5,70 @@
 
 PhotonMap PhotonMapping::create_photon_map()
 {
+    #ifdef METRICS
+    Metrics& m = GlobalConf::get_instance()->get_metrics();
+    m.init_time_metric("create_photon_map", "Time to create the photon map");
+    m.start_duration_time_metric("create_photon_map");
+    #endif
+    std::vector<std::future<std::vector<Photon>>> futures(this->_gc->get_number_of_threads());
+    
     CollectionLight lights(this->_scene.get_punctual_lights(), this->_scene.get_area_lights());
+
+    size_t num_photons_per_thread = this->_n_photons / this->_gc->get_number_of_threads();
+    size_t num_photons_last_thread = num_photons_per_thread + this->_n_photons % this->_gc->get_number_of_threads();
+
+    // Launch tasks
+    for (size_t i = 0; i < this->_gc->get_number_of_threads(); i++) {
+        size_t n = (i == this->_gc->get_number_of_threads() - 1) ? num_photons_last_thread : num_photons_per_thread;
+        futures[i] = (
+            this->_pool.enqueue(
+                [this, &lights, n]() {
+                    return this->trace_n_photons(n, lights);
+                }
+            )
+        );
+    }
+
+    // Reserve space for all photons (we know the total count)
     std::vector<Photon> photons;
-    for(size_t i = 0; i < this->_n_photons; i++)
+    photons.reserve(this->_n_photons);
+
+    // Collect photons from all threads
+    for (auto& future : futures) {
+        std::vector<Photon> photons_thread = future.get();
+        photons.insert(photons.end(), 
+                    std::make_move_iterator(photons_thread.begin()), 
+                    std::make_move_iterator(photons_thread.end()));
+    }
+
+    #ifdef METRICS
+    m.add_duration_to_time_metric("create_photon_map");
+
+    m.init_time_metric("create_kd_tree", "Time to create the KD-tree");
+    m.start_duration_time_metric("create_kd_tree");
+    #endif
+
+    PhotonMap pm(std::move(photons));
+
+    #ifdef METRICS
+    m.add_duration_to_time_metric("create_kd_tree");
+    #endif
+
+    return pm;
+}
+
+std::vector<Photon> PhotonMapping::trace_n_photons(const size_t n, const CollectionLight& lights) const
+{
+    
+    std::vector<Photon> photons;
+    for(size_t i = 0; i < n; i++)
     {
         std::shared_ptr<AbstractLight> light;
         double weight = lights.sample_light(light);
 
-        create_photon_trace(light,weight, photons);
+        create_photon_trace(light, weight, photons);
     }
-
-    return PhotonMap(photons);
+    return photons;
 }
 
 Color PhotonMapping::density_estimate(const IntersectionObject& obj, const BRDFType type) const
@@ -30,7 +83,7 @@ Color PhotonMapping::density_estimate(const IntersectionObject& obj, const BRDFT
     return sum;
 }
 
-void PhotonMapping::create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons)
+void PhotonMapping::create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons) const
 {
     Ray r = light->sample_ray();
 
@@ -48,6 +101,7 @@ PhotonMapping::PhotonMapping(Scene& s, size_t n_photons, size_t max_photon_num_p
 
 void PhotonMapping::init_render()
 {
+
     this->_photon_map =std::make_unique<PhotonMap>(create_photon_map());
     this->_initialized = true;
 }

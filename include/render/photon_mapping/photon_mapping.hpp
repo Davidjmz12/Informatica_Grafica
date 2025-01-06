@@ -17,11 +17,11 @@ protected:
     std::unique_ptr<Kernel> _kernel;
     
     virtual Color compute_ray_color(const Ray& r) const = 0;
-    virtual void create_photon_trace_rec(const Ray& r, Color flux, size_t num_bounces, size_t total_bounces, std::vector<Photon>& photons) = 0;
+    virtual void create_photon_trace_rec(const Ray& r, Color flux, size_t num_bounces, size_t total_bounces, std::vector<Photon>& photons) const = 0;
 
-
+    std::vector<Photon> trace_n_photons(const size_t n, const CollectionLight& lights) const;
     PhotonMap create_photon_map();
-    void create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons);
+    void create_photon_trace(const std::shared_ptr<AbstractLight>& light, double weight, std::vector<Photon>& photons) const;
     [[nodiscard]] Color density_estimate(const IntersectionObject& obj, const BRDFType type) const;
 
     void init_render() override;
