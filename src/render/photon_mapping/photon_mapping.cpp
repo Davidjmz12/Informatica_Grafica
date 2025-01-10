@@ -10,6 +10,8 @@ PhotonMap PhotonMapping::create_photon_map()
     m.init_time_metric("create_photon_map", "Time to create the photon map");
     m.start_duration_time_metric("create_photon_map");
     #endif
+
+    std::cout << "Starting photon mapping" << std::endl;
     std::vector<std::future<std::vector<Photon>>> futures(this->_gc->get_number_of_threads());
     
     CollectionLight lights(this->_scene.get_punctual_lights(), this->_scene.get_area_lights());
@@ -36,11 +38,13 @@ PhotonMap PhotonMapping::create_photon_map()
     // Collect photons from all threads
     for (auto& future : futures) {
         std::vector<Photon> photons_thread = future.get();
+        std::cout << "Thread finished with " << photons_thread.size() << " photons" << std::endl;
         photons.insert(photons.end(), 
                     std::make_move_iterator(photons_thread.begin()), 
                     std::make_move_iterator(photons_thread.end()));
     }
 
+    std::cout << "Finished photon mapping" << std::endl;
     #ifdef METRICS
     m.add_duration_to_time_metric("create_photon_map");
 

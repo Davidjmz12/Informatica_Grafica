@@ -4,7 +4,7 @@
         <left>-1 0 0</left>
         <up>0 1 0</up>
         <front>0 0 3</front>
-        <resolution>1024 1024</resolution>
+        <resolution>512 512</resolution>
     </Camera>
 
     <Property name="red">

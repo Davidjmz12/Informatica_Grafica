@@ -75,7 +75,7 @@ public:
     void increment_counter(std::string name)
     {
         if(!this->is_counter(name))
-            throw std::runtime_error("Counter does not exist");
+            throw std::runtime_error("Counter" + name + " does not exist");
 
         _counters[name].count++;
     }

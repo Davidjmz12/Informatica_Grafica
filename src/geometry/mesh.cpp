@@ -19,6 +19,14 @@ bool Mesh::intersect_with_ray(const Ray& r, IntersectionObject& intersection) co
     return _kd_tree.intersect_with_ray(r, intersection);
 }
 
+Ray Mesh::sample_ray() const
+{
+    VectorGeometries geometries = _kd_tree.get_geometries();
+    size_t index = randomI(0, geometries.size()-1);
+
+    return geometries[index]->sample_ray();
+}
+
 std::ostream& operator<<(std::ostream& os, const Mesh& tm)
 {
     os << tm.to_string();

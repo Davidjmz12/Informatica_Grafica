@@ -11,6 +11,12 @@ KDTree::KDTree(const VectorGeometries& geometries, const size_t depth)
     root->build(depth);
 }
 
+
+VectorGeometries KDTree::get_geometries() const
+{
+    return root->geometries;
+}
+
 bool KDTree::intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const
 {
     return root->intersect_with_ray(ray, intersection);

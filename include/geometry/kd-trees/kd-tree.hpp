@@ -39,6 +39,8 @@ public:
 
     KDTree();
 
+    VectorGeometries get_geometries() const;
+
     bool intersect_with_ray(const Ray& ray, IntersectionObject& intersection) const;
 
     [[nodiscard]] std::string to_string() const;

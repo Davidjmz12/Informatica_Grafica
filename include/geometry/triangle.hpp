@@ -103,6 +103,9 @@ public:
      */
     bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
+
+    Ray sample_ray() const;
+
     /**
      * @brief Overloads the [] operator to access the vertices of the triangle.
      * 

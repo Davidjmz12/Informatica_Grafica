@@ -41,7 +41,7 @@ Color ExplicitPhotonMapping::compute_ray_color(const Ray& r) const
         return compute_ray_color(new_ray);
     } else
     {
-        Color density_estimate = this->density_estimate(min_int_obj, sampled);
+        Color density_estimate = this->density_estimate(min_int_obj, sampled)*(BRDF::is_delta(sampled)?1:M_PI);
         Color direct_light = this->calculate_punctual_light_contribution(min_int_obj, sampled);
         return density_estimate + direct_light;
     }
@@ -63,7 +63,7 @@ void ExplicitPhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, si
     if(sampled == BRDFType::ABSORPTION)
         return;
 
-    Color new_flux = min_int_obj.eval_brdf(BRDF::is_delta(sampled)?flux:flux*M_PI, r.get_direction(), sampled);
+    Color new_flux = min_int_obj.eval_brdf(flux, r.get_direction(), sampled);
     
 
     // If it is not direct light and it is not a delta, store the photon

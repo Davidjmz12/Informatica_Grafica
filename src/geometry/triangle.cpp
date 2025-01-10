@@ -104,6 +104,19 @@ bool Triangle::intersect_with_ray(const Ray& r, IntersectionObject& intersection
     return true;
 }
 
+Ray Triangle::sample_ray() const
+{
+    double u = randomD(0,1);
+    double v = randomD(0,1-u);
+
+    Point p = *_v0 + (*_v1-*_v0)*u + (*_v2-*_v0)*v;
+    
+    Vector normal = (*_v1-*_v0).cross((*_v2-*_v0)).normalize();
+
+    Vector dir = Base::sample_hemisphere(normal, p);
+    return Ray(p, dir);
+}
+
 Point Triangle::operator[](const int i) const
 {
     if(i == 0)

@@ -69,6 +69,7 @@ public:
      */
     bool intersect_with_ray(const Ray& r, IntersectionObject& intersection) const;
 
+    Ray sample_ray() const override;
 
     /**
      * @brief Overloads the << operator to output the details of a Mesh object.

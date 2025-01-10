@@ -6,17 +6,19 @@ Render::Render(Scene& s)
 
 ColorMap Render::render_scene()
 {
+    #ifdef METRICS
+        Metrics& m = _gc->get_metrics();
+        m.start_timer_metric("paint_scene");
+        m.add_counter("num_bb_intersections_avoided");
+    #endif 
+
     if(!_initialized)
     {
         this->init_render();
         _initialized = true;
     }
 
-    #ifdef METRICS
-        Metrics& m = _gc->get_metrics();
-        m.start_timer_metric("paint_scene");
-        m.add_counter("num_bb_intersections_avoided");
-    #endif 
+    std::cout << "Starting rendering scene" << std::endl;
 
     const std::array<int,2> resolution = this->get_resolution();
     size_t task_size = _gc->get_task_size();
@@ -24,12 +26,12 @@ ColorMap Render::render_scene()
     size_t rest = (resolution[0]*resolution[1])%task_size;
     const size_t num_real_tasks = rest==0?num_full_tasks:num_full_tasks+1;
 
-    std::vector<std::future<std::vector<Color>>> futures;
+    std::vector<std::future<std::vector<Color>>> futures(num_real_tasks);
 
     for(size_t i=0; i<num_full_tasks; ++i)
     {
         std::array<size_t,2> start = {(i*task_size)/resolution[0],(i*task_size)%resolution[0]};
-        futures.push_back(
+        futures[i] = (
             this->_pool.enqueue(
                 [this, start,task_size](){
                     return this->paint_k_pixels(start, task_size);
@@ -41,7 +43,7 @@ ColorMap Render::render_scene()
     if(rest != 0)
     {
         std::array<size_t,2> start = {(num_full_tasks*task_size)/resolution[1],(num_full_tasks*task_size)%resolution[1]};
-        futures.push_back(
+        futures[num_real_tasks-1] = (
             this->_pool.enqueue(
                 [this,rest,start](){
                     return this->paint_k_pixels(start, rest);
@@ -50,10 +52,18 @@ ColorMap Render::render_scene()
         );
     }
     
+    size_t painted_pixels = 0;
     std::vector<Color> all_colors;
+    all_colors.reserve(resolution[0]*resolution[1]);
     for(size_t i=0; i<num_real_tasks; ++i)
     {
         std::vector<Color> row_colors = futures[i].get();
+        painted_pixels += row_colors.size(); // Increment by the number of painted pixels
+
+        double progress = (100.0 * painted_pixels) / (resolution[0] * resolution[1]);
+        std::cout << "\rProgress: [" << std::setw(3) << static_cast<int>(progress) << "%] "
+                << painted_pixels << "/" << resolution[0] * resolution[1] << " pixels painted."
+                << std::flush;
         all_colors.insert(std::end(all_colors), std::begin(row_colors), std::end(row_colors));
     }
 

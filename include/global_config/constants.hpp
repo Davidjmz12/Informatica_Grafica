@@ -70,6 +70,13 @@ inline double randomD(double a, double b)
     return dis(gen);
 }
 
+inline double randomI(int a, int b)
+{
+    std::uniform_int_distribution<> dis(a, b);
+
+    return dis(gen);
+}
+
 
 /**
  * @brief Function that solves a equation of second degree

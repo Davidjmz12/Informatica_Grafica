@@ -61,7 +61,7 @@ void DirectPhotonMapping::create_photon_trace_rec(const Ray& r, Color flux, size
     if(sampled == BRDFType::ABSORPTION)
         return;
 
-    Color new_flux = min_int_obj.eval_brdf(BRDF::is_delta(sampled)?flux:flux*M_PI, r.get_direction(), sampled);
+    Color new_flux = min_int_obj.eval_brdf(flux, r.get_direction(), sampled);
     
     if(!BRDF::is_delta(sampled))
     {
