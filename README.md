@@ -35,7 +35,7 @@ Ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/path-tracer-photon-mapping.git
+   git clone https://github.com/Davidjmz12/Informatica_Grafica.git
    cd path-tracer-photon-mapping
     ```
 2. Create a build directory:
