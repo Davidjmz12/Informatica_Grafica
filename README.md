@@ -22,11 +22,13 @@ This project implements a path tracer and photon mapping system in C++. It utili
 - **CMake**: To configure and build the project.
 - **Git**: To clone the repository.
 
+>[!NOTE]
+> The project may work with a lower version of C++.
 ### Prerequisites
 
 Ensure you have the following installed:
 - [CMake](https://cmake.org/download/) for compilation.
-- A C++14-compatible compiler (e.g., GCC, Clang, MSVC)
+- A C++16-compatible compiler (e.g., GCC, Clang, MSVC)
 
 ### Build Instructions
 
@@ -76,8 +78,8 @@ python  ./lib/PPM_to_PNG_dir <directory-or-path-to-ppm>
 ```
 If a directory is given, every `.ppm` will be converted.
 
-[!IMPORTANT] 
-Pillow python library is needed. To install it one can use `pip install pillow`. 
+>[!IMPORTANT] 
+>Pillow python library is needed. To install it one can use `pip install pillow`. 
 
 ## Running Tests with CTest
 
@@ -100,19 +102,15 @@ For example, to run a test called test_spatial_element, you would use:
 ```bash
 ctest -R test_spatial_element
 ```
+
+>[!TIP]
+> Use the verbose flag `-V` to see a more detailed output of the test.  By default, each test will display its individual output, followed by a summary of the overall test results. Additionally, if any test fails, the expected and actual values will be shown in an *expected-got* pair.
 ### Running All Tests
 To execute all tests in the project, simply use the ctest command without any arguments:
 ```bash
 ctest
 ```
 This will run all the tests defined in the project.
-
-For more detailed output, use the -v flag:
-
-```bash
-ctest -v
-```
-This will provide more detailed output during test execution. By default, each test will display its individual output, followed by a summary of the overall test results. Additionally, if any test fails, the expected and actual values will be shown in an *expected-got* pair.
 
 ## Metrics Option
 In the CMake configuration, the following definition is added:
