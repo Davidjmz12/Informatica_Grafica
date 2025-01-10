@@ -5,7 +5,8 @@ int main()
 {
     Tests t = Tests("TESTS FACE");
 
-    Face f1 = Face(Vector(1,1,1),Vector(0,-1,1),Vector(-1,0,1),Point(1,2,3),Property());
+    auto brdf = std::make_shared<BRDF>();
+    Face f1 = Face(Vector(1,1,1),Vector(0,-1,1),Vector(-1,0,1),Point(1,2,3),brdf);
 
     Ray r1 = Ray(Point(0,0,0),Vector(1,2,3));
     Ray r2 = Ray(Point(2,4,6),Vector(-1,-2,-3));

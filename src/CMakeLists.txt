@@ -16,7 +16,3 @@ add_executable(main main.cpp)
 target_link_libraries(main PUBLIC scene_file)
 target_include_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_compile_definitions(main PUBLIC ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets")
-
-add_executable(testing_ testing.cpp)
-target_link_libraries(testing_ PUBLIC brdf)
-target_include_directories(testing_ PUBLIC ${CMAKE_SOURCE_DIR}/include)

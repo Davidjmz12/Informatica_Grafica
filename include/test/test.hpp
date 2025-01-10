@@ -61,7 +61,7 @@ public:
         return Test([a, b]() {
             if (!(a == b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{GOT}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -85,7 +85,7 @@ public:
         return Test([a, b]() {
             if (!eqD(a, b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                ss << "EXPECT_EQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{GOT}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -105,7 +105,7 @@ public:
         return Test([a, b]() {
             if ((a == b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{GOT}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });
@@ -128,7 +128,7 @@ public:
         return Test([a, b]() {
             if (eqD(a, b)) {
                 std::ostringstream ss;
-                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << b << "\n\n\t{GOT}:\n\n" << a << "\n";
+                ss << "EXPECT_NEQ failed:\n\n\t{EXPECTED}:\n\n" << a << "\n\n\t{GOT}:\n\n" << b << "\n";
                 throw std::logic_error(ss.str());
             }
         });

@@ -11,6 +11,10 @@ Triangle::Triangle(std::shared_ptr<Point> v0, std::shared_ptr<Point> v1, std::sh
         throw std::invalid_argument("The vertices of the triangle must be different");
     if(eqD((*_v1-*_v0).cross((*_v2-*_v0)).norm(),0))
         throw std::invalid_argument("All three vertices of the triangle cannot be linearly dependent");
+    
+    this->_texture_uv = {std::make_shared<std::array<double, 2>>(std::array<double, 2>{0,0}),
+                         std::make_shared<std::array<double, 2>>(std::array<double, 2>{0,0}),
+                         std::make_shared<std::array<double, 2>>(std::array<double, 2>{0,0})};
 }
 
 Triangle::Triangle(PointWithTexture v0, PointWithTexture v1, PointWithTexture v2, std::shared_ptr<BRDF> brdf)
