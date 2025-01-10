@@ -72,7 +72,7 @@ Other configuration such us the algorithm used to render or the resolution must 
 After the execution of the command a `.ppm` file is stored in the wanted path. If a `.png` conversion is needed, one can use the following command:
 
 ```bash
-python  lib/PPM_to_PNG_dir <directory-or-path-to-ppm>
+python  ./lib/PPM_to_PNG_dir <directory-or-path-to-ppm>
 ```
 If a directory is given, every `.ppm` will be converted.
 
