@@ -18,17 +18,17 @@ This project implements a path tracer and photon mapping system in C++. It utili
 
 ## Requirements
 
-- **C++16 or later**: The project uses C++16 features.
-- **CMake**: To configure and build the project.
+- **C++20 or later**: The project uses C++20 features.
+- **CMake 3.16 or later**: To configure and build the project.
 - **Git**: To clone the repository.
 
 >[!NOTE]
-> The project may work with a lower version of C++.
+> The project may work with C++17. 
 ### Prerequisites
 
 Ensure you have the following installed:
-- [CMake](https://cmake.org/download/) for compilation.
-- A C++16-compatible compiler (e.g., GCC, Clang, MSVC)
+- [CMake 3.16+](https://cmake.org/download/) for compilation.
+- A C++20-compatible compiler (e.g., GCC, Clang, MSVC)
 
 ### Build Instructions
 
