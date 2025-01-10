@@ -15,7 +15,12 @@ def convert_directory(directory_path):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print("Usage: python PPM_to_png.py <directory_path>")
+        print("Usage: python PPM_to_PNG_dir.py <file_or_directory_path>")
     else:
-        directory_path = sys.argv[1]
-        convert_directory(directory_path)
+        path = sys.argv[1]
+        if os.path.isdir(path):
+            convert_directory(path)
+        elif os.path.isfile(path) and path.endswith('.ppm'):
+            ppm_to_png(path)
+        else:
+            print("The provided path is neither a .ppm file nor a directory containing .ppm files.")
